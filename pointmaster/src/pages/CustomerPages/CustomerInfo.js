@@ -1,6 +1,9 @@
+import InfoCard from "../../components/CustomerComponetns/InfoCard";
 import {DeleteTwoTone } from "@ant-design/icons";
 import { Layout,Button } from "antd";
 const { Header } = Layout;
+
+
 
 const CustomerInfo = ({customerId}) => {
 
