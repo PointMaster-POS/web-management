@@ -1,0 +1,56 @@
+.employee-card {
+    width: calc(15% - 20px); /* Adjust width to fit five cards per row */
+    height: 400px; /* Adjust height for the desired appearance */
+    margin: 10px;
+    padding: 15px;
+    background-color: #e4e4e4;
+    border: 1px solid #e4e4e4;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    vertical-align: top; /* Align cards to the top of the row */
+  }
+  
+  
+  .employee-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .employee-photo {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 35px; /* Add margin to separate photo from other content */
+  }
+  
+  .employee-photo img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .employee-info {
+    text-align: center; /* Center text content */
+  }
+  
+  .employee-id,
+  .employee-name {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .details-btn {
+    background-color: #000000;
+    color: #fff;
+    border: none;
+    padding: 10px 30px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .details-btn:hover {
+    background-color: #414141;
+  }
+  
