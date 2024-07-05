@@ -4,7 +4,6 @@ import CustomerCard from "../../components/CustomerComponetns/CustomerCard";
 import PickerBar from "../../components/CustomerComponetns/PickerBar";
 const { Header, Content } = Layout;
 
-
 const customers = [
   {
     id: 1,
@@ -44,6 +43,7 @@ const customers = [
   }
 ];
 
+
 const Customers = () => {
   return (
     <Flex>
@@ -72,6 +72,8 @@ const Customers = () => {
     </Flex>
   );
 };
+
+// example change
 
 
 
