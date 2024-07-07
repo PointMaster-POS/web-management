@@ -1,0 +1,32 @@
+.nav-header {
+    width: 85%;
+    height: 100px;
+    background-color: #001529; 
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    position: fixed;
+    top: 0;
+    left: 15%;
+    right: 0;
+    z-index: 1000;
+  }
+  
+.nav-menu {
+    flex-grow: 1;
+    display: flex;
+    margin-left: 90%;
+    color: #001529;
+}
+  
+.nav-link {
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+  
+
+ 
+  
