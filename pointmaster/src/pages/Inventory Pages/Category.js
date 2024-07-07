@@ -1,12 +1,15 @@
-import React from 'react';
-import { Layout, Table, Space, Form, Input, Button } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Table, Space, Form, Input, Button, Modal } from 'antd';
 import NavigationBar from '../../components/Inventory Components/NavigationBar';
 import Sidebar from '../../components/Inventory Components/SideBar';
+import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import './category.css';
 
 const { Content } = Layout;
+const { confirm } = Modal;
+const { Search } = Input;
 
-const columns = [
+const columns = (showEditModal, showDeleteConfirm) => [
   {
     title: 'No',
     dataIndex: 'key',
@@ -26,128 +29,105 @@ const columns = [
   {
     title: 'Actions',
     key: 'actions',
-    render: () => (
+    render: (text, record) => (
       <Space size="middle">
-        <a>Edit</a>
-        <a>Delete</a>
+        <EditOutlined
+          onClick={() => showEditModal(record)}
+          style={{ color: '#1890ff', cursor: 'pointer', scale: '1.25'}}
+        />
+        <DeleteOutlined
+          onClick={() => showDeleteConfirm(record.categoryName)}
+          style={{ color:'red' , cursor: 'pointer', scale: '1.25'}}
+        />
       </Space>
     ),
   },
 ];
 
-const data = [
-    {
-      key: '1',
-      categoryName: 'Category 1',
-      productCount: 5,
-    },
-    {
-      key: '2',
-      categoryName: 'Category 2',
-      productCount: 3,
-    },
-    {
-      key: '3',
-      categoryName: 'Category 3',
-      productCount: 7,
-    },
-    {
-      key: '4',
-      categoryName: 'Category 4',
-      productCount: 2,
-    },
-    {
-      key: '5',
-      categoryName: 'Category 5',
-      productCount: 4,
-    },
-    {
-      key: '6',
-      categoryName: 'Category 6',
-      productCount: 9,
-    },
-    {
-      key: '7',
-      categoryName: 'Category 7',
-      productCount: 6,
-    },
-    {
-      key: '8',
-      categoryName: 'Category 8',
-      productCount: 1,
-    },
-    {
-      key: '9',
-      categoryName: 'Category 9',
-      productCount: 3,
-    },
-    {
-      key: '10',
-      categoryName: 'Category 10',
-      productCount: 8,
-    },
-    {
-      key: '11',
-      categoryName: 'Category 11',
-      productCount: 5,
-    },
-    {
-      key: '12',
-      categoryName: 'Category 12',
-      productCount: 3,
-    },
-    {
-      key: '13',
-      categoryName: 'Category 13',
-      productCount: 7,
-    },
-    {
-      key: '14',
-      categoryName: 'Category 14',
-      productCount: 2,
-    },
-    {
-      key: '15',
-      categoryName: 'Category 15',
-      productCount: 4,
-    },
-    {
-      key: '16',
-      categoryName: 'Category 16',
-      productCount: 9,
-    },
-    {
-      key: '17',
-      categoryName: 'Category 17',
-      productCount: 6,
-    },
-    {
-      key: '18',
-      categoryName: 'Category 18',
-      productCount: 1,
-    },
-    {
-      key: '19',
-      categoryName: 'Category 19',
-      productCount: 3,
-    },
-    {
-      key: '20',
-      categoryName: 'Category 20',
-      productCount: 8,
-    },
+const initialData = [
+    { key: '1', categoryName: 'Shirts', productCount: 5 },
+    { key: '2', categoryName: 'Skirts', productCount: 3 },
+    { key: '3', categoryName: 'Shoes', productCount: 7 },
+    { key: '4', categoryName: 'Accessories', productCount: 2 },
+    { key: '5', categoryName: 'Wall decorators', productCount: 4 },
+    { key: '6', categoryName: 'Towels', productCount: 9 },
+    { key: '7', categoryName: 'Face cream', productCount: 6 },
+    { key: '8', categoryName: 'Toys', productCount: 1 },
+    { key: '9', categoryName: 'Category 9', productCount: 3 },
+    { key: '10', categoryName: 'Category 10', productCount: 8 },
+    { key: '11', categoryName: 'Category 11', productCount: 5 },
+    { key: '12', categoryName: 'Category 12', productCount: 3 },
+    { key: '13', categoryName: 'Category 13', productCount: 7 },
+    { key: '14', categoryName: 'Category 14', productCount: 2 },
+    { key: '15', categoryName: 'Category 15', productCount: 4 },
+    { key: '16', categoryName: 'Category 16', productCount: 9 },
+    { key: '17', categoryName: 'Category 17', productCount: 6 },
+    { key: '18', categoryName: 'Category 18', productCount: 1 },
+    { key: '19', categoryName: 'Category 19', productCount: 3 },
+    { key: '20', categoryName: 'Category 20', productCount: 8 },
   ];
-  
-  
 
 const Category = () => {
+  const [data, setData] = useState(initialData);
+  const [searchText, setSearchText] = useState('');
+  const [filteredData, setFilteredData] = useState(data);
+
   const onFinish = (values) => {
     console.log('Received values:', values);
     // Handle form submission logic here
   };
 
+  const handleEdit = (record, newCategoryName) => {
+    const newData = data.map(item => 
+      item.key === record.key ? { ...item, categoryName: newCategoryName } : item
+    );
+    setData(newData);
+    setFilteredData(newData);
+  };
+
+  const showEditModal = (record) => {
+    let categoryName = record.categoryName;
+
+    confirm({
+      title: 'Edit Category',
+      content: (
+        <Form>
+          <Form.Item label="Category Name">
+            <Input 
+              defaultValue={categoryName} 
+              onChange={(e) => categoryName = e.target.value} 
+            />
+          </Form.Item>
+        </Form>
+      ),
+      onOk() {
+        handleEdit(record, categoryName);
+      },
+      okText: 'Save',
+      cancelText: 'Cancel',
+    });
+  };
+
+  const showDeleteConfirm = (categoryName) => {
+    confirm({
+      title: `Are you sure you want to delete "${categoryName}"?`,
+      icon: <ExclamationCircleOutlined />,
+      okText: 'Delete',
+      okType: 'danger',
+      cancelText: 'Cancel',
+    });
+  };
+
+  const handleSearch = (value) => {
+    const filtered = data.filter(item => 
+      item.key.includes(value) || item.categoryName.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredData(filtered);
+    setSearchText(value);
+  };
+
   const paginationConfig = {
-    pageSize: 18, // Display 15 items per page
+    pageSize: 16, // Display 15 items per page
     hideOnSinglePage: true, // Hide pagination if there's only one page
   };
 
@@ -176,9 +156,18 @@ const Category = () => {
             </Form>
           </div>
           <div className="all-category-box">
-            <h2>ALL CATEGORIES</h2>
+            <div className="category-header">
+              <h2>ALL CATEGORIES</h2>
+              <Search
+                placeholder="Search by No or Category Name"
+                onSearch={handleSearch}
+                onChange={(e) => handleSearch(e.target.value)}
+                value={searchText}
+                style={{ width: 300, marginLeft: 'auto' }}
+              />
+            </div>
             <hr />
-            <Table className='table' columns={columns} dataSource={data} pagination={paginationConfig} />
+            <Table className='table' columns={columns(showEditModal, showDeleteConfirm)} dataSource={filteredData} pagination={paginationConfig} />
           </div>
         </Content>
       </Layout>
