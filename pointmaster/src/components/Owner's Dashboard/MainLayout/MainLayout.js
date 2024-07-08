@@ -3,7 +3,7 @@ import {Space } from "antd";
 import SideBar from "../SideBar/SideBar";
 // import Content from "./Content";
 import Header from "../Header/Header";
-// import Footer from "./Footer"
+import Footer from "../Footer/Footer"
 import "./MainLayout.css"
 
 const MainLayout = () => {
@@ -14,7 +14,7 @@ const MainLayout = () => {
         <SideBar></SideBar>
         {/* <Content></Content> */}
       </Space>
-      {/* <Footer className="footer" /> */}
+      <Footer />
     </div>
   );
 };
