@@ -1,0 +1,76 @@
+
+
+.content {
+    border-radius: 8px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+  
+.box {
+    margin-top: 140px;
+    margin-left: 40px;
+    width: 96%; /* Adjusted width for better spacing */
+    padding: 20px;
+    background-color: #d2e2f3; /* Light gray background */
+    margin-bottom: 40px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.box h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 2rem;
+    color: #004765;
+}
+
+
+
+.ant-table {
+    margin-top: 20px; /* Adjust spacing between table and heading */
+}
+
+hr {
+    border-top: 3px solid #1b749a; /* Adjust thickness and color here */
+    width: 100%; 
+}
+
+.custom-form-item .ant-form-item-label > label {
+    font-size: 1.1rem; /* Adjust font size as needed*/
+    font-weight: bold;
+
+}
+
+.btn{
+    padding: 20px; 
+    font-size: 1rem;   
+}
+
+.custom-form-item .ant-input {
+    height: 48px; /* Adjust height of the input */
+    font-size: 1rem; /* Adjust font size of the input text */
+    border: 0.5px solid #1b749a; /* Highlighted border color */
+    border-radius: 4px; /* Rounded corners */
+    padding: 8px 12px; /* Adjust padding inside the input */
+  }
+  
+  .custom-form-item .ant-input:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
+  }
+
+.table .ant-table-tbody > tr:nth-child(odd) > td {
+    background-color: #e3e3e3;
+    color: #000000;
+}
+
+.table .ant-table-tbody > tr:nth-child(even) > td {
+    background-color: #f7f7f7;
+    color: #000000;
+}
+
