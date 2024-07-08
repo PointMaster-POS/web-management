@@ -76,7 +76,7 @@ const SideBar = () => {
         <Menu
           defaultSelectedKeys={["/"]}
           mode="inline"
-          theme="dark"
+          theme="light"
           onClick={onMenuClick}
           className="custom-menu"
         >
