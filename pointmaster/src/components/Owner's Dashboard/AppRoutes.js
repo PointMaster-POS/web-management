@@ -9,6 +9,7 @@ import Products from "./Pages/Products";
 import Orders from "./Pages/Orders";
 import Reports from "./Pages/Reports";
 import Expired from "./Pages/Expired";
+import Profile from "./Pages/Profile";
 
 function AppRoutes() {
   return (
@@ -24,6 +25,7 @@ function AppRoutes() {
           <Route path="/reports" element={<Reports />} />
           <Route path="/expired" element={<Expired />} />
           <Route path="logout" element={<div>Logout Page</div>} />
+          <Route path="/profile" element={<Profile />} />
       </Routes>
   );
 }
