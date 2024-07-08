@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Table, Space, Form, Input, Button, Modal } from 'antd';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import NavigationBar from '../../components/Inventory Components/NavigationBar';
 import Sidebar from '../../components/Inventory Components/SideBar';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
@@ -8,74 +9,6 @@ import './suppliers.css';
 const { Content } = Layout;
 const { confirm } = Modal;
 const { Search } = Input;
-
-const handleViewOrders = (supplierId) => {
-  
-  console.log('Viewing orders for supplier:', supplierId);
-};
-
-const columns = (showEditModal, showDeleteConfirm) => [
-  {
-    title: 'Supplier ID',
-    dataIndex: 'supplier_id',
-    key: 'supplier_id',
-  },
-  {
-    title: 'Supplier Name',
-    dataIndex: 'supplier_name',
-    key: 'supplier_name',
-  },
-  {
-    title: 'Contact Person',
-    dataIndex: 'contact_person',
-    key: 'contact_person',
-  },
-  {
-    title: 'Contact Number',
-    dataIndex: 'contact_number',
-    key: 'contact_number',
-  },
-  {
-    title: 'Email Address',
-    dataIndex: 'email',
-    key: 'email',
-  },
-  {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
-  },
-  {
-    title: 'Bank Details',
-    dataIndex: 'bank_details',
-    key: 'bank_details',
-  },
-  {
-    title: 'Orders',
-    key: 'orders',
-    render: (text, record) => (
-      <Button onClick={() => handleViewOrders(record.supplier_id)}>
-        View Orders
-      </Button>
-    ),
-  },
-  {
-    title: 'Actions',
-    key: 'actions',
-    render: (text, record) => (
-      <Space size="middle">
-        <EditOutlined
-          onClick={() => showEditModal(record)}
-          style={{ color: '#1890ff', cursor: 'pointer', transform: 'scale(1.25)' }}
-        />
-        <DeleteOutlined
-          onClick={() => showDeleteConfirm(record.supplier_name)}
-          style={{ color: 'red', cursor: 'pointer', transform: 'scale(1.25)' }}
-        />
-      </Space>
-    ),
-  },
-];
 
 const initialData = [
   {
@@ -164,40 +97,30 @@ const Suppliers = () => {
   const [data, setData] = useState(initialData);
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState(data);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [currentRecord, setCurrentRecord] = useState(null);
+  const [form] = Form.useForm();
 
-  const onFinish = (values) => {
-    console.log('Received values:', values);
+  const navigate = useNavigate();
+
+  const handleViewOrders = (supplierId) => {
+    navigate('/phistory');
+    console.log('Viewing orders for supplier:', supplierId);
   };
 
-  const handleEdit = (record, newSupplierName) => {
+  const handleEdit = (values) => {
     const newData = data.map(item =>
-      item.supplier_id === record.supplier_id ? { ...item, supplier_name: newSupplierName } : item
+      item.supplier_id === values.supplier_id ? { ...item, ...values } : item
     );
     setData(newData);
     setFilteredData(newData);
+    setIsEditModalVisible(false);
   };
 
   const showEditModal = (record) => {
-    let supplierName = record.supplier_name;
-
-    confirm({
-      title: 'Edit Supplier',
-      content: (
-        <Form>
-          <Form.Item label="Supplier Name">
-            <Input
-              defaultValue={supplierName}
-              onChange={(e) => supplierName = e.target.value}
-            />
-          </Form.Item>
-        </Form>
-      ),
-      onOk() {
-        handleEdit(record, supplierName);
-      },
-      okText: 'Save',
-      cancelText: 'Cancel',
-    });
+    setCurrentRecord(record);
+    form.setFieldsValue(record);
+    setIsEditModalVisible(true);
   };
 
   const showDeleteConfirm = (supplierName) => {
@@ -218,8 +141,71 @@ const Suppliers = () => {
     setSearchText(value);
   };
 
+  const columns = [
+    {
+      title: 'Supplier ID',
+      dataIndex: 'supplier_id',
+      key: 'supplier_id',
+    },
+    {
+      title: 'Supplier Name',
+      dataIndex: 'supplier_name',
+      key: 'supplier_name',
+    },
+    {
+      title: 'Contact Person',
+      dataIndex: 'contact_person',
+      key: 'contact_person',
+    },
+    {
+      title: 'Contact Number',
+      dataIndex: 'contact_number',
+      key: 'contact_number',
+    },
+    {
+      title: 'Email Address',
+      dataIndex: 'email',
+      key: 'email',
+    },
+    {
+      title: 'Address',
+      dataIndex: 'address',
+      key: 'address',
+    },
+    {
+      title: 'Bank Details',
+      dataIndex: 'bank_details',
+      key: 'bank_details',
+    },
+    {
+      title: 'Orders',
+      key: 'orders',
+      render: (text, record) => (
+        <Button onClick={() => handleViewOrders(record.supplier_id)}>
+          View Orders
+        </Button>
+      ),
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (text, record) => (
+        <Space size="middle">
+          <EditOutlined
+            onClick={() => showEditModal(record)}
+            style={{ color: '#1890ff', cursor: 'pointer', transform: 'scale(1.25)' }}
+          />
+          <DeleteOutlined
+            onClick={() => showDeleteConfirm(record.supplier_name)}
+            style={{ color: 'red', cursor: 'pointer', transform: 'scale(1.25)' }}
+          />
+        </Space>
+      ),
+    },
+  ];
+
   const paginationConfig = {
-    pageSize: 13, 
+    pageSize: 13,
     hideOnSinglePage: true, // Hide pagination if there's only one page
   };
 
@@ -241,10 +227,42 @@ const Suppliers = () => {
               />
             </div>
             <hr />
-            <Table className="table" columns={columns(showEditModal, showDeleteConfirm)} dataSource={filteredData} pagination={paginationConfig} />
+            <Table className="table" columns={columns} dataSource={filteredData} pagination={paginationConfig} />
           </div>
         </Content>
       </Layout>
+      <Modal
+        title="Edit Supplier"
+        visible={isEditModalVisible}
+        onCancel={() => setIsEditModalVisible(false)}
+        onOk={() => form.submit()}
+        okText="Save"
+        cancelText="Cancel"
+      >
+        <Form form={form} layout="vertical" onFinish={handleEdit}>
+          <Form.Item label="Supplier ID" name="supplier_id">
+            <Input disabled />
+          </Form.Item>
+          <Form.Item label="Supplier Name" name="supplier_name">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Contact Person" name="contact_person">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Contact Number" name="contact_number">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Email Address" name="email">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Address" name="address">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Bank Details" name="bank_details">
+            <Input />
+          </Form.Item>
+        </Form>
+      </Modal>
     </Layout>
   );
 };
