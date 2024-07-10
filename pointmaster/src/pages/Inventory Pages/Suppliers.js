@@ -97,15 +97,10 @@ const Suppliers = () => {
   const [data, setData] = useState(initialData);
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState(data);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState(null);
-  const [form] = Form.useForm();
-
   const navigate = useNavigate();
 
-  const handleViewOrders = (supplierId) => {
-    navigate('/phistory');
-    console.log('Viewing orders for supplier:', supplierId);
+  const handleViewOrders = (supplier_id) => {
+    navigate(`/phistory/${supplier_id}`);
   };
 
   const handleEdit = (values) => {
@@ -114,13 +109,6 @@ const Suppliers = () => {
     );
     setData(newData);
     setFilteredData(newData);
-    setIsEditModalVisible(false);
-  };
-
-  const showEditModal = (record) => {
-    setCurrentRecord(record);
-    form.setFieldsValue(record);
-    setIsEditModalVisible(true);
   };
 
   const showDeleteConfirm = (supplierName) => {
@@ -135,7 +123,7 @@ const Suppliers = () => {
 
   const handleSearch = (value) => {
     const filtered = data.filter(item =>
-      item.supplier_id.includes(value) || item.supplier_name.toLowerCase().includes(value.toLowerCase())
+      item.supplier_id.toLowerCase().includes(value.toLowerCase()) || item.supplier_name.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredData(filtered);
     setSearchText(value);
@@ -192,7 +180,7 @@ const Suppliers = () => {
       render: (text, record) => (
         <Space size="middle">
           <EditOutlined
-            onClick={() => showEditModal(record)}
+            onClick={() => handleEdit(record)}
             style={{ color: '#1890ff', cursor: 'pointer', transform: 'scale(1.25)' }}
           />
           <DeleteOutlined
@@ -205,7 +193,7 @@ const Suppliers = () => {
   ];
 
   const paginationConfig = {
-    pageSize: 13,
+    pageSize: 10,
     hideOnSinglePage: true, // Hide pagination if there's only one page
   };
 
@@ -227,42 +215,10 @@ const Suppliers = () => {
               />
             </div>
             <hr />
-            <Table className="table" columns={columns} dataSource={filteredData} pagination={paginationConfig} />
+            <Table columns={columns} dataSource={filteredData} pagination={paginationConfig} />
           </div>
         </Content>
       </Layout>
-      <Modal
-        title="Edit Supplier"
-        visible={isEditModalVisible}
-        onCancel={() => setIsEditModalVisible(false)}
-        onOk={() => form.submit()}
-        okText="Save"
-        cancelText="Cancel"
-      >
-        <Form form={form} layout="vertical" onFinish={handleEdit}>
-          <Form.Item label="Supplier ID" name="supplier_id">
-            <Input disabled />
-          </Form.Item>
-          <Form.Item label="Supplier Name" name="supplier_name">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Contact Person" name="contact_person">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Contact Number" name="contact_number">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Email Address" name="email">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Address" name="address">
-            <Input />
-          </Form.Item>
-          <Form.Item label="Bank Details" name="bank_details">
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
     </Layout>
   );
 };

@@ -14,7 +14,7 @@ function App() {
               <Route path="/" element={<InventoryDashboard />} />
               <Route path="/category" element={<Category />} />
               <Route path="/suppliers" element={<Suppliers />} />
-              <Route path="/phistory" element={<PurchaseHistory />} />
+              <Route path="/phistory/:supplier_id" element={<PurchaseHistory />} />
           </Routes>
       </Router>
 
