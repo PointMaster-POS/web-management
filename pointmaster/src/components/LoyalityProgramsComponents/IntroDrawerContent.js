@@ -1,4 +1,4 @@
-import "./IntroDrawerContent.css";
+import "./styles/IntroDrawerContent.css";
 import { Button, Card, Popover, Steps } from "antd";
 import { FileTextOutlined, UserAddOutlined, StarOutlined, MessageOutlined, DollarOutlined } from "@ant-design/icons";
 
@@ -22,7 +22,7 @@ console.log(props);
     <div className="introDrawerContentContainer">
       <div class="introDrawerContentTitleContainer">
         <p class="introDrawerContentTitle">
-          How <span class="name">Amount Spent</span> works
+          How <span class="name">{props.title}</span> works
         </p>
       </div>
 
@@ -56,7 +56,7 @@ console.log(props);
                 <img src={props.image} alt="example-image"  />
             </div>
             <div className="stepsTopicContainer">
-                <p className="stepsTopic">Know More About <span style={{color:"#0e83b6" }}>Amount Spent</span> Loyality Program Type</p>
+                <p className="stepsTopic">Know More About <span style={{color:"#0e83b6" }}>{props.title}</span> Loyality Program Type</p>
                 </div>
           <Steps
             style={{ width: "50%" }}

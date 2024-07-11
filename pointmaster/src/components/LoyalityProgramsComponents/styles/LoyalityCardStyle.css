@@ -93,7 +93,7 @@
     width: 80%;
     height: 50px;
     border-radius: 10px;
-    background-color: black;
+    background-color: #0e83b6;
     color: white;
     font-weight: 800;
     font-size: 20px;
@@ -101,7 +101,7 @@
     transition: 0.3s;
     font-weight: 300;
     font-size: 15px;
-    font-family: Arial, Helvetica, sans-serif;
+
 }
 
 .loyalityCardButton:hover {
