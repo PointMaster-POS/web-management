@@ -1,7 +1,15 @@
 import "./loyality-menu-styles.css";
+import React, {useState, useEffect} from "react";
 import LoyalityCard from "../../components/LoyalityProgramsComponents/LoyalityCard";
+import LoyalityData from "./program-details.json";
 
 const LoyalityMenu = () => {
+
+    useEffect(() => {
+        console.log(LoyalityData);
+    }, []);
+
+
   return (
     <div className="container">
       <div className="titleContainer">
@@ -13,22 +21,24 @@ const LoyalityMenu = () => {
       <div className="contentContainer">
       <div className="loyalityProgramCardsContainer">
         <LoyalityCard
-          title="Loyality Program 1"
-          description="This is a description of the Loyality Program 1"
-          image="https://via.placeholder.com/150"
-            
+          title= {LoyalityData.amount_spent.title}
+          description={LoyalityData.amount_spent.description}
+          image= {LoyalityData.amount_spent.image}
+          steps = {LoyalityData.amount_spent.steps}
         />
         <LoyalityCard
-          title="Loyality Program 2"
-          description="This is a description of the Loyality Program 2"
-          image="https://via.placeholder.com/150"
+          title= {LoyalityData.visit.title}
+          description={LoyalityData.visit.description}
+          image= {LoyalityData.visit.image}
+            steps = {LoyalityData.visit.steps}
         />
         <LoyalityCard
-          title="Loyality Program 3"
-          description="This is a description of the Loyality Program 3"
-          image="https://via.placeholder.com/150"
+          title={LoyalityData.cash_for_purchase.title}
+          description={LoyalityData.cash_for_purchase.description}
+          image=    {LoyalityData.cash_for_purchase.image}
+            steps = {LoyalityData.cash_for_purchase.steps}
+
         />
-        
       </div>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import "./IntroDrawerContent.css";
 import { Button, Card, Popover, Steps } from "antd";
 import { FileTextOutlined, UserAddOutlined, StarOutlined, MessageOutlined, DollarOutlined } from "@ant-design/icons";
-const { Meta } = Card;
-const IntroDrawerContent = () => {
+
+const IntroDrawerContent = (props) => {
+console.log(props);
   const content = (
     <div>
       <p>
@@ -12,6 +13,10 @@ const IntroDrawerContent = () => {
       </p>
     </div>
   );
+
+  const handledNavigateToForm = () => {
+    props.onclose();
+  }
 
   return (
     <div className="introDrawerContentContainer">
@@ -48,7 +53,7 @@ const IntroDrawerContent = () => {
         </div>
         <div className="stepsContainer">
             <div className="imageContainer">
-                <img src="/LoyalityPrograms/point.png" alt="example image"  />
+                <img src={props.image} alt="example-image"  />
             </div>
             <div className="stepsTopicContainer">
                 <p className="stepsTopic">Know More About <span style={{color:"#0e83b6" }}>Amount Spent</span> Loyality Program Type</p>
@@ -60,34 +65,34 @@ const IntroDrawerContent = () => {
             items={[
               {
                 title: "step 1",
-                description: "This is a description.",
+                description: `${props.steps[0].step_1}`,
                 icon: <FileTextOutlined />
               },
               {
                 title: "step 2",
-                description: "This is a description.",
+                description: `${props.steps[1].step_2}`,
                 icon :<UserAddOutlined />
               },
               {
                 title: "step 3",
-                description: "This is a description.",
+                description: `${props.steps[2].step_3}`,
                 icon : <StarOutlined />
               },
                 {
                     title: "step 4",
-                    description: "This is a description.",
+                    description: `${props.steps[3].step_4}`,
                     icon: <MessageOutlined />
                 },
                 {
                     title: "step 5",
-                    description: "This is a description.",
+                    description: `${props.steps[4].step_5}`,
                     icon: <DollarOutlined />
                 },
                 
             ]}
 
           />
-          <Button type="primary" className="introDrawerContentButton">
+          <Button type="primary" className="introDrawerContentButton" onClick= {handledNavigateToForm}>
             Create a Loyality Program
             </Button>
         </div>
