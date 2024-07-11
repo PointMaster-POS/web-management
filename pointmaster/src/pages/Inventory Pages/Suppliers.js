@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Table, Space, Form, Input, Button, Modal } from 'antd';
+import { Layout, Table, Space, Form, Input, Button, Modal, Input as AntdInput } from 'antd';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import NavigationBar from '../../components/Inventory Components/NavigationBar';
 import Sidebar from '../../components/Inventory Components/SideBar';
@@ -97,6 +97,8 @@ const Suppliers = () => {
   const [data, setData] = useState(initialData);
   const [searchText, setSearchText] = useState('');
   const [filteredData, setFilteredData] = useState(data);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
   const navigate = useNavigate();
 
   const handleViewOrders = (supplier_id) => {
@@ -118,6 +120,7 @@ const Suppliers = () => {
       okText: 'Delete',
       okType: 'danger',
       cancelText: 'Cancel',
+      centered: true,
     });
   };
 
@@ -197,6 +200,30 @@ const Suppliers = () => {
     hideOnSinglePage: true, // Hide pagination if there's only one page
   };
 
+  const handleAddSupplierClick = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleModalSave = () => {
+    form.validateFields().then(values => {
+      form.resetFields();
+      setIsModalVisible(false);
+      const newSupplier = {
+        ...values,
+        supplier_id: `SUP${data.length + 123}`, // Simulate auto-increment
+        key: `${data.length + 1}`,
+      };
+      const newData = [...data, newSupplier];
+      setData(newData);
+      setFilteredData(newData);
+    });
+  };
+
+  const handleModalCancel = () => {
+    setIsModalVisible(false);
+    form.resetFields();
+  };
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sidebar />
@@ -206,19 +233,82 @@ const Suppliers = () => {
           <div className="box">
             <div className="header">
               <h2>Suppliers</h2>
+              <Space className='header-right-end'>
               <Search
                 placeholder="Search by Supplier ID or Supplier Name"
                 onSearch={handleSearch}
                 onChange={(e) => handleSearch(e.target.value)}
                 value={searchText}
-                style={{ width: 300, marginLeft: 'auto' }}
-              />
+                style={{ width: 300, marginLeft: 'auto' }}/>
+              <Button className='addsup-btn' type="primary" onClick={handleAddSupplierClick}>Add Suppliers</Button>
+              </Space> 
             </div>
             <hr />
             <Table columns={columns} dataSource={filteredData} pagination={paginationConfig} />
           </div>
         </Content>
       </Layout>
+      <Modal
+        title="Add Supplier"
+        visible={isModalVisible}
+        onOk={handleModalSave}
+        onCancel={handleModalCancel}
+        centered
+        width={800} 
+        footer={[
+          <Button key="cancel" onClick={handleModalCancel}>
+            Cancel
+          </Button>,
+          <Button key="save" type="primary" onClick={handleModalSave}>
+            Save
+          </Button>,
+        ]}
+      >
+        <Form form={form} layout="vertical" name="add_supplier_form">
+          <Form.Item
+            name="supplier_name"
+            label="Supplier Name"
+            rules={[{ required: true, message: 'Please input the supplier name!' }]}
+          >
+            <AntdInput />
+          </Form.Item>
+          <Form.Item
+            name="contact_person"
+            label="Contact Person"
+            rules={[{ required: true, message: 'Please input the contact person!' }]}
+          >
+            <AntdInput />
+          </Form.Item>
+          <Form.Item
+            name="contact_number"
+            label="Contact Number"
+            rules={[{ required: true, message: 'Please input the contact number!' }]}
+          >
+            <AntdInput />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            label="Email Address"
+            rules={[{ required: true, message: 'Please input the email address!' }]}
+          >
+            <AntdInput />
+          </Form.Item>
+          <Form.Item
+            name="address"
+            label="Address"
+            rules={[{ required: true, message: 'Please input the address!' }]}
+          >
+            <AntdInput />
+          </Form.Item>
+          <Form.Item
+            name="bank_details"
+            label="Bank Details"
+            rules={[{ required: true, message: 'Please input the bank details!' }]}
+          >
+            <AntdInput />
+          </Form.Item>
+        </Form>
+      </Modal>
     </Layout>
   );
 };

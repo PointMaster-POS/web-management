@@ -153,6 +153,8 @@ const PurchaseHistory = () => {
                 visible={!!selectedOrder}
                 onCancel={() => setSelectedOrder(null)}
                 footer={null}
+                width={800}
+                centered
               >
                 <Table columns={orderColumns} dataSource={selectedOrder.items} pagination={false} />
               </Modal>

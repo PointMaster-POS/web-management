@@ -27,10 +27,31 @@
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 2rem;
-    color: #004765;
+    color: #00b3ff;
 }
 
+.header-right-end{
+  justify-content: flex-end;
+}
 
+.addsup-btn {
+    height: 40px;
+    width: 175px;
+    font-size: large;
+    background-color: #1766ab;
+    font-weight: bold;
+    color: #ffffff;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    
+}
+
+.addsup-btn:hover {
+    background-color: #004765; 
+    color: #ffffff; 
+    cursor: pointer; 
+}
 
 .ant-table {
     margin-top: 20px; /* Adjust spacing between table and heading */
