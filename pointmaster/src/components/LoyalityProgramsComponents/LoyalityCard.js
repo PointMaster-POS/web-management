@@ -1,7 +1,25 @@
 import "./LoyalityCardStyle.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { Drawer } from "antd";
+import IntroDrawerContent from "./IntroDrawerContent";
+
+import { useState } from "react";
+// import { DrawerContext } from "../../context/DrowerContext";
+
+
 const LoyalityCard = (props) => {
+
+    const [open, setOpen] = useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+
+    // const {showDrawer} = useContext(DrawerContext);
   return (
+    <>
     <div className="loyalityCardContainer">
       <div className="loyalityCardImageContainer">
         <img
@@ -17,8 +35,8 @@ const LoyalityCard = (props) => {
 
       <p className="loyalityCardDescription">{props.description}</p>
       </div>
-      <div className="loyalityDescriptionButtonContainer">
-        <p className="loyalityDescriptionText">How it works</p>
+      <div className="loyalityDescriptionButtonContainer" >
+        <p className="loyalityDescriptionText" onClick={showDrawer}>How it works</p>
         <ArrowRightOutlined />
         
     </div>
@@ -30,6 +48,11 @@ const LoyalityCard = (props) => {
         </button>
     </div>
     </div>
+    <Drawer title="Introduction of Loyality Program"  placement="bottom" onClose={onClose} open={open} height={"100%"}>
+       <IntroDrawerContent />
+    
+  </Drawer>
+  </>
   );
 };
 

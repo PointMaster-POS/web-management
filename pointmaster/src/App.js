@@ -9,7 +9,7 @@ function App() {
   //Commment from Pavani Karunarathna
   return (
     <div className="App">
-      <LoyalityIntro />
+      <LoyalityMenu />
     </div>
   );
 }

@@ -1,47 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Drawer, theme } from 'antd';
-const LoyalityIntro = (props) => {
-  const { token } = theme.useToken();
-  const [open, setOpen] = useState(false);
+// import React, { useContext } from 'react';
+// import { Button, Drawer } from 'antd';
+// import { DrawerContext,DrawerProvider } from '../../context/DrowerContext';
+// import LoyalityCard from "../../components/LoyalityProgramsComponents/LoyalityCard";
+// const LoyalityIntro = () => {
 
-  useEffect(() => {
-    setOpen(props.open);
-  }, [props.open]);
-  
-  const onClose = () => {
-    setOpen(false);
-  };
-  const containerStyle = {
-    position: 'relative',
-    height: 200,
-    padding: 48,
-    overflow: 'hidden',
-    background: token.colorFillAlter,
-    border: `1px solid ${token.colorBorderSecondary}`,
-    borderRadius: token.borderRadiusLG,
-  };
-  return (
-    <div style={containerStyle}>
-      Render in this
-      <div
-        style={{
-          marginTop: 16,
-        }}
-      >
-       
-      </div>
-      <Drawer
-        title="Basic Drawer"
-        placement="top"
-        closable={false}
-        onClose={onClose}
-        open={open}
-        getContainer={false}
-        size='large'
-      >
-        <p>Some contents...</p>
-      </Drawer>
-    </div>
-  );
-};
-export default LoyalityIntro;
+//     const [open, showDrawer, onClose] = useContext(DrawerContext);
+
+//     //those states are provided by DrowerContext.js
+// //   const [open, setOpen] = useState(false);
+// //   const showDrawer = () => {
+// //     setOpen(true);
+// //   };
+// //   const onClose = () => {
+// //     setOpen(false);
+// //   };
+//   return (
+//     <DrawerProvider>
+//     <LoyalityCard />    
+      
+//       <Drawer title="Basic Drawer" onClose={onClose} open={open}>
+//         <p>Some contents...</p>
+//         <p>Some contents...</p>
+//         <p>Some contents...</p>
+//       </Drawer>
+//     </DrawerProvider>
+//   );
+// };
+// export default LoyalityIntro;

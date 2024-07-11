@@ -13,20 +13,22 @@ const LoyalityMenu = () => {
       <div className="contentContainer">
       <div className="loyalityProgramCardsContainer">
         <LoyalityCard
-          image="./LoyalityPrograms/point.png"
-          title="Point Based Loyality Program"
-          description="Customers earn points for every purchase they make"
+          title="Loyality Program 1"
+          description="This is a description of the Loyality Program 1"
+          image="https://via.placeholder.com/150"
+            
         />
         <LoyalityCard
-          image="./LoyalityPrograms/point.png"
-          title="Loyality Program 1"
-          description="This is the description of the Loyality Program 1"
+          title="Loyality Program 2"
+          description="This is a description of the Loyality Program 2"
+          image="https://via.placeholder.com/150"
         />
         <LoyalityCard
-          image="./LoyalityPrograms/point.png"
-          title="Loyality Program 1"
-          description="This is the description of the Loyality Program 1"
+          title="Loyality Program 3"
+          description="This is a description of the Loyality Program 3"
+          image="https://via.placeholder.com/150"
         />
+        
       </div>
       </div>
     </div>
