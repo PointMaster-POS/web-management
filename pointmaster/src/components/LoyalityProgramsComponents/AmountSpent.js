@@ -6,18 +6,57 @@ import {
   theme,
   Form,
   Input,
- 
+  Divider,
+    InputNumber,
+ Cascader,
   DatePicker,
 } from "antd";
+
+const { SHOW_CHILD } = Cascader;
+const options = [
+  {
+    label: 'Light',
+    value: 'light',
+    children: new Array(20).fill(null).map((_, index) => ({
+      label: `Number ${index}`,
+      value: index,
+    })),
+  },
+  {
+    label: 'Bamboo',
+    value: 'bamboo',
+    children: [
+      {
+        label: 'Little',
+        value: 'little',
+        children: [
+          {
+            label: 'Toy Fish',
+            value: 'fish',
+          },
+          {
+            label: 'Toy Cards',
+            value: 'cards',
+          },
+          {
+            label: 'Toy Bird',
+            value: 'bird',
+          },
+        ],
+      },
+    ],
+  },
+];
 
 const AmountSpent = () => {
   const { token } = theme.useToken();
   const [current, setCurrent] = useState(0);
-  
-  
+
 
   const FirstForm = () => {
     const { RangePicker } = DatePicker;
+    
+
     const formItemLayout = {
       labelCol: {
         xs: {
@@ -62,9 +101,7 @@ const AmountSpent = () => {
               },
             ]}
           >
-            <Input 
-                
-            />
+            <Input />
           </Form.Item>
 
           <Form.Item
@@ -77,7 +114,9 @@ const AmountSpent = () => {
               },
             ]}
           >
-            <Input.TextArea />
+            <Input.TextArea
+            
+             />
           </Form.Item>
 
           <Form.Item
@@ -90,7 +129,10 @@ const AmountSpent = () => {
               },
             ]}
           >
-            <RangePicker />
+            <RangePicker
+              
+
+             />
           </Form.Item>
         </Form>
       </div>
@@ -133,57 +175,98 @@ const AmountSpent = () => {
             margin: "auto",
           }}
         >
-          <Form.Item
-            label="Program Name"
-            name="Input"
-            rules={[
-              {
-                required: true,
-                message: "Please input!",
-              },
-            ]}
-          >
-            <Input 
-                
-            />
-          </Form.Item>
+          <Divider orientation="left" orientationMargin="0">
+            Rewards Rate Setup
+    </Divider>
 
-          <Form.Item
-            label="Description"
-            name="TextArea"
+    <Form.Item
+            label="Per Money Spent"
+            name="Per Money Spent"
             rules={[
               {
                 required: true,
-                message: "Please input!",
+                message: "Please enter the ",
               },
             ]}
           >
-            <Input.TextArea />
+            <InputNumber min={1} max={10000} defaultValue={100} />
           </Form.Item>
-
           <Form.Item
-            label="Select Valid Period"
-            name="RangePicker"
+            label="Rewarded Points"
+            name="Points"
             rules={[
               {
                 required: true,
-                message: "Please input!",
+                message: "Please enter the ",
               },
             ]}
           >
-            <RangePicker />
+            <InputNumber min={1} max={10} defaultValue={1} />
+          </Form.Item>
+          <Divider orientation="left" orientationMargin="0">
+            Select Valid Period
+    </Divider>
+
+            <Form.Item 
+            label="Period in Months"
+            name="Period"
+            rules={[
+                {
+                    required: true,
+                    message: "Please input!",
+                },
+            ]}
+            
+            >
+
+<InputNumber min={1} max={24} defaultValue={3} />
+          </Form.Item>
+          <Divider orientation="left" orientationMargin="0">
+            Minimum Number of Points to Redeem
+    </Divider>
+
+            <Form.Item 
+            label="Minimum Points"
+            name="Minimum Points"
+            rules={[
+                {
+                    required: true,
+                    message: "Please input!",
+                },
+            ]}
+            >
+
+<InputNumber  defaultValue={100} />
           </Form.Item>
         </Form>
+        
         
       </div>
     );
   };
 
   const ThirdForm = () => {
+    const onChange = (value) => {
+        console.log(value);
+      };
     return (
-      <div>
-        <h1>Third Form</h1>
-      </div>
+      <>
+        <Cascader
+        style={{
+          width: '100%',
+        }}
+        options={options}
+        onChange={onChange}
+        multiple
+        maxTagCount="responsive"
+        showCheckedStrategy={SHOW_CHILD}
+        defaultValue={[
+          ['bamboo', 'little', 'fish'],
+          ['bamboo', 'little', 'cards'],
+          ['bamboo', 'little', 'bird'],
+        ]}
+      />
+        </>
     );
   };
 
@@ -197,7 +280,7 @@ const AmountSpent = () => {
       content: <SecondForm />,
     },
     {
-      title: "Customer Engagement Form",
+      title: "Rewaded Items Form",
       content: <ThirdForm />,
     },
   ];
