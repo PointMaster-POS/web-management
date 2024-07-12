@@ -163,8 +163,7 @@ const Category = () => {
         <hr />
         <Table className='table' columns={columns(showEditModal, showDeleteConfirm)} dataSource={filteredData} pagination={paginationConfig} />
       </div>
-    </Content>
-      
+    </Content>    
   );
 };
 
