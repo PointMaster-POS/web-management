@@ -175,7 +175,9 @@ const ProductList = () => {
               <Select.Option value="Clothing">Clothing</Select.Option>
               <Select.Option value="Electronics">Electronics</Select.Option>
               
+              
               {/* Category options has hardcoded here........ */}
+
 
             </Select>
           </Form.Item>
