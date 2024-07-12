@@ -95,5 +95,5 @@
   }
   
 .custom-form-item .ant-input:focus {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */}
-
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
+}
