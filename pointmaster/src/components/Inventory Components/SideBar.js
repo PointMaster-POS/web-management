@@ -26,7 +26,7 @@ const Sidebar = () => {
           <Link to="/">Dashboard</Link>  
         </Menu.Item>
         <Menu.Item key="2" icon={<ShopOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
-          Products
+          <Link to="/productlist">Products</Link>
         </Menu.Item>
         <Menu.Item key="3" icon={<AppstoreOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
           <Link to="/category">Categories</Link>

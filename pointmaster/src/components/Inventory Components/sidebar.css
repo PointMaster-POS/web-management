@@ -24,7 +24,7 @@
 }
 
 .menu-item {
-    padding: 50px;
+    padding: 40px;
     display: flex;
     align-items: center; 
 } 
@@ -33,11 +33,6 @@
     margin-right: 15px; /* Adjust space between icon and text */
 }
   
-.menu-item .ant-menu-title-content {
-    font-size: 20px; /* Adjust title font size */
-}
-  
-
 .ant-menu-dark .ant-menu-item {
     font-size: 20px; 
   }
@@ -45,6 +40,3 @@
 .ant-menu-dark .ant-menu-item-selected {
     background-color: #2298ff; 
 }
-
-
-  
