@@ -11,7 +11,6 @@ const branches = [
   { id: 3, name: 'Branch 3' },
 ];
 
-
 const branchesMenu = (
   <Menu>
     {branches.map(branch => (
@@ -19,7 +18,6 @@ const branchesMenu = (
     ))}
   </Menu>
 );
-
 
 const NavigationBar = () => {
   return (
