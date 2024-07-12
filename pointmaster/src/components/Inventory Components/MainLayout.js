@@ -14,7 +14,7 @@ const MainLayout = () => {
       <Layout className="site-layout">
         <NavigationBar />
         <Content className="content">
-          <Outlet /> {/* This is where the nested routes will be rendered */}
+          <Outlet /> {/* where the nested routes will be rendered */}
         </Content>
         <Footer />
       </Layout>
