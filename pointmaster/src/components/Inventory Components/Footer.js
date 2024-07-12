@@ -3,9 +3,7 @@ import './footer.css';
 
 function Footer() {
   return (
-    <div className='footer'>
-        © 2024 Point Master. All Rights Reserved.
-    </div>
+    <div className='footer'> © 2024 Point Master. All Rights Reserved. </div>
   )
 };
 
