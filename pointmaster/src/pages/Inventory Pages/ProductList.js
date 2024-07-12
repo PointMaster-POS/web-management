@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Table, Button, Space, Modal, Form, Input, InputNumber, Select } from 'antd';
+import { Layout, Table, Space, Form, Input, Button, Modal, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import './productlist.css';
 
@@ -10,6 +10,7 @@ const ProductList = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [form] = Form.useForm();
+  const { Search } = Input;
 
   const exampleProducts = [
     {
@@ -50,6 +51,9 @@ const ProductList = () => {
     },
   ];
 
+  const [searchText, setSearchText] = useState('');
+  const [filteredProducts, setFilteredProducts] = useState(exampleProducts);
+
   const handleEdit = (record) => {
     setEditingProduct(record);
     form.setFieldsValue(record);
@@ -83,6 +87,15 @@ const ProductList = () => {
   const handleModalCancel = () => {
     setIsModalVisible(false);
     setEditingProduct(null);
+  };
+
+  const handleSearch = (value) => {
+    setSearchText(value);
+    const filtered = exampleProducts.filter(item =>
+      item.productId.toLowerCase().includes(value.toLowerCase()) ||
+      item.productName.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredProducts(filtered);
   };
 
   const columns = [
@@ -150,21 +163,37 @@ const ProductList = () => {
     },
   ];
 
+  const paginationConfig = {
+    pageSize: 10,
+    hideOnSinglePage: true, 
+  };
+
   return (
     <Content className="content">
       <div className="pl-box">
-        <div className="header-container">
-          <h2>Product List</h2>
+        <div className="header">
+          <h2>PRODUCT LIST</h2>
+          <Space className='header-right-end'>
+            <Search
+              placeholder="Search by Product ID or Product Name"
+              onSearch={handleSearch}
+              onChange={(e) => handleSearch(e.target.value)}
+              value={searchText}
+              style={{ width: 300, marginLeft: 'auto' }}
+            />
+            <Button className='addprod-btn' type="primary" onClick={() => console.log('Add Product clicked')}>Add Product</Button>
+          </Space>
         </div>
         <hr />
-        <Table className='prlist-table' columns={columns} dataSource={exampleProducts} />
+        <Table className='prlist-table' columns={columns} dataSource={searchText ? filteredProducts : exampleProducts} pagination={paginationConfig}/>
       </div>
       <Modal
         title="Edit Product"
         visible={isModalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
-        centered>
+        centered
+      >
         <Form form={form} layout="vertical">
           <Form.Item name="productName" label="Product Name" rules={[{ required: true, message: 'Please input the product name!' }]}>
             <Input />
@@ -174,28 +203,23 @@ const ProductList = () => {
               <Select.Option value="Shoes">Shoes</Select.Option>
               <Select.Option value="Clothing">Clothing</Select.Option>
               <Select.Option value="Electronics">Electronics</Select.Option>
-              
-              
-              {/* Category options has hardcoded here........ */}
-
-
             </Select>
           </Form.Item>
           <Form.Item name="photoUrl" label="Photo URL" rules={[{ required: true, message: 'Please input the photo URL!' }]}>
             <Input />
           </Form.Item>
           <Form.Item name="quantity" label="Quantity" rules={[{ required: true, message: 'Please input the quantity!' }]}>
-            <InputNumber min={1} />
+            <Input />
           </Form.Item>
           <Form.Item name="buyingPrice" label="Buying Price" rules={[{ required: true, message: 'Please input the buying price!' }]}>
-            <InputNumber min={0.01} step={0.01} />
+            <Input />
           </Form.Item>
           <Form.Item name="sellingPrice" label="Selling Price" rules={[{ required: true, message: 'Please input the selling price!' }]}>
-            <InputNumber min={0.01} step={0.01} />
+            <Input />
           </Form.Item>
         </Form>
       </Modal>
-    </Content>  
+    </Content>
   );
 };
 

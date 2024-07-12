@@ -7,11 +7,11 @@
   margin-bottom: 10px;
 }
 
-.header-container {
+.header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px; 
+  margin-bottom: 5px; 
 }
 
 .search-bar-container {
@@ -27,7 +27,7 @@
   background: #fff;
 }
 
-.box h2 {
+.pl-box h2 {
   margin-top: 5px;
   margin-bottom: 5px;
   font-size: 2rem;
@@ -37,7 +37,9 @@
 .hr {
   border-top: 3px solid #1b749a; 
   width: 100%;
-  margin-bottom: 25px;
+}
+.prlist-table{
+  margin-top: 20px;
 }
 
 .prlist-table .ant-table-tbody > tr:nth-child(odd) > td {
@@ -53,4 +55,23 @@
 .prlist-table .ant-table-thead > tr > th {
   background-color: #002950;
   color: #ffffff;
+}
+
+.addprod-btn {
+  height: 40px;
+  width: 175px;
+  font-size: large;
+  background-color: #1766ab;
+  font-weight: bold;
+  color: #ffffff;
+  border: none;
+  display: inline-block;
+  text-align: center;
+  
+}
+
+.addprod-btn:hover {
+  background-color: #004765; 
+  color: #ffffff; 
+  cursor: pointer; 
 }
