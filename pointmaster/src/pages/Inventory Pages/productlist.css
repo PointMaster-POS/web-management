@@ -1,57 +1,56 @@
 .pl-box {
-    margin-top: 140px;
-    margin-left: 20px;
-    width: 98%; 
-    padding: 20px;
-    background-color: #d2e2f3; 
-    margin-bottom: 10px;
-  }
-  
-  .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px; 
+  margin-top: 140px;
+  margin-left: 20px;
+  width: 98%; 
+  padding: 20px;
+  background-color: #d2e2f3; 
+  margin-bottom: 10px;
 }
-  
-  .search-bar-container {
-    display: flex;
-    align-items: center;
-  }
-  
-  .content {
-    padding: 24px;
-  }
-  
-  .site-layout {
-    background: #fff;
-  }
-  
-  .box h2 {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 2rem;
-    color: #004765;
-  }
-  
-  hr {
-    border-top: 3px solid #1b749a; 
-    width: 100%;
-    margin-bottom: 25px;
-  }
 
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px; 
+}
+
+.search-bar-container {
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  padding: 24px;
+}
+
+.site-layout {
+  background: #fff;
+}
+
+.box h2 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 2rem;
+  color: #004765;
+}
+
+.hr {
+  border-top: 3px solid #1b749a; 
+  width: 100%;
+  margin-bottom: 25px;
+}
 
 .prlist-table .ant-table-tbody > tr:nth-child(odd) > td {
-    background-color: #e6e8f4;
-    color: #000000;
+  background-color: #e6e8f4;
+  color: #000000;
 }
 
 .prlist-table .ant-table-tbody > tr:nth-child(even) > td {
-    background-color: #f7f7f7;
-    color: #000000;
+  background-color: #f7f7f7;
+  color: #000000;
 }
 
 .prlist-table .ant-table-thead > tr > th {
-    background-color: #002950;
-    color: #ffffff;
+  background-color: #002950;
+  color: #ffffff;
 }
