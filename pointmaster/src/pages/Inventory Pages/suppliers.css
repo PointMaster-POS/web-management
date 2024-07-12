@@ -23,7 +23,7 @@
 }
 
 
-.box h2 {
+.header h2 {
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 2rem;
@@ -53,8 +53,23 @@
     cursor: pointer; 
 }
 
-.ant-table {
-    margin-top: 20px; /* Adjust spacing between table and heading */
+.sup-table{
+    margin-top: 20px;
+}
+
+.sup-table .ant-table-tbody > tr:nth-child(odd) > td {
+    background-color: #e6e8f4;
+    color: #000000;
+}
+
+.sup-table .ant-table-tbody > tr:nth-child(even) > td {
+    background-color: #f7f7f7;
+    color: #000000;
+}
+
+.sup-table .ant-table-thead > tr > th {
+    background-color: #002950;
+    color: #ffffff;
 }
 
 hr {

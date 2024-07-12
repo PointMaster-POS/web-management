@@ -133,7 +133,7 @@ const PurchaseHistory = () => {
         <Content className="content">
           <div className="box">
             <div className="header-container">
-              <h2>Purchase History of {supplier_id}</h2>
+              <h2>PURCHASE HISTORY OF {supplier_id}</h2>
               <Space className="search-bar-container">
                 <Search
                   placeholder="Search by Order ID"
@@ -146,7 +146,7 @@ const PurchaseHistory = () => {
               </Space>
             </div>
             <hr />
-            <Table columns={columns} dataSource={filteredData} pagination={{ pageSize: 10 }} />
+            <Table className='ph-table' columns={columns} dataSource={filteredData} pagination={{ pageSize: 10 }} />
             {selectedOrder && (
               <Modal
                 title={`Order Details - ${selectedOrder.order_id}`}

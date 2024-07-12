@@ -232,7 +232,7 @@ const Suppliers = () => {
         <Content className="content">
           <div className="box">
             <div className="header">
-              <h2>Suppliers</h2>
+              <h2>SUPPLIERS</h2>
               <Space className='header-right-end'>
               <Search
                 placeholder="Search by Supplier ID or Supplier Name"
@@ -244,7 +244,7 @@ const Suppliers = () => {
               </Space> 
             </div>
             <hr />
-            <Table columns={columns} dataSource={filteredData} pagination={paginationConfig} />
+            <Table className='sup-table' columns={columns} dataSource={filteredData} pagination={paginationConfig} />
           </div>
         </Content>
       </Layout>

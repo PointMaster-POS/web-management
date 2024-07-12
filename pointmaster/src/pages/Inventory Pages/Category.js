@@ -127,7 +127,7 @@ const Category = () => {
   };
 
   const paginationConfig = {
-    pageSize: 16, // Display 15 items per page
+    pageSize: 16, 
     hideOnSinglePage: true, // Hide pagination if there's only one page
   };
 
