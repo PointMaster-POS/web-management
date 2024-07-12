@@ -8,7 +8,6 @@ function InventoryDashboard() {
   return (
     <div className="content">
       {/* Your main content goes here */}
-      
     </div>
       
   );
