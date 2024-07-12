@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Layout, Table, Space, Form, Input, Button, Modal, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import './productlist.css';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const { Content } = Layout;
 const { confirm } = Modal;
@@ -11,6 +12,7 @@ const ProductList = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [form] = Form.useForm();
   const { Search } = Input;
+  const navigate = useNavigate(); // Get the navigate function
 
   const exampleProducts = [
     {
@@ -98,6 +100,10 @@ const ProductList = () => {
     setFilteredProducts(filtered);
   };
 
+  const navigateToAddProduct = () => {
+    navigate('/addproduct'); // Navigate to /addproduct using navigate function
+  };
+
   const columns = [
     {
       title: 'Product ID',
@@ -181,7 +187,7 @@ const ProductList = () => {
               value={searchText}
               style={{ width: 300, marginLeft: 'auto' }}
             />
-            <Button className='addprod-btn' type="primary" onClick={() => console.log('Add Product clicked')}>Add Product</Button>
+            <Button className='addprod-btn' type="primary" onClick={navigateToAddProduct}>Add Product</Button>
           </Space>
         </div>
         <hr />
