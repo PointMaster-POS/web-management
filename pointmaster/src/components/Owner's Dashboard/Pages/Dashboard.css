@@ -1,70 +1,38 @@
- .dashboard-container {
-    display: flex;
-    justify-content: center;
-    padding: 30px;
-    /* border: 2px red solid; */
-  }
-  
-  .dashboard-row {
-    display: flex;
-    justify-content: center;
-    gap: 50px; /* Adjust the gap as needed */
-    /* margin-bottom: 20px; */ /* Space between rows */
-  }
-  
-  .card {
-    width: 400px; /* Adjust the width as needed */
-    background-color: #fff;
-  }
+.dashboard-container {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+  /* border: 2px red solid; */
+  /* flex-wrap: wrap; */
+}
 
-  /* .card-content {
-    gap: 30px; Adjust the gap between the icon and the text part
-  } */
-  
-  .statistic .ant-statistic-title {
-    font-size: 24px; /* Adjust the title font size as needed */
-  }
-  
-  .statistic .ant-statistic-content-value {
-    font-size: 24px; /* Adjust the value font size as needed */
-  }
+.card,.popular-items-card, .out-of-stock-card {
+  /* width: 100%;
+  max-width: 400px;  */
+  background-color: #fff;
+}
 
-  .popular-items-card {
-    width: 400px;
-    border-radius: 10px;
-    background-color: #fff;
-    margin-top: 20px;
-  }
-  
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #f0f0f0;
-    margin-bottom: 16px;
-  }
-  
-  .card-header .view-all {
-    cursor: pointer;
-    color: #008000;
-    font-weight: 600;
-  }
-  
-  .ant-list-item {
-    padding: 20px 0;
-  }
-  
-  .ant-list-item-meta-title {
-    font-size: 60px;
-  }
-  
-  .ant-list-item-meta-description {
-    font-size: 20px;
-  }
-  
-  .ant-list-item-meta-avatar {
-    align-items: center;
-  }
-  
-  
+.statistic .ant-statistic-title {
+  font-size: 24px; 
+}
+
+.statistic .ant-statistic-content-value {
+  font-size: 24px; 
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 16px;
+}
+
+.card-header .view-all {
+  cursor: pointer;
+  color: #008000;
+  font-weight: 600;
+}
+
+
