@@ -1,5 +1,5 @@
 import "./loyality-menu-styles.css";
-import React, {useState, useEffect} from "react";
+import React, { useEffect} from "react";
 import LoyalityCard from "../../components/LoyalityProgramsComponents/LoyalityCard";
 import LoyalityData from "./program-details.json";
 
