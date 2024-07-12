@@ -46,7 +46,6 @@ const PurchaseHistory = () => {
   const [searchText, setSearchText] = useState('');
   const [selectedOrder, setSelectedOrder] = useState(null);
   
-  
   const handleSearch = (value) => {
     const filtered = data.filter(item =>
       item.order_id.toLowerCase().includes(value.toLowerCase())
