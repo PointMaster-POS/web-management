@@ -72,7 +72,7 @@
     color: #ffffff;
 }
 
-hr {
+.hr {
     border-top: 3px solid #1b749a; /* Adjust thickness and color here */
     width: 100%; 
 }
@@ -97,6 +97,5 @@ hr {
   }
   
 .custom-form-item .ant-input:focus {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
-}
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */}
 
