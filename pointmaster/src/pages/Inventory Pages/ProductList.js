@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Table, Button, Space, Modal, Form, Input, InputNumber, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import NavigationBar from '../../components/Inventory Components/NavigationBar';
-import Sidebar from '../../components/Inventory Components/SideBar';
 import './productlist.css';
 
 const { Content } = Layout;
@@ -153,27 +151,20 @@ const ProductList = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sidebar />
-      <Layout className="site-layout">
-        <NavigationBar />
-        <Content className="content">
-          <div className="box">
-            <div className="header-container">
-              <h2>Product List</h2>
-            </div>
-            <hr />
-            <Table className='prlist-table' columns={columns} dataSource={exampleProducts} />
-          </div>
-        </Content>
-      </Layout>
+    <Content className="content">
+      <div className="pl-box">
+        <div className="header-container">
+          <h2>Product List</h2>
+        </div>
+        <hr />
+        <Table className='prlist-table' columns={columns} dataSource={exampleProducts} />
+      </div>
       <Modal
         title="Edit Product"
         visible={isModalVisible}
         onOk={handleModalOk}
         onCancel={handleModalCancel}
-        centered
-      >
+        centered>
         <Form form={form} layout="vertical">
           <Form.Item name="productName" label="Product Name" rules={[{ required: true, message: 'Please input the product name!' }]}>
             <Input />
@@ -202,7 +193,7 @@ const ProductList = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </Layout>
+    </Content>  
   );
 };
 

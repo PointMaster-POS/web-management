@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Table, Space, Form, Input, Button, Modal, Input as AntdInput } from 'antd';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import NavigationBar from '../../components/Inventory Components/NavigationBar';
-import Sidebar from '../../components/Inventory Components/SideBar';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import './suppliers.css';
 
@@ -225,36 +223,31 @@ const Suppliers = () => {
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sidebar />
-      <Layout className="site-layout">
-        <NavigationBar />
-        <Content className="content">
-          <div className="box">
-            <div className="header">
-              <h2>SUPPLIERS</h2>
-              <Space className='header-right-end'>
-              <Search
-                placeholder="Search by Supplier ID or Supplier Name"
-                onSearch={handleSearch}
-                onChange={(e) => handleSearch(e.target.value)}
-                value={searchText}
-                style={{ width: 300, marginLeft: 'auto' }}/>
-              <Button className='addsup-btn' type="primary" onClick={handleAddSupplierClick}>Add Suppliers</Button>
-              </Space> 
-            </div>
-            <hr />
-            <Table className='sup-table' columns={columns} dataSource={filteredData} pagination={paginationConfig} />
-          </div>
-        </Content>
-      </Layout>
+    <Content className="content">
+      <div className="sup-box">
+        <div className="header">
+          <h2>SUPPLIERS</h2>
+          <Space className='header-right-end'>
+            <Search
+              placeholder="Search by Supplier ID or Supplier Name"
+              onSearch={handleSearch}
+              onChange={(e) => handleSearch(e.target.value)}
+              value={searchText}
+              style={{ width: 300, marginLeft: 'auto' }}
+            />
+            <Button className='addsup-btn' type="primary" onClick={handleAddSupplierClick}>Add Suppliers</Button>
+          </Space> 
+        </div>
+        <hr />
+        <Table className='sup-table' columns={columns} dataSource={filteredData} pagination={paginationConfig} />
+      </div>
       <Modal
         title="Add Supplier"
         visible={isModalVisible}
         onOk={handleModalSave}
         onCancel={handleModalCancel}
         centered
-        width={800} 
+        width={800}
         footer={[
           <Button key="cancel" onClick={handleModalCancel}>
             Cancel
@@ -309,7 +302,7 @@ const Suppliers = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </Layout>
+    </Content>
   );
 };
 

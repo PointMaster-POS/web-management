@@ -11,6 +11,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import './sidebar.css';
+import { Link } from 'react-router-dom';
 
 const { Sider } = Layout;
 
@@ -22,25 +23,25 @@ const Sidebar = () => {
       </div>
       <Menu theme='dark' mode="inline">
         <Menu.Item key="1" icon={<DashboardOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
-          Dashboard
+          <Link to="/">Dashboard</Link>  
         </Menu.Item>
         <Menu.Item key="2" icon={<ShopOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
           Products
         </Menu.Item>
         <Menu.Item key="3" icon={<AppstoreOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
-          Categories
+          <Link to="/category">Categories</Link>
         </Menu.Item>
         <Menu.Item key="4" icon={<SolutionOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
-          Suppliers
+          <Link to="/suppliers">Suppliers</Link>
         </Menu.Item>
         <Menu.Item key="5" icon={<UserOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
-          Profile
+          <Link to="/profile">Profile</Link>
         </Menu.Item>
         <Menu.Item key="6" icon={<SettingOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
-          Settings
+          <Link to="/settings">Settings</Link>
         </Menu.Item>
         <Menu.Item key="7" icon={<LogoutOutlined style={{ fontSize: '30px' }}/>} className='menu-item'>
-          Logout
+          <Link to="/logout">Logout</Link>
         </Menu.Item>
       </Menu>
     </Sider>

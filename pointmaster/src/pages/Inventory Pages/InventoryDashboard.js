@@ -6,16 +6,11 @@ import './inventorydashboard.css';
 
 function InventoryDashboard() {
   return (
-    <div className="inventory-dashboard">
-      <Sidebar />
-      <div className="main-content">
-        <NavigationBar />
-        <div className="content">
-          {/* Your main content goes here */}
-          
-        </div>
-      </div>
+    <div className="content">
+      {/* Your main content goes here */}
+      
     </div>
+      
   );
 }
 

@@ -1,29 +1,13 @@
-
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import InventoryDashboard from './pages/Inventory Pages/InventoryDashboard';
-import Category from './pages/Inventory Pages/Category';
-import Suppliers from './pages/Inventory Pages/Suppliers';
-import PurchaseHistory from './pages/Inventory Pages/PurchaseHistory';
-import AddProduct from './pages/Inventory Pages/AddProduct';
-import ProductList from './pages/Inventory Pages/ProductList';
+import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom';
+import InventoryRoutes from './pages/Inventory Pages/InventoryRoutes';
 
 function App() {
-  //comment from Himindu
-  //Commment from Pavani Karunarathna
-  return ( 
-      <Router>
-          <Routes>
-              <Route path="/" element={<InventoryDashboard />} />
-              <Route path="/category" element={<Category />} />
-              <Route path="/suppliers" element={<Suppliers />} />
-              <Route path="/phistory/:supplier_id" element={<PurchaseHistory />} />
-              <Route path="/addproduct" element={<AddProduct />} />
-              <Route path="/productlist" element={<ProductList/>}/>
-          </Routes>
-      </Router>
-
-  );
-}
-
+    return (
+        <Router>
+          <InventoryRoutes />
+        </Router>
+    );
+};
 
 export default App;

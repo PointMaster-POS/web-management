@@ -126,43 +126,37 @@ const PurchaseHistory = () => {
   ];
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sidebar />
-      <Layout className="site-layout">
-        <NavigationBar />
-        <Content className="content">
-          <div className="box">
-            <div className="header-container">
-              <h2>PURCHASE HISTORY OF {supplier_id}</h2>
-              <Space className="search-bar-container">
-                <Search
-                  placeholder="Search by Order ID"
-                  onSearch={handleSearch}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  value={searchText}
-                  style={{ width: 300 }}
-                />
-                <RangePicker onChange={handleDateChange} />
-              </Space>
-            </div>
-            <hr />
-            <Table className='ph-table' columns={columns} dataSource={filteredData} pagination={{ pageSize: 10 }} />
-            {selectedOrder && (
-              <Modal
-                title={`Order Details - ${selectedOrder.order_id}`}
-                visible={!!selectedOrder}
-                onCancel={() => setSelectedOrder(null)}
-                footer={null}
-                width={800}
-                centered
-              >
-                <Table columns={orderColumns} dataSource={selectedOrder.items} pagination={false} />
-              </Modal>
-            )}
-          </div>
-        </Content>
-      </Layout>
-    </Layout>
+    <Content className="content">
+      <div className="ph-box">
+        <div className="header-container">
+          <h2>PURCHASE HISTORY OF {supplier_id}</h2>
+          <Space className="search-bar-container">
+            <Search
+              placeholder="Search by Order ID"
+              onSearch={handleSearch}
+              onChange={(e) => handleSearch(e.target.value)}
+              value={searchText}
+              style={{ width: 300 }}
+            />
+            <RangePicker onChange={handleDateChange} />
+          </Space>
+        </div>
+        <hr />
+        <Table className='ph-table' columns={columns} dataSource={filteredData} pagination={{ pageSize: 10 }} />
+        {selectedOrder && (
+          <Modal
+            title={`Order Details - ${selectedOrder.order_id}`}
+            visible={!!selectedOrder}
+            onCancel={() => setSelectedOrder(null)}
+            footer={null}
+            width={800}
+            centered
+          >
+            <Table columns={orderColumns} dataSource={selectedOrder.items} pagination={false} />
+          </Modal>
+        )}
+      </div>
+    </Content>    
   );
 };
 

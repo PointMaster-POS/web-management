@@ -7,13 +7,13 @@
     justify-content: space-between;
 }
   
-.box {
+.sup-box {
     margin-top: 140px;
-    margin-left: 40px;
-    width: 96%; /* Adjusted width for better spacing */
+    margin-left: 20px;
+    width: 98%; 
     padding: 20px;
-    background-color: #d2e2f3; /* Light gray background */
-    margin-bottom: 40px;
+    background-color: #d2e2f3; 
+    margin-bottom: 10px;
 }
 
 .header {
@@ -27,7 +27,7 @@
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 2rem;
-    color: #00b3ff;
+    color: #004765;
 }
 
 .header-right-end{
@@ -96,7 +96,7 @@ hr {
     padding: 8px 12px;
   }
   
-  .custom-form-item .ant-input:focus {
+.custom-form-item .ant-input:focus {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
-  }
+}
 

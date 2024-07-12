@@ -1,10 +1,10 @@
-.box {
+.pl-box {
     margin-top: 140px;
-    margin-left: 40px;
-    width: 96%; 
+    margin-left: 20px;
+    width: 98%; 
     padding: 20px;
     background-color: #d2e2f3; 
-    margin-bottom: 40px;
+    margin-bottom: 10px;
   }
   
   .header-container {

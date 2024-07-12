@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Layout, Table, Space, Form, Input, Button, Modal } from 'antd';
-import NavigationBar from '../../components/Inventory Components/NavigationBar';
-import Sidebar from '../../components/Inventory Components/SideBar';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import './category.css';
 
@@ -127,51 +125,46 @@ const Category = () => {
   };
 
   const paginationConfig = {
-    pageSize: 16, 
+    pageSize: 15, 
     hideOnSinglePage: true, // Hide pagination if there's only one page
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
-      <Sidebar />
-      <Layout className="site-layout">
-        <NavigationBar />
-        <Content className='content'>
-          <div className="add-category-box">
-            <h2>ADD CATEGORY</h2>
-            <hr />
-            <Form className="custom-form" layout="vertical" onFinish={onFinish}>
-              <Form.Item
-                name="categoryName"
-                label="Category Name"
-                rules={[{ required: true, message: 'Please input the category name!' }]}
-                className="custom-form-item">
-                <Input placeholder="Category Name" />
-              </Form.Item>
-              <Form.Item>
-                <Button className='btn' type="primary" htmlType="submit">
-                  Add Category
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-          <div className="all-category-box">
-            <div className="category-header">
-              <h2>ALL CATEGORIES</h2>
-              <Search
-                placeholder="Search by No or Category Name"
-                onSearch={handleSearch}
-                onChange={(e) => handleSearch(e.target.value)}
-                value={searchText}
-                style={{ width: 300, marginLeft: 'auto' }}
-              />
-            </div>
-            <hr />
-            <Table className='table' columns={columns(showEditModal, showDeleteConfirm)} dataSource={filteredData} pagination={paginationConfig} />
-          </div>
-        </Content>
-      </Layout>
-    </Layout>
+    <Content className='content'>
+      <div className="add-category-box">
+        <h2>ADD CATEGORY</h2>
+        <hr />
+        <Form className="custom-form" layout="vertical" onFinish={onFinish}>
+          <Form.Item
+            name="categoryName"
+            label="Category Name"
+            rules={[{ required: true, message: 'Please input the category name!' }]}
+            className="custom-form-item">
+            <Input placeholder="Category Name" />
+          </Form.Item>
+          <Form.Item>
+            <Button className='btn' type="primary" htmlType="submit">
+              Add Category
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+      <div className="all-category-box">
+        <div className="category-header">
+          <h2>ALL CATEGORIES</h2>
+          <Search
+            placeholder="Search by No or Category Name"
+            onSearch={handleSearch}
+            onChange={(e) => handleSearch(e.target.value)}
+            value={searchText}
+            style={{ width: 300, marginLeft: 'auto' }}
+          />
+        </div>
+        <hr />
+        <Table className='table' columns={columns(showEditModal, showDeleteConfirm)} dataSource={filteredData} pagination={paginationConfig} />
+      </div>
+    </Content>
+      
   );
 };
 
