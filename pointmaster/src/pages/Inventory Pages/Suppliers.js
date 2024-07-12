@@ -195,7 +195,7 @@ const Suppliers = () => {
 
   const paginationConfig = {
     pageSize: 10,
-    hideOnSinglePage: true, // Hide pagination if there's only one page
+    hideOnSinglePage: true, 
   };
 
   const handleAddSupplierClick = () => {

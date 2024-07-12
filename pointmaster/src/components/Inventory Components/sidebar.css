@@ -12,9 +12,9 @@
 }
 
 .logo-image {
-    max-height: 100%; /* Ensure the image fits within the height */
-    max-width: 100%; /* Ensure the image fits within the width */
-  }
+  max-height: 100%; /* Ensure the image fits within the height */
+  max-width: 100%; /* Ensure the image fits within the width */
+}
 
 .title {
     color: white;
@@ -43,7 +43,7 @@
   }
   
 .ant-menu-dark .ant-menu-item-selected {
-    background-color: #5e40f5; 
+    background-color: #2298ff; 
 }
 
 

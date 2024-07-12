@@ -68,6 +68,8 @@ hr {
 .btn{
     padding: 20px; 
     font-size: 1rem;   
+    background-color: #1766ab;
+    font-weight: bold;
 }
 
 .custom-form-item .ant-input {
