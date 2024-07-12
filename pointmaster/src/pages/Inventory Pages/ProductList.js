@@ -3,6 +3,7 @@ import { Layout, Table, Button, Space, Modal, Form, Input, InputNumber, Select }
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import NavigationBar from '../../components/Inventory Components/NavigationBar';
 import Sidebar from '../../components/Inventory Components/SideBar';
+import './productlist.css';
 
 const { Content } = Layout;
 const { confirm } = Modal;
@@ -162,7 +163,7 @@ const ProductList = () => {
               <h2>Product List</h2>
             </div>
             <hr />
-            <Table columns={columns} dataSource={exampleProducts} />
+            <Table className='prlist-table' columns={columns} dataSource={exampleProducts} />
           </div>
         </Content>
       </Layout>

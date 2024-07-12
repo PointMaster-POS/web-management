@@ -82,12 +82,17 @@ hr {
   }
 
 .table .ant-table-tbody > tr:nth-child(odd) > td {
-    background-color: #e3e3e3;
+    background-color: #e6e8f4;
     color: #000000;
 }
 
 .table .ant-table-tbody > tr:nth-child(even) > td {
     background-color: #f7f7f7;
     color: #000000;
+}
+
+.table .ant-table-thead > tr > th {
+    background-color: #002950;
+    color: #ffffff;
 }
 

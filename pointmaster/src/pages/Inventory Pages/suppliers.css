@@ -89,24 +89,14 @@ hr {
 }
 
 .custom-form-item .ant-input {
-    height: 48px; /* Adjust height of the input */
-    font-size: 1rem; /* Adjust font size of the input text */
-    border: 0.5px solid #1b749a; /* Highlighted border color */
-    border-radius: 4px; /* Rounded corners */
-    padding: 8px 12px; /* Adjust padding inside the input */
+    height: 48px; 
+    font-size: 1rem; 
+    border: 0.5px solid #1b749a; 
+    border-radius: 4px; 
+    padding: 8px 12px;
   }
   
   .custom-form-item .ant-input:focus {
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
   }
-
-.table .ant-table-tbody > tr:nth-child(odd) > td {
-    background-color: #e3e3e3;
-    color: #000000;
-}
-
-.table .ant-table-tbody > tr:nth-child(even) > td {
-    background-color: #f7f7f7;
-    color: #000000;
-}
 

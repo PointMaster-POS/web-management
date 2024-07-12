@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout, Menu, Dropdown, Button } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { DownOutlined, HomeOutlined } from '@ant-design/icons';
 import './navigationbar.css';
 
 const { Header } = Layout;
@@ -24,6 +24,7 @@ const branchesMenu = (
 const NavigationBar = () => {
   return (
     <Header className="nav-header">
+      <h1 className='welcome'>Welcome Back <HomeOutlined style={{ fontSize: '35px' }}/> </h1>
       <Menu theme="dark" mode="horizontal" className="nav-menu">
         <Menu.Item key="branches">
           <Dropdown overlay={branchesMenu} trigger={['click']}>
