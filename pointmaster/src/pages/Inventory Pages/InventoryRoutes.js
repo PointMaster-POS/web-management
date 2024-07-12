@@ -7,7 +7,6 @@ import AddProduct from './AddProduct';
 import ProductList from './ProductList';
 import MainLayout from '../../components/Inventory Components/MainLayout';
 
-
 function InventoryRoutes() {
   return ( 
     <Routes>
