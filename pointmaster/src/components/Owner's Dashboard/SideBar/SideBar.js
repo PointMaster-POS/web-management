@@ -65,7 +65,7 @@ const SideBar = () => {
   };
 
   return (
-    <Layout style={{height: "800px"}}>
+    <Layout style={{height: "805px"}}>
       <Sider
         collapsible
         collapsed={collapsed}
