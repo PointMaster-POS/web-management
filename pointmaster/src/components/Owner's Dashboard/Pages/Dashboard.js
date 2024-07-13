@@ -1,16 +1,18 @@
 import { Card, Space, Statistic, Typography, List, Avatar, Row, Col } from 'antd';
 import React from 'react';
 import {
-  AppstoreOutlined,
   ShoppingCartOutlined,
   StopOutlined,
   DollarOutlined,
   PoundOutlined,
   ShoppingOutlined,
 } from "@ant-design/icons";
+import { Line } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
 import "./Dashboard.css"
 
 const { Title, Text } = Typography;
+Chart.register(...registerables);
 
 const data_set_1 = [
   {
@@ -58,7 +60,7 @@ const Dashboard = () => {
               <DashboardCard icon={<PoundOutlined style={iconStyle("red")} />} title="Monthly Sales " value={1234} />
             </Col>
             <Col span={8}>
-              <DashboardCard icon={<ShoppingOutlined style={iconStyle("orange")} />} title="Daily Orders" value={1234} />
+              <DashboardCard icon={<ShoppingOutlined style={iconStyle("orange")} />} title="Daily Purchase" value={1234} />
             </Col>
             <Col span={8}>
               <DashboardCard icon={<ShoppingCartOutlined style={iconStyle("olive")} />} title="Daily Distribution" value={1234} />
@@ -70,7 +72,7 @@ const Dashboard = () => {
               <DashboardCard icon={<DollarOutlined style={iconStyle("purple")} />} title="Total Revenue" value={1234} />
             </Col>
             <Col span={24}>
-              <Chart />
+              <MultiLineChart />
             </Col>
           </Row>
         </Col>
@@ -150,12 +152,110 @@ const OutOfStock = () => {
   );
 };
 
-const Chart = () => {
+const MultiLineChart = () => {
+  const data = {
+    labels: [
+      '2021-1', '2021-2', '2021-3', '2021-4', '2021-5', '2021-6', 
+      '2021-7', '2021-8', '2021-9', '2021-10', '2021-11', '2021-12'
+    ],
+    datasets: [
+      {
+        label: 'Total Sale',
+        data: [100, 120, 150, 170, 190, 200, 220, 180, 160, 200, 220, 240],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: true,
+        tension: 0.4,
+      },
+      {
+        label: 'Total Purchase',
+        data: [80, 110, 130, 150, 170, 180, 200, 160, 140, 180, 200, 220],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: true,
+        tension: 0.4,
+      },
+    ],
+  };
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false, // Important for custom height
+    layout: {
+      padding: {
+        // top: 10,
+        bottom: 20
+      },
+    },
+    plugins: {
+      legend: {
+        display: false, // Hide the default legend
+      },
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+      },
+      hover: {
+        mode: 'nearest',
+        intersect: true,
+      },
+    },
+    scales: {
+      x: {
+        display: true,
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Months',
+        },
+      },
+      y: {
+        display: true,
+        grid: {
+          display: false,
+        },
+        title: {
+          display: true,
+          text: 'Values',
+        },
+        beginAtZero: true,
+      },
+    },
+  };
+
+  const legendItems = data.datasets.map(dataset => (
+    <span key={dataset.label} style={{ marginRight: 20, display: 'inline-flex', alignItems: 'center' }}>
+      <span
+        style={{
+          display: 'inline-block',
+          width: 12,
+          height: 12,
+          backgroundColor: dataset.borderColor,
+          marginRight: 5,
+        }}
+      />
+      {dataset.label}
+    </span>
+  ));
+
   return (
-    <Card className='chart-card'>
-      <Title level={4}>Chart</Title>
+    <Card style={{ height: '400px' }}>
+      <Row justify="space-between" align="middle">
+        <Col>
+          <h2>Total Survey</h2>
+        </Col>
+        <Col>
+          {legendItems}
+        </Col>
+      </Row>
+      <div style={{ height: '100%' }}>
+        <Line data={data} options={options} height={400} />
+      </div>
     </Card>
   );
 };
+
 
 export default Dashboard;
