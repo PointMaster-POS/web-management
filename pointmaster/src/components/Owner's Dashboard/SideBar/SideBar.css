@@ -1,16 +1,6 @@
-.custom-toggle.ant-menu-item-selected {
-    background-color: transparent !important;
-  }
-
 .custom-menu {
   display: flex;
   flex-direction: column;
-  height: 100%;
-}
-
-.custom-toggle {
-  margin-bottom: 16px;
-  text-align: center;
 }
 
 .custom-menu-item {
@@ -19,5 +9,19 @@
 }
 
 .custom-menu-item .ant-menu-item-icon {
-  font-size: 18px; 
+  font-size: 18px !important;
 }
+
+/* .logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  background-color: #fff;
+  padding: 16px;
+}
+
+.logo {
+  max-width: 100%;
+  max-height: 100%;
+} */
