@@ -1,0 +1,23 @@
+.custom-toggle.ant-menu-item-selected {
+    background-color: transparent !important;
+  }
+
+.custom-menu {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.custom-toggle {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.custom-menu-item {
+  font-size: 18px;
+  gap: 20px;
+}
+
+.custom-menu-item .ant-menu-item-icon {
+  font-size: 18px; 
+}

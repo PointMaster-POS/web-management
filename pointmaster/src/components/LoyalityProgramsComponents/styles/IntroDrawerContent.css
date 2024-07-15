@@ -1,0 +1,107 @@
+
+
+.introDrawerContentTitleContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.introDrawerContentTitle {
+    font-weight: 800;
+    font-size: 36px;
+   
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.name {
+    color: #0e83b6;
+}
+
+.introDrawerContaintContainer {
+    display: flex ;
+    flex-direction: row;
+}
+
+.exampleCardContainer {
+    width: 50%;
+    height: 600px;
+   
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+
+}
+
+.stepsTopicContainer{
+    width: 400px;
+    height: 100px;
+}
+
+.stepsTopic {
+    font-weight: 800;
+    font-size: 24px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
+.stepsContainer {
+    width: 50%;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+}
+.imageContainer {
+    width: 20%; /* Adjust as needed */
+    max-width: 400px; /* Adjust as needed */
+    height: auto; /* Adjust as needed */
+    overflow: hidden; /* Ensure the image does not overflow the container */
+    text-align: center; /* Center the image horizontally */
+}
+
+.imageContainer img {
+    max-width: 100%;
+    height: auto; /* Maintain aspect ratio */
+    display: block; /* Remove bottom whitespace */
+}
+.exampleCard {
+    position: relative;
+    width: 50%;
+     height: 70%;
+    
+}
+
+.seemore{
+    color: blue;
+    cursor: pointer;
+
+    text-decoration: underline;
+}
+
+.loyalityCardButton {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 80%;
+    height: 50px;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    font-weight: 800;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 300;
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.loyalityCardButton:hover {
+    
+   
+    width: 90%;
+}
