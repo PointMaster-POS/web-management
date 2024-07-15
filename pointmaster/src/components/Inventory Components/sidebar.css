@@ -1,0 +1,49 @@
+/* styles.css or App.css */
+.sidebar {
+    height: 100vh;
+    background-color: #001529; /* Dark background color */
+}
+  
+.logo {
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center the logo horizontally */
+}
+
+.logo h1{
+    font-size: 45px;
+    color: rgb(255, 255, 255);
+    margin-left: 2px;
+
+}
+
+.logo-image {
+  max-height: 100%; /* Ensure the image fits within the height */
+  max-width: 100%; /* Ensure the image fits within the width */
+}
+
+.title {
+    color: white;
+    font-size: 40px;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.menu-item {
+    padding: 40px;
+    display: flex;
+    align-items: center; 
+} 
+
+.menu-item .anticon {
+    margin-right: 15px; /* Adjust space between icon and text */
+}
+  
+.ant-menu-dark .ant-menu-item {
+    font-size: 20px; 
+  }
+  
+.ant-menu-dark .ant-menu-item-selected {
+    background-color: #2298ff; 
+}

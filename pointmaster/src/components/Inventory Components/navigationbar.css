@@ -1,0 +1,41 @@
+.nav-header {
+    width: 87%;
+    height: 120px;
+    background-color: #001529; 
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    position: fixed;
+    top: 0;
+    left: 13%;
+    right: 0;
+    z-index: 1000;
+  }
+
+.welcome{
+    margin-left: 10px; 
+    white-space: nowrap; 
+    color: white; 
+    font-size: 2.5rem;
+    font-family: monospace;
+}  
+
+
+.nav-menu {
+    flex-grow: 1;
+    display: flex;
+    margin-left: 70%;
+    color: #001529;
+}
+  
+.nav-link {
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+  
+
+ 
+  

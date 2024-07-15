@@ -1,0 +1,99 @@
+.content {
+    border-radius: 8px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+  
+.sup-box {
+    margin-top: 140px;
+    margin-left: 20px;
+    width: 98%; 
+    padding: 20px;
+    background-color: #d2e2f3; 
+    margin-bottom: 10px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.header h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 2rem;
+    color: #004765;
+}
+
+.header-right-end{
+  justify-content: flex-end;
+}
+
+.addsup-btn {
+    height: 40px;
+    width: 175px;
+    font-size: large;
+    background-color: #1766ab;
+    font-weight: bold;
+    color: #ffffff;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    
+}
+
+.addsup-btn:hover {
+    background-color: #004765; 
+    color: #ffffff; 
+    cursor: pointer; 
+}
+
+.sup-table{
+    margin-top: 20px;
+}
+
+.sup-table .ant-table-tbody > tr:nth-child(odd) > td {
+    background-color: #e6e8f4;
+    color: #000000;
+}
+
+.sup-table .ant-table-tbody > tr:nth-child(even) > td {
+    background-color: #f7f7f7;
+    color: #000000;
+}
+
+.sup-table .ant-table-thead > tr > th {
+    background-color: #002950;
+    color: #ffffff;
+}
+
+.hr {
+    border-top: 3px solid #1b749a; /* Adjust thickness and color here */
+    width: 100%; 
+}
+
+.custom-form-item .ant-form-item-label > label {
+    font-size: 1.1rem; /* Adjust font size as needed*/
+    font-weight: bold;
+
+}
+
+.btn{
+    padding: 20px; 
+    font-size: 1rem;   
+}
+
+.custom-form-item .ant-input {
+    height: 48px; 
+    font-size: 1rem; 
+    border: 0.5px solid #1b749a; 
+    border-radius: 4px; 
+    padding: 8px 12px;
+  }
+  
+.custom-form-item .ant-input:focus {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
+}

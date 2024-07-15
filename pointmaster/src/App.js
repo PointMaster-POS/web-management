@@ -5,6 +5,7 @@ import  Customers from './pages/CustomerPages/Customers';
 import CustomerInfo from './pages/CustomerPages/CustomerInfo';
 import LoyalityMenu from './pages/LoyalityPrograms/LoyalityMenu'
 import LoyalityIntro from './pages/LoyalityPrograms/LoyalityIntro';
+import InventoryRoutes from './pages/Inventory Pages/InventoryRoutes';
 
 function App() {
   //comment from Himindu
@@ -14,6 +15,7 @@ function App() {
 
       <BrowserRouter>
         <MainLayout />
+        <InventoryRoutes />
       </BrowserRouter>
 
       <LoyalityMenu />
@@ -21,7 +23,6 @@ function App() {
     </div>
   );
 }
-
 
 ReactDOM.render(<App />, document.getElementById("root"));
 

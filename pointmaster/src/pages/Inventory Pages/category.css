@@ -1,0 +1,101 @@
+.category {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px; /* Added padding to the container */
+}
+
+.content {
+    border-radius: 8px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-category-box {
+    margin-top: 140px;
+    margin-left: 20px;
+    width: 35%; /* Adjusted width for better spacing */
+    padding: 20px;
+    background-color: #d2e2f3; /* Light gray background */
+    height: 25%;
+}
+
+.all-category-box {
+    margin-top: 140px;
+    margin-right: 1%;
+    width: 62%; /* Adjusted width for better spacing */
+    padding: 20px;
+    background-color: #d2e2f3; /* Light gray background */
+    margin-bottom: 10px;
+}
+
+.add-category-box h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 2rem;
+    color: #004765;
+}
+
+.all-category-box h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 2rem;
+    color: #004765;
+}
+
+.ant-table {
+    margin-top: 20px; /* Adjust spacing between table and heading */
+}
+
+hr {
+    border-top: 3px solid #1b749a; /* Adjust thickness and color here */
+    width: 100%; 
+}
+
+.custom-form-item .ant-form-item-label > label {
+    font-size: 1.1rem; /* Adjust font size as needed*/
+    font-weight: bold;
+
+}
+
+.btn{
+    padding: 20px; 
+    font-size: 1rem;   
+    background-color: #1766ab;
+    font-weight: bold;
+}
+
+.custom-form-item .ant-input {
+    height: 48px; 
+    font-size: 1rem; 
+    border: 0.5px solid #1b749a; 
+    border-radius: 4px; 
+    padding: 8px 12px; 
+}
+  
+.custom-form-item .ant-input:focus {
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
+}
+
+.table .ant-table-tbody > tr:nth-child(odd) > td {
+    background-color: #e6e8f4;
+    color: #000000;
+}
+
+.table .ant-table-tbody > tr:nth-child(even) > td {
+    background-color: #f7f7f7;
+    color: #000000;
+}
+
+.table .ant-table-thead > tr > th {
+    background-color: #002950;
+    color: #ffffff;
+}
+
