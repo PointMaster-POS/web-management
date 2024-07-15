@@ -1,9 +1,10 @@
 import React from 'react'
-import AppRoutes from "../../pages/Owner Dashboard/OwnerRoutes"
+import OwnerRoutes from '../../pages/Owner Dashboard/OwnerRoutes';
+import InventoryRoutes from '../../pages/Inventory Pages/InventoryRoutes';
 
 const Content = () => {
   return (
-    <div className='content'><AppRoutes /></div>
+    <div className='content'><OwnerRoutes /></div>
   )
 }
 

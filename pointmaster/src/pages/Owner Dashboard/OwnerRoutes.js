@@ -11,7 +11,7 @@ import Reports from "./Reports";
 import Expired from "./Expired";
 import Profile from "./Profile";
 
-function AppRoutes() {
+function OwnerRoutes() {
   return (
     
       <Routes>
@@ -31,4 +31,4 @@ function AppRoutes() {
 }
 
 
-export default AppRoutes;
+export default OwnerRoutes;
