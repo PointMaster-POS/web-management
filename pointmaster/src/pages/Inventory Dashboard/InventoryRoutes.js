@@ -5,14 +5,13 @@ import Suppliers from './Suppliers';
 import PurchaseHistory from './PurchaseHistory';
 import AddProduct from './AddProduct';
 import ProductList from './ProductList';
-import MainLayout from '../../components/Inventory Components/MainLayout';
 import Profile from './Profile';
 import Settings from './Settings';
 
 function InventoryRoutes() {
   return ( 
     <Routes>
-        <Route path="/" element={<MainLayout />}>
+        <Route path="/" element={<InventoryDashboard />}>
         <Route path="/adminDashboard" element={<ProductList /> } />
         <Route path="/managerDashboard" element={<Suppliers /> } />
         <Route path="/category" element={<Category />} />

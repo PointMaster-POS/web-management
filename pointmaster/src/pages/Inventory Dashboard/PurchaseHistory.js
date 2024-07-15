@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import { Layout, Table, Space, Modal, Input, Button, DatePicker } from 'antd';
-import NavigationBar from '../../components/Inventory Components/NavigationBar';
-import Sidebar from '../../components/Inventory Components/SideBar';
 import { useNavigate, useParams } from 'react-router-dom'; 
 import { useLocation } from 'react-router-dom';
 import './purchasehistory.css';
