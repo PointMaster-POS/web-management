@@ -1,22 +1,25 @@
-import React from "react";
-import {Space } from "antd";
-import SideBar from "../SideBar/SideBar";
-import Content from "../Content";
-import Header from "../Header/Header";
-import Footer from "../Footer/Footer"
-import "./MainLayout.css"
+import React from 'react';
+import {Layout } from 'antd';
+import SideBar from '../SideBar/SideBar';
+import Header from '../Header/Header';
+import Content from "../Content"
+// import Footer from "../Footer/Footer";
+
+const { Content: AntContent } = Layout;
 
 const MainLayout = () => {
+
   return (
-    <div className="main-layout">
-      <Header />
-      <Space className="sider-content">
-        <SideBar></SideBar>
-        <Content></Content>
-      </Space>
-      <Footer />
-    </div>
+    <Layout style={{minHeight: '100vh',}}>
+      <SideBar />
+      <Layout>
+        <Header />
+        <AntContent style={{ margin: '0 16px' }}>
+          <Content />
+        </AntContent>
+        {/* <Footer /> */}
+      </Layout>
+    </Layout>
   );
 };
-
 export default MainLayout;
