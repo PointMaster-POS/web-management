@@ -13,7 +13,8 @@ function InventoryRoutes() {
   return ( 
     <Routes>
         <Route path="/" element={<MainLayout />}>
-        <Route path="/" element={<InventoryDashboard />} />
+        <Route path="/adminDashboard" element={<ProductList /> } />
+        <Route path="/managerDashboard" element={<Suppliers /> } />
         <Route path="/category" element={<Category />} />
         <Route path="/suppliers" element={<Suppliers />} />
         <Route path="/phistory/:supplier_id" element={<PurchaseHistory />} />

@@ -142,18 +142,18 @@ const PurchaseHistory = () => {
         </div>
         <hr />
         <Table className='ph-table' columns={columns} dataSource={filteredData} pagination={{ pageSize: 10 }} />
-        {selectedOrder && (
+        
           <Modal
-            title={`Order Details - ${selectedOrder.order_id}`}
-            visible={!!selectedOrder}
+            title={`Order Details - ${selectedOrder?.order_id}`}
+            open={selectedOrder? true : false}
             onCancel={() => setSelectedOrder(null)}
             footer={null}
             width={800}
             centered
           >
-            <Table columns={orderColumns} dataSource={selectedOrder.items} pagination={false} />
+            <Table columns={orderColumns} dataSource={selectedOrder?.items} pagination={false} />
           </Modal>
-        )}
+        
       </div>
     </Content>    
   );

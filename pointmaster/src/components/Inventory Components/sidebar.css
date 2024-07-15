@@ -11,6 +11,13 @@
     justify-content: center; /* Center the logo horizontally */
 }
 
+.logo h1{
+    font-size: 45px;
+    color: rgb(255, 255, 255);
+    margin-left: 2px;
+
+}
+
 .logo-image {
   max-height: 100%; /* Ensure the image fits within the height */
   max-width: 100%; /* Ensure the image fits within the width */
