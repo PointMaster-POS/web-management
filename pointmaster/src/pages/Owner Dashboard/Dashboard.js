@@ -30,6 +30,12 @@ const data_set_1 = [
     orders: 13,
     image: 'images/delicious-pasta-plate.jpg', // Replace with actual image URL
   },
+  {
+    name: 'French Bread & Potato',
+    orders: 12,
+    image: 'images/top-view-sweet-delicious-bangles-with-filling-grey-wooden-table-sweet-sugar-bake-pastry-cookie-biscuit.jpg', // Replace with actual image URL
+  },
+
 ];
 
 const data_set_2 = [
@@ -52,7 +58,7 @@ const Dashboard = () => {
     <div className='dashboard-container' >
       <Row gutter={[30]}>
         <Col span={18}>
-          <Row gutter={[20,20]}>
+          <Row gutter={[20,25]}>
             <Col span={8}>
               <DashboardCard icon={<PoundOutlined style={iconStyle("green")} />} title="Daily Sales" value={1234} />
             </Col>
@@ -74,10 +80,13 @@ const Dashboard = () => {
             <Col span={24}>
               <MultiLineChart />
             </Col>
+            {/* <Col span={24}>
+              <MultiLineChart />
+            </Col> */}
           </Row>
         </Col>
         <Col span={6}>
-          <Space size={20} direction="vertical" style={{ width: '100%' }}>
+          <Space size={8} direction="vertical" style={{ width: '100%' }}>
             <PopularItems />
             <OutOfStock />
           </Space>
@@ -97,7 +106,7 @@ const iconStyle = (color) => ({
 
 const DashboardCard = ({ icon, title, value }) => {
   return (
-    <Card hoverable className='card'>
+    <Card  className='card'>
       <Space direction='horizontal' size='large' className='card-content'>
         {icon}
         <Statistic title={title} value={value} className='statistic'/>
@@ -119,9 +128,9 @@ const PopularItems = () => {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta 
-              avatar={<Avatar src={item.image} size={40}/>}
-              title={<Text> {item.name}</Text>}
-              description={<Text type="secondary">Orders: {item.orders}</Text>}
+              avatar={<Avatar src={item.image} size={50}/>}
+              title={<Text className="item-title"> {item.name } </Text>}
+              description={<Text type="secondary" className="item-description">Orders: {item.orders}</Text>}
             />
           </List.Item>
         )}
@@ -143,7 +152,7 @@ const OutOfStock = () => {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              title={<Text>{item.name}</Text>}
+              title={<Text className="item-title">{item.name}</Text>}
             />
           </List.Item>
         )}
@@ -241,17 +250,13 @@ const MultiLineChart = () => {
   ));
 
   return (
-    <Card style={{ height: '400px' }}>
-      <Row justify="space-between" align="middle">
-        <Col>
-          <h2>Total Survey</h2>
-        </Col>
-        <Col>
-          {legendItems}
-        </Col>
-      </Row>
-      <div style={{ height: '100%' }}>
-        <Line data={data} options={options} height={400} />
+    <Card style={{ height: 450 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Title level={4}>Sales Overview</Title>
+        <div>{legendItems}</div>
+      </div>
+      <div style={{ height: 400 }}>
+        <Line data={data} options={options} />
       </div>
     </Card>
   );

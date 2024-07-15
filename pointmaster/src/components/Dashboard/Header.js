@@ -35,7 +35,7 @@ const Header = () => {
   return (
     <div className="header">
       <Typography.Title level={2} style={{ margin: 0 }}>
-        Welcome back to Point Master
+        Welcome to Point Master
       </Typography.Title>
       <Space size="large" /* style={{ marginLeft: 'auto' }} */>
         <Popover content={notificationContent} title="Notifications" trigger="click">
