@@ -6,7 +6,7 @@ import InventoryRoutes from '../../pages/Inventory Dashboard/InventoryRoutes';
 const Content = () => {
   return (
     <div className='content'>
-      <OwnerRoutes />
+      <InventoryRoutes />
     </div>
   )
 }
