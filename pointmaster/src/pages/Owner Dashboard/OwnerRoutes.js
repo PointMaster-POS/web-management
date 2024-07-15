@@ -1,15 +1,15 @@
 
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./Pages/Dashboard";
-import Stores from "./Pages/Stores";
-import Users from "./Pages/Users";
-import Suppliers from "./Pages/Suppliers";
-import Category from "./Pages/Category";
-import Products from "./Pages/Products";
-import Orders from "./Pages/Orders";
-import Reports from "./Pages/Reports";
-import Expired from "./Pages/Expired";
-import Profile from "./Pages/Profile";
+import Dashboard from "./Dashboard";
+import Stores from "./Stores";
+import Users from "./Users";
+import Suppliers from "./Suppliers";
+import Category from "./Category";
+import Products from "./Products";
+import Orders from "./Orders";
+import Reports from "./Reports";
+import Expired from "./Expired";
+import Profile from "./Profile";
 
 function AppRoutes() {
   return (
