@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   UserOutlined,
   DashboardOutlined,
@@ -9,13 +9,10 @@ import {
   ShoppingCartOutlined,
   AreaChartOutlined,
   StopOutlined,
-  LogoutOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
-import { useNavigate } from "react-router-dom";
-import "./SideBar.css"; 
+import { useNavigate, useLocation } from "react-router-dom";
+import "./SideBar.css";
 
 const { Sider } = Layout;
 
@@ -45,58 +42,53 @@ const items = [
   { key: "/orders", icon: <ShoppingCartOutlined />, label: "Orders" },
   { key: "/reports", icon: <AreaChartOutlined />, label: "Reports" },
   { key: "/expired", icon: <StopOutlined />, label: "Expired" },
-  { key: "logout", icon: <LogoutOutlined />, label: "Logout" },
 ];
 
 const SideBar = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [selectedKey, setSelectedKey] = useState(location.pathname);
 
-  const toggleCollapsed = () => {
-    setCollapsed(!collapsed);
-  };
+  useEffect(() => {
+    setSelectedKey(location.pathname);
+  }, [location.pathname]);
 
   const onMenuClick = (e) => {
-    if (e.key === "toggle") {
-      toggleCollapsed();
-    } else {
-      navigate(e.key);
-    }
+    navigate(e.key);
   };
 
   return (
-    <Layout style={{height: "805px"}}>
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        trigger={null}
-        width={240}
-  
-      >
-        <Menu
-          defaultSelectedKeys={["/"]}
-          mode="inline"
-          theme="light"
-          onClick={onMenuClick}
-          className="custom-menu"
-        >
-          <Menu.Item
-            key="toggle"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            className="custom-toggle"
-            onClick={toggleCollapsed}
-          />
+    <Sider
+      collapsible
+      collapsed={collapsed}
+      width={240}
+      onCollapse={(value) => setCollapsed(value)}
+      theme="light"
+    >
+      {/* <div className="logo-container">
+        <img src="images/WhatsApp Image 2024-07-15 at 22.03.59_603d8715.jpg" alt="Logo" className="logo" />
+      </div> */}
 
-          
-          {items.map((item) => (
-            <Menu.Item key={item.key} icon={item.icon} className="custom-menu-item">
-              {item.label}
-            </Menu.Item>
-          ))}
-        </Menu>
-      </Sider>
-    </Layout>  
-      
+      <Menu
+        defaultSelectedKeys={[selectedKey]}
+        mode="inline"
+        theme="light"
+        onClick={onMenuClick}
+        className="custom-menu"
+        style={{ marginTop: 75 }}
+      >
+        {items.map((item) => (
+          <Menu.Item
+            key={item.key}
+            icon={item.icon}
+            className="custom-menu-item"
+          >
+            {item.label}
+          </Menu.Item>
+        ))}
+      </Menu>
+    </Sider>
   );
 };
 
