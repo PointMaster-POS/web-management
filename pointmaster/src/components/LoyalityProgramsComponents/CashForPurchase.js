@@ -17,7 +17,6 @@ const CashForPurchase = () => {
   });
 
   useEffect(() => {
-    // Set initial values when the component mounts
     form1.setFieldsValue(initialValues.firstForm);
     form2.setFieldsValue(initialValues.secondForm);
     form3.setFieldsValue(initialValues.thirdForm);

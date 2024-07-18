@@ -1,11 +1,59 @@
 import React, { useState } from "react";
 import "./LogIn.css";
-import { Form, Input, Button, Checkbox } from "antd";
-import { UserOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import {
+  UserOutlined,
+  LockOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+} from "@ant-design/icons";
 
-export default function LogIn() {
-  const onFinish = (values) => {
-    console.log("Success:", values);
+const LogIn = () => {
+  const success = () => {};
+  const onFinish = async (values) => {
+    console.log("Received values of form: ", values);
+
+    try {
+      const response = await fetch("http://localhost:5001/api/v2/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: values.username,
+          password: values.password,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        localStorage.setItem("accessToken", data.token);
+        localStorage.setItem("name", data.name);
+        localStorage.setItem("role", data.role);
+        console.log(response);
+        // alert('login sucess');
+        message.open({
+          type: "success",
+          content: "Login sucess",
+
+          style: {
+            marginTop: "2px",
+          },
+        });
+      } else {
+        message.open({
+          type: "error",
+          content: "Login failed",
+
+          style: {
+            marginTop: "2px",
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   return (
@@ -41,7 +89,7 @@ export default function LogIn() {
               placeholder="Username"
             />
           </Form.Item>
-          
+
           <Form.Item
             name="password"
             rules={[
@@ -54,7 +102,9 @@ export default function LogIn() {
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               placeholder="Password"
-              iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+              iconRender={(visible) =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
             />
           </Form.Item>
 
@@ -84,4 +134,6 @@ export default function LogIn() {
       </div>
     </div>
   );
-}
+};
+
+export default LogIn;
