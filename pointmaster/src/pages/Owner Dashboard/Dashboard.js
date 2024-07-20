@@ -78,7 +78,7 @@ const Dashboard = () => {
             <Col span={24}>
               <MultiLineChart />
             </Col>
-            {/* <Col span={24}>
+           {/*  <Col span={24}>
               <MultiLineChart />
             </Col> */}
           </Row>
@@ -159,7 +159,7 @@ const PopularItems = () => {
               title={<Text className="item-title"> {item.name} </Text>}
               description={
                 <Text type="secondary" className="item-description">
-                  Orders: {item.orders}
+                  Sales: {item.orders}
                 </Text>
               }
             />
