@@ -38,7 +38,7 @@
   
   .item-description {
     font-size: 14px; 
-    color: gray; 
+    color: gray !important; 
   }
   
   
