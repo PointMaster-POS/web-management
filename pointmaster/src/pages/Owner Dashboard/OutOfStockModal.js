@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, Table } from "antd";
 import { OutOfStockList } from "./Data";
 
-const PopularItemsModal = ({ visible, onClose }) => {
+const OutOsStockModal = ({ visible, onClose }) => {
   const columns = [
     {
       title: "Item",
@@ -28,15 +28,15 @@ const PopularItemsModal = ({ visible, onClose }) => {
 
   return (
     <Modal
-      title="Popular Items"
+      title="Out of Stock"
       visible={visible}
       onCancel={onClose}
       footer={null}
       width={800}
     >
-      <Table columns={columns} dataSource={OutOfStockList} pagination={true} />
+      <Table columns={columns} dataSource={OutOfStockList} pagination={{pageSize: 5}} />
     </Modal>
   );
 };
 
-export default PopularItemsModal;
+export default OutOsStockModal;
