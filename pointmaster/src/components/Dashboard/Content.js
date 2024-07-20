@@ -7,10 +7,10 @@ const { Content: AntContent } = Layout;
 
 const Content = () => {
   return (
-    <div className='content'><OwnerRoutes /></div>
-    // <AntContent  style={{ minHeight: 360 }}  >
-    //   <OwnerRoutes />
-    // </AntContent>
+    // <div className='content'><OwnerRoutes /></div>
+    <AntContent  style={{ minHeight: 360 }}  >
+      <OwnerRoutes />
+    </AntContent>
   )  
 }
 
