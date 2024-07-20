@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   UserOutlined,
   DashboardOutlined,
@@ -44,7 +44,7 @@ const items = [
   { key: "/expired", icon: <StopOutlined />, label: "Expired" },
 ];
 
-const SideBar = () => {
+const SideBar = ({ onCollapse }) => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -58,13 +58,26 @@ const SideBar = () => {
     navigate(e.key);
   };
 
+  const handleCollapse = (value) => {
+    setCollapsed(value);
+    onCollapse(value);
+  };
+
   return (
     <Sider
       collapsible
       collapsed={collapsed}
-      width={240}
-      onCollapse={(value) => setCollapsed(value)}
+      width={260}
+      onCollapse={handleCollapse}
       theme="light"
+      style={{
+        overflow: 'auto',
+        height: '100vh',
+        position: 'fixed',
+        left: 0,
+        top: 75,
+        bottom: 0,
+      }}
     >
       {/* <div className="logo-container">
         <img src="images/WhatsApp Image 2024-07-15 at 22.03.59_603d8715.jpg" alt="Logo" className="logo" />
@@ -76,7 +89,6 @@ const SideBar = () => {
         theme="light"
         onClick={onMenuClick}
         className="custom-menu"
-        style={{ marginTop: 75 }}
       >
         {items.map((item) => (
           <Menu.Item
