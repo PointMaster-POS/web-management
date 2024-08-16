@@ -7,7 +7,7 @@ const Content = () => {
   return (
     <div className='content'>
       {/* <InventoryRoutes /> */}
-      <OwnerRoutes />
+      <InventoryRoutes />
     </div>
   )
 }
