@@ -24,7 +24,6 @@ function OwnerRoutes() {
           <Route path="/orders" element={<Orders />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/expired" element={<Expired />} />
-          <Route path="logout" element={<div>Logout Page</div>} />
           <Route path="/profile" element={<Profile />} />
       </Routes>
   );
