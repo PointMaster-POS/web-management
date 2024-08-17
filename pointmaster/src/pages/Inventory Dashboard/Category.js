@@ -31,7 +31,7 @@ const columns = (showEditModal, showDeleteConfirm) => [
       <Space size="middle">
         <EditOutlined
           onClick={() => showEditModal(record)}
-          style={{ color: '#1890ff', cursor: 'pointer', scale: '1.25'}}
+          style={{ color: '#45a049', cursor: 'pointer', scale: '1.25'}}
         />
         <DeleteOutlined
           onClick={() => showDeleteConfirm(record.categoryName)}
@@ -84,27 +84,42 @@ const Category = () => {
   };
 
   const showEditModal = (record) => {
-    let categoryName = record.categoryName;
+  let categoryName = record.categoryName;
 
-    confirm({
-      title: 'Edit Category',
-      content: (
-        <Form>
-          <Form.Item label="Category Name">
-            <Input 
-              defaultValue={categoryName} 
-              onChange={(e) => categoryName = e.target.value} 
-            />
-          </Form.Item>
-        </Form>
-      ),
-      onOk() {
-        handleEdit(record, categoryName);
-      },
-      okText: 'Save',
-      cancelText: 'Cancel',
-    });
-  };
+  Modal.info({
+    title: 'Edit Category',
+    content: (
+      <Form>
+        <Form.Item label="Category Name">
+          <Input 
+            defaultValue={categoryName} 
+            onChange={(e) => categoryName = e.target.value} 
+          />
+        </Form.Item>
+      </Form>
+    ),
+    onOk() {
+      handleEdit(record, categoryName);
+    },
+    okText: 'Save',
+    cancelText: 'Cancel',
+    footer: (
+      <div className="custom-modal-footer">
+        <Button onClick={() => Modal.destroyAll()} className="custom-cancel-btn">
+          Cancel
+        </Button>
+        <Button 
+          type="primary" 
+          onClick={() => handleEdit(record, categoryName)}
+          className="custom-save-btn"
+        >
+          Save
+        </Button>
+      </div>
+    )
+  });
+};
+  
 
   const showDeleteConfirm = (categoryName) => {
     confirm({

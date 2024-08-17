@@ -6,47 +6,20 @@
     height: 100%;
 }
 
-.category {
-    display: flex;
-    justify-content: space-between;
-    padding: 20px; /* Added padding to the container */
-}
-
-.content {
-    border-radius: 8px;
-    flex: 1;
-    display: flex;
-    justify-content: space-between;
-}
-
-
-.category-header {
+.category-header-owner {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.add-category-box {
-    width: 35%; 
-    padding: 20px; 
-    height: 25%;
-}
 
-.all-category-box {
-    margin-right: 1%;
-    width: 62%; 
+.all-category-box-owner {
+    width: 100%;
     padding: 20px;
     margin-bottom: 10px;
 }
 
-.add-category-box h2 {
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 2rem;
-    color: #004765;
-}
-
-.all-category-box h2 {
+.all-category-box-owner h2 {
     margin-top: 5px;
     margin-bottom: 5px;
     font-size: 2rem;

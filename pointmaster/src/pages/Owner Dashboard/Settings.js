@@ -1,10 +1,11 @@
 import React from 'react'
 
-const Products = () => {
+function Settings() {
   return (
     <div>
+      
     </div>
   )
-}
+};
 
-export default Products
+export default Settings;

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Layout, Table, Space, Form, Input, Button, Modal, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import './productlist.css';
+import './inventory.css';
 import { useNavigate } from 'react-router-dom';
 
 const { Content } = Layout;
 const { confirm } = Modal;
 
-const ProductList = () => {
+const Inventory = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
   const [form] = Form.useForm();
@@ -161,22 +161,6 @@ const ProductList = () => {
       dataIndex: 'addedDate',
       key: 'addedDate',
     },
-    {
-      title: 'Actions',
-      key: 'actions',
-      render: (text, record) => (
-        <Space size="middle">
-          <EditOutlined
-            onClick={() => handleEdit(record)}
-            style={{ color: '#45a049', cursor: 'pointer', transform: 'scale(1.25)' }}
-          />
-          <DeleteOutlined
-            onClick={() => handleDelete(record.productId)}
-            style={{ color: 'red', cursor: 'pointer', transform: 'scale(1.25)' }}
-          />
-        </Space>
-      ),
-    },
   ];
 
   const paginationConfig = {
@@ -189,54 +173,20 @@ const ProductList = () => {
       <div className="pl-box">
         <div className="header">
           <h2>INVENTORY</h2>
-          <Space className='header-right-end'>
-            <Search
-              placeholder="Search by Product ID or Product Name"
-              onSearch={handleSearch}
-              onChange={(e) => handleSearch(e.target.value)}
-              value={searchText}
-              style={{ width: 300, marginLeft: 'auto' }}
-            />
-            <Button className='addprod-btn' type={addBtnColor} onClick={navigateToAddProduct}>Add Product</Button>
-          </Space>
+          <Search
+            placeholder="Search by Product ID or Product Name"
+            onSearch={handleSearch}
+            onChange={(e) => handleSearch(e.target.value)}
+            value={searchText}
+            style={{ width: 300, marginLeft: 'auto' }}
+          />
         </div>
         <hr />
         <Table className='prlist-table' columns={columns} dataSource={searchText ? filteredProducts : exampleProducts} pagination={paginationConfig}/>
       </div>
-      <Modal
-        title="Edit Product"
-        visible={isModalVisible}
-        onOk={handleModalOk}
-        onCancel={handleModalCancel}
-        centered
-      >
-        <Form form={form} layout="vertical">
-          <Form.Item name="productName" label="Product Name" rules={[{ required: true, message: 'Please input the product name!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="category" label="Category" rules={[{ required: true, message: 'Please select the category!' }]}>
-            <Select>
-              <Select.Option value="Shoes">Shoes</Select.Option>
-              <Select.Option value="Clothing">Clothing</Select.Option>
-              <Select.Option value="Electronics">Electronics</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="photoUrl" label="Photo URL" rules={[{ required: true, message: 'Please input the photo URL!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="quantity" label="Quantity" rules={[{ required: true, message: 'Please input the quantity!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="buyingPrice" label="Buying Price" rules={[{ required: true, message: 'Please input the buying price!' }]}>
-            <Input />
-          </Form.Item>
-          <Form.Item name="sellingPrice" label="Selling Price" rules={[{ required: true, message: 'Please input the selling price!' }]}>
-            <Input />
-          </Form.Item>
-        </Form>
-      </Modal>
+      
     </Content>
   );
 };
 
-export default ProductList;
+export default Inventory;
