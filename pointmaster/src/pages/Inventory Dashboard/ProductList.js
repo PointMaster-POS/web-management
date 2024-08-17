@@ -27,6 +27,7 @@ const ProductList = () => {
       buyingPrice: 500,
       sellingPrice: 700,
       addedDate: '2024-07-01',
+      supplierId: 'SUP001', // Added supplier ID
     },
     {
       key: '2',
@@ -39,6 +40,7 @@ const ProductList = () => {
       buyingPrice: 10,
       sellingPrice: 15,
       addedDate: '2024-07-02',
+      supplierId: 'SUP002', // Added supplier ID
     },
     {
       key: '3',
@@ -51,6 +53,7 @@ const ProductList = () => {
       buyingPrice: 20,
       sellingPrice: 35,
       addedDate: '2024-07-03',
+      supplierId: 'SUP003', // Added supplier ID
     },
   ];
 
@@ -147,6 +150,11 @@ const ProductList = () => {
       title: 'Selling Price',
       dataIndex: 'sellingPrice',
       key: 'sellingPrice',
+    },
+    {
+      title: 'Supplier ID', // New column for Supplier ID
+      dataIndex: 'supplierId',
+      key: 'supplierId',
     },
     {
       title: 'Added Date',
