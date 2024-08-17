@@ -158,7 +158,7 @@ const ProductList = () => {
         <Space size="middle">
           <EditOutlined
             onClick={() => handleEdit(record)}
-            style={{ color: '#1890ff', cursor: 'pointer', transform: 'scale(1.25)' }}
+            style={{ color: '#45a049', cursor: 'pointer', transform: 'scale(1.25)' }}
           />
           <DeleteOutlined
             onClick={() => handleDelete(record.productId)}

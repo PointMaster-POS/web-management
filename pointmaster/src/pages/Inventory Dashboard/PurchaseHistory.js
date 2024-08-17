@@ -94,7 +94,7 @@ const PurchaseHistory = () => {
       title: 'Actions',
       key: 'actions',
       render: (text, record) => (
-        <Button onClick={() => showDetailsModal(record)}>View Details</Button>
+        <Button className='view-order-btn' onClick={() => showDetailsModal(record)}>View Details</Button>
       ),
     },
   ];

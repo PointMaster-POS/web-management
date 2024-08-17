@@ -1,3 +1,11 @@
+.content {
+    border-radius: 8px;
+    flex: 1;
+    justify-content: space-between;
+    background-color: #ffffff;
+    height: 100%;
+}
+
 .category {
     display: flex;
     justify-content: space-between;
@@ -19,20 +27,15 @@
 }
 
 .add-category-box {
-    margin-top: 140px;
-    margin-left: 20px;
-    width: 35%; /* Adjusted width for better spacing */
-    padding: 20px;
-    background-color: #d2e2f3; /* Light gray background */
+    width: 35%; 
+    padding: 20px; 
     height: 25%;
 }
 
 .all-category-box {
-    margin-top: 140px;
     margin-right: 1%;
-    width: 62%; /* Adjusted width for better spacing */
+    width: 62%; 
     padding: 20px;
-    background-color: #d2e2f3; /* Light gray background */
     margin-bottom: 10px;
 }
 
@@ -68,7 +71,7 @@ hr {
 .btn{
     padding: 20px; 
     font-size: 1rem;   
-    background-color: #1766ab;
+    background-color: #4CAF50;
     font-weight: bold;
 }
 
@@ -85,17 +88,43 @@ box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
 }
 
 .table .ant-table-tbody > tr:nth-child(odd) > td {
-    background-color: #e6e8f4;
+    /* background-color: #e6e8f4; */
     color: #000000;
 }
 
 .table .ant-table-tbody > tr:nth-child(even) > td {
-    background-color: #f7f7f7;
+    /* background-color: #f7f7f7; */
     color: #000000;
 }
 
 .table .ant-table-thead > tr > th {
-    background-color: #002950;
-    color: #ffffff;
+    background-color: #a0daa14a;
+    color: #000000;
 }
 
+
+.custom-modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    margin-top: 20px; /* Add space above the footer */
+  }
+  
+  .custom-save-btn {
+    background-color: #4caf50; /* Green background */
+    border: none;
+    color: white;
+    font-weight: bold;
+    margin-left: 8px; /* Space between buttons */
+  }
+  
+  .custom-save-btn:hover {
+    background-color: #45a049; 
+  }
+  
+  .custom-cancel-btn {
+    margin-right: 8px; 
+  }
+  
+  .custom-icon {
+    color: #4caf50; 
+  }
