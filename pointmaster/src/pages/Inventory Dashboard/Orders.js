@@ -57,7 +57,7 @@ const Orders = () => {
       title: 'Actions',
       key: 'actions',
       render: (text, record) => (
-        <Button onClick={() => showOrderDetails(record)} type="primary">
+        <Button className='view-details-btn' onClick={() => showOrderDetails(record)} type="primary">
           View Details
         </Button>
       ),
@@ -78,7 +78,9 @@ const Orders = () => {
     <Content className="content">
       <div className="orders-box">
         <h2>ORDERS</h2>
+        <hr />
         <Table
+          className="orders-table"
           columns={columns}
           dataSource={orders}
           pagination={{ pageSize: 5 }}
@@ -97,7 +99,6 @@ const Orders = () => {
             <p><strong>Customer Name:</strong> {selectedOrder.customerName}</p>
             <p><strong>Order Date:</strong> {selectedOrder.orderDate}</p>
             <p><strong>Total Amount:</strong> ${selectedOrder.totalAmount}</p>
-            {/* Add more details as needed */}
           </div>
         )}
       </Modal>
