@@ -1,0 +1,20 @@
+.content {
+    padding: 20px;
+    background-color: #f0f2f5;
+  }
+  
+  .orders-box {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .orders-box h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .ant-table {
+    margin-top: 20px;
+  }
+  

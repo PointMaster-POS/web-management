@@ -7,6 +7,7 @@ import AddProduct from './AddProduct';
 import ProductList from './ProductList';
 import Profile from './Profile';
 import Settings from './Settings';
+import Orders from "./Orders";
 
 function InventoryRoutes() {
   return ( 
@@ -17,6 +18,7 @@ function InventoryRoutes() {
         <Route path="/phistory/:supplier_id" element={<PurchaseHistory />} />
         <Route path="/addproduct" element={<AddProduct />} />
         <Route path="/products" element={<ProductList />}/>
+        <Route path="/orders" element={<Orders />} />
         <Route path="/profile" element={<Profile/>} />
         <Route path="/settings" element={<Settings/>} />
     </Routes>
