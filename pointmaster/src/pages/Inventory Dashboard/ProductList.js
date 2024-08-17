@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Layout, Table, Space, Form, Input, Button, Modal, Select } from 'antd';
 import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import './productlist.css';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom';
 
 const { Content } = Layout;
 const { confirm } = Modal;
@@ -12,7 +12,8 @@ const ProductList = () => {
   const [editingProduct, setEditingProduct] = useState(null);
   const [form] = Form.useForm();
   const { Search } = Input;
-  const navigate = useNavigate(); // Get the navigate function
+  const navigate = useNavigate();
+  const [addBtnColor, setAddBtnColor] = useState('primary'); // Add state for button color
 
   const exampleProducts = [
     {
@@ -101,7 +102,8 @@ const ProductList = () => {
   };
 
   const navigateToAddProduct = () => {
-    navigate('/addproduct'); // Navigate to /addproduct using navigate function
+    setAddBtnColor('success'); // Change the button color to green when clicked
+    navigate('/addproduct');
   };
 
   const columns = [
@@ -178,7 +180,7 @@ const ProductList = () => {
     <Content className="content">
       <div className="pl-box">
         <div className="header">
-          <h2>PRODUCT LIST</h2>
+          <h2>INVENTORY</h2>
           <Space className='header-right-end'>
             <Search
               placeholder="Search by Product ID or Product Name"
@@ -187,7 +189,7 @@ const ProductList = () => {
               value={searchText}
               style={{ width: 300, marginLeft: 'auto' }}
             />
-            <Button className='addprod-btn' type="primary" onClick={navigateToAddProduct}>Add Product</Button>
+            <Button className='addprod-btn' type={addBtnColor} onClick={navigateToAddProduct}>Add Product</Button>
           </Space>
         </div>
         <hr />

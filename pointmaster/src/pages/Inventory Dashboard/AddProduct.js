@@ -118,6 +118,13 @@ const AddProduct = () => {
           onCancel={handleCancel}
           okText="Add"
           cancelText="Cancel"
+          okButtonProps={{ 
+            style: { 
+              backgroundColor: '#4caf50', 
+              borderColor: '#4caf50', 
+              color: '#fff' 
+            } 
+          }}
         >
           <Form
             form={form}
