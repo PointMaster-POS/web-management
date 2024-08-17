@@ -1,9 +1,14 @@
+.content {
+  border-radius: 8px;
+  flex: 1;
+  justify-content: space-between;
+  background-color: #ffffff;
+  height: 100%;
+}
+
 .add-product-box {
-  margin-top: 140px;
-  margin-left: 20px;
   width: 100%; 
   padding: 20px;
-  background-color: #d2e2f3; 
 }
   
 .header-container {
@@ -41,25 +46,26 @@
 
 
 .added-products-table .ant-table-tbody > tr:nth-child(odd) > td {
-  background-color: #e6e8f4;
+  /* background-color: #e6e8f4; */
   color: #000000;
 }
 
 .added-products-table .ant-table-tbody > tr:nth-child(even) > td {
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
   color: #000000;
 }
 
 .added-products-table .ant-table-thead > tr > th {
-  background-color: #002950;
-  color: #ffffff;
+  background-color: #a0daa14a;
+  color: #000000;
 }
 
 .add-product-btn {
   height: 40px;
   width: 175px;
   font-size: large;
-  background-color: #1766ab;
+  background-color: #4CAF50; 
+    border-color: #4CAF50;
   font-weight: bold;
   color: #ffffff;
   border: none;
@@ -69,8 +75,6 @@
 }
 
 .add-product-btn:hover {
-  background-color: #004765; 
-  color: #ffffff; 
   cursor: pointer; 
 }
 
@@ -78,7 +82,8 @@
   height: 40px;
   width: 175px;
   font-size: large;
-  background-color: #1766ab;
+  background-color: #4CAF50; 
+    border-color: #4CAF50;
   font-weight: bold;
   color: #ffffff;
   border: none;
@@ -88,8 +93,6 @@
 }
 
 .submit-order-btn:hover {
-  background-color: #004765; 
-  color: #ffffff; 
   cursor: pointer; 
 }
 
