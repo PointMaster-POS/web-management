@@ -8,7 +8,7 @@ const { Content: AntContent } = Layout;
 
 const Content = () => {
   return (
-    <div className='content'>
+    <div >
       {/* <InventoryRoutes /> */}
       <InventoryRoutes />
     </div>
