@@ -171,7 +171,7 @@ export const OutOfStockList = [
       name: 'Store 1',
       location: 'Downtown',
       manager: 'John Doe',
-      phone: '123-456-7890',
+      telephone: '123-456-7890',
       status: 'Open',
     },
     {
@@ -179,7 +179,7 @@ export const OutOfStockList = [
       name: 'Store 2',
       location: 'Uptown',
       manager: 'Jane Smith',
-      phone: '987-654-3210',
+      telephone: '987-654-3210',
       status: 'Closed',
     },
     {
@@ -187,7 +187,7 @@ export const OutOfStockList = [
       name: 'Store 3',
       location: 'East Side',
       manager: 'Emily Johnson',
-      phone: '456-789-0123',
+      telephone: '456-789-0123',
       status: 'Open',
     },
     {
@@ -195,7 +195,7 @@ export const OutOfStockList = [
       name: 'Store 4',
       location: 'West Side',
       manager: 'Michael Brown',
-      phone: '789-012-3456',
+      telephone: '789-012-3456',
       status: 'Open',
     },
     {
@@ -203,7 +203,7 @@ export const OutOfStockList = [
       name: 'Store 5',
       location: 'North End',
       manager: 'Olivia Davis',
-      phone: '012-345-6789',
+      telephone: '012-345-6789',
       status: 'Closed',
     },
     {
@@ -211,7 +211,7 @@ export const OutOfStockList = [
       name: 'Store 6',
       location: 'South End',
       manager: 'Liam Wilson',
-      phone: '234-567-8901',
+      telephone: '234-567-8901',
       status: 'Open',
     },
     {
@@ -219,7 +219,7 @@ export const OutOfStockList = [
       name: 'Store 7',
       location: 'Central Park',
       manager: 'Sophia Martinez',
-      phone: '345-678-9012',
+      telephone: '345-678-9012',
       status: 'Open',
     },
     {
@@ -227,7 +227,7 @@ export const OutOfStockList = [
       name: 'Store 8',
       location: 'Harbor District',
       manager: 'Mason Garcia',
-      phone: '456-789-0123',
+      telephone: '456-789-0123',
       status: 'Closed',
     },
     {
@@ -235,7 +235,7 @@ export const OutOfStockList = [
       name: 'Store 9',
       location: 'Riverside',
       manager: 'Isabella Rodriguez',
-      phone: '567-890-1234',
+      telephone: '567-890-1234',
       status: 'Open',
     },
     {
@@ -243,7 +243,7 @@ export const OutOfStockList = [
       name: 'Store 10',
       location: 'Old Town',
       manager: 'James Hernandez',
-      phone: '678-901-2345',
+      telephone: '678-901-2345',
       status: 'Closed',
     },
     {
@@ -251,7 +251,7 @@ export const OutOfStockList = [
       name: 'Store 11',
       location: 'New Town',
       manager: 'Mia Lopez',
-      phone: '789-012-3456',
+      telephone: '789-012-3456',
       status: 'Open',
     },
     {
@@ -259,7 +259,7 @@ export const OutOfStockList = [
       name: 'Store 12',
       location: 'Suburbia',
       manager: 'Ethan Gonzalez',
-      phone: '890-123-4567',
+      telephone: '890-123-4567',
       status: 'Open',
     },
     {
@@ -267,7 +267,7 @@ export const OutOfStockList = [
       name: 'Store 13',
       location: 'Highlands',
       manager: 'Charlotte Lee',
-      phone: '901-234-5678',
+      telephone: '901-234-5678',
       status: 'Closed',
     },
     {
@@ -275,7 +275,7 @@ export const OutOfStockList = [
       name: 'Store 14',
       location: 'Lowlands',
       manager: 'Alexander Clark',
-      phone: '012-345-6789',
+      telephone: '012-345-6789',
       status: 'Open',
     },
     {
@@ -283,7 +283,7 @@ export const OutOfStockList = [
       name: 'Store 15',
       location: 'Beachside',
       manager: 'Amelia Walker',
-      phone: '123-456-7890',
+      telephone: '123-456-7890',
       status: 'Open',
     },
     {
@@ -291,7 +291,7 @@ export const OutOfStockList = [
       name: 'Store 16',
       location: 'Mountain View',
       manager: 'Aiden Hall',
-      phone: '234-567-8901',
+      telephone: '234-567-8901',
       status: 'Closed',
     },
     {
@@ -299,7 +299,7 @@ export const OutOfStockList = [
       name: 'Store 17',
       location: 'Lakeside',
       manager: 'Ella Allen',
-      phone: '345-678-9012',
+      telephone: '345-678-9012',
       status: 'Open',
     },
     {
@@ -307,7 +307,7 @@ export const OutOfStockList = [
       name: 'Store 18',
       location: 'City Center',
       manager: 'Benjamin Young',
-      phone: '456-789-0123',
+      telephone: '456-789-0123',
       status: 'Open',
     },
     {
@@ -315,7 +315,7 @@ export const OutOfStockList = [
       name: 'Store 19',
       location: 'Village Green',
       manager: 'Harper King',
-      phone: '567-890-1234',
+      telephone: '567-890-1234',
       status: 'Closed',
     },
     {
@@ -323,7 +323,8 @@ export const OutOfStockList = [
       name: 'Store 20',
       location: 'Industrial Zone',
       manager: 'Lucas Wright',
-      phone: '678-901-2345',
+      telephone: '678-901-2345',
       status: 'Open',
     },
   ];
+  
