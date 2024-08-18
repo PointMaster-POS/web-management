@@ -9,7 +9,7 @@ import {
   Tooltip,
   Input,
 } from "antd";
-import { EditOutlined, DeleteOutlined, PlusOutlined, EyeOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined, PlusOutlined, ShopOutlined } from "@ant-design/icons";
 import NewStore from "./NewStore";
 import { storesData } from "./Data";
 
@@ -55,9 +55,9 @@ const Stores = () => {
       key: "manager",
     },
     {
-      title: "Phone",
-      dataIndex: "phone",
-      key: "phone",
+      title: "Telephone",
+      dataIndex: "telephone",
+      key: "telephone",
     },
     {
       title: "Status",
@@ -67,16 +67,15 @@ const Stores = () => {
     {
       title: "Actions",
       key: "actions",
-      render: (text, record) => (
+      render: (record) => (
         <Space size="middle">
           <Tooltip title="Edit Store">
             <Button
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
               style={{
-                backgroundColor: "#1890ff",
                 borderColor: "#1890ff",
-                color: "#fff",
+                color: "#1890ff",
               }}
             />
           </Tooltip>
@@ -89,8 +88,12 @@ const Stores = () => {
           </Tooltip>
           <Tooltip title="View Store">
             <Button
-              icon={<EyeOutlined />}
+              icon={<ShopOutlined />}
               onClick={() => handleView(record)}
+              style={{
+                borderColor: "rgb(0,0,0,0.88)",
+                color: "rgb(0,0,0,0.88)",
+              }}
             />
           </Tooltip>
         </Space>
@@ -116,15 +119,15 @@ const Stores = () => {
 
    // Filtered data based on search
    const filteredData = storesData.filter((item) =>
-    item.name.toLowerCase().includes(searchText.toLowerCase())
+    searchText === "" || item.name.toLowerCase() === searchText.toLowerCase()
   );
+  
 
   return (
     <Card
       style={{
         margin: 30,
         padding: 30,
-        /* boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2)', */
         borderRadius: "10px",
       }}
       bodyStyle={{ padding: "20px" }}
@@ -143,7 +146,7 @@ const Stores = () => {
           <Search
             placeholder="Search stores"
             onSearch={(value) => setSearchText(value)}
-            style={{ marginRight: 16, width: 200 }}
+            style={{ marginRight: 16, width: 300 }}
           />
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
             Add New Store
@@ -156,19 +159,7 @@ const Stores = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        footer={[
-          <Button key="cancel" onClick={handleCancel}>
-            Cancel
-          </Button>,
-          <Button
-            key="submit"
-            type="primary"
-            form="add_branch"
-            htmlType="submit"
-          >
-            Add
-          </Button>,
-        ]}
+        footer={ null }
       >
         <NewStore onFinish={handleFormSubmit} />
       </Modal>
