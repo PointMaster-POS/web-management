@@ -69,7 +69,7 @@ const Stores = () => {
       key: "actions",
       render: (record) => (
         <Space size="middle">
-          <Tooltip title="Edit Store">
+          <Tooltip title="Edit">
             <Button
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
@@ -79,14 +79,14 @@ const Stores = () => {
               }}
             />
           </Tooltip>
-          <Tooltip title="Delete Store">
+          <Tooltip title="Delete">
             <Button
               icon={<DeleteOutlined />}
               onClick={() => handleDelete(record)}
               danger
             />
           </Tooltip>
-          <Tooltip title="View Store">
+          <Tooltip title="View">
             <Button
               icon={<ShopOutlined />}
               onClick={() => handleView(record)}
@@ -139,7 +139,7 @@ const Stores = () => {
           alignItems: "center",
         }}
       >
-        <Title level={4} style={{ margin: 0 }}>
+        <Title level={1} style={{ margin: 0 }}>
           Stores Data
         </Title>
         <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -170,7 +170,7 @@ const Stores = () => {
         pagination={{ pageSize: 7 }}
         locale={{
           emptyText:
-            "No stores available. Add new stores to see them listed here.",
+            "No stores available.",
         }}
         style={{ marginTop: 20 }}
       />
