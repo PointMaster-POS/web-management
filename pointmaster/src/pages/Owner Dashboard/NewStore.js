@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Input, Select, Button } from 'antd';
+import {Form, Input, Select, Button } from 'antd';
 
 const { Option } = Select;
 
@@ -9,24 +9,10 @@ const managers = [
   { id: 3, name: "Charlie" },
 ];  
 
-const NewStore = ({ onAddStore, onCancel, setFormInstance }) => {
-  const [form] = Form.useForm();
-
-  useEffect(() => {
-    setFormInstance(form);
-  }, [form, setFormInstance]);
+const NewStore = ({ form, onAddStore, onCancel }) => {
 
   const handleFinish = (values) => {
-    const newStore = {
-      key: Date.now(),
-      name: values.name,
-      location: values.location,
-      manager: managers.find(manager => manager.id === values.manager)?.name,
-      telephone: values.telephone,
-      status: 'Active',
-    };
-    onAddStore(newStore);
-    form.resetFields();
+    onAddStore(values); // Pass form values to Stores component
   };
 
   return (
@@ -76,7 +62,7 @@ const NewStore = ({ onAddStore, onCancel, setFormInstance }) => {
           placeholder="Select a manager" 
         >
           {managers.map((manager) => (
-            <Option key={manager.id} value={manager.id}>
+            <Option key={manager.id} value={manager.name}>
               {manager.name}
             </Option>
           ))}
@@ -113,7 +99,6 @@ const NewStore = ({ onAddStore, onCancel, setFormInstance }) => {
           type="default" 
           onClick={() => {
             onCancel();
-            form.resetFields();
           }}
           style={{ marginRight: '10px' }}
         >
