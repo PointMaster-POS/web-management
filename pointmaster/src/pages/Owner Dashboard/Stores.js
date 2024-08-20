@@ -8,17 +8,20 @@ import {
   Typography,
   Tooltip,
   Input,
+  Form,
 } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
   PlusOutlined,
   ShopOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import NewStore from "./NewStore";
 import { storesData } from "./Data";
 
 const { Title } = Typography;
+const { confirm } = Modal;
 const { Search } = Input;
 
 const Stores = () => {
@@ -26,25 +29,126 @@ const Stores = () => {
   const [filteredData, setFilteredData] = useState(data);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
-  const [formInstance, setFormInstance] = useState(null);
+  const [form] = Form.useForm();
+  //const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleCancel = () => {
-    if (formInstance) {
-      formInstance.resetFields();
-    }
-    setIsModalVisible(false);
+  const handleAddStore = () => {
+    form.validateFields().then((values) => {
+      form.resetFields();
+      setIsModalVisible(false);
+      const newStore = {
+        ...values,
+        /* supplier_id: `SUP${data.length + 123}`, // Simulate auto-increment
+        key: `${data.length + 1}`, */
+      };
+      const newData = [...data, newStore];
+      setData(newData);
+      setFilteredData(newData);
+    });
   };
 
-  const handleAddStore = (newStore) => {
-    const updatedData = [...data, newStore];
-    setData(updatedData);
-    setFilteredData(updatedData);
+  const handleCancel = () => {
     setIsModalVisible(false);
+    form.resetFields();
   };
+
+  const handleEdit = (values) => {
+    /* const newData = data.map((item) =>
+      item.supplier_id === values.supplier_id ? { ...item, ...values } : item
+    );
+    setData(newData);
+    setFilteredData(newData); */
+  };
+
+  const handleDelete = (name) => {
+    confirm({
+      title: `Are you sure you want to delete "${name}"?`,
+      icon: <ExclamationCircleOutlined />,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      centered: true,
+    });
+  };
+
+  const handleView = (record) => {
+    console.log("Viewing record: ", record);
+    // Implement the logic to view the store details
+  };
+
+  const handleSearch = (value, exactMatch = false) => {
+    const filtered = data.filter((item) => {
+      const name = item.name.toLowerCase();
+      const searchValue = value.toLowerCase();
+
+      return exactMatch ? name === searchValue : name.includes(searchValue);
+    });
+    setFilteredData(filtered);
+    setSearchText(value);
+  };
+
+  // Table columns definition
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+      key: "location",
+    },
+    {
+      title: "Manager",
+      dataIndex: "manager",
+      key: "manager",
+    },
+    {
+      title: "Telephone",
+      dataIndex: "telephone",
+      key: "telephone",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (record) => (
+        <Space size="middle">
+          <Tooltip title="Edit Store">
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+              style={{
+                borderColor: "#1890ff",
+                color: "#1890ff",
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="Delete Store">
+            <Button
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record.name)}
+              danger
+            />
+          </Tooltip>
+          <Tooltip title="View Store">
+            <Button
+              icon={<ShopOutlined />}
+              onClick={() => handleView(record)}
+              style={{
+                borderColor: "rgb(0,0,0,0.88)",
+                color: "rgb(0,0,0,0.88)",
+              }}
+            />
+          </Tooltip>
+        </Space>
+      ),
+    },
+  ];
 
   return (
     <Card
@@ -69,7 +173,9 @@ const Stores = () => {
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
             placeholder="Search stores"
-            onSearch={(value) => setSearchText(value)}
+            onSearch={(value) => handleSearch(value, true)} 
+            onChange={(e) => handleSearch(e.target.value)}
+            value={searchText}
             style={{ marginRight: 16, width: 300 }}
           />
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
@@ -86,11 +192,7 @@ const Stores = () => {
         footer={null}
         centered
       >
-        <NewStore
-          onAddStore={handleAddStore}
-          onCancel={handleCancel}
-          setFormInstance={setFormInstance}
-        />
+        <NewStore form={form} onAddStore={handleAddStore} onCancel={handleCancel} />
       </Modal>
 
       <Table
