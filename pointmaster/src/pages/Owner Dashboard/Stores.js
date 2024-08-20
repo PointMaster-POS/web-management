@@ -9,7 +9,12 @@ import {
   Tooltip,
   Input,
 } from "antd";
-import { EditOutlined, DeleteOutlined, PlusOutlined, ShopOutlined } from "@ant-design/icons";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  ShopOutlined,
+} from "@ant-design/icons";
 import NewStore from "./NewStore";
 import { storesData } from "./Data";
 
@@ -17,111 +22,29 @@ const { Title } = Typography;
 const { Search } = Input;
 
 const Stores = () => {
+  const [data, setData] = useState(storesData);
+  const [filteredData, setFilteredData] = useState(data);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [formInstance, setFormInstance] = useState(null);
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
-
   const handleCancel = () => {
+    if (formInstance) {
+      formInstance.resetFields();
+    }
     setIsModalVisible(false);
   };
 
-  const handleFormSubmit = (values) => {
-    console.log("Form submitted with values: ", values);
-    handleOk();
+  const handleAddStore = (newStore) => {
+    const updatedData = [...data, newStore];
+    setData(updatedData);
+    setFilteredData(updatedData);
+    setIsModalVisible(false);
   };
-
-  // Table columns definition
-  const columns = [
-    {
-      title: "Name",
-      dataIndex: "name",
-      key: "name",
-    },
-    {
-      title: "Location",
-      dataIndex: "location",
-      key: "location",
-    },
-    {
-      title: "Manager",
-      dataIndex: "manager",
-      key: "manager",
-    },
-    {
-      title: "Telephone",
-      dataIndex: "telephone",
-      key: "telephone",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
-      title: "Actions",
-      key: "actions",
-      render: (record) => (
-        <Space size="middle">
-          <Tooltip title="Edit">
-            <Button
-              icon={<EditOutlined />}
-              onClick={() => handleEdit(record)}
-              style={{
-                borderColor: "#1890ff",
-                color: "#1890ff",
-              }}
-            />
-          </Tooltip>
-          <Tooltip title="Delete">
-            <Button
-              icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record)}
-              danger
-            />
-          </Tooltip>
-          <Tooltip title="View">
-            <Button
-              icon={<ShopOutlined />}
-              onClick={() => handleView(record)}
-              style={{
-                borderColor: "rgb(0,0,0,0.88)",
-                color: "rgb(0,0,0,0.88)",
-              }}
-            />
-          </Tooltip>
-        </Space>
-      ),
-    },
-  ];
-
-  // Handlers for edit and delete actions
-  const handleEdit = (record) => {
-    console.log("Editing record: ", record);
-    // Implement the logic to edit the store
-  };
-
-  const handleDelete = (record) => {
-    console.log("Deleting record: ", record);
-    // Implement the logic to delete the store
-  };
-
-  const handleView = (record) => {
-    console.log('Viewing record: ', record);
-    // Implement the logic to view the store details
-  };
-
-   // Filtered data based on search
-   const filteredData = storesData.filter((item) =>
-    searchText === "" || item.name.toLowerCase() === searchText.toLowerCase()
-  );
-  
 
   return (
     <Card
@@ -139,10 +62,11 @@ const Stores = () => {
           alignItems: "center",
         }}
       >
-        <Title level={1} style={{ margin: 0 }}>
+        <Title level={3} style={{ marginBottom: 10 }}>
           Stores Data
         </Title>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Search
             placeholder="Search stores"
             onSearch={(value) => setSearchText(value)}
@@ -153,15 +77,20 @@ const Stores = () => {
           </Button>
         </div>
       </div>
+      <hr color="#1890ff" />
 
       <Modal
         title="Add New Store"
         visible={isModalVisible}
-        onOk={handleOk}
         onCancel={handleCancel}
-        footer={ null }
+        footer={null}
+        centered
       >
-        <NewStore onFinish={handleFormSubmit} />
+        <NewStore
+          onAddStore={handleAddStore}
+          onCancel={handleCancel}
+          setFormInstance={setFormInstance}
+        />
       </Modal>
 
       <Table
@@ -169,8 +98,7 @@ const Stores = () => {
         columns={columns}
         pagination={{ pageSize: 7 }}
         locale={{
-          emptyText:
-            "No stores available.",
+          emptyText: "No stores available.",
         }}
         style={{ marginTop: 20 }}
       />
