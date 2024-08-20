@@ -172,7 +172,6 @@ export const OutOfStockList = [
       location: 'Downtown',
       manager: 'John Doe',
       telephone: '123-456-7890',
-      status: 'Open',
     },
     {
       key: '2',
@@ -180,7 +179,6 @@ export const OutOfStockList = [
       location: 'Uptown',
       manager: 'Jane Smith',
       telephone: '987-654-3210',
-      status: 'Closed',
     },
     {
       key: '3',
@@ -188,7 +186,6 @@ export const OutOfStockList = [
       location: 'East Side',
       manager: 'Emily Johnson',
       telephone: '456-789-0123',
-      status: 'Open',
     },
     {
       key: '4',
@@ -196,7 +193,6 @@ export const OutOfStockList = [
       location: 'West Side',
       manager: 'Michael Brown',
       telephone: '789-012-3456',
-      status: 'Open',
     },
     {
       key: '5',
@@ -204,7 +200,6 @@ export const OutOfStockList = [
       location: 'North End',
       manager: 'Olivia Davis',
       telephone: '012-345-6789',
-      status: 'Closed',
     },
     {
       key: '6',
@@ -212,7 +207,6 @@ export const OutOfStockList = [
       location: 'South End',
       manager: 'Liam Wilson',
       telephone: '234-567-8901',
-      status: 'Open',
     },
     {
       key: '7',
@@ -220,7 +214,6 @@ export const OutOfStockList = [
       location: 'Central Park',
       manager: 'Sophia Martinez',
       telephone: '345-678-9012',
-      status: 'Open',
     },
     {
       key: '8',
@@ -228,7 +221,6 @@ export const OutOfStockList = [
       location: 'Harbor District',
       manager: 'Mason Garcia',
       telephone: '456-789-0123',
-      status: 'Closed',
     },
     {
       key: '9',
@@ -236,7 +228,6 @@ export const OutOfStockList = [
       location: 'Riverside',
       manager: 'Isabella Rodriguez',
       telephone: '567-890-1234',
-      status: 'Open',
     },
     {
       key: '10',
@@ -244,7 +235,6 @@ export const OutOfStockList = [
       location: 'Old Town',
       manager: 'James Hernandez',
       telephone: '678-901-2345',
-      status: 'Closed',
     },
     {
       key: '11',
@@ -252,7 +242,6 @@ export const OutOfStockList = [
       location: 'New Town',
       manager: 'Mia Lopez',
       telephone: '789-012-3456',
-      status: 'Open',
     },
     {
       key: '12',
@@ -260,7 +249,6 @@ export const OutOfStockList = [
       location: 'Suburbia',
       manager: 'Ethan Gonzalez',
       telephone: '890-123-4567',
-      status: 'Open',
     },
     {
       key: '13',
@@ -268,7 +256,6 @@ export const OutOfStockList = [
       location: 'Highlands',
       manager: 'Charlotte Lee',
       telephone: '901-234-5678',
-      status: 'Closed',
     },
     {
       key: '14',
@@ -276,7 +263,6 @@ export const OutOfStockList = [
       location: 'Lowlands',
       manager: 'Alexander Clark',
       telephone: '012-345-6789',
-      status: 'Open',
     },
     {
       key: '15',
@@ -284,7 +270,6 @@ export const OutOfStockList = [
       location: 'Beachside',
       manager: 'Amelia Walker',
       telephone: '123-456-7890',
-      status: 'Open',
     },
     {
       key: '16',
@@ -292,7 +277,6 @@ export const OutOfStockList = [
       location: 'Mountain View',
       manager: 'Aiden Hall',
       telephone: '234-567-8901',
-      status: 'Closed',
     },
     {
       key: '17',
@@ -300,7 +284,6 @@ export const OutOfStockList = [
       location: 'Lakeside',
       manager: 'Ella Allen',
       telephone: '345-678-9012',
-      status: 'Open',
     },
     {
       key: '18',
@@ -308,7 +291,6 @@ export const OutOfStockList = [
       location: 'City Center',
       manager: 'Benjamin Young',
       telephone: '456-789-0123',
-      status: 'Open',
     },
     {
       key: '19',
@@ -316,7 +298,6 @@ export const OutOfStockList = [
       location: 'Village Green',
       manager: 'Harper King',
       telephone: '567-890-1234',
-      status: 'Closed',
     },
     {
       key: '20',
@@ -324,7 +305,6 @@ export const OutOfStockList = [
       location: 'Industrial Zone',
       manager: 'Lucas Wright',
       telephone: '678-901-2345',
-      status: 'Open',
     },
   ];
   
