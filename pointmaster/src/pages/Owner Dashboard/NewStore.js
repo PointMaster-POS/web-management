@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Select, Button } from 'antd';
 
 const { Option } = Select;
@@ -7,19 +7,39 @@ const managers = [
   { id: 1, name: "Alice" },
   { id: 2, name: "Bob" },
   { id: 3, name: "Charlie" },
-]  
+];  
 
-const NewStore = ({onFinish, onCancel }) => {
+const NewStore = ({ onAddStore, onCancel, setFormInstance }) => {
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    setFormInstance(form);
+  }, [form, setFormInstance]);
+
+  const handleFinish = (values) => {
+    const newStore = {
+      key: Date.now(),
+      name: values.name,
+      location: values.location,
+      manager: managers.find(manager => manager.id === values.manager)?.name,
+      telephone: values.telephone,
+      status: 'Active',
+    };
+    onAddStore(newStore);
+    form.resetFields();
+  };
+
   return (
     <Form
+      form={form}
       name="add_branch"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
-      onFinish={onFinish}
+      onFinish={handleFinish}
       style={{
         padding: '30px',
         borderRadius: '8px',
-        backgroundColor: '#f9f9ff',
+        backgroundColor: '#f9f9f9',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       }}
       labelAlign="left"
@@ -88,11 +108,13 @@ const NewStore = ({onFinish, onCancel }) => {
         />
       </Form.Item>
   
-
       <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{ textAlign: 'right' }}>
         <Button 
           type="default" 
-          onClick={onCancel}
+          onClick={() => {
+            onCancel();
+            form.resetFields();
+          }}
           style={{ marginRight: '10px' }}
         >
           Cancel
