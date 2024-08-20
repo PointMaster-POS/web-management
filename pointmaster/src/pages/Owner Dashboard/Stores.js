@@ -17,8 +17,9 @@ import {
   ShopOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import NewStore from "./NewStore";
+import AddNewStore from "./AddNewStore";
 import { storesData } from "./Data";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -56,6 +57,11 @@ const Stores = () => {
     form.resetFields();
   };
 
+  const handleViewStore = (supplier_id) => {
+    // navigate(`/phistory/${supplier_id}`);
+  };
+
+
   const handleEdit = (values) => {
     /* const newData = data.map((item) =>
       item.supplier_id === values.supplier_id ? { ...item, ...values } : item
@@ -73,11 +79,6 @@ const Stores = () => {
       cancelText: "Cancel",
       centered: true,
     });
-  };
-
-  const handleView = (record) => {
-    console.log("Viewing record: ", record);
-    // Implement the logic to view the store details
   };
 
   const handleSearch = (value, exactMatch = false) => {
@@ -138,7 +139,7 @@ const Stores = () => {
           <Tooltip title="View Store">
             <Button
               icon={<ShopOutlined />}
-              onClick={() => handleView(record)}
+              onClick={() => handleViewStore(record)}
               style={{
                 borderColor: "rgb(0,0,0,0.88)",
                 color: "rgb(0,0,0,0.88)",
@@ -192,7 +193,7 @@ const Stores = () => {
         footer={null}
         centered
       >
-        <NewStore form={form} onAddStore={handleAddStore} onCancel={handleCancel} />
+        <AddNewStore form={form} onAddStore={handleAddStore} onCancel={handleCancel} />
       </Modal>
 
       <Table
