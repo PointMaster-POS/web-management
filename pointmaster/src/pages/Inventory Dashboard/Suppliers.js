@@ -19,7 +19,7 @@ import {
   ShoppingOutlined,
 } from "@ant-design/icons";
 import AddNewSupplier from "./AddNewSupplier";
-import { suppliersData } from "./Data";
+import { suppliersData } from "../Owner Dashboard/Data";
 
 const { Title } = Typography;
 const { confirm } = Modal;
