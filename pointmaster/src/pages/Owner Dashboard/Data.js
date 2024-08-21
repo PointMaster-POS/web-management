@@ -414,3 +414,45 @@ export const OutOfStockList = [
     { no: "19", category_name: "Category 19", product_count: 3 },
     { no: "20", category_name: "Category 20", product_count: 8 },
   ];
+
+ export const productsData = [
+    {
+      key: '1',
+      product_id: 'PROD001',
+      order_id: 'ORD001',
+      product_name: 'Blue Shoes',
+      category: 'Shoes',
+      photo_url: '/images/shoes.jpg',
+      quantity: 10,
+      buying_price: 500,
+      selling_price: 700,
+      added_date: '2024-07-01',
+      supplier_id: 'SUP001', // Added supplier ID
+    },
+    {
+      key: '2',
+      product_id: 'PROD002',
+      order_id: 'ORD002',
+      product_name: 'Frock',
+      category: 'Clothing',
+      photo_url: '/images/frock.jpg',
+      quantity: 50,
+      buying_price: 10,
+      selling_price: 15,
+      added_date: '2024-07-02',
+      supplier_id: 'SUP002', // Added supplier ID
+    },
+    {
+      key: '3',
+      product_id: 'PROD003',
+      order_id: 'ORD003',
+      product_name: 'Laptop',
+      category: 'Electronics',
+      photo_url: '/images/laptop.jpg',
+      quantity: 20,
+      buying_price: 20,
+      selling_price: 35,
+      added_date: '2024-07-03',
+      supplier_id: 'SUP003', // Added supplier ID
+    },
+  ];
