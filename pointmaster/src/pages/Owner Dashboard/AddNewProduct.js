@@ -68,8 +68,8 @@ const AddNewProduct = ({ form, onAddProduct, onCancel }) => {
       </Form.Item>
 
       <Form.Item
-        name="Aupplier ID"
-        label="applier_id"
+        name="Supplier ID"
+        label="supplier_id"
         rules={[{ required: true, message: "Please input the supplier ID!" }]}
       >
         <Input />
