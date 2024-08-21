@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Form, Input, Select, Button } from "antd";
+import { Form, Input, Button } from "antd";
 
 const AddNewSupplier = ({ form, onAddSupplier, onCancel }) => {
   const handleFinish = (values) => {
