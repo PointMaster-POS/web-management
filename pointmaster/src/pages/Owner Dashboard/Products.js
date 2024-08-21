@@ -11,7 +11,12 @@ import {
   Typography,
   Avatar,
 } from "antd";
-import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 // import { useNavigate } from 'react-router-dom';
 import AddNewProduct from "./AddNewProduct";
 import { productsData } from "./Data";
@@ -21,16 +26,27 @@ const { confirm } = Modal;
 const { Search } = Input;
 
 const Products = () => {
-  
   const [data, setData] = useState(productsData);
   const [searchText, setSearchText] = useState("");
-  const [filteredData, setFilteredData] = useState(data);
+  const [filteredData, setFilteredData] = useState(sortData(productsData));
   const [isModalVisible, setIsModalVisible] = useState(false);
   // const navigate = useNavigate();
   const [form] = Form.useForm();
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const sortData = (data) => {
+    return [...data].sort((a, b) => {
+      if (a.quantity < 100 && b.quantity >= 100) {
+        return -1; // a comes first
+      }
+      if (a.quantity >= 100 && b.quantity < 100) {
+        return 1; // b comes first
+      }
+      return 0; // no change
+    });
   };
 
   const handleAddProduct = () => {
@@ -42,7 +58,7 @@ const Products = () => {
         product_id: `SUP${data.length + 123}`, // Simulate auto-increment
         key: `${data.length + 1}`,
       };
-      const newData = [...data, newProduct];
+      const newData = sortData([...data, newProduct]); 
       setData(newData);
       setFilteredData(newData);
     });
@@ -56,7 +72,6 @@ const Products = () => {
   /* const handleViewOrders = (supplier_id) => {
     navigate(`/phistory/${supplier_id}`);
   }; */
-
 
   const handleEdit = (values) => {
     /* const newData = data.map((item) =>
@@ -107,7 +122,7 @@ const Products = () => {
       }
     });
 
-    setFilteredData(filtered);
+    setFilteredData(sortData(filtered));
     setSearchText(value);
   };
 
@@ -147,6 +162,22 @@ const Products = () => {
       title: "Quantity",
       dataIndex: "quantity",
       key: "quantity",
+      render: (quantity) => (
+        <div>
+          {quantity < 100 ? (
+            <Tooltip title="Low stock !">
+              <span style={{ color: "red"/* , fontWeight: "bold"  */}}>
+                {quantity}
+              </span>
+              <ExclamationCircleOutlined
+                style={{ color: "red", marginLeft: 8 }}
+              />
+            </Tooltip>
+          ) : (
+            quantity
+          )}
+        </div>
+      ),
     },
     {
       title: "Buying Price",
@@ -237,13 +268,17 @@ const Products = () => {
         footer={null}
         centered
       >
-        <AddNewProduct form={form} onAddProduct={handleAddProduct} onCancel={handleCancel} />
+        <AddNewProduct
+          form={form}
+          onAddProduct={handleAddProduct}
+          onCancel={handleCancel}
+        />
       </Modal>
 
       <Table
         dataSource={filteredData}
         columns={columns}
-        pagination={{ pageSize: 7 }}
+        pagination={{ pageSize: 5 }}
         locale={{
           emptyText: "No stores available.",
         }}
