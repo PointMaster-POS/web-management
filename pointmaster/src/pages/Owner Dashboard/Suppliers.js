@@ -220,7 +220,7 @@ const Suppliers = () => {
       <hr color="#1890ff" />
 
       <Modal
-        title="Add New Store"
+        title="Add New Supplier"
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
