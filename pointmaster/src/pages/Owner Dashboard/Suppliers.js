@@ -38,7 +38,7 @@ const Suppliers = () => {
     setIsModalVisible(true);
   };
 
-  const handleAddSuppliers = () => {
+  const handleAddSupplier = () => {
     form.validateFields().then((values) => {
       form.resetFields();
       setIsModalVisible(false);
@@ -153,7 +153,7 @@ const Suppliers = () => {
       key: "actions",
       render: (record) => (
         <Space size="middle">
-          <Tooltip title="Edit Suppliers">
+          <Tooltip title="Edit Supplier">
             <Button
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
@@ -163,7 +163,7 @@ const Suppliers = () => {
               }}
             />
           </Tooltip>
-          <Tooltip title="Delete Suppliers">
+          <Tooltip title="Delete Supplier">
             <Button
               icon={<DeleteOutlined />}
               onClick={() => handleDelete(record.supplier_name)}
@@ -227,7 +227,7 @@ const Suppliers = () => {
         footer={null}
         centered
       >
-        <AddNewSupplier form={form} onAddSupplier={handleAddSuppliers} onCancel={handleCancel} />
+        <AddNewSupplier form={form} onAddSupplier={handleAddSupplier} onCancel={handleCancel} />
       </Modal>
 
       <Table
