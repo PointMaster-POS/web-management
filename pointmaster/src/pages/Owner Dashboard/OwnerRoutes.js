@@ -11,7 +11,7 @@ import Suppliers from './Suppliers';
 import PurchaseHistory from './PurchaseHistory';
 import AddProduct from './AddProduct';
 import Orders from "./Orders";
-import Inventory from "./Inventory";
+import Product from "./Product";
 
 function OwnerRoutes() {
   return (
@@ -27,7 +27,7 @@ function OwnerRoutes() {
           <Route path="/suppliers" element={<Suppliers />} />
           <Route path="/phistory/:supplier_id" element={<PurchaseHistory />} />
           <Route path="/addproduct" element={<AddProduct />} />
-          <Route path="/products" element={<Inventory />}/>
+          <Route path="/products" element={<Product />}/>
           <Route path="/orders" element={<Orders />} />
       </Routes>
   );
