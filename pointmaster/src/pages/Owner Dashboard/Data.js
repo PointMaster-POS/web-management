@@ -1,102 +1,102 @@
 export const PopularItemsList = [
   {
     name: "Scrambled Eggs With Toast",
-    orders: 60,
+    sales: 60,
     image: "images/sandwich-with-poached-egg.jpg", // Replace with actual image URL
   },
   {
     name: "Tacos With Chicken Grilled",
-    orders: 58,
+    sales: 58,
     image: "images/top-view-delicious-tacos-red-plate.jpg", // Replace with actual image URL
   },
   {
     name: "Spaghetti Bolognese",
-    orders: 55,
+    sales: 55,
     image: "images/delicious-pasta-plate.jpg", // Replace with actual image URL
   },
   {
     name: "French Bread & Potato",
-    orders: 55,
+    sales: 55,
     image: "images/top-view-sweet-delicious-bangles-with-filling-grey-wooden-table-sweet-sugar-bake-pastry-cookie-biscuit.jpg", // Replace with actual image URL
   },
   {
     name: "Grilled Cheese Sandwich",
-    orders: 51,
+    sales: 51,
     image: "", // Replace with actual image URL
   },
   {
     name: "Caesar Salad",
-    orders: 49,
+    sales: 49,
     image: "", // Replace with actual image URL
   },
   {
     name: "Margherita Pizza",
-    orders: 46,
+    sales: 46,
     image: "", // Replace with actual image URL
   },
   {
     name: "Beef Burger",
-    orders: 43,
+    sales: 43,
     image: "", // Replace with actual image URL
   },
   {
     name: "Sushi Platter",
-    orders: 40,
+    sales: 40,
     image: "", // Replace with actual image URL
   },
   {
     name: "Pancakes With Syrup",
-    orders: 38,
+    sales: 38,
     image: "", // Replace with actual image URL
   },
   {
     name: "Chicken Alfredo",
-    orders: 35,
+    sales: 35,
     image: "", // Replace with actual image URL
   },
   {
     name: "Vegetable Stir Fry",
-    orders: 32,
+    sales: 32,
     image: "", // Replace with actual image URL
   },
   {
     name: "Steak and Potatoes",
-    orders: 30,
+    sales: 30,
     image: "", // Replace with actual image URL
   },
   {
     name: "Fish and Chips",
-    orders: 30,
+    sales: 30,
     image: "", // Replace with actual image URL
   },
   {
     name: "Chicken Caesar Wrap",
-    orders: 29,
+    sales: 29,
     image: "", // Replace with actual image URL
   },
   {
     name: "BBQ Ribs",
-    orders: 27,
+    sales: 27,
     image: "", // Replace with actual image URL
   },
   {
     name: "Chocolate Cake",
-    orders: 24,
+    sales: 24,
     image: "", // Replace with actual image URL
   },
   {
     name: "Pepperoni Pizza",
-    orders: 24,
+    sales: 24,
     image: "", // Replace with actual image URL
   },
   {
     name: "Club Sandwich",
-    orders: 24,
+    sales: 24,
     image: "", // Replace with actual image URL
   },
   {
     name: "Greek Salad",
-    orders: 20,
+    sales: 20,
     image: "", // Replace with actual image URL
   },
 ];
@@ -104,64 +104,85 @@ export const PopularItemsList = [
 
 export const OutOfStockList = [
     {
-      name: "Hawaiian Chicken Skewers",
+      item: "Hawaiian Chicken Skewers",
+      last_available: ""
+      
     },
     {
-      name: "Veggie Supreme Pizza",
+      item: "Veggie Supreme Pizza",
+      last_available: ""
     },
     {
-      name: "Fish and Chips",
+      item: "Fish and Chips",
+      last_available: ""
     },
     {
-      name: "Scrambled Eggs With Toast",
+      item: "Scrambled Eggs With Toast",
+      last_available: ""
     },
     {
-      name: "Chicken Teriyaki",
+      item: "Chicken Teriyaki",
+      last_available: ""
     },
     {
-      name: "Margherita Pizza",
+      item: "Margherita Pizza",
+      last_available: ""
     },
     {
-      name: "Beef Tacos",
+      item: "Beef Tacos",
+      last_available: ""
     },
     {
-      name: "Caesar Salad",
+      item: "Caesar Salad",
+      last_available: ""
     },
     {
-      name: "BBQ Chicken Wings",
+      item: "BBQ Chicken Wings",
+      last_available: ""
     },
     {
-      name: "Spaghetti Carbonara",
+      item: "Spaghetti Carbonara",
+      last_available: ""
     },
     {
-      name: "Chocolate Brownie",
+      item: "Chocolate Brownie",
+      last_available: ""
     },
     {
-      name: "Grilled Cheese Sandwich",
+      item: "Grilled Cheese Sandwich",
+      last_available: ""
     },
     {
-      name: "Pancakes with Maple Syrup",
+      item: "Pancakes with Maple Syrup",
+      last_available: ""
     },
     {
-      name: "Bacon and Eggs",
+      item: "Bacon and Eggs",
+      last_available: ""
     },
     {
-      name: "Fried Rice",
+      item: "Fried Rice",
+      last_available: ""
     },
     {
-      name: "Lasagna",
+      item: "Lasagna",
+      last_available: ""
     },
     {
-      name: "Chicken Quesadilla",
+      item: "Chicken Quesadilla",
+      last_available: ""
     },
     {
-      name: "Cheeseburger",
+      item: "Cheeseburger",
+      last_available: ""
     },
     {
-      name: "Veggie Burrito",
+      item: "Veggie Burrito",
+      last_available: ""
     },
     {
-      name: "Apple Pie",
+      item: "Apple Pie",
+      last_available: ""
     },
   ];
   
@@ -418,11 +439,11 @@ export const OutOfStockList = [
  export const productsData = [
     {
       key: '1',
+      photo_url: '/images/shoes.jpg',
       product_id: 'PROD001',
-      order_id: 'ORD001',
+      //order_id: 'ORD001',
       product_name: 'Blue Shoes',
       category: 'Shoes',
-      photo_url: '/images/shoes.jpg',
       quantity: 10,
       buying_price: 500,
       selling_price: 700,
@@ -431,11 +452,11 @@ export const OutOfStockList = [
     },
     {
       key: '2',
+      photo_url: '/images/frock.jpg',
       product_id: 'PROD002',
-      order_id: 'ORD002',
+      //order_id: 'ORD002',
       product_name: 'Frock',
       category: 'Clothing',
-      photo_url: '/images/frock.jpg',
       quantity: 50,
       buying_price: 10,
       selling_price: 15,
@@ -444,11 +465,11 @@ export const OutOfStockList = [
     },
     {
       key: '3',
+      photo_url: '/images/laptop.jpg',
       product_id: 'PROD003',
-      order_id: 'ORD003',
+      //order_id: 'ORD003',
       product_name: 'Laptop',
       category: 'Electronics',
-      photo_url: '/images/laptop.jpg',
       quantity: 20,
       buying_price: 20,
       selling_price: 35,
