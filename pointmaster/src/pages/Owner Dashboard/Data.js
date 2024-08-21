@@ -391,3 +391,26 @@ export const OutOfStockList = [
       bank_details: 'Bank STU, Account No: 345678901',
     },
   ];
+
+  export const categoriesData = [
+    { no: "1", category_name: "Shirts", product_count: 5 },
+    { no: "2", category_name: "Skirts", product_count: 3 },
+    { no: "3", category_name: "Shoes", product_count: 7 },
+    { no: "4", category_name: "Accessories", product_count: 2 },
+    { no: "5", category_name: "Wall decorators", product_count: 4 },
+    { no: "6", category_name: "Towels", product_count: 9 },
+    { no: "7", category_name: "Face cream", product_count: 6 },
+    { no: "8", category_name: "Toys", product_count: 1 },
+    { no: "9", category_name: "Category 9", product_count: 3 },
+    { no: "10", category_name: "Category 10", product_count: 8 },
+    { no: "11", category_name: "Category 11", product_count: 5 },
+    { no: "12", category_name: "Category 12", product_count: 3 },
+    { no: "13", category_name: "Category 13", product_count: 7 },
+    { no: "14", category_name: "Category 14", product_count: 2 },
+    { no: "15", category_name: "Category 15", product_count: 4 },
+    { no: "16", category_name: "Category 16", product_count: 9 },
+    { no: "17", category_name: "Category 17", product_count: 6 },
+    { no: "18", category_name: "Category 18", product_count: 1 },
+    { no: "19", category_name: "Category 19", product_count: 3 },
+    { no: "20", category_name: "Category 20", product_count: 8 },
+  ];
