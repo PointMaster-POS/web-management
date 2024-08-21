@@ -1,6 +1,6 @@
 
 import { Routes, Route } from "react-router-dom";
-import Dashboard from "./Dashboard";
+import Dashboard from "./Dashboard/Dashboard";
 import Stores from "./Stores";
 import Users from "./Users";
 import Reports from "./Reports";
@@ -9,9 +9,9 @@ import Profile from "./Profile";
 import Category from './Category';
 import Suppliers from './Suppliers';
 import PurchaseHistory from './PurchaseHistory';
-import AddProduct from './AddProduct';
+// import AddProduct from './AddProduct';
 import Orders from "./Orders";
-import Product from "./Product";
+import Products from "./Products";
 
 function OwnerRoutes() {
   return (
@@ -26,8 +26,8 @@ function OwnerRoutes() {
           <Route path="/category" element={<Category />} />
           <Route path="/suppliers" element={<Suppliers />} />
           <Route path="/phistory/:supplier_id" element={<PurchaseHistory />} />
-          <Route path="/addproduct" element={<AddProduct />} />
-          <Route path="/products" element={<Product />}/>
+          {/* <Route path="/addproduct" element={<AddProduct />} /> */}
+          <Route path="/products" element={<Products />}/>
           <Route path="/orders" element={<Orders />} />
       </Routes>
   );
