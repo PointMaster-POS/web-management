@@ -26,6 +26,7 @@ const { confirm } = Modal;
 const { Search } = Input;
 
 const Suppliers = () => {
+  
   const [data, setData] = useState(suppliersData);
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState(data);
