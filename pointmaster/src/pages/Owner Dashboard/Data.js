@@ -1,102 +1,102 @@
 export const PopularItemsList = [
   {
     name: "Scrambled Eggs With Toast",
-    orders: 60,
+    sales: 60,
     image: "images/sandwich-with-poached-egg.jpg", // Replace with actual image URL
   },
   {
     name: "Tacos With Chicken Grilled",
-    orders: 58,
+    sales: 58,
     image: "images/top-view-delicious-tacos-red-plate.jpg", // Replace with actual image URL
   },
   {
     name: "Spaghetti Bolognese",
-    orders: 55,
+    sales: 55,
     image: "images/delicious-pasta-plate.jpg", // Replace with actual image URL
   },
   {
     name: "French Bread & Potato",
-    orders: 55,
+    sales: 55,
     image: "images/top-view-sweet-delicious-bangles-with-filling-grey-wooden-table-sweet-sugar-bake-pastry-cookie-biscuit.jpg", // Replace with actual image URL
   },
   {
     name: "Grilled Cheese Sandwich",
-    orders: 51,
+    sales: 51,
     image: "", // Replace with actual image URL
   },
   {
     name: "Caesar Salad",
-    orders: 49,
+    sales: 49,
     image: "", // Replace with actual image URL
   },
   {
     name: "Margherita Pizza",
-    orders: 46,
+    sales: 46,
     image: "", // Replace with actual image URL
   },
   {
     name: "Beef Burger",
-    orders: 43,
+    sales: 43,
     image: "", // Replace with actual image URL
   },
   {
     name: "Sushi Platter",
-    orders: 40,
+    sales: 40,
     image: "", // Replace with actual image URL
   },
   {
     name: "Pancakes With Syrup",
-    orders: 38,
+    sales: 38,
     image: "", // Replace with actual image URL
   },
   {
     name: "Chicken Alfredo",
-    orders: 35,
+    sales: 35,
     image: "", // Replace with actual image URL
   },
   {
     name: "Vegetable Stir Fry",
-    orders: 32,
+    sales: 32,
     image: "", // Replace with actual image URL
   },
   {
     name: "Steak and Potatoes",
-    orders: 30,
+    sales: 30,
     image: "", // Replace with actual image URL
   },
   {
     name: "Fish and Chips",
-    orders: 30,
+    sales: 30,
     image: "", // Replace with actual image URL
   },
   {
     name: "Chicken Caesar Wrap",
-    orders: 29,
+    sales: 29,
     image: "", // Replace with actual image URL
   },
   {
     name: "BBQ Ribs",
-    orders: 27,
+    sales: 27,
     image: "", // Replace with actual image URL
   },
   {
     name: "Chocolate Cake",
-    orders: 24,
+    sales: 24,
     image: "", // Replace with actual image URL
   },
   {
     name: "Pepperoni Pizza",
-    orders: 24,
+    sales: 24,
     image: "", // Replace with actual image URL
   },
   {
     name: "Club Sandwich",
-    orders: 24,
+    sales: 24,
     image: "", // Replace with actual image URL
   },
   {
     name: "Greek Salad",
-    orders: 20,
+    sales: 20,
     image: "", // Replace with actual image URL
   },
 ];
@@ -104,64 +104,85 @@ export const PopularItemsList = [
 
 export const OutOfStockList = [
     {
-      name: "Hawaiian Chicken Skewers",
+      item: "Hawaiian Chicken Skewers",
+      last_available: ""
+      
     },
     {
-      name: "Veggie Supreme Pizza",
+      item: "Veggie Supreme Pizza",
+      last_available: ""
     },
     {
-      name: "Fish and Chips",
+      item: "Fish and Chips",
+      last_available: ""
     },
     {
-      name: "Scrambled Eggs With Toast",
+      item: "Scrambled Eggs With Toast",
+      last_available: ""
     },
     {
-      name: "Chicken Teriyaki",
+      item: "Chicken Teriyaki",
+      last_available: ""
     },
     {
-      name: "Margherita Pizza",
+      item: "Margherita Pizza",
+      last_available: ""
     },
     {
-      name: "Beef Tacos",
+      item: "Beef Tacos",
+      last_available: ""
     },
     {
-      name: "Caesar Salad",
+      item: "Caesar Salad",
+      last_available: ""
     },
     {
-      name: "BBQ Chicken Wings",
+      item: "BBQ Chicken Wings",
+      last_available: ""
     },
     {
-      name: "Spaghetti Carbonara",
+      item: "Spaghetti Carbonara",
+      last_available: ""
     },
     {
-      name: "Chocolate Brownie",
+      item: "Chocolate Brownie",
+      last_available: ""
     },
     {
-      name: "Grilled Cheese Sandwich",
+      item: "Grilled Cheese Sandwich",
+      last_available: ""
     },
     {
-      name: "Pancakes with Maple Syrup",
+      item: "Pancakes with Maple Syrup",
+      last_available: ""
     },
     {
-      name: "Bacon and Eggs",
+      item: "Bacon and Eggs",
+      last_available: ""
     },
     {
-      name: "Fried Rice",
+      item: "Fried Rice",
+      last_available: ""
     },
     {
-      name: "Lasagna",
+      item: "Lasagna",
+      last_available: ""
     },
     {
-      name: "Chicken Quesadilla",
+      item: "Chicken Quesadilla",
+      last_available: ""
     },
     {
-      name: "Cheeseburger",
+      item: "Cheeseburger",
+      last_available: ""
     },
     {
-      name: "Veggie Burrito",
+      item: "Veggie Burrito",
+      last_available: ""
     },
     {
-      name: "Apple Pie",
+      item: "Apple Pie",
+      last_available: ""
     },
   ];
   
@@ -172,7 +193,6 @@ export const OutOfStockList = [
       location: 'Downtown',
       manager: 'John Doe',
       telephone: '123-456-7890',
-      status: 'Open',
     },
     {
       key: '2',
@@ -180,7 +200,6 @@ export const OutOfStockList = [
       location: 'Uptown',
       manager: 'Jane Smith',
       telephone: '987-654-3210',
-      status: 'Closed',
     },
     {
       key: '3',
@@ -188,7 +207,6 @@ export const OutOfStockList = [
       location: 'East Side',
       manager: 'Emily Johnson',
       telephone: '456-789-0123',
-      status: 'Open',
     },
     {
       key: '4',
@@ -196,7 +214,6 @@ export const OutOfStockList = [
       location: 'West Side',
       manager: 'Michael Brown',
       telephone: '789-012-3456',
-      status: 'Open',
     },
     {
       key: '5',
@@ -204,7 +221,6 @@ export const OutOfStockList = [
       location: 'North End',
       manager: 'Olivia Davis',
       telephone: '012-345-6789',
-      status: 'Closed',
     },
     {
       key: '6',
@@ -212,7 +228,6 @@ export const OutOfStockList = [
       location: 'South End',
       manager: 'Liam Wilson',
       telephone: '234-567-8901',
-      status: 'Open',
     },
     {
       key: '7',
@@ -220,7 +235,6 @@ export const OutOfStockList = [
       location: 'Central Park',
       manager: 'Sophia Martinez',
       telephone: '345-678-9012',
-      status: 'Open',
     },
     {
       key: '8',
@@ -228,7 +242,6 @@ export const OutOfStockList = [
       location: 'Harbor District',
       manager: 'Mason Garcia',
       telephone: '456-789-0123',
-      status: 'Closed',
     },
     {
       key: '9',
@@ -236,7 +249,6 @@ export const OutOfStockList = [
       location: 'Riverside',
       manager: 'Isabella Rodriguez',
       telephone: '567-890-1234',
-      status: 'Open',
     },
     {
       key: '10',
@@ -244,7 +256,6 @@ export const OutOfStockList = [
       location: 'Old Town',
       manager: 'James Hernandez',
       telephone: '678-901-2345',
-      status: 'Closed',
     },
     {
       key: '11',
@@ -252,7 +263,6 @@ export const OutOfStockList = [
       location: 'New Town',
       manager: 'Mia Lopez',
       telephone: '789-012-3456',
-      status: 'Open',
     },
     {
       key: '12',
@@ -260,7 +270,6 @@ export const OutOfStockList = [
       location: 'Suburbia',
       manager: 'Ethan Gonzalez',
       telephone: '890-123-4567',
-      status: 'Open',
     },
     {
       key: '13',
@@ -268,7 +277,6 @@ export const OutOfStockList = [
       location: 'Highlands',
       manager: 'Charlotte Lee',
       telephone: '901-234-5678',
-      status: 'Closed',
     },
     {
       key: '14',
@@ -276,7 +284,6 @@ export const OutOfStockList = [
       location: 'Lowlands',
       manager: 'Alexander Clark',
       telephone: '012-345-6789',
-      status: 'Open',
     },
     {
       key: '15',
@@ -284,7 +291,6 @@ export const OutOfStockList = [
       location: 'Beachside',
       manager: 'Amelia Walker',
       telephone: '123-456-7890',
-      status: 'Open',
     },
     {
       key: '16',
@@ -292,7 +298,6 @@ export const OutOfStockList = [
       location: 'Mountain View',
       manager: 'Aiden Hall',
       telephone: '234-567-8901',
-      status: 'Closed',
     },
     {
       key: '17',
@@ -300,7 +305,6 @@ export const OutOfStockList = [
       location: 'Lakeside',
       manager: 'Ella Allen',
       telephone: '345-678-9012',
-      status: 'Open',
     },
     {
       key: '18',
@@ -308,7 +312,6 @@ export const OutOfStockList = [
       location: 'City Center',
       manager: 'Benjamin Young',
       telephone: '456-789-0123',
-      status: 'Open',
     },
     {
       key: '19',
@@ -316,7 +319,6 @@ export const OutOfStockList = [
       location: 'Village Green',
       manager: 'Harper King',
       telephone: '567-890-1234',
-      status: 'Closed',
     },
     {
       key: '20',
@@ -324,7 +326,206 @@ export const OutOfStockList = [
       location: 'Industrial Zone',
       manager: 'Lucas Wright',
       telephone: '678-901-2345',
-      status: 'Open',
     },
   ];
   
+
+  export const suppliersData = [
+    {
+      key: '1',
+      supplier_id: 'SUP123',
+      supplier_name: 'Karunarathna stores',
+      contact_person: 'John Doe',
+      contact_number: '123-456-7890',
+      email: 'supplier1@example.com',
+      address: '123 Supplier St, Supplier City, SC 12345',
+      bank_details: 'Bank XYZ, Account No: 123456789',
+    },
+    {
+      key: '2',
+      supplier_id: 'SUP124',
+      supplier_name: 'News store',
+      contact_person: 'Jane Smith',
+      contact_number: '987-654-3210',
+      email: 'supplier2@example.com',
+      address: '456 Supplier Ave, Supplier City, SC 12345',
+      bank_details: 'Bank ABC, Account No: 987654321',
+    },
+    {
+      key: '3',
+      supplier_id: 'SUP125',
+      supplier_name: 'Jayawardhana stores',
+      contact_person: 'Alice Johnson',
+      contact_number: '456-789-0123',
+      email: 'supplier3@example.com',
+      address: '789 Supplier Blvd, Supplier City, SC 12345',
+      bank_details: 'Bank DEF, Account No: 456789012',
+    },
+    {
+      key: '4',
+      supplier_id: 'SUP126',
+      supplier_name: 'Maxmo',
+      contact_person: 'Bob Brown',
+      contact_number: '321-654-9870',
+      email: 'supplier4@example.com',
+      address: '321 Supplier Rd, Supplier City, SC 12345',
+      bank_details: 'Bank GHI, Account No: 321654987',
+    },
+    {
+      key: '5',
+      supplier_id: 'SUP127',
+      supplier_name: 'Plane and printed',
+      contact_person: 'Charlie Davis',
+      contact_number: '654-321-0987',
+      email: 'supplier5@example.com',
+      address: '654 Supplier St, Supplier City, SC 12345',
+      bank_details: 'Bank JKL, Account No: 654321098',
+    },
+    {
+      key: '6',
+      supplier_id: 'SUP128',
+      supplier_name: 'Pasta station',
+      contact_person: 'Diana Evans',
+      contact_number: '789-012-3456',
+      email: 'supplier6@example.com',
+      address: '987 Supplier Ln, Supplier City, SC 12345',
+      bank_details: 'Bank MNO, Account No: 789012345',
+    },
+    {
+      key: '7',
+      supplier_id: 'SUP129',
+      supplier_name: 'Bugger buddies',
+      contact_person: 'Edward Harris',
+      contact_number: '012-345-6789',
+      email: 'supplier7@example.com',
+      address: '654 Supplier Cir, Supplier City, SC 12345',
+      bank_details: 'Bank PQR, Account No: 012345678',
+    },
+    {
+      key: '8',
+      supplier_id: 'SUP130',
+      supplier_name: 'Foodies',
+      contact_person: 'Fiona Jackson',
+      contact_number: '345-678-9012',
+      email: 'supplier8@example.com',
+      address: '123 Supplier Blvd, Supplier City, SC 12345',
+      bank_details: 'Bank STU, Account No: 345678901',
+    },
+  ];
+
+  export const categoriesData = [
+    { no: "1", category_name: "Shirts", product_count: 5 },
+    { no: "2", category_name: "Skirts", product_count: 3 },
+    { no: "3", category_name: "Shoes", product_count: 7 },
+    { no: "4", category_name: "Accessories", product_count: 2 },
+    { no: "5", category_name: "Wall decorators", product_count: 4 },
+    { no: "6", category_name: "Towels", product_count: 9 },
+    { no: "7", category_name: "Face cream", product_count: 6 },
+    { no: "8", category_name: "Toys", product_count: 1 },
+    { no: "9", category_name: "Category 9", product_count: 3 },
+    { no: "10", category_name: "Category 10", product_count: 8 },
+    { no: "11", category_name: "Category 11", product_count: 5 },
+    { no: "12", category_name: "Category 12", product_count: 3 },
+    { no: "13", category_name: "Category 13", product_count: 7 },
+    { no: "14", category_name: "Category 14", product_count: 2 },
+    { no: "15", category_name: "Category 15", product_count: 4 },
+    { no: "16", category_name: "Category 16", product_count: 9 },
+    { no: "17", category_name: "Category 17", product_count: 6 },
+    { no: "18", category_name: "Category 18", product_count: 1 },
+    { no: "19", category_name: "Category 19", product_count: 3 },
+    { no: "20", category_name: "Category 20", product_count: 8 },
+  ];
+
+ export const productsData = [
+    {
+      key: '1',
+      photo_url: '/images/shoes.jpg',
+      product_id: 'PROD001',
+      //order_id: 'ORD001',
+      product_name: 'Blue Shoes',
+      category: 'Shoes',
+      quantity: 10,
+      buying_price: 500,
+      selling_price: 700,
+      added_date: '2024-07-01',
+      supplier_id: 'SUP001', // Added supplier ID
+    },
+    {
+      key: '2',
+      photo_url: '/images/frock.jpg',
+      product_id: 'PROD002',
+      //order_id: 'ORD002',
+      product_name: 'Frock',
+      category: 'Clothing',
+      quantity: 50,
+      buying_price: 10,
+      selling_price: 15,
+      added_date: '2024-07-02',
+      supplier_id: 'SUP002', // Added supplier ID
+    },
+    {
+      key: '3',
+      photo_url: '/images/laptop.jpg',
+      product_id: 'PROD003',
+      //order_id: 'ORD003',
+      product_name: 'Laptop',
+      category: 'Electronics',
+      quantity: 130,
+      buying_price: 20,
+      selling_price: 35,
+      added_date: '2024-07-03',
+      supplier_id: 'SUP003', // Added supplier ID
+    },
+    {
+      key: '4',
+      photo_url: '/images/laptop.jpg',
+      product_id: 'PROD003',
+      //order_id: 'ORD003',
+      product_name: 'Laptop',
+      category: 'Electronics',
+      quantity: 200,
+      buying_price: 20,
+      selling_price: 35,
+      added_date: '2024-07-03',
+      supplier_id: 'SUP003', // Added supplier ID
+    },
+    {
+      key: '5',
+      photo_url: '/images/laptop.jpg',
+      product_id: 'PROD003',
+      //order_id: 'ORD003',
+      product_name: 'Laptop',
+      category: 'Electronics',
+      quantity: 90,
+      buying_price: 20,
+      selling_price: 35,
+      added_date: '2024-07-03',
+      supplier_id: 'SUP003', // Added supplier ID
+    },
+    {
+      key: '6',
+      photo_url: '/images/laptop.jpg',
+      product_id: 'PROD003',
+      //order_id: 'ORD003',
+      product_name: 'Laptop',
+      category: 'Electronics',
+      quantity: 450,
+      buying_price: 20,
+      selling_price: 35,
+      added_date: '2024-07-03',
+      supplier_id: 'SUP003', // Added supplier ID
+    },
+    {
+      key: '7',
+      photo_url: '/images/laptop.jpg',
+      product_id: 'PROD003',
+      //order_id: 'ORD003',
+      product_name: 'Laptop',
+      category: 'Electronics',
+      quantity: 5,
+      buying_price: 20,
+      selling_price: 35,
+      added_date: '2024-07-03',
+      supplier_id: 'SUP003', // Added supplier ID
+    },
+  ];

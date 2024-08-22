@@ -8,33 +8,88 @@ import {
   Typography,
   Tooltip,
   Input,
+  Form,
 } from "antd";
-import { EditOutlined, DeleteOutlined, PlusOutlined, ShopOutlined } from "@ant-design/icons";
-import NewStore from "./NewStore";
+import {
+  EditOutlined,
+  DeleteOutlined,
+  PlusOutlined,
+  ShopOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import AddNewStore from "./AddNewStore";
 import { storesData } from "./Data";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const { Title } = Typography;
+const { confirm } = Modal;
 const { Search } = Input;
 
 const Stores = () => {
+  const [data, setData] = useState(storesData);
+  const [filteredData, setFilteredData] = useState(data);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
+  const [form] = Form.useForm();
+  //const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const handleAddStore = () => {
+    form.validateFields().then((values) => {
+      form.resetFields();
+      setIsModalVisible(false);
+      const newStore = {
+        ...values,
+        /* supplier_id: `SUP${data.length + 123}`, // Simulate auto-increment
+        key: `${data.length + 1}`, */
+      };
+      const newData = [...data, newStore];
+      setData(newData);
+      setFilteredData(newData);
+    });
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    form.resetFields();
   };
 
-  const handleFormSubmit = (values) => {
-    console.log("Form submitted with values: ", values);
-    handleOk();
+  const handleViewStore = (supplier_id) => {
+    // navigate(`/phistory/${supplier_id}`);
+  };
+
+
+  const handleEdit = (values) => {
+    /* const newData = data.map((item) =>
+      item.supplier_id === values.supplier_id ? { ...item, ...values } : item
+    );
+    setData(newData);
+    setFilteredData(newData); */
+  };
+
+  const handleDelete = (name) => {
+    confirm({
+      title: `Are you sure you want to delete "${name}"?`,
+      icon: <ExclamationCircleOutlined />,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      centered: true,
+    });
+  };
+
+  const handleSearch = (value, exactMatch = false) => {
+    const filtered = data.filter((item) => {
+      const name = item.name.toLowerCase();
+      const searchValue = value.toLowerCase();
+
+      return exactMatch ? name === searchValue : name.includes(searchValue);
+    });
+    setFilteredData(filtered);
+    setSearchText(value);
   };
 
   // Table columns definition
@@ -60,11 +115,6 @@ const Stores = () => {
       key: "telephone",
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-    },
-    {
       title: "Actions",
       key: "actions",
       render: (record) => (
@@ -82,14 +132,14 @@ const Stores = () => {
           <Tooltip title="Delete Store">
             <Button
               icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record)}
+              onClick={() => handleDelete(record.name)}
               danger
             />
           </Tooltip>
           <Tooltip title="View Store">
             <Button
               icon={<ShopOutlined />}
-              onClick={() => handleView(record)}
+              onClick={() => handleViewStore(record)}
               style={{
                 borderColor: "rgb(0,0,0,0.88)",
                 color: "rgb(0,0,0,0.88)",
@@ -100,28 +150,6 @@ const Stores = () => {
       ),
     },
   ];
-
-  // Handlers for edit and delete actions
-  const handleEdit = (record) => {
-    console.log("Editing record: ", record);
-    // Implement the logic to edit the store
-  };
-
-  const handleDelete = (record) => {
-    console.log("Deleting record: ", record);
-    // Implement the logic to delete the store
-  };
-
-  const handleView = (record) => {
-    console.log('Viewing record: ', record);
-    // Implement the logic to view the store details
-  };
-
-   // Filtered data based on search
-   const filteredData = storesData.filter((item) =>
-    searchText === "" || item.name.toLowerCase() === searchText.toLowerCase()
-  );
-  
 
   return (
     <Card
@@ -139,13 +167,16 @@ const Stores = () => {
           alignItems: "center",
         }}
       >
-        <Title level={4} style={{ margin: 0 }}>
+        <Title level={3} style={{ marginBottom: 10 }}>
           Stores Data
         </Title>
-        <div style={{ display: 'flex', alignItems: 'center' }}>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Search
             placeholder="Search stores"
-            onSearch={(value) => setSearchText(value)}
+            onSearch={(value) => handleSearch(value, true)} 
+            onChange={(e) => handleSearch(e.target.value)}
+            value={searchText}
             style={{ marginRight: 16, width: 300 }}
           />
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
@@ -153,15 +184,16 @@ const Stores = () => {
           </Button>
         </div>
       </div>
+      <hr color="#1890ff" />
 
       <Modal
         title="Add New Store"
         visible={isModalVisible}
-        onOk={handleOk}
         onCancel={handleCancel}
-        footer={ null }
+        footer={null}
+        centered
       >
-        <NewStore onFinish={handleFormSubmit} />
+        <AddNewStore form={form} onAddStore={handleAddStore} onCancel={handleCancel} />
       </Modal>
 
       <Table
@@ -169,8 +201,7 @@ const Stores = () => {
         columns={columns}
         pagination={{ pageSize: 7 }}
         locale={{
-          emptyText:
-            "No stores available. Add new stores to see them listed here.",
+          emptyText: "No stores available.",
         }}
         style={{ marginTop: 20 }}
       />

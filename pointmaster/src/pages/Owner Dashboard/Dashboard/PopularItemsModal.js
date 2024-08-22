@@ -1,6 +1,6 @@
 import React from "react";
 import { Modal, Table, Avatar } from "antd";
-import { PopularItemsList } from "./Data";
+import { PopularItemsList } from "../Data";
 
 
 const PopularItemsModal = ({ visible, onClose }) => {
@@ -18,8 +18,8 @@ const PopularItemsModal = ({ visible, onClose }) => {
     },
     {
       title: "Sales",
-      dataIndex: "orders",
-      key: "orders",
+      dataIndex: "sales",
+      key: "sales",
     },
   ];
 

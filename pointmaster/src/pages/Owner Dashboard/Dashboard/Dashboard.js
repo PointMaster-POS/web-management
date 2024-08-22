@@ -18,8 +18,8 @@ import {
 import React, { useState } from "react";
 import PopularItemsModal from "./PopularItemsModal";
 import OutOfStockModal from "./OutOfStockModal";
-import { PopularItemsList } from "./Data";
-import { OutOfStockList } from "./Data";
+import { PopularItemsList } from "../Data";
+import { OutOfStockList } from "../Data";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import "./Dashboard.css";
@@ -200,7 +200,12 @@ const OutOfStock = () => {
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              title={<Text className="item-title">{item.name}</Text>}
+              title={<Text className="item-title">{item.item}</Text>}
+              /* description={
+                <Text type="secondary" className="item-description">
+                  Last Available: {item.last_available}
+                </Text>
+              } */
             />
           </List.Item>
         )}

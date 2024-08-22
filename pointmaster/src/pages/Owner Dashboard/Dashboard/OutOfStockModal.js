@@ -1,20 +1,20 @@
 import React from "react";
 import { Modal, Table } from "antd";
-import { OutOfStockList } from "./Data";
+import { OutOfStockList } from "../Data";
 
 const OutOsStockModal = ({ visible, onClose }) => {
   const columns = [
     {
       title: "Item",
-      dataIndex: "name",
-      key: "name",
-    },
-    /* {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
+      dataIndex: "item",
+      key: "item",
     },
     {
+      title: "Last Available",
+      dataIndex: "last_available",
+      key: "last_available",
+    },
+    /*{
       title: "Price",
       dataIndex: "price",
       key: "price",

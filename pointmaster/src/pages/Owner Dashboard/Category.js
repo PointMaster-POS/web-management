@@ -1,166 +1,255 @@
-import React, { useState } from 'react';
-import { Layout, Table, Space, Form, Input, Button, Modal } from 'antd';
-import { EditOutlined, DeleteOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
-import './category.css';
+import React, { useState } from "react";
+import {
+  Table,
+  Space,
+  Form,
+  Input,
+  Button,
+  Modal,
+  Tooltip,
+  Card,
+  Typography,
+} from "antd";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+import {
+  EditOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+  PlusOutlined,
+  ShoppingOutlined,
+} from "@ant-design/icons";
+import { categoriesData } from "./Data";
+import AddNewCategory from "./AddNewCategory";
 
-const { Content } = Layout;
+const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
 
-const columns = (showEditModal, showDeleteConfirm) => [
-  {
-    title: 'No',
-    dataIndex: 'key',
-    key: 'key',
-    width: 50,
-  },
-  {
-    title: 'Category Name',
-    dataIndex: 'categoryName',
-    key: 'categoryName',
-  },
-  {
-    title: 'No of Products',
-    dataIndex: 'productCount',
-    key: 'productCount',
-  },
-  {
-    title: 'Actions',
-    key: 'actions',
-    render: (text, record) => (
-      <Space size="middle">
-        <EditOutlined
-          onClick={() => showEditModal(record)}
-          style={{ color: '#45a049', cursor: 'pointer', scale: '1.25'}}
-        />
-        <DeleteOutlined
-          onClick={() => showDeleteConfirm(record.categoryName)}
-          style={{ color:'red' , cursor: 'pointer', scale: '1.25'}}
-        />
-      </Space>
-    ),
-  },
-];
-
-const initialData = [
-    { key: '1', categoryName: 'Shirts', productCount: 5 },
-    { key: '2', categoryName: 'Skirts', productCount: 3 },
-    { key: '3', categoryName: 'Shoes', productCount: 7 },
-    { key: '4', categoryName: 'Accessories', productCount: 2 },
-    { key: '5', categoryName: 'Wall decorators', productCount: 4 },
-    { key: '6', categoryName: 'Towels', productCount: 9 },
-    { key: '7', categoryName: 'Face cream', productCount: 6 },
-    { key: '8', categoryName: 'Toys', productCount: 1 },
-    { key: '9', categoryName: 'Category 9', productCount: 3 },
-    { key: '10', categoryName: 'Category 10', productCount: 8 },
-    { key: '11', categoryName: 'Category 11', productCount: 5 },
-    { key: '12', categoryName: 'Category 12', productCount: 3 },
-    { key: '13', categoryName: 'Category 13', productCount: 7 },
-    { key: '14', categoryName: 'Category 14', productCount: 2 },
-    { key: '15', categoryName: 'Category 15', productCount: 4 },
-    { key: '16', categoryName: 'Category 16', productCount: 9 },
-    { key: '17', categoryName: 'Category 17', productCount: 6 },
-    { key: '18', categoryName: 'Category 18', productCount: 1 },
-    { key: '19', categoryName: 'Category 19', productCount: 3 },
-    { key: '20', categoryName: 'Category 20', productCount: 8 },
-  ];
 
 const Category = () => {
-  const [data, setData] = useState(initialData);
-  const [searchText, setSearchText] = useState('');
+  const [data, setData] = useState(categoriesData);
+  const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState(data);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const navigate = useNavigate();
 
-  const onFinish = (values) => {
-    console.log('Received values:', values);
-    // Handle form submission logic here
+  const showModal = () => {
+    setIsModalVisible(true);
   };
 
-  const handleEdit = (record, newCategoryName) => {
-    const newData = data.map(item => 
-      item.key === record.key ? { ...item, categoryName: newCategoryName } : item
-    );
-    setData(newData);
-    setFilteredData(newData);
-  };
-
-  const showEditModal = (record) => {
-  let categoryName = record.categoryName;
-
-  Modal.info({
-    title: 'Edit Category',
-    content: (
-      <Form>
-        <Form.Item label="Category Name">
-          <Input 
-            defaultValue={categoryName} 
-            onChange={(e) => categoryName = e.target.value} 
-          />
-        </Form.Item>
-      </Form>
-    ),
-    onOk() {
-      handleEdit(record, categoryName);
-    },
-    okText: 'Save',
-    cancelText: 'Cancel',
-    footer: (
-      <div className="custom-modal-footer">
-        <Button onClick={() => Modal.destroyAll()} className="custom-cancel-btn">
-          Cancel
-        </Button>
-        <Button 
-          type="primary" 
-          onClick={() => handleEdit(record, categoryName)}
-          className="custom-save-btn"
-        >
-          Save
-        </Button>
-      </div>
-    )
-  });
-};
-  
-
-  const showDeleteConfirm = (categoryName) => {
-    confirm({
-      title: `Are you sure you want to delete "${categoryName}"?`,
-      icon: <ExclamationCircleOutlined />,
-      okText: 'Delete',
-      okType: 'danger',
-      cancelText: 'Cancel',
+  const handleAddCategories = () => {
+    form.validateFields().then((values) => {
+      form.resetFields();
+      setIsModalVisible(false);
+      const newCategories = {
+        ...values,
+        no: `SUP${data.length + 123}`, // Simulate auto-increment
+        key: `${data.length + 1}`,
+      };
+      const newData = [...data, newCategories];
+      setData(newData);
+      setFilteredData(newData);
     });
   };
 
-  const handleSearch = (value) => {
-    const filtered = data.filter(item => 
-      item.key.includes(value) || item.categoryName.toLowerCase().includes(value.toLowerCase())
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    form.resetFields();
+  };
+
+  const handleViewProducts = (supplier_id) => {
+    // navigate(`/phistory/${supplier_id}`);
+  };
+
+  const handleEdit = (record, newCategoryName) => {
+    /* const newData = data.map((item) =>
+      item.key === record.key
+        ? { ...item, categoryName: newCategoryName }
+        : item
     );
+    setData(newData);
+    setFilteredData(newData); */
+  };
+
+  /* const showEditModal = (record) => {
+    let categoryName = record.categoryName;
+
+    Modal.info({
+      title: "Edit Category",
+      content: (
+        <Form>
+          <Form.Item label="Category Name">
+            <Input
+              defaultValue={categoryName}
+              onChange={(e) => (categoryName = e.target.value)}
+            />
+          </Form.Item>
+        </Form>
+      ),
+      onOk() {
+        handleEdit(record, categoryName);
+      },
+      okText: "Save",
+      cancelText: "Cancel",
+      footer: (
+        <div className="custom-modal-footer">
+          <Button
+            onClick={() => Modal.destroyAll()}
+            className="custom-cancel-btn"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="primary"
+            onClick={() => handleEdit(record, categoryName)}
+            className="custom-save-btn"
+          >
+            Save
+          </Button>
+        </div>
+      ),
+    });
+  }; */
+
+  const handleDelete = (categoryName) => {
+    confirm({
+      title: `Are you sure you want to delete "${categoryName}"?`,
+      icon: <ExclamationCircleOutlined />,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      centered: true,
+    });
+  };
+
+  const handleSearch = (value, exactMatch = false) => {
+    const searchValue = value.toLowerCase();
+  
+    const filtered = data.filter((item) => {
+      const category_name = item.category_name.toLowerCase();
+      const no = item.no.toString().toLowerCase(); // Convert no to string for comparison
+  
+      if (exactMatch) {
+        return category_name === searchValue || no === searchValue;
+      } else {
+        return category_name.includes(searchValue) || no.includes(searchValue);
+      }
+    });
+  
     setFilteredData(filtered);
     setSearchText(value);
   };
 
-  const paginationConfig = {
-    pageSize: 15, 
-    hideOnSinglePage: true, // Hide pagination if there's only one page
-  };
+  const columns = [
+    {
+      title: "No",
+      dataIndex: "no",
+      key: "no",
+      width: 100,
+    },
+    {
+      title: "Category Name",
+      dataIndex: "category_name",
+      key: "category_name",
+    },
+    {
+      title: "No of Products",
+      dataIndex: "product_count",
+      key: "product_count",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (record) => (
+        <Space size="middle">
+          <Tooltip title="Edit Category">
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+              style={{
+                borderColor: "#1890ff",
+                color: "#1890ff",
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="Delete Category">
+            <Button
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record.no)}
+              danger
+            />
+          </Tooltip>
+          <Tooltip title="View Category">
+            <Button
+              icon={<ShoppingOutlined />}
+              onClick={() => handleViewProducts(record.category_name)}
+              style={{
+                borderColor: "rgb(0,0,0,0.88)",
+                color: "rgb(0,0,0,0.88)",
+              }}
+            />
+          </Tooltip>
+        </Space>
+      ),
+    },
+  ];
 
   return (
-    <Content className='content'>
-      <div className="all-category-box-owner">
-        <div className="category-header-owner">
-          <h2>ALL CATEGORIES</h2>
+    <Card
+      style={{
+        margin: 30,
+        padding: 30,
+        borderRadius: "10px",
+      }}
+      bodyStyle={{ padding: "20px" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Title level={3} style={{ marginBottom: 10 }}>
+          Categories Data
+        </Title>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
           <Search
             placeholder="Search by No or Category Name"
-            onSearch={handleSearch}
+            onSearch={(value) => handleSearch(value, true)} 
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
-            style={{ width: 300, marginLeft: 'auto' }}
+            style={{ marginRight: 16, width: 300 }}
           />
+          <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
+            Add New Category
+          </Button>
         </div>
-        <hr />
-        <Table className='table' columns={columns(showEditModal, showDeleteConfirm)} dataSource={filteredData} pagination={paginationConfig} />
       </div>
-    </Content>    
+      <hr color="#1890ff" />
+
+      <Modal
+        title="Add New Category"
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+        centered
+      >
+        <AddNewCategory form={form} onAddCategories={handleAddCategories} onCancel={handleCancel} />
+      </Modal>
+
+      <Table
+        dataSource={filteredData}
+        columns={columns}
+        pagination={{ pageSize: 7 }}
+        locale={{
+          emptyText: "No stores available.",
+        }}
+        style={{ marginTop: 20 }}
+      />
+    </Card>
   );
 };
 

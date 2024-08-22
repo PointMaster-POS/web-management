@@ -1,5 +1,5 @@
-import React from 'react';
-import { Form, Input, Select, Button } from 'antd';
+import React, { useEffect } from 'react';
+import {Form, Input, Select, Button } from 'antd';
 
 const { Option } = Select;
 
@@ -7,19 +7,25 @@ const managers = [
   { id: 1, name: "Alice" },
   { id: 2, name: "Bob" },
   { id: 3, name: "Charlie" },
-]  
+];  
 
-const NewStore = ({onFinish, onCancel }) => {
+const AddNewStore = ({ form, onAddStore, onCancel }) => {
+
+  const handleFinish = (values) => {
+    onAddStore(values); // Pass form values to Stores component
+  };
+
   return (
     <Form
+      form={form}
       name="add_branch"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
-      onFinish={onFinish}
+      onFinish={handleFinish}
       style={{
         padding: '30px',
         borderRadius: '8px',
-        backgroundColor: '#f9f9ff',
+        backgroundColor: '#f9f9f9',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
       }}
       labelAlign="left"
@@ -56,7 +62,7 @@ const NewStore = ({onFinish, onCancel }) => {
           placeholder="Select a manager" 
         >
           {managers.map((manager) => (
-            <Option key={manager.id} value={manager.id}>
+            <Option key={manager.id} value={manager.name}>
               {manager.name}
             </Option>
           ))}
@@ -88,11 +94,12 @@ const NewStore = ({onFinish, onCancel }) => {
         />
       </Form.Item>
   
-
       <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{ textAlign: 'right' }}>
         <Button 
           type="default" 
-          onClick={onCancel}
+          onClick={() => {
+            onCancel();
+          }}
           style={{ marginRight: '10px' }}
         >
           Cancel
@@ -109,4 +116,4 @@ const NewStore = ({onFinish, onCancel }) => {
   );
 };
 
-export default NewStore;
+export default AddNewStore;
