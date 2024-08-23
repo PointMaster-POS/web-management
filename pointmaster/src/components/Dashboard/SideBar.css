@@ -6,6 +6,7 @@
 .custom-menu-item {
   font-size: 18px;
   gap: 20px;
+  margin-bottom: 15px !important;
 }
 
 .custom-menu-item .ant-menu-item-icon {
