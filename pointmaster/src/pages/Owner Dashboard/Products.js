@@ -97,11 +97,12 @@ const Products = () => {
   }; */
 
   const handleSearch = (value, exactMatch = false) => {
-    const searchValue = value.toLowerCase();
-
+    
     const filtered = data.filter((item) => {
       const product_name = item.product_name.toLowerCase();
       const product_id = item.product_id.toString().toLowerCase(); // Convert product_id to string for comparison
+      const searchValue = value.toLowerCase();
+
 
       if (exactMatch) {
         return product_name === searchValue || product_id === searchValue;
