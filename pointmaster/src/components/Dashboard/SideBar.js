@@ -40,7 +40,7 @@ const items = [
   { key: "/category", icon: <AppstoreOutlined />, label: "Category" },
   { key: "/products", icon: <ProductOutlined />, label: "Products" },
   { key: "/orders", icon: <ShoppingCartOutlined />, label: "Orders" },
-  { key: "/reports", icon: <AreaChartOutlined />, label: "Reports" },
+  // { key: "/reports", icon: <AreaChartOutlined />, label: "Reports" },
   { key: "/expired", icon: <StopOutlined />, label: "Expired" },
 ];
 
