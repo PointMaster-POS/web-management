@@ -12,7 +12,7 @@ const Orders = () => {
   const [searchText, setSearchText] = useState("");
 
   // Sort orders by date, most recent first
-  const sortedOrders = [...filteredData].sort((a, b) => new Date(b.ordersDate) - new Date(a.ordersDate));
+  const sortedOrders = [...filteredData].sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
   
   // Calculate total number of pages
   /* const totalOrders = sortedOrders.length;
@@ -33,7 +33,7 @@ const Orders = () => {
 
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
-      const order_date = item.name.toLowerCase();
+      const order_date = item.order_date.toString().toLowerCase();
       const searchValue = value.toLowerCase();
 
       return exactMatch ? order_date === searchValue : order_date.includes(searchValue);
@@ -59,7 +59,7 @@ const Orders = () => {
       key: "order_date",
     },
     {
-      title: "Totl Amount",
+      title: "Total Amount",
       dataIndex: "total_amount",
       key: "total_amount",
     },
