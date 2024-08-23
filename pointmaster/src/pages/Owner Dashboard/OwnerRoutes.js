@@ -20,7 +20,7 @@ function OwnerRoutes() {
           <Route path= "/" element={<Dashboard />} />
           <Route path="/stores" element={<Stores />} />
           <Route path="/users" element={<Users />} />
-          <Route path="/reports" element={<Reports />} />
+          {/* <Route path="/reports" element={<Reports />} /> */}
           <Route path="/expired" element={<Expired />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/category" element={<Category />} />
