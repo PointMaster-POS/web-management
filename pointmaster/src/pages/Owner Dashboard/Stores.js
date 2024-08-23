@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 import AddNewStore from "./AddNewStore";
 import { storesData } from "./Data";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+//import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const { Title } = Typography;
 const { confirm } = Modal;
