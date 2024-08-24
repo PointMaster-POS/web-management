@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Layout } from "antd";
+import React, { useState, useEffect } from "react";
+import { Layout, message } from "antd";
 import SideBar from "./SideBar";
 import Header from "./Header";
 import Content from "./Content";
@@ -7,8 +7,16 @@ import Content from "./Content";
 
 const { Content: AntContent } = Layout;
 
-const MainLayout = () => {
+const MainLayout = ({ setIsAuthenticated }) => {
   const [collapsed, setCollapsed] = useState(false);
+  const [messageApi, contextHolder] = message.useMessage();
+  useEffect(() => {
+    messageApi.open({
+      type: "success",
+      content: "Welcome to the System",
+      duration: 5,
+    });
+  }, []);
 
   const handleCollapse = (collapsed) => {
     setCollapsed(collapsed);
@@ -24,7 +32,7 @@ const MainLayout = () => {
           width: "100%",
         }}
       >
-        <Header />
+        <Header setIsAuthenticated={setIsAuthenticated} />
       </div>
       <Layout>
         <SideBar onCollapse={handleCollapse} />
@@ -35,6 +43,7 @@ const MainLayout = () => {
           }}
         >
           <AntContent style={{ margin: "16px 16px 0" }}>
+            {contextHolder}
             <Content />
           </AntContent>
         </Layout>

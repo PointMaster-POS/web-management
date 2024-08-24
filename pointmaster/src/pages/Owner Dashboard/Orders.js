@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Typography,Card,Table, Input } from 'antd';
 import { ordersData } from "./Data";
-import './orders.css';
 
 const { Title } = Typography;
 const { Search } = Input;

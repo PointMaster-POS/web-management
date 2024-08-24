@@ -637,3 +637,7 @@ export const OutOfStockList = [
       total_amount: 320.00,
     },
   ];
+
+  export const employeesData = [
+
+  ];

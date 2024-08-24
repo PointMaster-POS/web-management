@@ -2,8 +2,7 @@
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./Dashboard/Dashboard";
 import Stores from "./Stores";
-import Users from "./Users";
-import Reports from "./Reports";
+import Employees from "./Employees";
 import Expired from "./Expired";
 import Profile from "./Profile";
 import Category from './Category';
@@ -19,8 +18,7 @@ function OwnerRoutes() {
       <Routes>
           <Route path= "/" element={<Dashboard />} />
           <Route path="/stores" element={<Stores />} />
-          <Route path="/users" element={<Users />} />
-          {/* <Route path="/reports" element={<Reports />} /> */}
+          <Route path="/employees" element={<Employees />} />
           <Route path="/expired" element={<Expired />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/category" element={<Category />} />

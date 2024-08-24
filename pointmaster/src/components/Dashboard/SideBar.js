@@ -28,9 +28,9 @@ const items = [
     label: "Stores",
   },
   {
-    key: "/users",
+    key: "/employees",
     icon: <UserOutlined />,
-    label: "Users",
+    label: "Employees",
   },
   {
     key: "/suppliers",

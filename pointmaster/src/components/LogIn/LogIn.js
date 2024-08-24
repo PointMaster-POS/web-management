@@ -1,17 +1,37 @@
 import React, { useState } from "react";
 import "./LogIn.css";
-import { Form, Input, Button, Checkbox } from "antd";
-import { UserOutlined, LockOutlined, EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Form, Input, Button, Checkbox, message } from "antd";
+import {
+  UserOutlined,
+  LockOutlined,
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+} from "@ant-design/icons";
 
-export default function LogIn() {
+export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
+  const [messageApi, contextHolder] = message.useMessage();
+
   const onFinish = (values) => {
     console.log("Success:", values);
+
+    if (values.password === "pass") {
+      if (!isAuthenticated) {
+        setIsAuthenticated(true);
+      }
+    } else {
+      messageApi.open({
+        type: "error",
+        content: "Entered password is incorrect",
+        duration: 5,
+      });
+    }
   };
 
   return (
     <div className="login-container">
+      {contextHolder}
       <div className="image-section">
-        <img src={`${process.env.PUBLIC_URL}/LogIn.png`} alt="Welcome" />
+        <img src={`${process.env.PUBLIC_URL}images/LogIn.png`} alt="Welcome" />
       </div>
       <div className="form-section">
         <h1>
@@ -41,7 +61,7 @@ export default function LogIn() {
               placeholder="Username"
             />
           </Form.Item>
-          
+
           <Form.Item
             name="password"
             rules={[
@@ -54,7 +74,9 @@ export default function LogIn() {
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               placeholder="Password"
-              iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+              iconRender={(visible) =>
+                visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+              }
             />
           </Form.Item>
 

@@ -58,7 +58,7 @@ const Suppliers = () => {
     form.resetFields();
   };
 
-  const handleViewOrders = (supplier_id) => {
+  const handleViewOrder = (supplier_id) => {
     navigate(`/phistory/${supplier_id}`);
   };
 
@@ -136,18 +136,6 @@ const Suppliers = () => {
       dataIndex: "bank_details",
       key: "bank_details",
     },
-    /*  {
-      title: "Orders",
-      key: "orders",
-      render: (record) => (
-        <Button
-          className="view-order-btn"
-          onClick={() => handleViewOrders(record.supplier_id)}
-        >
-          View Orders
-        </Button>
-      ),
-    }, */
     {
       title: "Actions",
       key: "actions",
@@ -161,28 +149,39 @@ const Suppliers = () => {
                 borderColor: "#1890ff",
                 color: "#1890ff",
               }}
-            />
+              />
           </Tooltip>
           <Tooltip title="Delete Supplier">
             <Button
               icon={<DeleteOutlined />}
               onClick={() => handleDelete(record.supplier_name)}
               danger
-            />
+              />
           </Tooltip>
-          <Tooltip title="View Orders">
+          {/* <Tooltip title="View Orders">
             <Button
-              icon={<ShoppingOutlined />}
-              onClick={() => handleViewOrders(record.supplier_id)}
-              style={{
-                borderColor: "rgb(0,0,0,0.88)",
-                color: "rgb(0,0,0,0.88)",
+            icon={<ShoppingOutlined />}
+            onClick={() => handleViewOrder(record.supplier_id)}
+            style={{
+              borderColor: "rgb(0,0,0,0.88)",
+              color: "rgb(0,0,0,0.88)",
               }}
-            />
-          </Tooltip>
+              />
+              </Tooltip> */}
         </Space>
       ),
     },
+    {
+     title: "",
+     key: "",
+     render: (record) => (
+       <Button
+         onClick={() => handleViewOrder(record.supplier_id)}
+       >
+         View Orders
+       </Button>
+     ),
+   },
   ];
 
   return (
