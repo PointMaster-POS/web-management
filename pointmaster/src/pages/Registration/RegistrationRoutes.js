@@ -7,7 +7,7 @@ import Ereg from './Pages/Employee/Ereg';
 import Employees from './Pages/Employee/Employees';
 import Landing from './Pages/Landing page/Landing';
 
-function App() {
+function RegisterationRoutes() {
     return (
         <Routes>
             <Route path="/" element={<h1><Landing/></h1>} />
@@ -21,4 +21,4 @@ function App() {
     );
 }
 
-export default App;
+export default RegisterationRoutes;
