@@ -28,7 +28,7 @@ const { Search } = Input;
 const Products = () => {
   const [data, setData] = useState(productsData);
   const [searchText, setSearchText] = useState("");
-  const [filteredData, setFilteredData] = useState(sortData(productsData));
+  const [filteredData, setFilteredData] = useState(productsData);
   const [isModalVisible, setIsModalVisible] = useState(false);
   // const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -37,17 +37,7 @@ const Products = () => {
     setIsModalVisible(true);
   };
 
-  const sortData = (data) => {
-    return [...data].sort((a, b) => {
-      if (a.quantity < 100 && b.quantity >= 100) {
-        return -1; // a comes first
-      }
-      if (a.quantity >= 100 && b.quantity < 100) {
-        return 1; // b comes first
-      }
-      return 0; // no change
-    });
-  };
+  const sortedData = [...filteredData].sort((a, b) => a.quantity - b.quantity);
 
   const handleAddProduct = () => {
     form.validateFields().then((values) => {
@@ -58,7 +48,7 @@ const Products = () => {
         product_id: `SUP${data.length + 123}`, // Simulate auto-increment
         key: `${data.length + 1}`,
       };
-      const newData = sortData([...data, newProduct]); 
+      const newData = [...data, newProduct]; 
       setData(newData);
       setFilteredData(newData);
     });
@@ -107,11 +97,12 @@ const Products = () => {
   }; */
 
   const handleSearch = (value, exactMatch = false) => {
-    const searchValue = value.toLowerCase();
-
+    
     const filtered = data.filter((item) => {
       const product_name = item.product_name.toLowerCase();
       const product_id = item.product_id.toString().toLowerCase(); // Convert product_id to string for comparison
+      const searchValue = value.toLowerCase();
+
 
       if (exactMatch) {
         return product_name === searchValue || product_id === searchValue;
@@ -122,7 +113,7 @@ const Products = () => {
       }
     });
 
-    setFilteredData(sortData(filtered));
+    setFilteredData(filtered);
     setSearchText(value);
   };
 
@@ -276,7 +267,7 @@ const Products = () => {
       </Modal>
 
       <Table
-        dataSource={filteredData}
+        dataSource={sortedData}
         columns={columns}
         pagination={{ pageSize: 5 }}
         locale={{

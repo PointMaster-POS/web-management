@@ -14,12 +14,11 @@ import {
   EditOutlined,
   DeleteOutlined,
   PlusOutlined,
-  ShopOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewStore from "./AddNewStore";
 import { storesData } from "./Data";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+//import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -35,6 +34,10 @@ const Stores = () => {
 
   const showModal = () => {
     setIsModalVisible(true);
+  };
+
+  const handleViewStore = (stores_id) => {
+    // navigate(`/phistory/${supplier_id}`);
   };
 
   const handleAddStore = () => {
@@ -56,11 +59,6 @@ const Stores = () => {
     setIsModalVisible(false);
     form.resetFields();
   };
-
-  const handleViewStore = (supplier_id) => {
-    // navigate(`/phistory/${supplier_id}`);
-  };
-
 
   const handleEdit = (values) => {
     /* const newData = data.map((item) =>
@@ -94,6 +92,11 @@ const Stores = () => {
 
   // Table columns definition
   const columns = [
+    {
+      title: "Store_ID",
+      dataIndex: "store_id",
+      key: "store_id",
+    },
     {
       title: "Name",
       dataIndex: "name",
@@ -136,7 +139,7 @@ const Stores = () => {
               danger
             />
           </Tooltip>
-          <Tooltip title="View Store">
+          {/* <Tooltip title="View Store">
             <Button
               icon={<ShopOutlined />}
               onClick={() => handleViewStore(record)}
@@ -145,8 +148,20 @@ const Stores = () => {
                 color: "rgb(0,0,0,0.88)",
               }}
             />
-          </Tooltip>
+          </Tooltip> */}
         </Space>
+      ),
+    },
+
+    {
+      title: "",
+      key: "",
+      render: (record) => (
+        <Button
+          onClick={() => handleViewStore(record.store_id)}
+        >
+          View Store
+        </Button>
       ),
     },
   ];

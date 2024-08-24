@@ -1,57 +1,55 @@
 import React, { useState } from "react";
 import {
+  Button,
+  Card,
+  Modal,
   Table,
   Space,
-  Form,
-  Input,
-  Button,
-  Modal,
-  Tooltip,
-  Card,
   Typography,
+  Tooltip,
+  Input,
+  Form,
 } from "antd";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
 import {
   EditOutlined,
   DeleteOutlined,
-  ExclamationCircleOutlined,
   PlusOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { categoriesData } from "./Data";
-import AddNewCategory from "./AddNewCategory";
+import AddNewEmployee from "./AddNewEmployee";
+import { employeesData } from "./Data";
+//import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
 
-
-const Category = () => {
-  const [data, setData] = useState(categoriesData);
-  const [searchText, setSearchText] = useState("");
+const Employees = () => {
+  const [data, setData] = useState(employeesData);
   const [filteredData, setFilteredData] = useState(data);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const showModal = () => {
     setIsModalVisible(true);
-
   };
 
-  const handleViewCategory = (no) => {
+  const handleViewEmployee = (employee_id) => {
     // navigate(`/phistory/${supplier_id}`);
   };
 
-  const handleAddCategories = () => {
+  const handleAddEmployee = () => {
     form.validateFields().then((values) => {
       form.resetFields();
       setIsModalVisible(false);
-      const newCategories = {
+      const newEmployee = {
         ...values,
-        no: `SUP${data.length + 123}`, // Simulate auto-increment
-        key: `${data.length + 1}`,
+        /* supplier_id: `SUP${data.length + 123}`, // Simulate auto-increment
+        key: `${data.length + 1}`, */
       };
-      const newData = [...data, newCategories];
+      const newData = [...data, newEmployee];
       setData(newData);
       setFilteredData(newData);
     });
@@ -62,59 +60,18 @@ const Category = () => {
     form.resetFields();
   };
 
-  const handleEdit = (record, newCategoryName) => {
+
+  const handleEdit = (values) => {
     /* const newData = data.map((item) =>
-      item.key === record.key
-        ? { ...item, categoryName: newCategoryName }
-        : item
+      item.supplier_id === values.supplier_id ? { ...item, ...values } : item
     );
     setData(newData);
     setFilteredData(newData); */
   };
 
-  /* const showEditModal = (record) => {
-    let categoryName = record.categoryName;
-
-    Modal.info({
-      title: "Edit Category",
-      content: (
-        <Form>
-          <Form.Item label="Category Name">
-            <Input
-              defaultValue={categoryName}
-              onChange={(e) => (categoryName = e.target.value)}
-            />
-          </Form.Item>
-        </Form>
-      ),
-      onOk() {
-        handleEdit(record, categoryName);
-      },
-      okText: "Save",
-      cancelText: "Cancel",
-      footer: (
-        <div className="custom-modal-footer">
-          <Button
-            onClick={() => Modal.destroyAll()}
-            className="custom-cancel-btn"
-          >
-            Cancel
-          </Button>
-          <Button
-            type="primary"
-            onClick={() => handleEdit(record, categoryName)}
-            className="custom-save-btn"
-          >
-            Save
-          </Button>
-        </div>
-      ),
-    });
-  }; */
-
-  const handleDelete = (categoryName) => {
+  const handleDelete = (EmployeeName) => {
     confirm({
-      title: `Are you sure you want to delete "${categoryName}"?`,
+      title: `Are you sure you want to delete "${EmployeeName}"?`,
       icon: <ExclamationCircleOutlined />,
       okText: "Delete",
       okType: "danger",
@@ -124,46 +81,60 @@ const Category = () => {
   };
 
   const handleSearch = (value, exactMatch = false) => {
-    const searchValue = value.toLowerCase();
-  
     const filtered = data.filter((item) => {
-      const category_name = item.category_name.toLowerCase();
-      const no = item.no.toString().toLowerCase(); // Convert no to string for comparison
-  
+      const employee_name = item.employee_name.toLowerCase();
+      const employee_id = item.employee_id.toString().toLowerCase();
+      const searchValue = value.toLowerCase();
+
       if (exactMatch) {
-        return category_name === searchValue || no === searchValue;
+        return employee_name === searchValue || employee_id === searchValue;
       } else {
-        return category_name.includes(searchValue) || no.includes(searchValue);
+        return employee_name.includes(searchValue) || employee_id.includes(searchValue);
       }
     });
-  
     setFilteredData(filtered);
     setSearchText(value);
   };
 
+  // Table columns definition
   const columns = [
+    /* {
+      title: "",
+      dataIndex: "photo_url",
+      key: "photo_url",
+      render: (image) => <Avatar src={image} size={50} />,
+    }, */
     {
-      title: "No",
-      dataIndex: "no",
-      key: "no",
-      width: 100,
+      title: "Employee ID",
+      dataIndex: "employee_id",
+      key: "employee_id",
     },
     {
-      title: "Category Name",
-      dataIndex: "category_name",
-      key: "category_name",
+      title: "Employee Name",
+      dataIndex: "employee_name",
+      key: "employee_name",
     },
     {
-      title: "No of Products",
-      dataIndex: "product_count",
-      key: "product_count",
+      title: "Branch ID",
+      dataIndex: "branch_id",
+      key: "branch_id",
+    },
+    {
+      title: "Role",
+      dataIndex: "role",
+      key: "role",
+    },
+    {
+      title: "Telephone",
+      dataIndex: "telephone",
+      key: "telephone",
     },
     {
       title: "Actions",
       key: "actions",
       render: (record) => (
         <Space size="middle">
-          <Tooltip title="Edit Category">
+          <Tooltip title="Edit Employee">
             <Button
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
@@ -173,17 +144,17 @@ const Category = () => {
               }}
             />
           </Tooltip>
-          <Tooltip title="Delete Category">
+          <Tooltip title="Delete Employee">
             <Button
               icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.no)}
+              onClick={() => handleDelete(record.employee_name)}
               danger
             />
           </Tooltip>
-          {/* <Tooltip title="View Category">
+          {/* <Tooltip title="View Store">
             <Button
-              icon={<ShoppingOutlined />}
-              onClick={() => handleViewProducts(record.category_name)}
+              icon={<ShopOutlined />}
+              onClick={() => handleViewStore(record)}
               style={{
                 borderColor: "rgb(0,0,0,0.88)",
                 color: "rgb(0,0,0,0.88)",
@@ -193,14 +164,15 @@ const Category = () => {
         </Space>
       ),
     },
+
     {
-      title: " ",
-      key: "orders",
+      title: "",
+      key: "",
       render: (record) => (
         <Button
-          onClick={() => handleViewCategory(record.no)}
+          onClick={() => handleViewEmployee(record.employee_id)}
         >
-          View Category
+          View Employee
         </Button>
       ),
     },
@@ -223,32 +195,32 @@ const Category = () => {
         }}
       >
         <Title level={3} style={{ marginBottom: 10 }}>
-          Categories Data
+          Employees Data
         </Title>
 
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
-            placeholder="Search by No or Category Name"
+            placeholder="Search by Employee ID or Employee Name"
             onSearch={(value) => handleSearch(value, true)} 
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
             style={{ marginRight: 16, width: 300 }}
           />
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
-            Add New Category
+            Add New Employee
           </Button>
         </div>
       </div>
       <hr color="#1890ff" />
 
       <Modal
-        title="Add New Category"
+        title="Add New Employee"
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
         centered
       >
-        <AddNewCategory form={form} onAddCategories={handleAddCategories} onCancel={handleCancel} />
+        <AddNewEmployee form={form} onAddEmployee={handleAddEmployee} onCancel={handleCancel} />
       </Modal>
 
       <Table
@@ -256,7 +228,7 @@ const Category = () => {
         columns={columns}
         pagination={{ pageSize: 7 }}
         locale={{
-          emptyText: "No stores available.",
+          emptyText: "No employees available.",
         }}
         style={{ marginTop: 20 }}
       />
@@ -264,4 +236,4 @@ const Category = () => {
   );
 };
 
-export default Category;
+export default Employees;

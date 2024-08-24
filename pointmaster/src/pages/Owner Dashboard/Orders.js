@@ -1,190 +1,124 @@
 import React, { useState } from 'react';
-import { Layout, Button, Modal, Pagination } from 'antd';
-import './orders.css';
+import { Typography,Card,Table, Input } from 'antd';
+import { ordersData } from "./Data";
 
-const { Content } = Layout;
+const { Title } = Typography;
+const { Search } = Input;
 
 const Orders = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 12; // Number of orders per page
-
-  const orders = [
-    {
-      key: '1',
-      orderId: 'ORD001',
-      supplierId: 'SUP001',
-      orderDate: '2024-08-10',
-      totalAmount: 150.00,
-    },
-    {
-      key: '2',
-      orderId: 'ORD002',
-      supplierId: 'SUP002',
-      orderDate: '2024-08-11',
-      totalAmount: 200.00,
-    },
-    {
-      key: '3',
-      orderId: 'ORD003',
-      supplierId: 'SUP003',
-      orderDate: '2024-08-12',
-      totalAmount: 300.00,
-    },
-    {
-      key: '4',
-      orderId: 'ORD004',
-      supplierId: 'SUP004',
-      orderDate: '2024-08-13',
-      totalAmount: 250.00,
-    },
-    {
-      key: '5',
-      orderId: 'ORD005',
-      supplierId: 'SUP005',
-      orderDate: '2024-08-14',
-      totalAmount: 180.00,
-    },
-    {
-      key: '6',
-      orderId: 'ORD006',
-      supplierId: 'SUP006',
-      orderDate: '2024-08-15',
-      totalAmount: 220.00,
-    },
-    {
-      key: '7',
-      orderId: 'ORD007',
-      supplierId: 'SUP007',
-      orderDate: '2024-08-16',
-      totalAmount: 270.00,
-    },
-    {
-      key: '8',
-      orderId: 'ORD008',
-      supplierId: 'SUP008',
-      orderDate: '2024-08-17',
-      totalAmount: 320.00,
-    },
-    {
-      key: '9',
-      orderId: 'ORD009',
-      supplierId: 'SUP009',
-      orderDate: '2024-08-18',
-      totalAmount: 190.00,
-    },
-    {
-      key: '10',
-      orderId: 'ORD010',
-      supplierId: 'SUP010',
-      orderDate: '2024-08-19',
-      totalAmount: 210.00,
-    },
-    {
-      key: '11',
-      orderId: 'ORD011',
-      supplierId: 'SUP011',
-      orderDate: '2024-08-20',
-      totalAmount: 240.00,
-    },
-    {
-      key: '12',
-      orderId: 'ORD012',
-      supplierId: 'SUP012',
-      orderDate: '2024-08-21',
-      totalAmount: 260.00,
-    },
-    {
-      key: '13',
-      orderId: 'ORD013',
-      supplierId: 'SUP013',
-      orderDate: '2024-08-22',
-      totalAmount: 300.00,
-    },
-    {
-      key: '14',
-      orderId: 'ORD014',
-      supplierId: 'SUP014',
-      orderDate: '2024-08-23',
-      totalAmount: 280.00,
-    },
-    {
-      key: '15',
-      orderId: 'ORD015',
-      supplierId: 'SUP015',
-      orderDate: '2024-08-24',
-      totalAmount: 320.00,
-    },
-  ];
+  const [data, setData] = useState(ordersData);
+  const [filteredData, setFilteredData] = useState(data);
+  const [searchText, setSearchText] = useState("");
 
   // Sort orders by date, most recent first
-  const sortedOrders = [...orders].sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
+  const sortedOrders = [...filteredData].sort((a, b) => new Date(b.order_date) - new Date(a.order_date));
   
   // Calculate total number of pages
-  const totalOrders = sortedOrders.length;
-  const totalPages = Math.ceil(totalOrders / pageSize);
+  /* const totalOrders = sortedOrders.length;
+  const totalPages = Math.ceil(totalOrders / pageSize); */
   
   // Get orders for current page
-  const paginatedOrders = sortedOrders.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  // const paginatedOrders = sortedOrders.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
-  const showOrderDetails = (order) => {
+  /* const showOrderDetails = (order) => {
     setSelectedOrder(order);
     setIsModalVisible(true);
   };
-
-  const handleModalCancel = () => {
+ */
+  /* const handleModalCancel = () => {
     setIsModalVisible(false);
     setSelectedOrder(null);
+  }; */
+
+  const handleSearch = (value, exactMatch = false) => {
+    const filtered = data.filter((item) => {
+      const order_date = item.order_date.toString().toLowerCase();
+      const searchValue = value.toLowerCase();
+
+      return exactMatch ? order_date === searchValue : order_date.includes(searchValue);
+    });
+    setFilteredData(filtered);
+    setSearchText(value);
   };
 
+  const columns = [
+    {
+      title: "Order Id",
+      dataIndex: "order_id",
+      key: "order_id",
+    },
+    {
+      title: "Supplier ID",
+      dataIndex: "supplier_id",
+      key: "supplier_id",
+    },
+    {
+      title: "Order Date",
+      dataIndex: "order_date",
+      key: "order_date",
+    },
+    {
+      title: "Total Amount",
+      dataIndex: "total_amount",
+      key: "total_amount",
+    },
+  ]  
+
   return (
-    <Content className="content">
-      <div className="orders-box">
-        <h2>ORDERS</h2>
-        <hr className="hr" />
-        <div className="orders-list">
-          {paginatedOrders.map(order => (
-            <div key={order.key} className="order-row">
-              <div className="order-details">
-                <p><strong>Order ID:</strong> {order.orderId}</p>
-                <p><strong>Supplier ID:</strong> {order.supplierId}</p>
-                <p><strong>Order Date:</strong> {order.orderDate}</p>
-                <p><strong>Total Amount:</strong> ${order.totalAmount.toFixed(2)}</p>
-              </div>
-              <Button className='view-details-btn' onClick={() => showOrderDetails(order)} type="primary">
-                View Details
-              </Button>
-            </div>
-          ))}
+    <Card
+      style={{
+        margin: 30,
+        padding: 30,
+        borderRadius: "10px",
+      }}
+      bodyStyle={{ padding: "20px" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Title level={3} style={{ marginBottom: 10 }}>
+          Orders Data
+        </Title>
+
+        <div style={{ display: "flex", alignItems: "center" }}>
+          <Search
+            placeholder="Search order by date"
+            onSearch={(value) => handleSearch(value, true)} 
+            onChange={(e) => handleSearch(e.target.value)}
+            value={searchText}
+            style={{ marginRight: 16, width: 300 }}
+          />
+          {/* <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
+            Add New Store
+          </Button> */}
         </div>
-        <Pagination
-          className="pagination"
-          current={currentPage}
-          total={totalOrders}
-          pageSize={pageSize}
-          onChange={(page) => setCurrentPage(page)}
-          showSizeChanger={false} // Hide size changer
-          showQuickJumper={false} // Hide quick jumper
-        />
       </div>
-      <Modal
-        title="Order Details"
+      <hr color="#1890ff" />
+
+      {/* <Modal
+        title="Add New Store"
         visible={isModalVisible}
-        onCancel={handleModalCancel}
+        onCancel={handleCancel}
         footer={null}
         centered
       >
-        {selectedOrder && (
-          <div>
-            <p><strong>Order ID:</strong> {selectedOrder.orderId}</p>
-            <p><strong>Supplier ID:</strong> {selectedOrder.supplierId}</p>
-            <p><strong>Order Date:</strong> {selectedOrder.orderDate}</p>
-            <p><strong>Total Amount:</strong> ${selectedOrder.totalAmount.toFixed(2)}</p>
-          </div>
-        )}
+        <AddNewStore form={form} onAddStore={handleAddStore} onCancel={handleCancel} />
       </Modal>
-    </Content>
+ */}
+      <Table
+        dataSource={sortedOrders}
+        columns={columns}
+        pagination={{ pageSize: 8 }}
+        locale={{
+          emptyText: "No stores available.",
+        }}
+        style={{ marginTop: 20 }}
+      />
+    </Card>
   );
 };
 
