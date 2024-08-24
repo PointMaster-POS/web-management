@@ -14,7 +14,7 @@ export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
   const onFinish = (values) => {
     console.log("Success:", values);
 
-    if (values.password === "pass") {
+    if (values.password === "Dil0518San") {
       if (!isAuthenticated) {
         setIsAuthenticated(true);
       }
