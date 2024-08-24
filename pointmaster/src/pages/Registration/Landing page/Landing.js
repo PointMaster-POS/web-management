@@ -7,14 +7,14 @@ import Component5 from './Component5'
 import Component6 from './Component6'
 import Component7 from './Component7'
 import './landing.css'
-import Header from '../../Components/Header'
-import Footer from '../../Components/Footer'
+import HeaderReg from '../../../components/Registration /HeaderReg'
+import FooterReg from '../../../components/Registration /FooterReg'
 
 export default function Landing() {
   return (
     <React.Fragment>
         <section>
-            <div className='header'><Header/></div>
+            <div className='header'><HeaderReg/></div>
             <div className='Layout '>
                 <div className='content1 centered'>
                     <Component1 />
@@ -38,7 +38,7 @@ export default function Landing() {
                     <Component7 />
                 </div>
             </div>  
-            <div className='footer'><Footer/></div>  
+            <div className='footer'><FooterReg/></div>  
         </section>
     </React.Fragment>
 

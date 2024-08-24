@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './register1.css';
-import Header from '../../Components/Header';
+import HeaderReg from '../../../components/Registration /HeaderReg';
 
 
 
@@ -31,7 +31,7 @@ function Register1() {
 
     return (
         <div className='register1'>
-            <Header />
+            <HeaderReg />
             <div className='content'>
                 <div className='left-side'>
                     <div className='main-heading-container'>

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Header from '../../Components/Header';
-import Footer from '../../Components/Footer';
 import './register2.css';
+import HeaderReg from '../../../components/Registration /HeaderReg';
+import FooterReg from '../../../components/Registration /FooterReg';
 
 function Register2() {
     const navigate = useNavigate();
@@ -73,7 +73,7 @@ function Register2() {
     // Render the registration form
     return (
         <div className='register2'>
-            <Header />
+            <HeaderReg />
             <div className='content'>
                 <div className='left-side'>
                     <div className='main-heading-container'>
@@ -121,7 +121,7 @@ function Register2() {
                     />
                 </div>
             </div>
-            <Footer />
+            <FooterReg />
         </div>
     );
 }
