@@ -1,23 +1,27 @@
 import React from "react";
-import { Space, Typography, Avatar, Popover, List, Button } from "antd";
-import { BellFilled, UserOutlined } from "@ant-design/icons";
+import {
+  Space,
+  Typography,
+  Avatar,
+  Popover,
+  List,
+  Badge,
+  Menu,
+  Dropdown,
+  Divider,
+} from "antd";
+import {
+  BellFilled,
+  UserOutlined,
+  SettingOutlined,
+  LogoutOutlined,
+  ProfileOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
+import { notifications } from "./Data";
 
-const notifications = [
-  { title: "New Order", description: "You have a new order." },
-  { title: "Payment Received", description: "Payment has been received." },
-  { title: "New Message", description: "You have a new message." },
-  { title: "Inventory Alert", description: "Low stock on item #1234." },
-  {
-    title: "System Update",
-    description: "System will be updated at midnight.",
-  },
-  { title: "Customer Feedback", description: "New feedback received." },
-  { title: "New Subscriber", description: "You have a new subscriber." },
-  { title: "Bug Report", description: "A bug report has been filed." },
-];
-const Header = ({setIsAuthenticated}) => {
+const Header = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
@@ -25,15 +29,55 @@ const Header = ({setIsAuthenticated}) => {
   };
 
   const handleLogOut = () => {
-    setIsAuthenticated(false)
+    setIsAuthenticated(false);
   };
+
+  const menu = (
+    <Menu
+      style={{
+        width: "250px",
+        padding: "10px 10px",
+        height: "100px"
+      }}
+    >
+      <Menu.Item
+        key="1"
+         icon={<ProfileOutlined style={{ fontSize: "16px" }} />}
+        onClick={handleProfileClick}
+        style={{ fontWeight: "bold", fontSize: "16px", paddingBottom: "10px"}}
+      >
+        View Profile
+      </Menu.Item>
+
+      {/* <Menu.Item
+        key="2"
+        icon={<SettingOutlined />}
+        onClick={() => console.log("Go to Settings")}
+      >
+        Settings
+      </Menu.Item> */}
+
+      <Menu.Item
+        key="3"
+         icon={<LogoutOutlined style={{  fontSize: "16px" }} />}
+        onClick={handleLogOut}
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        Log Out
+      </Menu.Item>
+    </Menu>
+  );
 
   const notificationContent = (
     <List
+      itemLayout="horizontal"
       dataSource={notifications}
       renderItem={(item) => (
         <List.Item>
-          <List.Item.Meta title={item.title} description={item.description} />
+          <List.Item.Meta
+            title={<Typography.Text strong>{item.title}</Typography.Text>}
+            description={item.description}
+          />
         </List.Item>
       )}
     />
@@ -42,26 +86,31 @@ const Header = ({setIsAuthenticated}) => {
   return (
     <div className="header_">
       <Typography.Title level={2} style={{ margin: 0 }}>
-        Point Master
+        Welcome to Point Master
       </Typography.Title>
-      <Space size="large" /* style={{ marginLeft: 'auto' }} */>
+      <Space size="large">
         <Popover
           content={notificationContent}
           title="Notifications"
           trigger="click"
+          overlayStyle={{ width: "400px" }}
         >
-          <BellFilled
-            style={{ fontSize: 30, cursor: "pointer", marginLeft: 10 }}
-          />
+          <Badge count={notifications.length} overflowCount={99}>
+            <BellFilled style={{ fontSize: 30, cursor: "pointer" }} />
+          </Badge>
         </Popover>
-        <Button type="primary" onClick={handleLogOut}>
-          Log Out
-        </Button>
-        <Avatar
-          icon={<UserOutlined />}
-          style={{ cursor: "pointer" }}
-          onClick={handleProfileClick}
-        />
+        <Dropdown overlay={menu} trigger={["click"]}>
+          <Badge dot>
+            <Avatar
+              icon={<UserOutlined />}
+              style={{
+                cursor: "pointer",
+                backgroundColor: "rgba(0,0,0,0.88)",
+                marginLeft: 15
+              }}
+            />
+          </Badge>
+        </Dropdown>
       </Space>
     </div>
   );
