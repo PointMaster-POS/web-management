@@ -17,9 +17,9 @@
     flex: 1 1 calc(33.33% - 24px);
   }
   
-  .profile-card {
+  /* .profile-card {
     max-width: 500px;
-  }
+  } */
   
   .activities-card {
     max-width: 500px;
