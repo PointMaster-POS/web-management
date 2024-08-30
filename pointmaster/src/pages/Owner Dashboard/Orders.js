@@ -1,9 +1,16 @@
 import React, { useState } from 'react';
-import { Typography,Card,Table, Input } from 'antd';
+import { Typography,Card,Table, Input, Space, Tooltip,Button, Modal } from 'antd';
+import {
+  EditOutlined,
+  DeleteOutlined,
+  ExclamationCircleOutlined,
+  PlusOutlined,
+} from "@ant-design/icons";
 import { ordersData } from "./Data";
 
 const { Title } = Typography;
 const { Search } = Input;
+const { confirm } = Modal;
 
 const Orders = () => {
   const [data, setData] = useState(ordersData);
@@ -30,6 +37,14 @@ const Orders = () => {
     setSelectedOrder(null);
   }; */
 
+  const handleEdit = (values) => {
+    /* const newData = data.map((item) =>
+      item.product_id === values.product_id ? { ...item, ...values } : item
+    );
+    setData(newData);
+    setFilteredData(newData); */
+  };
+
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
       const order_date = item.order_date.toString().toLowerCase();
@@ -39,6 +54,21 @@ const Orders = () => {
     });
     setFilteredData(filtered);
     setSearchText(value);
+  };
+
+  const handleDelete = (OrderName) => {
+    confirm({
+      title: `Are you sure you want to delete "${OrderName}"?`,
+      icon: <ExclamationCircleOutlined />,
+      okText: "Delete",
+      okType: "danger",
+      cancelText: "Cancel",
+      centered: true,
+    });
+  };
+
+  const handleViewOrder = (order_id) => {
+    // navigate(`/phistory/${order_id}`);
   };
 
   const columns = [
@@ -61,6 +91,52 @@ const Orders = () => {
       title: "Total Amount",
       dataIndex: "total_amount",
       key: "total_amount",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (record) => (
+        <Space size="middle">
+          <Tooltip title="Edit Category">
+            <Button
+              icon={<EditOutlined />}
+              onClick={() => handleEdit(record)}
+              style={{
+                borderColor: "#1890ff",
+                color: "#1890ff",
+              }}
+            />
+          </Tooltip>
+          <Tooltip title="Delete Category">
+            <Button
+              icon={<DeleteOutlined />}
+              onClick={() => handleDelete(record.order_id)}
+              danger
+            />
+          </Tooltip>
+          {/* <Tooltip title="View Category">
+            <Button
+              icon={<ShoppingOutlined />}
+              onClick={() => handleViewProducts(record.category_name)}
+              style={{
+                borderColor: "rgb(0,0,0,0.88)",
+                color: "rgb(0,0,0,0.88)",
+              }}
+            />
+          </Tooltip> */}
+        </Space>
+      ),
+    },
+    {
+      title: " ",
+      key: "orders",
+      render: (record) => (
+        <Button
+          onClick={() => handleViewOrder(record.order_id)}
+        >
+          View Order
+        </Button>
+      ),
     },
   ]  
 
