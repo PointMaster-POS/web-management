@@ -12,8 +12,6 @@ export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
   const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = (values) => {
-    console.log("Success:", values);
-
     if (values.password === "Dil0518San") {
       if (!isAuthenticated) {
         setIsAuthenticated(true);
@@ -21,7 +19,7 @@ export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
     } else {
       messageApi.open({
         type: "error",
-        content: "Entered password is incorrect",
+        content: "Invalid Username or Password",
         duration: 5,
       });
     }
