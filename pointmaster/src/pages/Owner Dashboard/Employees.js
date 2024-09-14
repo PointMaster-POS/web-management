@@ -125,9 +125,9 @@ const Employees = () => {
       key: "role",
     },
     {
-      title: "Telephone",
-      dataIndex: "telephone",
-      key: "telephone",
+      title: "Contact Number",
+      dataIndex: "contact_number",
+      key: "contact_number",
     },
     {
       title: "Actions",

@@ -123,12 +123,12 @@ const Products = () => {
     };
     */
   const columns = [
-    {
+    /* {
       title: "",
       dataIndex: "photo_url",
       key: "photo_url",
       render: (image) => <Avatar src={image} size={50} />,
-    },
+    }, */
     {
       title: "Product ID",
       dataIndex: "product_id",

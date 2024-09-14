@@ -15,6 +15,7 @@ export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
 
   const onFinish = (values) => {
     console.log("Success:", values);
+
     //call api to check if the password is correct
     const url = "http://localhost:3002/employee/login";
     axios
@@ -45,6 +46,7 @@ export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
           duration: 5,
         });
         console.log(error);
+
       });
 
 
