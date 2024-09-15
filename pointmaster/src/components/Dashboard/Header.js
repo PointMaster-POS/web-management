@@ -8,7 +8,6 @@ import {
   Badge,
   Menu,
   Dropdown,
-  Divider,
 } from "antd";
 import {
   BellFilled,
@@ -37,29 +36,30 @@ const Header = ({ setIsAuthenticated }) => {
       style={{
         width: "250px",
         padding: "10px 10px",
-        height: "100px"
+        // height: "150px"
       }}
     >
       <Menu.Item
         key="1"
-         icon={<ProfileOutlined style={{ fontSize: "16px" }} />}
+        icon={<ProfileOutlined style={{ fontSize: "16px" }} />}
         onClick={handleProfileClick}
-        style={{ fontWeight: "bold", fontSize: "16px", paddingBottom: "10px"}}
+        style={{ fontWeight: "bold", fontSize: "16px" }}
       >
-        View Profile
+        Profile
       </Menu.Item>
 
-      {/* <Menu.Item
+      <Menu.Item
         key="2"
-        icon={<SettingOutlined />}
+        icon={<SettingOutlined style={{ fontSize: "16px" }} />}
         onClick={() => console.log("Go to Settings")}
+        style={{ fontWeight: "bold", fontSize: "16px" }}
       >
         Settings
-      </Menu.Item> */}
+      </Menu.Item>
 
       <Menu.Item
         key="3"
-         icon={<LogoutOutlined style={{  fontSize: "16px" }} />}
+        icon={<LogoutOutlined style={{ fontSize: "16px" }} />}
         onClick={handleLogOut}
         style={{ fontWeight: "bold", fontSize: "16px" }}
       >
@@ -85,7 +85,7 @@ const Header = ({ setIsAuthenticated }) => {
 
   return (
     <div className="header_">
-      <Typography.Title level={2} style={{ margin: 0 }}>
+      <Typography.Title level={2} /* style={{ margin: 0 }} */>
         Welcome to Point Master
       </Typography.Title>
       <Space size="large">
@@ -106,7 +106,7 @@ const Header = ({ setIsAuthenticated }) => {
               style={{
                 cursor: "pointer",
                 backgroundColor: "rgba(0,0,0,0.88)",
-                marginLeft: 15
+                marginLeft: 15,
               }}
             />
           </Badge>

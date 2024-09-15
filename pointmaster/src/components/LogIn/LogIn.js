@@ -14,6 +14,7 @@ export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
   const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = (values) => {
+
     console.log("Success:", values);
 
     //call api to check if the password is correct
@@ -46,6 +47,7 @@ export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
           duration: 5,
         });
         console.log(error);
+
 
       });
 
