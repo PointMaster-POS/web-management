@@ -8,7 +8,6 @@ import Profile from "./Profile";
 import Category from './Category';
 import Suppliers from './Suppliers';
 import PurchaseHistory from './PurchaseHistory';
-// import AddProduct from './AddProduct';
 import Orders from "./Orders";
 import Products from "./Products";
 
@@ -24,7 +23,6 @@ function OwnerRoutes() {
           <Route path="/category" element={<Category />} />
           <Route path="/suppliers" element={<Suppliers />} />
           <Route path="/phistory/:supplier_id" element={<PurchaseHistory />} />
-          {/* <Route path="/addproduct" element={<AddProduct />} /> */}
           <Route path="/products" element={<Products />}/>
           <Route path="/orders" element={<Orders />} />
       </Routes>
