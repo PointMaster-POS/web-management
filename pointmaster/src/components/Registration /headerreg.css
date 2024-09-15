@@ -1,0 +1,15 @@
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 20px; /* Adjust padding as needed */
+    background-color: #EFF2F7; /* Optional: background color for the header */
+}
+
+.header-title {
+    font-family: 'Biome', sans-serif;
+    font-weight: 1000; /* or bold */
+    font-size: 28px; /* Adjust font size as needed */
+}
+
+    

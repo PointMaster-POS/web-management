@@ -7,22 +7,52 @@ import {
   EyeInvisibleOutlined,
   EyeTwoTone,
 } from "@ant-design/icons";
+import axios from "axios";
+
 
 export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
   const [messageApi, contextHolder] = message.useMessage();
 
   const onFinish = (values) => {
-    if (values.password === "Dil0518San") {
-      if (!isAuthenticated) {
-        setIsAuthenticated(true);
-      }
-    } else {
-      messageApi.open({
-        type: "error",
-        content: "Invalid Username or Password",
-        duration: 5,
+
+    console.log("Success:", values);
+
+    //call api to check if the password is correct
+    const url = "http://localhost:3002/employee/login";
+    axios
+      .post(url, {
+        email: values.username,
+        password: values.password,
+      })
+      .then((response) => {
+        // console.log(response.status === 200);
+        if (response.status === 200) {
+          localStorage.setItem("accessToken", JSON.stringify(response.data));
+          if (!isAuthenticated) {
+            setIsAuthenticated(true);
+          }
+        } else {
+          
+          messageApi.open({
+            type: "error",
+            content: "Entered password is incorrect",
+            duration: 5,
+          });
+        }
+      })
+      .catch((error) => {
+        messageApi.open({
+          type: "error",
+          content: "Entered password is incorrect",
+          duration: 5,
+        });
+        console.log(error);
+
+
       });
-    }
+
+
+
   };
 
   return (
