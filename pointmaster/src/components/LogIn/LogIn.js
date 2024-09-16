@@ -9,18 +9,21 @@ import {
 } from "@ant-design/icons";
 import axios from "axios";
 import { useAuth } from "../../AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 export default function LogIn() {
   const [messageApi, contextHolder] = message.useMessage();
   const { isAuthenticated,setIsAuthenticated } = useAuth();  
+  const navigate = useNavigate(); 
+  const [loading, setLoading] = useState(false); // Loading state
 
   const onFinish = (values) => {
 
     console.log("Success:", values);
+    setLoading(true); // Start loading
 
     //call api to check if the password is correct
-    //const url = "http://localhost:3002/employee/login";
     const url = "http://localhost:3002/employee/login";
     axios
       .post(url, {
@@ -34,8 +37,10 @@ export default function LogIn() {
           if (!isAuthenticated) {
             setIsAuthenticated(true);
           }
-        } else {
-          
+          if(isAuthenticated){
+            navigate("/dashboard");
+          }          
+        } else {          
           messageApi.open({
             type: "error",
             content: "Entered password is incorrect",
@@ -44,18 +49,24 @@ export default function LogIn() {
         }
       })
       .catch((error) => {
-        messageApi.open({
-          type: "error",
-          content: "Entered password is incorrect",
-          duration: 5,
-        });
+        if (error.response && error.response.status === 401) {
+          messageApi.open({
+            type: "error",
+            content: "Invalid credentials. Please try again.",
+            duration: 5,
+          });
+        } else {
+          messageApi.open({
+            type: "error",
+            content: "Something went wrong. Please try again later.",
+            duration: 5,
+          });
+        }
         console.log(error);
-
-
+      })
+      .finally(() => {
+        setLoading(false); // Stop loading after the request completes
       });
-
-
-
   };
 
   return (
@@ -116,6 +127,7 @@ export default function LogIn() {
               type="primary"
               htmlType="submit"
               className="login-form-button"
+              loading={loading} // Show loading indicator when the form is submitting
             >
               Log In
             </Button>
