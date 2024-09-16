@@ -1,7 +1,7 @@
 import React from 'react'
 import './footer.css'
 
-function FooterReg() {
+function Footer() {
   return (
     <footer className="footer">
         <div className="footer-title">Footer</div>
