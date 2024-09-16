@@ -7,8 +7,8 @@ import Component5 from './Component5'
 import Component6 from './Component6'
 import Component7 from './Component7'
 import './landing.css'
-import Header from '../../../components/Registration/Header'
-import Footer from '../../../components/Registration/Footer'
+import Header from '../../../Registration/Header'
+import Footer from '../../../Registration/Footer'
 
 export default function Landing() {
   return (
