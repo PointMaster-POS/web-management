@@ -1,0 +1,60 @@
+.profile-content {
+    padding: 24px;
+    background: #f0f2f5;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  
+  .profile-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  
+  .profile-card,
+  .activities-card,
+  .analytics-card {
+    flex: 1 1 calc(33.33% - 24px);
+  }
+  
+  .profile-card {
+    max-width: 500px;
+  }
+  
+  .activities-card {
+    max-width: 500px;
+  }
+  
+  .analytics-card {
+    flex: 1 1 100%;
+  }
+  
+  .profile-details {
+    margin-bottom: 20px;
+  }
+  
+  .profile-analytics {
+    margin-top: 20px;
+  }
+  
+  .ant-card {
+    background: white;
+    border-radius: 8px;
+  }
+  
+  .ant-card-head-title {
+    font-size: 18px;
+  }
+  
+  .ant-btn {
+    border-radius: 4px;
+  }
+  
+  .ant-modal-title {
+    font-size: 20px;
+  }
+  
+  .ant-form-item {
+    margin-bottom: 16px;
+  }
+  

@@ -1,0 +1,130 @@
+.content {
+    border-radius: 8px;
+    flex: 1;
+    justify-content: space-between;
+    background-color: #ffffff;
+    height: 100%;
+}
+
+.category {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px; /* Added padding to the container */
+}
+
+.content {
+    border-radius: 8px;
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.category-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-category-box {
+    width: 35%; 
+    padding: 20px; 
+    height: 25%;
+}
+
+.all-category-box {
+    margin-right: 1%;
+    width: 62%; 
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.add-category-box h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 2rem;
+    color: #004765;
+}
+
+.all-category-box h2 {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 2rem;
+    color: #004765;
+}
+
+.ant-table {
+    margin-top: 20px; /* Adjust spacing between table and heading */
+}
+
+hr {
+    border-top: 3px solid #1b749a; /* Adjust thickness and color here */
+    width: 100%; 
+}
+
+.custom-form-item .ant-form-item-label > label {
+    font-size: 1.1rem; /* Adjust font size as needed*/
+    font-weight: bold;
+
+}
+
+.btn{
+    padding: 20px; 
+    font-size: 1rem;   
+    background-color: #4CAF50;
+    font-weight: bold;
+}
+
+.custom-form-item .ant-input {
+    height: 48px; 
+    font-size: 1rem; 
+    border: 0.5px solid #1b749a; 
+    border-radius: 4px; 
+    padding: 8px 12px; 
+}
+  
+.custom-form-item .ant-input:focus {
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); /* Highlight on focus */
+}
+
+.table .ant-table-tbody > tr:nth-child(odd) > td {
+    /* background-color: #e6e8f4; */
+    color: #000000;
+}
+
+.table .ant-table-tbody > tr:nth-child(even) > td {
+    /* background-color: #f7f7f7; */
+    color: #000000;
+}
+
+.table .ant-table-thead > tr > th {
+    background-color: #a0daa14a;
+    color: #000000;
+}
+
+
+.custom-modal-footer {
+    display: flex;
+    justify-content: flex-end; /* Align buttons to the right */
+    margin-top: 20px; /* Add space above the footer */
+  }
+  
+  .custom-save-btn {
+    background-color: #4caf50; /* Green background */
+    border: none;
+    color: white;
+    font-weight: bold;
+    margin-left: 8px; /* Space between buttons */
+  }
+  
+  .custom-save-btn:hover {
+    background-color: #45a049; 
+  }
+  
+  .custom-cancel-btn {
+    margin-right: 8px; 
+  }
+  
+  .custom-icon {
+    color: #4caf50; 
+  }

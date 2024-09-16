@@ -1,0 +1,83 @@
+.content {
+  border-radius: 8px;
+  flex: 1;
+  justify-content: space-between;
+  background-color: #ffffff;
+  height: 100%;
+}
+
+.pl-box {
+  width: 100%; 
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 5px; 
+}
+
+.search-bar-container {
+  display: flex;
+  align-items: center;
+}
+
+.content {
+  padding: 24px;
+}
+
+.site-layout {
+  background: #fff;
+}
+
+.pl-box h2 {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  font-size: 2rem;
+  color: #004765;
+}
+
+.hr {
+  border-top: 3px solid #1b749a; 
+  width: 100%;
+}
+.prlist-table{
+  margin-top: 20px;
+}
+
+.prlist-table .ant-table-tbody > tr:nth-child(odd) > td {
+  /* background-color: #e6e8f4; */
+  color: #000000;
+}
+
+.prlist-table .ant-table-tbody > tr:nth-child(even) > td {
+  /* background-color: #f7f7f7; */
+  color: #000000;
+}
+
+.prlist-table .ant-table-thead > tr > th {
+  background-color: #a0daa14a;
+  color: #000000;
+}
+
+.addprod-btn {
+  height: 40px;
+  width: 175px;
+  font-size: large;
+  background-color: #4CAF50; 
+    border-color: #4CAF50;
+  font-weight: bold;
+  color: #ffffff;
+  border: none;
+  display: inline-block;
+  text-align: center;
+  
+}
+
+.addprod-btn:hover {
+  background-color: #004765; 
+  color: #ffffff; 
+  cursor: pointer; 
+}
