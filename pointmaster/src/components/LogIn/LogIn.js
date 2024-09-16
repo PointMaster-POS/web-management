@@ -8,16 +8,19 @@ import {
   EyeTwoTone,
 } from "@ant-design/icons";
 import axios from "axios";
+import { useAuth } from "../../AuthContext";
 
 
-export default function LogIn({ isAuthenticated, setIsAuthenticated }) {
+export default function LogIn() {
   const [messageApi, contextHolder] = message.useMessage();
+  const { isAuthenticated,setIsAuthenticated } = useAuth();  
 
   const onFinish = (values) => {
 
     console.log("Success:", values);
 
     //call api to check if the password is correct
+    //const url = "http://localhost:3002/employee/login";
     const url = "http://localhost:3002/employee/login";
     axios
       .post(url, {
