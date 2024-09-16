@@ -59,7 +59,7 @@ const App = () => {
             }
           >
             {/* Nested Routes for internal pages */}
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/employees" element={<Employees />} />
             <Route path="/expired" element={<Expired />} />
