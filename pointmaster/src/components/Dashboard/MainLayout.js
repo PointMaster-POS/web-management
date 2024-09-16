@@ -2,14 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Layout, message } from "antd";
 import SideBar from "./SideBar";
 import Header from "./Header";
-import Content from "./Content";
-// import Footer from "../Footer/Footer";
+import { Outlet } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
 
 const { Content: AntContent } = Layout;
 
-const MainLayout = ({ setIsAuthenticated }) => {
+const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+  const { setIsAuthenticated } = useAuth();  
   useEffect(() => {
     messageApi.open({
       type: "success",
@@ -44,7 +45,7 @@ const MainLayout = ({ setIsAuthenticated }) => {
         >
           <AntContent style={{ margin: "16px 16px 0" }}>
             {contextHolder}
-            <Content />
+            <Outlet />
           </AntContent>
         </Layout>
       </Layout>
