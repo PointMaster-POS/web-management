@@ -1,0 +1,12 @@
+.geometric-shape-img {
+    width: 100vw; /* Full width of the viewport */
+    height: auto; /* Maintain aspect ratio */
+    overflow: hidden; /* Ensure image doesn't overflow */
+  }
+  
+  .geometric-shape-img img {
+    display: block; /* Ensure the image behaves as a block element */
+    width: 80%; /* Fill the entire width of its parent container */
+    height: 100%; /* Maintain aspect ratio */
+  }
+  
