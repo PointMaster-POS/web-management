@@ -36,7 +36,6 @@ const Header = ({ setIsAuthenticated }) => {
       style={{
         width: "250px",
         padding: "10px 10px",
-        // height: "150px"
       }}
     >
       <Menu.Item
