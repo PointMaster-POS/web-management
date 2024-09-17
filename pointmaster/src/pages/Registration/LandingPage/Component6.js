@@ -1,5 +1,4 @@
 import React from 'react'
-import './Component6.css'
 
 export default function Component6() {
   return (

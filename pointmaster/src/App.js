@@ -1,25 +1,3 @@
-// import ReactDOM from "react-dom";
-// import { BrowserRouter } from "react-router-dom";
-// import LogIn from "./components/LogIn/LogIn";
-// import { useState } from "react";
-
-// function App() {
-//   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-//   return isAuthenticated ? (
-//     <BrowserRouter>
-//       <MainLayout setIsAuthenticated={setIsAuthenticated} />
-//     </BrowserRouter>
-//   ) : (
-//     <LogIn
-//       isAuthenticated={isAuthenticated}
-//       setIsAuthenticated={setIsAuthenticated}
-//     />
-//   );
-// }
-
-// export default App;
-
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/MainLayout/MainLayout";
@@ -43,12 +21,9 @@ const App = () => {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Public Routes */}
-          {/* <Route path="/" element={<Landing />} /> */}
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<LogIn />} />
           <Route path="/forgot-password" element={<LogIn forgotPassword={true} />} />
-
-          {/* Protected Routes */}
           <Route
             path="/"
             element={
@@ -57,7 +32,6 @@ const App = () => {
               </ProtectedRoute>
             }
           >
-            {/* Nested Routes for internal pages */}
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/employees" element={<Employees />} />
@@ -71,7 +45,7 @@ const App = () => {
             />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
-            <Route path="*" element={<h1>404 Not Found</h1>} /> {/* Catch-all route for unmatched paths */}
+            <Route path="*" element={<h1>404 Not Found</h1>} />
           </Route>
         </Routes>
       </BrowserRouter>
