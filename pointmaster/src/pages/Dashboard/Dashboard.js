@@ -7,6 +7,8 @@ import {
   Avatar,
   Row,
   Col,
+  Dropdown,
+  Menu,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -14,6 +16,7 @@ import {
   DollarOutlined,
   PoundOutlined,
   ShoppingOutlined,
+  MoreOutlined,
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
@@ -34,11 +37,7 @@ const Dashboard = () => {
         <Col span={18}>
           <Row gutter={[20, 25]}>
             <Col span={8}>
-              <DashboardCard
-                icon={<PoundOutlined style={iconStyle("green")} />}
-                title="Daily Sales"
-                value={1234}
-              />
+              <SalesCard icon={<PoundOutlined style={iconStyle("green")} />} />
             </Col>
             <Col span={8}>
               <DashboardCard
@@ -78,9 +77,6 @@ const Dashboard = () => {
             <Col span={24}>
               <MultiLineChart />
             </Col>
-           {/*  <Col span={24}>
-              <MultiLineChart />
-            </Col> */}
           </Row>
         </Col>
         <Col span={6}>
@@ -113,6 +109,44 @@ const iconStyle = (color) => ({
   fontSize: 24,
   padding: 8,
 });
+
+const SalesCard = ({ icon }) => {
+  const [timeFrame, setTimeFrame] = useState("Today");
+  const [sales, setSales] = useState(1234);
+
+  const handleMenuClick = (e) => {
+    setTimeFrame(e.key);
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick} >
+      <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px" }}>Today</Menu.Item>
+      <Menu.Item key="This Month" style={{ fontWeight: "bold", fontSize: "16px" }}>This Month</Menu.Item>
+      <Menu.Item key="This Year" style={{ fontWeight: "bold", fontSize: "16px" }}>This Year</Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <Card className="card" style={{ position: "relative" }}>
+      <Dropdown overlay={menu} trigger={["click"]}>
+        <MoreOutlined
+          style={{
+            fontSize: "20px",
+            cursor: "pointer",
+            position: "absolute",
+            top: "35px",
+            right: "30px",
+          }}
+        />
+      </Dropdown>
+
+      <Space direction="horizontal" size="large">
+        {icon}
+        <Statistic title={`${timeFrame} Sales`} className="statistic" />
+      </Space>
+    </Card>
+  );
+};
 
 const DashboardCard = ({ icon, title, value }) => {
   return (
@@ -151,7 +185,7 @@ const PopularItems = () => {
       </div>
       <List
         itemLayout="horizontal"
-        dataSource={PopularItemsList.slice(0,4)}
+        dataSource={PopularItemsList.slice(0, 4)}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
@@ -196,7 +230,7 @@ const OutOfStock = () => {
       </div>
       <List
         itemLayout="horizontal"
-        dataSource={OutOfStockList.slice(0,4)}
+        dataSource={OutOfStockList.slice(0, 4)}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
