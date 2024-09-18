@@ -107,14 +107,18 @@ export const OutOfStockList = [
   {
     item: "Hawaiian Chicken Skewers",
     last_available: "",
+    image: "images/sandwich-with-poached-egg.jpg", // Replace with actual image URL
   },
   {
     item: "Veggie Supreme Pizza",
     last_available: "",
+    image: "images/top-view-delicious-tacos-red-plate.jpg", // Replace with actual image URL
   },
   {
     item: "Fish and Chips",
     last_available: "",
+    image: "images/delicious-pasta-plate.jpg", // Replace with actual image URL
+
   },
   {
     item: "Scrambled Eggs With Toast",
