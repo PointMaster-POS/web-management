@@ -1,28 +1,6 @@
-// import ReactDOM from "react-dom";
-// import { BrowserRouter } from "react-router-dom";
-// import LogIn from "./components/LogIn/LogIn";
-// import { useState } from "react";
-
-// function App() {
-//   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-//   return isAuthenticated ? (
-//     <BrowserRouter>
-//       <MainLayout setIsAuthenticated={setIsAuthenticated} />
-//     </BrowserRouter>
-//   ) : (
-//     <LogIn
-//       isAuthenticated={isAuthenticated}
-//       setIsAuthenticated={setIsAuthenticated}
-//     />
-//   );
-// }
-
-// export default App;
-
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainLayout from "./components/MainLayout/MainLayout";
+import MainLayout from "./components/ProtectedRoute/MainLayout";
 import LogIn from "./pages/LogIn/LogIn";
 import Landing from "./pages/Registration/LandingPage/Landing";
 import Dashboard from "./pages/Dashboard/Dashboard";
