@@ -40,24 +40,18 @@ const Dashboard = () => {
               <SalesCard icon={<PoundOutlined style={iconStyle("green")} />} />
             </Col>
             <Col span={8}>
-              <DashboardCard
-                icon={<PoundOutlined style={iconStyle("red")} />}
-                title="Monthly Sales "
-                value={1234}
-              />
-            </Col>
-            <Col span={8}>
-              <DashboardCard
+              <PurchasesCard
                 icon={<ShoppingOutlined style={iconStyle("orange")} />}
-                title="Daily Purchase"
-                value={1234}
               />
             </Col>
             <Col span={8}>
-              <DashboardCard
+              <DashboardCard1
                 icon={<ShoppingCartOutlined style={iconStyle("olive")} />}
-                title="Daily Distribution"
-                value={1234}
+              />
+            </Col>
+            <Col span={8}>
+              <DashboardCard2
+                icon={<ShoppingCartOutlined style={iconStyle("olive")} />}
               />
             </Col>
             <Col span={8}>
@@ -70,7 +64,7 @@ const Dashboard = () => {
             <Col span={8}>
               <DashboardCard
                 icon={<DollarOutlined style={iconStyle("purple")} />}
-                title="Total Revenue"
+                title="Profit"
                 value={1234}
               />
             </Col>
@@ -119,10 +113,22 @@ const SalesCard = ({ icon }) => {
   };
 
   const menu = (
-    <Menu onClick={handleMenuClick} >
-      <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px" }}>Today</Menu.Item>
-      <Menu.Item key="This Month" style={{ fontWeight: "bold", fontSize: "16px" }}>This Month</Menu.Item>
-      <Menu.Item key="This Year" style={{ fontWeight: "bold", fontSize: "16px" }}>This Year</Menu.Item>
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px" }}>
+        Today
+      </Menu.Item>
+      <Menu.Item
+        key="This Month"
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        This Month
+      </Menu.Item>
+      <Menu.Item
+        key="This Year"
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        This Year
+      </Menu.Item>
     </Menu>
   );
 
@@ -148,12 +154,84 @@ const SalesCard = ({ icon }) => {
   );
 };
 
-const DashboardCard = ({ icon, title, value }) => {
+const PurchasesCard = ({ icon }) => {
+  const [timeFrame, setTimeFrame] = useState("Today");
+  const [sales, setSales] = useState(1234);
+
+  const handleMenuClick = (e) => {
+    setTimeFrame(e.key);
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px" }}>
+        Today
+      </Menu.Item>
+      <Menu.Item
+        key="This Month"
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        This Month
+      </Menu.Item>
+      <Menu.Item
+        key="This Year"
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        This Year
+      </Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <Card className="card" style={{ position: "relative" }}>
+      <Dropdown overlay={menu} trigger={["click"]}>
+        <MoreOutlined
+          style={{
+            fontSize: "20px",
+            cursor: "pointer",
+            position: "absolute",
+            top: "35px",
+            right: "30px",
+          }}
+        />
+      </Dropdown>
+
+      <Space direction="horizontal" size="large">
+        {icon}
+        <Statistic title={`${timeFrame} Purchases`} className="statistic" />
+      </Space>
+    </Card>
+  );
+};
+
+const DashboardCard1 = ({ icon }) => {
   return (
     <Card className="card">
       <Space direction="horizontal" size="large" className="card-content">
         {icon}
-        <Statistic title={title} value={value} className="statistic" />
+        {/* <Statistic title={title} value={value} className="statistic" /> */}
+      </Space>
+    </Card>
+  );
+};
+
+const DashboardCard2 = ({ icon }) => {
+  return (
+    <Card className="card">
+      <Space direction="horizontal" size="large" className="card-content">
+        {icon}
+        {/* <Statistic title={title} value={value} className="statistic" /> */}
+      </Space>
+    </Card>
+  );
+};
+
+const DashboardCard = ({ icon, title }) => {
+  return (
+    <Card className="card">
+      <Space direction="horizontal" size="large" className="card-content">
+        {icon}
+        <Statistic title={title} className="statistic" />
       </Space>
     </Card>
   );
@@ -171,7 +249,7 @@ const PopularItems = () => {
   };
 
   return (
-    <Card className="popular-items-card">
+    <Card>
       <div className="card-header">
         <Title level={4}>Popular Items</Title>
         <Text
@@ -216,7 +294,7 @@ const OutOfStock = () => {
   };
 
   return (
-    <Card className="out-of-stock-card">
+    <Card>
       <div className="card-header">
         <Title level={4}>Out of Stock</Title>
         <Text
@@ -230,16 +308,12 @@ const OutOfStock = () => {
       </div>
       <List
         itemLayout="horizontal"
-        dataSource={OutOfStockList.slice(0, 4)}
+        dataSource={OutOfStockList.slice(0, 3)}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
+              avatar={<Avatar src={item.image} size={45} />}
               title={<Text className="item-title">{item.item}</Text>}
-              /* description={
-                <Text type="secondary" className="item-description">
-                  Last Available: {item.last_available}
-                </Text>
-              } */
             />
           </List.Item>
         )}
