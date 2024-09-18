@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Layout, message } from "antd";
 import Sider from "../Sider/Sider";
-import Header from "../Header/Header";
+import Header from "../DashboardHeader/Header";
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 

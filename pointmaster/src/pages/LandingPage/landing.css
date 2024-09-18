@@ -1,68 +1,81 @@
+/* General Body Styling */
 body {
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Ensures the body takes full viewport height */
-    overflow-y: auto; /* Allows body to scroll */
-  }
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  /* background-color: #ffffff;  */
+  background: linear-gradient(120deg, #a2c2e0, #f0f4f8);
+}
+
+.hero-section {
   
-  .Layout {
-    display: grid;
-    width: 100%;
-    grid-template-columns: repeat(2, 1fr); 
-    grid-template-rows: auto; 
-    grid-template-areas:
-      'content1 content1'
-      'content2 content3'
-      'content4 content5'
-      'content6 content6'
-      'content7 content7';
-    gap: 20px; 
-    padding: 20px;
-    box-sizing: border-box; 
-  }
-  
-  .leftAlign {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-  }
-  
-  .centered {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .header, .footer {
-    width: 100%; /* Ensure header and footer take full width */
-  }
-  
-  .content1 {
-    grid-area: content1;
-  }
-  
-  .content2 {
-    grid-area: content2;
-  }
-  
-  .content3 {
-    grid-area: content3;
-  }
-  
-  .content4 {
-    grid-area: content4;
-  }
-  
-  .content5 {
-    grid-area: content5;
-  }
-  
-  .content6 {
-    grid-area: content6;
-  }
-  
-  .content7 {
-    grid-area: content7;
-  }
-  
+  color: #333; 
+  text-align: center;
+  padding: 200px 20px 75px;
+}
+
+.hero-content h1 {
+  display: inline-block;
+  font-size: 3.5rem;
+  margin: 20px 0 0;
+}
+
+.hero-content p {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #4a5b6d;
+}
+
+.cta-button {
+  background-color: #007bff;
+  color: white;
+  font-size: 1.2rem;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+  background-color: #0056b3;
+}
+
+.features-section {
+  text-align: center; 
+  padding: 120px 0px 80px;
+}
+
+.section-heading {
+  display: inline-block;
+  font-size: 3rem;
+  margin-bottom: -30px;
+  color: #333;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.feature {
+  background-color: #f9f9f9;
+  padding: 40px;
+  border-radius: 15px;
+  transition: transform 0.3s ease;
+}
+
+.feature h2 {
+  font-size: 1.8rem;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.feature p {
+  font-size: 1.2rem;
+  color: #4a5b6d;
+}

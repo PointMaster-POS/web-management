@@ -1,4 +1,5 @@
 .dashboard-container {
+  border: 2px red solid;
   display: flex;
   justify-content: center;
   padding: 30px;
