@@ -1,0 +1,37 @@
+/* header.css */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: #283e51;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  .logo a {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+  }
+  
+  .nav-links a {
+    margin: 0 15px;
+    color: white;
+    font-size: 1.1rem;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-links a:hover {
+    color: #ff4500;
+  }
+  
+  .login-btn {
+    margin-left: 20px;
+    font-size: 1rem;
+  }
+  
