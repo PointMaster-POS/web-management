@@ -79,12 +79,8 @@ const SideBar = ({ onCollapse }) => {
         bottom: 0,
       }}
     >
-      {/* <div className="logo-container">
-        <img src="images/WhatsApp Image 2024-07-15 at 22.03.59_603d8715.jpg" alt="Logo" className="logo" />
-      </div> */}
-
       <Menu
-        defaultSelectedKeys={[selectedKey]}
+        selectedKeys={[selectedKey]}
         mode="inline"
         theme="light"
         onClick={onMenuClick}
