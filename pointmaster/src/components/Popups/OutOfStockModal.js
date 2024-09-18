@@ -14,16 +14,6 @@ const OutOsStockModal = ({ visible, onClose }) => {
       dataIndex: "last_available",
       key: "last_available",
     },
-    /*{
-      title: "Price",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Sales",
-      dataIndex: "sales",
-      key: "sales",
-    }, */
   ];
 
   return (
