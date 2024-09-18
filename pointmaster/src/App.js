@@ -3,6 +3,7 @@ import RegisterNewBusiness from "./pages/RegisterNewBusiness/RegisterNewBusiness
 import RegisterOwner from "./pages/RegisterOwner/RegisterOwner";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/ProtectedRoute/MainLayout";
+import CustomLayout from "./pages/CustomLayout/CustomLayout";
 import LogIn from "./pages/LogIn/LogIn";
 import Landing from "./pages/LandingPage/Landing";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -20,45 +21,53 @@ import { AuthProvider } from "./context/AuthContext";
 
 const App = () => {
   return (
-    // <RegisterNewBusiness />
-    // <RegisterOwner/>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<CustomLayout />}>
+            <Route path="/" element={<Landing />} />
+            <Route
+              path="/register-new-business"
+              element={<RegisterNewBusiness />}
+            />
+            <Route path="/register-owner" element={<RegisterOwner />} />
+            <Route path="/login" element={<LogIn />} />
+            <Route
+              path="/forgot-password"
+              element={<LogIn forgotPassword={true} />}
+            />
+          </Route>
 
-        <AuthProvider>
-          <BrowserRouter>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<Landing />} />
-              <Route path="/login" element={<LogIn />} />
-              <Route path="/forgot-password" element={<LogIn forgotPassword={true} />} />
-
-              {/* Protected Routes */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <MainLayout />
-                  </ProtectedRoute>
-                }
-              >
-                {/* Nested Routes for internal pages */}
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/stores" element={<Stores />} />
-                <Route path="/employees" element={<Employees />} />
-                <Route path="/expired" element={<Expired />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/category" element={<Category />} />
-                <Route path="/suppliers" element={<Suppliers />} />
-                <Route
-                  path="/phistory/:supplier_id"
-                  element={<PurchaseHistory />}
-                />
-                <Route path="/products" element={<Products />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="*" element={<h1>404 Not Found</h1>} /> {/* Catch-all route for unmatched paths */}
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </AuthProvider>
+          {/* Protected Routes */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }
+          >
+            {/* Nested Routes for internal pages */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/stores" element={<Stores />} />
+            <Route path="/employees" element={<Employees />} />
+            <Route path="/expired" element={<Expired />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/category" element={<Category />} />
+            <Route path="/suppliers" element={<Suppliers />} />
+            <Route
+              path="/phistory/:supplier_id"
+              element={<PurchaseHistory />}
+            />
+            <Route path="/products" element={<Products />} />
+            <Route path="/orders" element={<Orders />} />
+            <Route path="*" element={<h1>404 Not Found</h1>} />{" "}
+            {/* Catch-all route for unmatched paths */}
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 };
 
