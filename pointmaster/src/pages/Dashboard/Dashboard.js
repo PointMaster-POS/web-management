@@ -271,7 +271,7 @@ const PopularItems = () => {
               title={<Text className="item-title"> {item.name} </Text>}
               description={
                 <Text type="secondary" className="item-description">
-                  Sales: {item.orders}
+                  Sales: {item.sales}
                 </Text>
               }
             />
