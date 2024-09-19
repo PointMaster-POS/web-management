@@ -1,18 +1,32 @@
-import React from "react";
+import React,{useState} from "react";
 import "./landing.css";
+import { Form,Modal } from "antd";
 import Header from "../../components/LandingHeader/Header";
 import Footer from "../../components/LandingFooter/Footer";
-import { useNavigate } from "react-router-dom";
+import RegisterNewBusiness from "../RegisterNewBusiness/RegisterNewBusiness";
+// import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
-    const navigate = useNavigate();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
+    // const navigate = useNavigate();
 
-    const handleJoin = () => {
-        navigate('/register-new-business');
-      };
+    // const handleJoin = () => {
+    //     navigate('/register-new-business');
+    //   };
+
+    const showModal = () => {
+      setIsModalVisible(true);
+    };
+
+    const handleCancel = () => {
+      setIsModalVisible(false);
+      form.resetFields();
+    };
 
   return (
       <div className="landing-page">
+        <Header/>
         <section className="hero-section">
           <div className="hero-content">
             <h1>
@@ -26,7 +40,7 @@ export default function Landing() {
               <br />
               With Ease
             </p>
-            <button className="cta-button" onClick={handleJoin}>
+            <button className="cta-button" onClick={showModal}>
               JOIN POINTMASTER NOW
             </button>
           </div>
@@ -65,6 +79,19 @@ export default function Landing() {
             </div>
           </div>
         </section>
+
+        <Modal
+        title={<div className="custom-modal-title">Register New Business</div>}
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          footer={null}
+          width={750}
+          centered
+        >
+          <RegisterNewBusiness form={form} onCancel={handleCancel} />
+        </Modal>
+        
+        <Footer/>
       </div>
   );
 }
