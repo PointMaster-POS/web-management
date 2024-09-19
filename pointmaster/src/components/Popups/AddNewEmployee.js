@@ -10,6 +10,7 @@ const Stores = [
 ];
 
 const AddNewEmployee = ({ onAddEmployee, onCancel }) => {
+  
   const handleFinish = (values) => {
     onAddEmployee(values); // Pass form values to Stores component
   };
