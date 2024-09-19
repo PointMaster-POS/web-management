@@ -1,43 +1,44 @@
 import React from "react";
-import { Form, Input, Button, Typography, message, } from "antd";
+import { Form, Input, Button, Typography, message } from "antd";
 import "./RegisterOwner.css";
+import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
-const RegisterOwner = ({token, form, onCancel}) => {
+const RegisterOwner = ({ token, form, onCancel }) => {
+  const navigate = useNavigate();
 
-    const onFinish = async (values) => {
-        try {
-          // Send owner data along with the token to the endpoint
-          const response = await fetch("http://localhost:3001/registration/owner-details", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Send the token in the Authorization header
-            },
-            body: JSON.stringify(values),
-          });
-    
-          const data = await response.json();
-    
-          if (response.ok) {
-            message.success("Owner registered successfully!");
-            form.resetFields(); // Reset form after successful submission
-            onCancel(); // Close the modal
-          } else {
-            message.error("Failed to register owner. Please try again.");
-          }
-        } catch (error) {
-          console.error("Error registering owner:", error);
-          message.error("An error occurred. Please try again.");
+  const onFinish = async (values) => {
+    try {
+      // Send owner data along with the token to the endpoint
+      const response = await fetch(
+        "http://localhost:3001/registration/owner-details",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Send the token in the Authorization header
+          },
+          body: JSON.stringify(values),
         }
-      };
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        message.success("Owner registered successfully!");
+        navigate("/login");
+      } else {
+        message.error("Failed to register owner. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error registering owner:", error);
+      message.error("An error occurred. Please try again.");
+    }
+  };
 
   return (
     <div className="owner-form-container">
-      <Title level={3} className="form-title">
-        Register Business Owner
-      </Title>
       <Form
         form={form}
         layout="vertical"
