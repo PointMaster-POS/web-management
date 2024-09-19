@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import {
   Button,
   Card,
@@ -9,6 +10,8 @@ import {
   Tooltip,
   Input,
   Form,
+  Switch,
+  message,
 } from "antd";
 import {
   EditOutlined,
@@ -17,42 +20,36 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewStore from "../../components/Popups/AddNewStore";
-import { storesData } from "../../components/Data";
-//import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
 
 const Stores = () => {
-  const [data, setData] = useState(storesData);
-  const [filteredData, setFilteredData] = useState(data);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  //const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchBranches();
+  }, []);
+
+  // Fetch all branches
+  const fetchBranches = async () => {
+    try {
+      const response = await axios.get("http://localhost:3001/branch/");
+      setData(response.data);
+      setFilteredData(response.data);
+    } catch (error) {
+      console.error("Error fetching branches:", error);
+      message.error("Failed to fetch branches.");
+    }
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
-  };
-
-  const handleViewStore = (stores_id) => {
-    // navigate(`/phistory/${supplier_id}`);
-  };
-
-  const handleAddStore = () => {
-    form.validateFields().then((values) => {
-      form.resetFields();
-      setIsModalVisible(false);
-      const newStore = {
-        ...values,
-        /* supplier_id: `SUP${data.length + 123}`, // Simulate auto-increment
-        key: `${data.length + 1}`, */
-      };
-      const newData = [...data, newStore];
-      setData(newData);
-      setFilteredData(newData);
-    });
   };
 
   const handleCancel = () => {
@@ -60,15 +57,52 @@ const Stores = () => {
     form.resetFields();
   };
 
-  const handleEdit = (values) => {
-    /* const newData = data.map((item) =>
-      item.supplier_id === values.supplier_id ? { ...item, ...values } : item
-    );
-    setData(newData);
-    setFilteredData(newData); */
+  // Add a new store/branch
+  const handleAddStore = () => {
+    form.validateFields().then(async (values) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3001/branch/",
+          values
+        );
+        const newBranch = response.data;
+        const newData = [...data, newBranch];
+        setData(newData);
+        setFilteredData(newData);
+        message.success("Store added successfully.");
+      } catch (error) {
+        console.error("Error adding branch:", error);
+        message.error("Failed to add store.");
+      }
+    });
   };
 
-  const handleDelete = (name) => {
+  // Edit an existing store/branch
+  const handleEdit = async (record) => {
+    form.setFieldsValue(record); // Prepopulate the form with the existing data
+    showModal();
+
+    form.validateFields().then(async (values) => {
+      try {
+        await axios.put(
+          `http://localhost:3001/branch/${record.store_id}`,
+          values
+        );
+        const updatedData = data.map((item) =>
+          item.store_id === record.store_id ? { ...item, ...values } : item
+        );
+        setData(updatedData);
+        setFilteredData(updatedData);
+        setIsModalVisible(false);
+        form.resetFields();
+      } catch (error) {
+        console.error("Error updating branch:", error);
+      }
+    });
+  };
+
+  // Delete a store/branch
+  const handleDelete = (store_id, name) => {
     confirm({
       title: `Are you sure you want to delete "${name}"?`,
       icon: <ExclamationCircleOutlined />,
@@ -76,15 +110,25 @@ const Stores = () => {
       okType: "danger",
       cancelText: "Cancel",
       centered: true,
+      onOk: async () => {
+        try {
+          await axios.delete(`http://localhost:3001/branch/${store_id}`);
+          const updatedData = data.filter((item) => item.store_id !== store_id);
+          setData(updatedData);
+          setFilteredData(updatedData);
+        } catch (error) {
+          console.error("Error deleting branch:", error);
+        }
+      },
     });
   };
 
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
-      const name = item.name.toLowerCase();
+      const branch_name = item.branch_name.toLowerCase();
       const searchValue = value.toLowerCase();
 
-      return exactMatch ? name === searchValue : name.includes(searchValue);
+      return exactMatch ? branch_name === searchValue : branch_name.includes(searchValue);
     });
     setFilteredData(filtered);
     setSearchText(value);
@@ -93,30 +137,30 @@ const Stores = () => {
   // Table columns definition
   const columns = [
     {
-      title: "Store_ID",
-      dataIndex: "store_id",
-      key: "store_id",
+      title: "Branch ID",
+      dataIndex: "branch_id",
+      key: "branch_id",
     },
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "branch_name",
+      key: "branch_name",
     },
     {
       title: "Location",
-      dataIndex: "location",
-      key: "location",
+      dataIndex: "branch_location",
+      key: "branch_location",
     },
-    {
-      title: "Manager",
-      dataIndex: "manager",
-      key: "manager",
-    },
-    {
-      title: "Telephone",
-      dataIndex: "telephone",
-      key: "telephone",
-    },
+    // {
+    //   title: "Manager",
+    //   dataIndex: "manager",
+    //   key: "manager",
+    // },
+    // {
+    //   title: "Telephone",
+    //   dataIndex: "telephone",
+    //   key: "telephone",
+    // },
     {
       title: "Actions",
       key: "actions",
@@ -135,20 +179,10 @@ const Stores = () => {
           <Tooltip title="Delete Store">
             <Button
               icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.name)}
+              onClick={() => handleDelete(record.store_id, record.name)}
               danger
             />
           </Tooltip>
-          {/* <Tooltip title="View Store">
-            <Button
-              icon={<ShopOutlined />}
-              onClick={() => handleViewStore(record)}
-              style={{
-                borderColor: "rgb(0,0,0,0.88)",
-                color: "rgb(0,0,0,0.88)",
-              }}
-            />
-          </Tooltip> */}
         </Space>
       ),
     },
@@ -157,9 +191,7 @@ const Stores = () => {
       title: "",
       key: "",
       render: (record) => (
-        <Button
-          onClick={() => handleViewStore(record.store_id)}
-        >
+        <Button /* onClick={() => handleViewStore(record.store_id)} */>
           View Store
         </Button>
       ),
@@ -189,7 +221,7 @@ const Stores = () => {
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
             placeholder="Search stores"
-            onSearch={(value) => handleSearch(value, true)} 
+            onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
             style={{ marginRight: 16, width: 300 }}
