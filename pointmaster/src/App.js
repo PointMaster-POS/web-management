@@ -3,7 +3,6 @@ import RegisterNewBusiness from "./pages/RegisterNewBusiness/RegisterNewBusiness
 import RegisterOwner from "./pages/RegisterOwner/RegisterOwner";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/ProtectedRoute/MainLayout";
-import CustomLayout from "./pages/CustomLayout/CustomLayout";
 import LogIn from "./pages/LogIn/LogIn";
 import Landing from "./pages/LandingPage/Landing";
 import Dashboard from "./pages/Dashboard/Dashboard";
@@ -25,19 +24,18 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<CustomLayout />}>
-            <Route path="/" element={<Landing />} />
-            <Route
-              path="/register-new-business"
-              element={<RegisterNewBusiness />}
-            />
-            <Route path="/register-owner" element={<RegisterOwner />} />
-            <Route path="/login" element={<LogIn />} />
-            <Route
-              path="/forgot-password"
-              element={<LogIn forgotPassword={true} />}
-            />
-          </Route>
+
+          {/* <Route path="/" element={<Landing />} /> */}
+          {/* <Route
+            path="/register-new-business"
+            element={<RegisterNewBusiness />}
+          /> */}
+          {/* <Route path="/register-owner" element={<RegisterOwner />} /> */}
+          <Route path="/login" element={<LogIn />} />
+          <Route
+            path="/forgot-password"
+            element={<LogIn forgotPassword={true} />}
+          />
 
           {/* Protected Routes */}
           <Route
