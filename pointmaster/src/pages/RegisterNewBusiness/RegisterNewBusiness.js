@@ -13,22 +13,21 @@ import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import "./RegisterNewBusiness.css";
 import RegisterOwner from "../RegisterOwner/RegisterOwner";
-import Header from "../../components/LandingHeader/Header";
 
 const { Option } = Select;
 const { Title } = Typography;
 
-const RegisterNewBusiness = () => {
+const RegisterNewBusiness = ({form,onCancel}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [token, setToken] = useState(null);
-  const [form] = Form.useForm();
 
   const onFinish = async (values) => {
     // Get the current date in YYYY-MM-DD format
     const currentDate = new Date().toISOString().split("T")[0];
 
     // Add current date to the values object
-    values.registration_date = currentDate;
+    values.business_registration_date = currentDate;
+    console.log(values);
 
     try {
       // Send business data to the endpoint
@@ -49,6 +48,7 @@ const RegisterNewBusiness = () => {
       if (response.ok) {
         setToken(data.token); // Store the token
         message.success(data.message); // Show success message
+        onCancel();
         setIsModalVisible(true); // Show owner registration modal
       } else {
         message.error("Failed to register business. Please try again.");
@@ -66,11 +66,10 @@ const RegisterNewBusiness = () => {
 
   return (
     <React.Fragment>
-      <Header/>
       <div className="form-container">
-        <Title level={3} className="form-title">
+        {/* <Title level={4} className="form-title">
           Register New Business
-        </Title>
+        </Title> */}
         <Form
           form={form}
           layout="vertical"
@@ -123,7 +122,7 @@ const RegisterNewBusiness = () => {
           </Form.Item>
 
           <Form.Item label="Business Description" name="business_description">
-            <TextArea rows={4} />
+            <TextArea rows={3} />
           </Form.Item>
 
           <Form.Item
@@ -136,7 +135,7 @@ const RegisterNewBusiness = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             label="Business Logo"
             name="logo_location"
             valuePropName="fileList"
@@ -147,7 +146,7 @@ const RegisterNewBusiness = () => {
             <Upload listType="picture" beforeUpload={() => false}>
               <Button icon={<UploadOutlined />}>Upload Logo</Button>
             </Upload>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label="Business Registration Number"
@@ -177,22 +176,24 @@ const RegisterNewBusiness = () => {
           </Form.Item>
 
           <Form.Item
-            wrapperCol={{ offset: 8, span: 16 }}
-            style={{ textAlign: "right" }}
+            wrapperCol={{ offset: 8, span: 16 }} // Center align buttons by removing offset
+            style={{ textAlign: "right" }} // Center align buttons
           >
             <Button
               type="default"
-              onClick={() => {
-                form.resetFields();
-              }}
-              style={{ marginRight: "20px" }}
+              onClick={onCancel}
+              style={{ marginRight: "20px", fontSize: "16px" }} // Bigger buttons
             >
               Cancel
             </Button>
             <Button
               type="primary"
               htmlType="submit"
-              style={{ backgroundColor: "#1890ff", borderColor: "#1890ff" }}
+              style={{
+                backgroundColor: "#007bff",
+                borderColor: "#007bff",
+                fontSize: "16px",
+              }}
             >
               Register Business
             </Button>
@@ -200,7 +201,7 @@ const RegisterNewBusiness = () => {
         </Form>
 
         <Modal
-          title="Register Business Owner"
+          title={<div className="custom-modal-title">Register Owner</div>}
           visible={isModalVisible}
           onCancel={handleCancel}
           footer={null}
