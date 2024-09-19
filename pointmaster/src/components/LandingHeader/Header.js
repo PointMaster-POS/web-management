@@ -1,19 +1,16 @@
 // components/Registration/Header.js
 import React from 'react';
 import './header.css';
-import { Button } from 'antd';
+import { Button,Typography } from 'antd';
 
 export default function Header() {
   return (
     <header className="header">
-      <div className="logo">
-        <a href="/">PointMaster</a>
-      </div>
+      <Typography.Title level={2} style={{color:'white'}}>
+        Point Master
+      </Typography.Title>
       <nav className="nav-links">
-        <a href="#home">Home</a>
-        <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#contact">Contact</a>
+        <a href="#contact">Contact Us</a>
         <Button type="primary" className="login-btn">
           Log In
         </Button>
