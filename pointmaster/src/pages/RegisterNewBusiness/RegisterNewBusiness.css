@@ -1,22 +1,14 @@
 .form-container {
   background-color: #ffffff;
-  padding: 32px;
+  padding: 10px 40px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   max-width: 800px;
   margin: 0 auto;
 }
 
-.form-title {
-  font-size: 28px;
-  font-weight: bold;
-  margin-bottom: 24px;
-  color: #333333;
-  text-align: center;
-}
-
 .business-form .ant-form-item {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .business-form input,
@@ -58,4 +50,10 @@
 
 .ant-modal-content {
   border-radius: 12px;
+}
+
+.custom-modal-title {
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
 }
