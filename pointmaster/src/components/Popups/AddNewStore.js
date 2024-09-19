@@ -13,6 +13,7 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
 
   const handleFinish = (values) => {
     onAddStore(values); // Pass form values to Stores component
+    onCancel();
   };
 
   return (
@@ -31,8 +32,8 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
       labelAlign="left"
     >
       <Form.Item
-        label="Name"
-        name="name"
+        label="Branch Name"
+        name="branch_name"
         rules={[{ required: true, message: 'Please input the branch name!' }]}
         style={{ marginBottom: '20px' }}
       >
@@ -42,8 +43,8 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
       </Form.Item>
 
       <Form.Item
-        label="Location"
-        name="location"
+        label="Branch Location"
+        name="branch_location"
         rules={[{ required: true, message: 'Please input the branch location!' }]}
         style={{ marginBottom: '20px' }}
       >
@@ -52,7 +53,7 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
         />
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
         label="Manager"
         name="manager"
         rules={[{ required: true, message: 'Please select a branch manager!' }]}
@@ -67,9 +68,9 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
             </Option>
           ))}
         </Select>
-      </Form.Item>
+      </Form.Item> */}
 
-      <Form.Item
+      {/* <Form.Item
         label="Telephone"
         name="telephone"
         rules={[{ required: true, message: 'Please input the branch telephone!' }]}
@@ -78,9 +79,9 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
         <Input 
           placeholder="Enter branch telephone" 
         />
-      </Form.Item>
+      </Form.Item> */}
 
-      <Form.Item
+      {/* <Form.Item
         label="Email"
         name="email"
         rules={[
@@ -92,14 +93,14 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
         <Input 
           placeholder="Enter branch email" 
         />
-      </Form.Item>
+      </Form.Item> */}
   
       <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{ textAlign: 'right' }}>
         <Button 
           type="default" 
           onClick={() => {
             onCancel();
-          }}
+          }}m
           style={{ marginRight: '10px' }}
         >
           Cancel
