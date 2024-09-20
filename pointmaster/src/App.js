@@ -25,7 +25,7 @@ const App = () => {
         <Routes>
           {/* Public Routes */}
 
-          {/* <Route path="/" element={<Landing />} /> */}
+          <Route path="/" element={<Landing />} />
           {/* <Route
             path="/register-new-business"
             element={<RegisterNewBusiness />}
