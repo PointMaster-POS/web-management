@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Form, Input, Select, Button } from "antd";
 
 const { Option } = Select;
@@ -10,7 +10,6 @@ const Stores = [
 ];
 
 const AddNewEmployee = ({ onAddEmployee, onCancel }) => {
-  
   const handleFinish = (values) => {
     onAddEmployee(values); // Pass form values to Stores component
   };
