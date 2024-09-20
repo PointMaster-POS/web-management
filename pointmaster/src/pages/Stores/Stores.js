@@ -29,24 +29,162 @@ const Stores = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingStore, setEditingStore] = useState(null); // For editing the store
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
 
+  const handleEdit = (record) => {
+    setEditingStore(record); // Set the store to be edited
+    form.setFieldsValue(record); // Pre-fill the form with the selected store's data
+    setIsModalVisible(true); // Open the modal for editing
+  };
+  const handleAddStore = async (values) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/branch/", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const newBranch = await response.json();
+      const newData = [...data, newBranch];
+      setData(newData);
+      setFilteredData(newData);
+      message.success("Store added successfully.");
+      handleCancel();
+    } catch (error) {
+      console.error("Error adding branch:", error);
+      message.error("Failed to add store.");
+    }
+  };
+
+  
+
+  // Handle Update Store
+  const handleUpdateStore = async (values) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3001/branch/${editingStore.branch_id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const updatedBranch = await response.json();
+      const newData = data.map((branch) =>
+        branch.branch_id === editingStore.branch_id ? updatedBranch : branch
+      );
+      setData(newData);
+      setFilteredData(newData);
+      message.success("Store updated successfully.");
+      handleCancel(); // Close the modal after updating the store
+    } catch (error) {
+      console.error("Error updating branch:", error);
+      message.error("Failed to update store.");
+    }
+  };
+
+  // Fetch branches when component loads
   useEffect(() => {
     fetchBranches();
-  }, []);
+  }, [handleUpdateStore,handleAddStore]);
 
-  // Fetch all branches
   const fetchBranches = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
     try {
-      const response = await axios.get("http://localhost:3001/branch/");
-      setData(response.data);
-      setFilteredData(response.data);
+      const response = await fetch("http://localhost:3001/branch", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setData(data);
+      setFilteredData(data);
     } catch (error) {
       console.error("Error fetching branches:", error);
       message.error("Failed to fetch branches.");
     }
   };
+
+  // Handle Add New Store
+  
+  // Handle Delete Store
+  const handleDelete = (branch_id, branch_name) => {
+    confirm({
+      title: "Are you sure you want to delete this store?",
+      icon: <ExclamationCircleOutlined />,
+      content: `This action will delete the store "${branch_name}".`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        try {
+          const token = localStorage.getItem("accessToken");
+          if (!token) {
+            message.error("Authorization token is missing. Please log in again.");
+            return;
+          }
+
+          await fetch(`http://localhost:3001/branch/${branch_id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const newData = data.filter((branch) => branch.branch_id !== branch_id);
+          setData(newData);
+          setFilteredData(newData);
+          message.success("Store deleted successfully.");
+        } catch (error) {
+          console.error("Error deleting branch:", error);
+          message.error("Failed to delete store.");
+        }
+      },
+    });
+  };
+
+  // Handle Edit Store
+  
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -55,72 +193,7 @@ const Stores = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
-  };
-
-  // Add a new store/branch
-  const handleAddStore = () => {
-    form.validateFields().then(async (values) => {
-      try {
-        const response = await axios.post(
-          "http://localhost:3001/branch/",
-          values
-        );
-        const newBranch = response.data;
-        const newData = [...data, newBranch];
-        setData(newData);
-        setFilteredData(newData);
-        message.success("Store added successfully.");
-      } catch (error) {
-        console.error("Error adding branch:", error);
-        message.error("Failed to add store.");
-      }
-    });
-  };
-
-  // Edit an existing store/branch
-  const handleEdit = async (record) => {
-    form.setFieldsValue(record); // Prepopulate the form with the existing data
-    showModal();
-
-    form.validateFields().then(async (values) => {
-      try {
-        await axios.put(
-          `http://localhost:3001/branch/${record.store_id}`,
-          values
-        );
-        const updatedData = data.map((item) =>
-          item.store_id === record.store_id ? { ...item, ...values } : item
-        );
-        setData(updatedData);
-        setFilteredData(updatedData);
-        setIsModalVisible(false);
-        form.resetFields();
-      } catch (error) {
-        console.error("Error updating branch:", error);
-      }
-    });
-  };
-
-  // Delete a store/branch
-  const handleDelete = (store_id, name) => {
-    confirm({
-      title: `Are you sure you want to delete "${name}"?`,
-      icon: <ExclamationCircleOutlined />,
-      okText: "Delete",
-      okType: "danger",
-      cancelText: "Cancel",
-      centered: true,
-      onOk: async () => {
-        try {
-          await axios.delete(`http://localhost:3001/branch/${store_id}`);
-          const updatedData = data.filter((item) => item.store_id !== store_id);
-          setData(updatedData);
-          setFilteredData(updatedData);
-        } catch (error) {
-          console.error("Error deleting branch:", error);
-        }
-      },
-    });
+    setEditingStore(null); // Reset editing state
   };
 
   const handleSearch = (value, exactMatch = false) => {
@@ -134,33 +207,10 @@ const Stores = () => {
     setSearchText(value);
   };
 
-  // Table columns definition
   const columns = [
-    {
-      title: "Branch ID",
-      dataIndex: "branch_id",
-      key: "branch_id",
-    },
-    {
-      title: "Name",
-      dataIndex: "branch_name",
-      key: "branch_name",
-    },
-    {
-      title: "Location",
-      dataIndex: "branch_location",
-      key: "branch_location",
-    },
-    // {
-    //   title: "Manager",
-    //   dataIndex: "manager",
-    //   key: "manager",
-    // },
-    // {
-    //   title: "Telephone",
-    //   dataIndex: "telephone",
-    //   key: "telephone",
-    // },
+    { title: "Branch ID", dataIndex: "branch_id", key: "branch_id" },
+    { title: "Name", dataIndex: "branch_name", key: "branch_name" },
+    { title: "Location", dataIndex: "branch_location", key: "branch_location" },
     {
       title: "Actions",
       key: "actions",
@@ -170,54 +220,27 @@ const Stores = () => {
             <Button
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
-              style={{
-                borderColor: "#1890ff",
-                color: "#1890ff",
-              }}
+              style={{ borderColor: "#1890ff", color: "#1890ff" }}
             />
           </Tooltip>
           <Tooltip title="Delete Store">
             <Button
               icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.store_id, record.name)}
+              onClick={() => handleDelete(record.branch_id, record.branch_name)}
               danger
             />
           </Tooltip>
         </Space>
       ),
     },
-
-    {
-      title: "",
-      key: "",
-      render: (record) => (
-        <Button /* onClick={() => handleViewStore(record.store_id)} */>
-          View Store
-        </Button>
-      ),
-    },
   ];
 
   return (
-    <Card
-      style={{
-        margin: 30,
-        padding: 30,
-        borderRadius: "10px",
-      }}
-      bodyStyle={{ padding: "20px" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <Card style={{ margin: 30, padding: 30, borderRadius: "10px" }} bodyStyle={{ padding: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Title level={3} style={{ marginBottom: 10 }}>
           Stores Data
         </Title>
-
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
             placeholder="Search stores"
@@ -234,22 +257,25 @@ const Stores = () => {
       <hr color="#1890ff" />
 
       <Modal
-        title="Add New Store"
+        title={editingStore ? "Edit Store" : "Add New Store"}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
         centered
       >
-        <AddNewStore form={form} onAddStore={handleAddStore} onCancel={handleCancel} />
+        <AddNewStore
+          form={form}
+          onAddStore={editingStore ? handleUpdateStore : handleAddStore}
+          onCancel={handleCancel}
+          initialValues={editingStore || {}}
+        />
       </Modal>
 
       <Table
         dataSource={filteredData}
         columns={columns}
         pagination={{ pageSize: 7 }}
-        locale={{
-          emptyText: "No stores available.",
-        }}
+        locale={{ emptyText: "No stores available." }}
         style={{ marginTop: 20 }}
       />
     </Card>
