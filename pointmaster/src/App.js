@@ -39,7 +39,6 @@ const App = () => {
               </ProtectedRoute>
             }
           >
-            {/* Nested Routes for internal pages */}
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/employees" element={<Employees />} />
