@@ -60,7 +60,6 @@ const Employees = () => {
     form.resetFields();
   };
 
-
   const handleEdit = (values) => {
     /* const newData = data.map((item) =>
       item.supplier_id === values.supplier_id ? { ...item, ...values } : item
@@ -89,7 +88,10 @@ const Employees = () => {
       if (exactMatch) {
         return employee_name === searchValue || employee_id === searchValue;
       } else {
-        return employee_name.includes(searchValue) || employee_id.includes(searchValue);
+        return (
+          employee_name.includes(searchValue) ||
+          employee_id.includes(searchValue)
+        );
       }
     });
     setFilteredData(filtered);
@@ -169,9 +171,7 @@ const Employees = () => {
       title: "",
       key: "",
       render: (record) => (
-        <Button
-          onClick={() => handleViewEmployee(record.employee_id)}
-        >
+        <Button onClick={() => handleViewEmployee(record.employee_id)}>
           View Employee
         </Button>
       ),
@@ -201,7 +201,7 @@ const Employees = () => {
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
             placeholder="Search by Employee ID or Employee Name"
-            onSearch={(value) => handleSearch(value, true)} 
+            onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
             style={{ marginRight: 16, width: 300 }}
@@ -220,7 +220,11 @@ const Employees = () => {
         footer={null}
         centered
       >
-        <AddNewEmployee form={form} onAddEmployee={handleAddEmployee} onCancel={handleCancel} />
+        <AddNewEmployee
+          form={form}
+          onAddEmployee={handleAddEmployee}
+          onCancel={handleCancel}
+        />
       </Modal>
 
       <Table

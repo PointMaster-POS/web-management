@@ -31,7 +31,7 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
       })
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem("accessToken", JSON.stringify(response.data));
+          localStorage.setItem("accessToken", response.data);
           if (!isAuthenticated) {
             setIsAuthenticated(true);
             navigate("/dashboard");

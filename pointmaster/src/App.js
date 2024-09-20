@@ -1,8 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainLayout from "./components/MainLayout/MainLayout";
+import MainLayout from "./components/ProtectedRoute/MainLayout";
 import LogIn from "./pages/LogIn/LogIn";
-import Landing from "./pages/Registration/LandingPage/Landing";
+import Landing from "./pages/LandingPage/Landing";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Stores from "./pages/Stores/Stores";
 import Employees from "./pages/Employees/Employees";
@@ -21,9 +21,16 @@ const App = () => {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
+          {/* Public Routes */}
+
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<LogIn />} />
-          <Route path="/forgot-password" element={<LogIn forgotPassword={true} />} />
+          <Route
+            path="/forgot-password"
+            element={<LogIn forgotPassword={true} />}
+          />
+
+          {/* Protected Routes */}
           <Route
             path="/"
             element={
@@ -45,7 +52,8 @@ const App = () => {
             />
             <Route path="/products" element={<Products />} />
             <Route path="/orders" element={<Orders />} />
-            <Route path="*" element={<h1>404 Not Found</h1>} />
+            <Route path="*" element={<h1>404 Not Found</h1>} />{" "}
+            {/* Catch-all route for unmatched paths */}
           </Route>
         </Routes>
       </BrowserRouter>
