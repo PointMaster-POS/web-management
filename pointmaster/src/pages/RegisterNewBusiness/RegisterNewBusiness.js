@@ -1,27 +1,16 @@
 import React, { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  Upload,
-  Typography,
-  Modal,
-  message,
-} from "antd";
+import { Form, Input, Button, Select, Upload, Modal, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import "./RegisterNewBusiness.css";
 import RegisterOwner from "../RegisterOwner/RegisterOwner";
 
 const { Option } = Select;
-const { Title } = Typography;
 
-const RegisterNewBusiness = ({form,onCancel}) => {
+const RegisterNewBusiness = ({ form, onCancel }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [token, setToken] = useState(null);
   const [form_second] = Form.useForm();
-
 
   const onFinish = async (values) => {
     // Get the current date in YYYY-MM-DD format
@@ -69,9 +58,6 @@ const RegisterNewBusiness = ({form,onCancel}) => {
   return (
     <React.Fragment>
       <div className="form-container">
-        {/* <Title level={4} className="form-title">
-          Register New Business
-        </Title> */}
         <Form
           form={form}
           layout="vertical"
@@ -209,7 +195,11 @@ const RegisterNewBusiness = ({form,onCancel}) => {
           footer={null}
           centered
         >
-          <RegisterOwner token={token} form={form_second} onCancel={handleCancel} />
+          <RegisterOwner
+            token={token}
+            form={form_second}
+            onCancel={handleCancel}
+          />
         </Modal>
       </div>
     </React.Fragment>
