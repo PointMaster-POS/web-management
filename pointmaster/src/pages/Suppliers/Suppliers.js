@@ -16,7 +16,6 @@ import {
   DeleteOutlined,
   ExclamationCircleOutlined,
   PlusOutlined,
-  ShoppingOutlined,
 } from "@ant-design/icons";
 import AddNewSupplier from "../../components/Popups/AddNewSupplier";
 import { suppliersData } from "../../components/Data";
@@ -158,16 +157,6 @@ const Suppliers = () => {
               danger
               />
           </Tooltip>
-          {/* <Tooltip title="View Orders">
-            <Button
-            icon={<ShoppingOutlined />}
-            onClick={() => handleViewOrder(record.supplier_id)}
-            style={{
-              borderColor: "rgb(0,0,0,0.88)",
-              color: "rgb(0,0,0,0.88)",
-              }}
-              />
-              </Tooltip> */}
         </Space>
       ),
     },
