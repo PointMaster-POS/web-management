@@ -20,6 +20,8 @@ const { Title } = Typography;
 const RegisterNewBusiness = ({form,onCancel}) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [token, setToken] = useState(null);
+  const [form_second] = Form.useForm();
+
 
   const onFinish = async (values) => {
     // Get the current date in YYYY-MM-DD format
@@ -61,7 +63,7 @@ const RegisterNewBusiness = ({form,onCancel}) => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    form.resetFields();
+    form_second.resetFields();
   };
 
   return (
@@ -207,7 +209,7 @@ const RegisterNewBusiness = ({form,onCancel}) => {
           footer={null}
           centered
         >
-          <RegisterOwner token={token} form={form} onCancel={handleCancel} />
+          <RegisterOwner token={token} form={form_second} onCancel={handleCancel} />
         </Modal>
       </div>
     </React.Fragment>
