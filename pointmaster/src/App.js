@@ -1,6 +1,4 @@
 import React from "react";
-import RegisterNewBusiness from "./pages/RegisterNewBusiness/RegisterNewBusiness";
-import RegisterOwner from "./pages/RegisterOwner/RegisterOwner";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import MainLayout from "./components/ProtectedRoute/MainLayout";
 import LogIn from "./pages/LogIn/LogIn";
@@ -26,11 +24,6 @@ const App = () => {
           {/* Public Routes */}
 
           <Route path="/" element={<Landing />} />
-          {/* <Route
-            path="/register-new-business"
-            element={<RegisterNewBusiness />}
-          /> */}
-          {/* <Route path="/register-owner" element={<RegisterOwner />} /> */}
           <Route path="/login" element={<LogIn />} />
           <Route
             path="/forgot-password"
