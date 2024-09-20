@@ -4,6 +4,7 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import Header from "./Header";
 import { BrowserRouter as Router } from "react-router-dom";
 import { notifications } from "../Data";
+import { act } from "react";  // Import React's act
 
 // Mock window.matchMedia for responsive features
 beforeAll(() => {
@@ -53,17 +54,18 @@ describe("Header component", () => {
     expect(badgeCount).toBeInTheDocument();
   });
 
-  test("opens notification list on bell icon click", () => {
+  test("opens notification list on bell icon click", async () => {
     const notificationBell = screen.getByRole("img", { name: /bell/i });
-
-    // Simulate a click on the notification bell
-    fireEvent.click(notificationBell);
+    
+    // Wrap click event in act for state updates
+    await act(async () => {
+      fireEvent.click(notificationBell);
+    });
 
     // Check if notifications popover opens
     const popoverTitle = screen.getByText(/Notifications/i);
     expect(popoverTitle).toBeInTheDocument();
 
-    // Check if a notification from the list is rendered
     if (notifications.length > 0) {
       const firstNotificationTitle = screen.getByText(notifications[0].title);
       expect(firstNotificationTitle).toBeInTheDocument();
@@ -75,11 +77,13 @@ describe("Header component", () => {
     expect(avatar).toBeInTheDocument();
   });
 
-  test("opens dropdown menu on avatar click", () => {
+  test("opens dropdown menu on avatar click", async () => {
     const avatar = screen.getByRole("img", { name: /user/i });
-
-    // Simulate a click on the avatar
-    fireEvent.click(avatar);
+    
+    // Wrap click event in act for state updates
+    await act(async () => {
+      fireEvent.click(avatar);
+    });
 
     // Check if menu items appear
     const profileMenuItem = screen.getByText(/Profile/i);
@@ -92,15 +96,19 @@ describe("Header component", () => {
     expect(logOutMenuItem).toBeInTheDocument();
   });
 
-  test("calls setIsAuthenticated when log out is clicked", () => {
+  test("calls setIsAuthenticated when log out is clicked", async () => {
     const avatar = screen.getByRole("img", { name: /user/i });
 
     // Simulate a click on the avatar to open the dropdown
-    fireEvent.click(avatar);
+    await act(async () => {
+      fireEvent.click(avatar);
+    });
 
     // Simulate a click on the "Log Out" menu item
     const logOutMenuItem = screen.getByText(/Log Out/i);
-    fireEvent.click(logOutMenuItem);
+    await act(async () => {
+      fireEvent.click(logOutMenuItem);
+    });
 
     // Assert that setIsAuthenticated was called with 'false'
     expect(setIsAuthenticated).toHaveBeenCalledWith(false);
