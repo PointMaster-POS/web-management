@@ -6,7 +6,6 @@ import {
   Popover,
   List,
   Badge,
-  Menu,
   Dropdown,
 } from "antd";
 import {
@@ -31,41 +30,37 @@ const Header = ({ setIsAuthenticated }) => {
     setIsAuthenticated(false);
   };
 
-  const menu = (
-    <Menu
-      style={{
-        width: "250px",
-        padding: "10px 10px",
-      }}
-    >
-      <Menu.Item
-        key="1"
-        icon={<ProfileOutlined style={{ fontSize: "16px" }} />}
-        onClick={handleProfileClick}
-        style={{ fontWeight: "bold", fontSize: "16px" }}
-      >
-        Profile
-      </Menu.Item>
+  // Custom styles for menu items
+  const menuItemStyle = {
+    fontWeight: "bold",
+    fontSize: "16px",
+    padding: "10px 20px",
+  };
 
-      <Menu.Item
-        key="2"
-        icon={<SettingOutlined style={{ fontSize: "16px" }} />}
-        onClick={() => console.log("Go to Settings")}
-        style={{ fontWeight: "bold", fontSize: "16px" }}
-      >
-        Settings
-      </Menu.Item>
-
-      <Menu.Item
-        key="3"
-        icon={<LogoutOutlined style={{ fontSize: "16px" }} />}
-        onClick={handleLogOut}
-        style={{ fontWeight: "bold", fontSize: "16px" }}
-      >
-        Log Out
-      </Menu.Item>
-    </Menu>
-  );
+  // Menu items array with inline styles
+  const menuItems = [
+    {
+      label: "Profile",
+      key: "1",
+      icon: <ProfileOutlined style={{ fontSize: "16px" }} />,
+      onClick: handleProfileClick,
+      style: menuItemStyle, // Apply custom styles to individual items
+    },
+    {
+      label: "Settings",
+      key: "2",
+      icon: <SettingOutlined style={{ fontSize: "16px" }} />,
+      onClick: () => console.log("Go to Settings"),
+      style: menuItemStyle,
+    },
+    {
+      label: "Log Out",
+      key: "3",
+      icon: <LogoutOutlined style={{ fontSize: "16px" }} />,
+      onClick: handleLogOut,
+      style: menuItemStyle,
+    },
+  ];
 
   const notificationContent = (
     <List
@@ -84,9 +79,7 @@ const Header = ({ setIsAuthenticated }) => {
 
   return (
     <div className="header_">
-      <Typography.Title level={2} /* style={{ margin: 0 }} */>
-        Welcome to Point Master
-      </Typography.Title>
+      <Typography.Title level={2}>Welcome to Point Master</Typography.Title>
       <Space size="large">
         <Popover
           content={notificationContent}
@@ -98,7 +91,22 @@ const Header = ({ setIsAuthenticated }) => {
             <BellFilled style={{ fontSize: 30, cursor: "pointer" }} />
           </Badge>
         </Popover>
-        <Dropdown overlay={menu} trigger={["click"]}>
+        {/* Dropdown with custom styles */}
+        <Dropdown
+          menu={{
+            items: menuItems.map((item) => ({
+              ...item,
+              style: { ...menuItemStyle, ...item.style }, // Apply styles to each item
+            })),
+          }}
+          trigger={["click"]}
+          overlayStyle={{
+            width: "250px", // Dropdown width
+            padding: "10px", // Dropdown padding
+            borderRadius: "8px", // Rounded corners
+            backgroundColor: "#f9f9f9", // Light background color
+          }}
+        >
           <Badge dot>
             <Avatar
               icon={<UserOutlined />}
