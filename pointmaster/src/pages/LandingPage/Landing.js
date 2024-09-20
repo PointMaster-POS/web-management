@@ -8,7 +8,7 @@ import RegisterNewBusiness from "../RegisterNewBusiness/RegisterNewBusiness";
 
 export default function Landing() {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
+  const [form_first] = Form.useForm();
     // const navigate = useNavigate();
 
     // const handleJoin = () => {
@@ -21,7 +21,7 @@ export default function Landing() {
 
     const handleCancel = () => {
       setIsModalVisible(false);
-      form.resetFields();
+      form_first.resetFields();
     };
 
   return (
@@ -88,7 +88,7 @@ export default function Landing() {
           width={750}
           centered
         >
-          <RegisterNewBusiness form={form} onCancel={handleCancel} />
+          <RegisterNewBusiness form={form_first} onCancel={handleCancel} />
         </Modal>
         
         <Footer/>
