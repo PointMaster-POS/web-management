@@ -1,9 +1,7 @@
 import React from "react";
-import { Form, Input, Button, Typography, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import "./RegisterOwner.css";
 import { useNavigate } from "react-router-dom";
-
-const { Title } = Typography;
 
 const RegisterOwner = ({ token, form, onCancel }) => {
   const navigate = useNavigate();
