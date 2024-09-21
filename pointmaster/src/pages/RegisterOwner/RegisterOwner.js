@@ -84,11 +84,12 @@ const RegisterOwner = ({ token, form, onCancel }) => {
         >
           <Button
             type="default"
-            onClick={onCancel}
+            onClick={() => onCancel()} // Ensure it's invoked correctly as a function
             style={{ marginRight: "10px" }}
           >
             Cancel
           </Button>
+
           <Button
             type="primary"
             htmlType="submit"
