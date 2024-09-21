@@ -20,7 +20,9 @@
   }
   
   .nav-links a:hover {
+    cursor: pointer;
     color: #d5e1ed;
+
   }
   
   .login-btn {
