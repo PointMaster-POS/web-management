@@ -22,8 +22,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
-
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Landing />} index />
           <Route path="/login" element={<LogIn />} />
           <Route
             path="/forgot-password"
