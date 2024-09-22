@@ -1,11 +1,19 @@
 module.exports = {
+  // Tell Jest to use Babel for transformation
   transform: {
-    '^.+\\.(js|jsx)$': 'babel-jest', // Use Babel for JS and JSX files
+    "^.+\\.jsx?$": "babel-jest",
   },
+  // Ignore transformations in node_modules except for Ant Design
+  transformIgnorePatterns: [
+    "node_modules/(?!antd|@ant-design|rc-.+?|@babel/runtime)"
+  ],
+  // Set up test environment
+  testEnvironment: "jsdom",
+  // Resolve .js and .jsx extensions
+  moduleFileExtensions: ["js", "jsx"],
+  // Handle CSS imports
   moduleNameMapper: {
-    '\\.(css|less)$': 'identity-obj-proxy', // Mock CSS files
+    "\\.(css|less)$": "identity-obj-proxy"
   },
-  moduleFileExtensions: ['js', 'jsx'],
-  testEnvironment: 'jsdom', // Simulate a DOM environment for React components
-  setupFilesAfterEnv: ['<rootDir>/src/setupTests.js'], // Set up additional test configurations
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.js"],
 };
