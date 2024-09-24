@@ -6,16 +6,11 @@ import {
   PhoneOutlined,
   AppstoreOutlined,
   ProductOutlined,
-  ShoppingCartOutlined,
-  AreaChartOutlined,
-  StopOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Sider.css";
 import { useMenu } from "../../context/MenuContext"; // Import MenuContext
-
-
 
 const { Sider } = Layout;
 
@@ -25,31 +20,22 @@ const items = [
     icon: <DashboardOutlined />,
     label: "Dashboard",
   },
+
+ 
   {
-    key: "/loyalty",
-    icon: <PhoneOutlined />,
-    label: "Loyalty",
+    key: "/category",
+    icon: <AppstoreOutlined />,
+    label: "Category",
   },
   {
-    key: "/stores",
-    icon: <ShopOutlined />,
-    label: "Stores",
+    key: "/products",
+    icon: <ProductOutlined />,
+    label: "Products",
   },
-  {
-    key: "/employees",
-    icon: <UserOutlined />,
-    label: "Employees",
-  },
-  
-  { key: "/category", icon: <AppstoreOutlined />, label: "Category" },
-  { key: "/products", icon: <ProductOutlined />, label: "Products" },
-  // { key: "/orders", icon: <ShoppingCartOutlined />, label: "Orders" },
-  // { key: "/reports", icon: <AreaChartOutlined />, label: "Reports" },
-  // { key: "/expired", icon: <StopOutlined />, label: "Expired" },
 ];
 
 const SideBar = ({ onCollapse }) => {
-  const { selectedMenu, setSelectedMenu } = useMenu(); // Get selectedMenu and setter from context
+  const { selectedMenu, setSelectedMenu, role } = useMenu(); // Get role from context
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -62,7 +48,7 @@ const SideBar = ({ onCollapse }) => {
 
   // Handle menu item click
   const onMenuClick = (e) => {
-    navigate(e.key);  // Navigate to the selected menu item route
+    navigate(e.key); // Navigate to the selected menu item route
     setSelectedMenu(e.key); // Update the selected menu in context
   };
 
@@ -95,6 +81,7 @@ const SideBar = ({ onCollapse }) => {
         onClick={onMenuClick}
         className="custom-menu"
       >
+        {/* Render the common items */}
         {items.map((item) => (
           <Menu.Item
             key={item.key}
@@ -104,6 +91,35 @@ const SideBar = ({ onCollapse }) => {
             {item.label}
           </Menu.Item>
         ))}
+
+        {/* Conditionally render the Employees item if the role is 'owner' */}
+        {role === "owner" && (
+          <Menu.Item
+            key="/employees"
+            icon={<UserOutlined />}
+            className="custom-menu-item"
+          >
+            Employees
+          </Menu.Item>
+        )}
+        {role === "owner" && (
+          <Menu.Item
+            key="/Loyalty"
+            icon={<UserOutlined />}
+            className="custom-menu-item"
+          >
+            Loyalty
+          </Menu.Item>
+        )}
+        {role === "owner" && (
+          <Menu.Item
+            key="/stores"
+            icon={<UserOutlined />}
+            className="custom-menu-item"
+          >
+            Stores
+          </Menu.Item>
+        )}
       </Menu>
     </Sider>
   );
