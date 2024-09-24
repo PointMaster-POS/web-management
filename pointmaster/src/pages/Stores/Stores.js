@@ -45,6 +45,7 @@ const Stores = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+    
 
     try {
       const response = await fetch("http://localhost:3001/branch/", {
@@ -111,10 +112,6 @@ const Stores = () => {
     }
   };
 
-  // Fetch branches when component loads
-  useEffect(() => {
-    fetchBranches();
-  }, [handleUpdateStore,handleAddStore]);
 
   const fetchBranches = async () => {
     const token = localStorage.getItem("accessToken");
@@ -122,6 +119,8 @@ const Stores = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+    
+
 
     try {
       const response = await fetch("http://localhost:3001/branch", {
@@ -144,6 +143,12 @@ const Stores = () => {
       message.error("Failed to fetch branches.");
     }
   };
+
+    // Fetch branches when component loads
+    useEffect(() => {
+      fetchBranches();
+    }, [handleUpdateStore,handleAddStore]);
+  
 
   // Handle Add New Store
   
