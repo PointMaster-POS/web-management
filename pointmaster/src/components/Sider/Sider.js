@@ -33,9 +33,9 @@ const items = [
     label: "Employees",
   },
   {
-    key: "/suppliers",
+    key: "/loyalty",
     icon: <PhoneOutlined />,
-    label: "Suppliers",
+    label: "loyalty",
   },
   { key: "/category", icon: <AppstoreOutlined />, label: "Category" },
   { key: "/products", icon: <ProductOutlined />, label: "Products" },

@@ -9,12 +9,13 @@ import Employees from "./pages/Employees/Employees";
 import Expired from "./pages/Expired/Expired";
 import Profile from "./pages/Profile/Profile";
 import Category from "./pages/Categories/Category";
-import Suppliers from "./pages/Suppliers/Suppliers";
-import PurchaseHistory from "./pages/Suppliers/PurchaseHistory";
+import Suppliers from "./pages/Loyalty/loyalty";
+import PurchaseHistory from "./pages/Loyalty/PurchaseHistory";
 import Orders from "./pages/Orders/Orders";
 import Products from "./pages/Products/Products";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
+import Loyalty from "./pages/Loyalty/loyalty";
 
 const App = () => {
   return (
@@ -45,7 +46,7 @@ const App = () => {
             <Route path="/expired" element={<Expired />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/category" element={<Category />} />
-            <Route path="/suppliers" element={<Suppliers />} />
+            <Route path="/loyalty" element={<Loyalty />} />
             <Route
               path="/phistory/:supplier_id"
               element={<PurchaseHistory />}
