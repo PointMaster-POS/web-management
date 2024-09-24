@@ -116,7 +116,7 @@ const Loyalty = () => {
 
     console.log("Creating new loyalty program with values: ", values);
     try {
-      const response = await fetch(`http://localhost:3001/loyalty`, {
+      const response = await fetch(`http://localhost:3001/loyalty/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -129,9 +129,12 @@ const Loyalty = () => {
       });
 
       if (!response.ok) {
+       
         message.error("Failed to create loyalty program.");
         return;
       }
+
+     
 
       const newData = await response.json();
       setData(newData);
@@ -213,7 +216,7 @@ const Loyalty = () => {
                   <li>Encourages repeat purchases from loyal customers.</li>
                   <li>Increases customer retention and satisfaction.</li>
                   <li>Provides data insights on customer spending habits.</li>
-                  <li>Improves brand loyalty and customer relationships.</li>
+                  <li>Improves business loyalty and customer relationships.</li>
                 </ul>
                 <Button
                   type="primary"
