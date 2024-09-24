@@ -13,6 +13,9 @@ import {
 import { Layout, Menu } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./Sider.css";
+import { useMenu } from "../../context/MenuContext"; // Import MenuContext
+
+
 
 const { Sider } = Layout;
 
@@ -21,6 +24,11 @@ const items = [
     key: "/dashboard",
     icon: <DashboardOutlined />,
     label: "Dashboard",
+  },
+  {
+    key: "/loyalty",
+    icon: <PhoneOutlined />,
+    label: "Loyalty",
   },
   {
     key: "/stores",
@@ -32,32 +40,33 @@ const items = [
     icon: <UserOutlined />,
     label: "Employees",
   },
-  {
-    key: "/loyalty",
-    icon: <PhoneOutlined />,
-    label: "loyalty",
-  },
+  
   { key: "/category", icon: <AppstoreOutlined />, label: "Category" },
   { key: "/products", icon: <ProductOutlined />, label: "Products" },
-  { key: "/orders", icon: <ShoppingCartOutlined />, label: "Orders" },
+  // { key: "/orders", icon: <ShoppingCartOutlined />, label: "Orders" },
   // { key: "/reports", icon: <AreaChartOutlined />, label: "Reports" },
   // { key: "/expired", icon: <StopOutlined />, label: "Expired" },
 ];
 
 const SideBar = ({ onCollapse }) => {
+  const { selectedMenu, setSelectedMenu } = useMenu(); // Get selectedMenu and setter from context
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const [selectedKey, setSelectedKey] = useState(location.pathname);
 
+  // Update selectedKey when the location changes
   useEffect(() => {
     setSelectedKey(location.pathname);
   }, [location.pathname]);
 
+  // Handle menu item click
   const onMenuClick = (e) => {
-    navigate(e.key);
+    navigate(e.key);  // Navigate to the selected menu item route
+    setSelectedMenu(e.key); // Update the selected menu in context
   };
 
+  // Handle sidebar collapse
   const handleCollapse = (value) => {
     setCollapsed(value);
     onCollapse(value);
@@ -71,9 +80,9 @@ const SideBar = ({ onCollapse }) => {
       onCollapse={handleCollapse}
       theme="light"
       style={{
-        overflow: 'auto',
-        height: '100vh',
-        position: 'fixed',
+        overflow: "auto",
+        height: "100vh",
+        position: "fixed",
         left: 0,
         top: 75,
         bottom: 0,

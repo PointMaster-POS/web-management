@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Table,
   Space,
@@ -9,37 +9,72 @@ import {
   Tooltip,
   Card,
   Typography,
+  message,
 } from "antd";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import {
   EditOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { categoriesData } from "../../components/Data";
 import AddNewCategory from "../../components/Popups/AddNewCategory";
+
 
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
 
-
 const Category = () => {
-  const [data, setData] = useState(categoriesData);
+  const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [filteredData, setFilteredData] = useState(data);
+  const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const [categoryData, setCategoryData] = useState([]);
+
+
+  const fetchCategories = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    try {
+      const response = await fetch("http://localhost:3001/category/", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      const data = await response.json();
+      setCategoryData(data);
+    }
+    catch (error) {
+      console.error("Error fetching categories: ", error);
+      message.error("An error occurred. Please try again later.");
+
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  
+ 
+  useEffect(() => {
+    // Assuming data is fetched from the backend and formatted appropriately
+    const formattedData = categoryData.map((item, index) => ({
+      ...item,
+      no: index + 1, // Simulating auto-increment for the 'No' field
+      key: item.category_id, // Use category_id as key
+      product_count: Math.floor(Math.random() * 100), // Simulating a product count
+    }));
+    setData(formattedData);
+    setFilteredData(formattedData);
+  }, []);
 
   const showModal = () => {
     setIsModalVisible(true);
-
-  };
-
-  const handleViewCategory = (no) => {
-    // navigate(`/phistory/${supplier_id}`);
   };
 
   const handleAddCategories = () => {
@@ -48,7 +83,7 @@ const Category = () => {
       setIsModalVisible(false);
       const newCategories = {
         ...values,
-        no: `SUP${data.length + 123}`, // Simulate auto-increment
+        no: data.length + 1,
         key: `${data.length + 1}`,
       };
       const newData = [...data, newCategories];
@@ -63,54 +98,8 @@ const Category = () => {
   };
 
   const handleEdit = (record, newCategoryName) => {
-    /* const newData = data.map((item) =>
-      item.key === record.key
-        ? { ...item, categoryName: newCategoryName }
-        : item
-    );
-    setData(newData);
-    setFilteredData(newData); */
+    // Implement edit functionality
   };
-
-  /* const showEditModal = (record) => {
-    let categoryName = record.categoryName;
-
-    Modal.info({
-      title: "Edit Category",
-      content: (
-        <Form>
-          <Form.Item label="Category Name">
-            <Input
-              defaultValue={categoryName}
-              onChange={(e) => (categoryName = e.target.value)}
-            />
-          </Form.Item>
-        </Form>
-      ),
-      onOk() {
-        handleEdit(record, categoryName);
-      },
-      okText: "Save",
-      cancelText: "Cancel",
-      footer: (
-        <div className="custom-modal-footer">
-          <Button
-            onClick={() => Modal.destroyAll()}
-            className="custom-cancel-btn"
-          >
-            Cancel
-          </Button>
-          <Button
-            type="primary"
-            onClick={() => handleEdit(record, categoryName)}
-            className="custom-save-btn"
-          >
-            Save
-          </Button>
-        </div>
-      ),
-    });
-  }; */
 
   const handleDelete = (categoryName) => {
     confirm({
@@ -125,18 +114,13 @@ const Category = () => {
 
   const handleSearch = (value, exactMatch = false) => {
     const searchValue = value.toLowerCase();
-  
     const filtered = data.filter((item) => {
       const category_name = item.category_name.toLowerCase();
-      const no = item.no.toString().toLowerCase(); // Convert no to string for comparison
-  
-      if (exactMatch) {
-        return category_name === searchValue || no === searchValue;
-      } else {
-        return category_name.includes(searchValue) || no.includes(searchValue);
-      }
+      const no = item.no.toString().toLowerCase();
+      return exactMatch
+        ? category_name === searchValue || no === searchValue
+        : category_name.includes(searchValue) || no.includes(searchValue);
     });
-  
     setFilteredData(filtered);
     setSearchText(value);
   };
@@ -180,16 +164,6 @@ const Category = () => {
               danger
             />
           </Tooltip>
-          {/* <Tooltip title="View Category">
-            <Button
-              icon={<ShoppingOutlined />}
-              onClick={() => handleViewProducts(record.category_name)}
-              style={{
-                borderColor: "rgb(0,0,0,0.88)",
-                color: "rgb(0,0,0,0.88)",
-              }}
-            />
-          </Tooltip> */}
         </Space>
       ),
     },
@@ -197,9 +171,7 @@ const Category = () => {
       title: " ",
       key: "orders",
       render: (record) => (
-        <Button
-          onClick={() => handleViewCategory(record.no)}
-        >
+        <Button >
           View Category
         </Button>
       ),
@@ -207,29 +179,15 @@ const Category = () => {
   ];
 
   return (
-    <Card
-      style={{
-        margin: 30,
-        padding: 30,
-        borderRadius: "10px",
-      }}
-      bodyStyle={{ padding: "20px" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <Card style={{ margin: 30, padding: 30, borderRadius: "10px" }} bodyStyle={{ padding: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Title level={3} style={{ marginBottom: 10 }}>
           Categories Data
         </Title>
-
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
             placeholder="Search by No or Category Name"
-            onSearch={(value) => handleSearch(value, true)} 
+            onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
             style={{ marginRight: 16, width: 300 }}
@@ -255,9 +213,7 @@ const Category = () => {
         dataSource={filteredData}
         columns={columns}
         pagination={{ pageSize: 7 }}
-        locale={{
-          emptyText: "No stores available.",
-        }}
+        locale={{ emptyText: "No categories available." }}
         style={{ marginTop: 20 }}
       />
     </Card>

@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Space,
   Typography,
   Avatar,
-  Popover,
-  List,
   Badge,
   Menu,
   Dropdown,
+  Select,
 } from "antd";
 import {
   BellFilled,
@@ -18,10 +17,19 @@ import {
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
-import { notifications } from "../Data";
+import { useMenu } from "../../context/MenuContext";
+
+// Mock branch data
+const branches = [
+  { id: "b1", name: "Main Branch" },
+  { id: "b2", name: "Secondary Branch" },
+  { id: "b3", name: "Warehouse" },
+];
 
 const Header = ({ setIsAuthenticated }) => {
+  const { selectedMenu } = useMenu(); // Get selectedMenu from context
   const navigate = useNavigate();
+  const [selectedBranch, setSelectedBranch] = useState(branches[0].id); // Set default branch
 
   const handleProfileClick = () => {
     navigate("/profile");
@@ -67,49 +75,55 @@ const Header = ({ setIsAuthenticated }) => {
     </Menu>
   );
 
-  const notificationContent = (
-    <List
-      itemLayout="horizontal"
-      dataSource={notifications}
-      renderItem={(item) => (
-        <List.Item>
-          <List.Item.Meta
-            title={<Typography.Text strong>{item.title}</Typography.Text>}
-            description={item.description}
-          />
-        </List.Item>
-      )}
-    />
-  );
+  const handleBranchChange = (value) => {
+    setSelectedBranch(value);
+    console.log("Selected Branch:", value);
+  };
+
+  // Determine if the dropdown should be visible based on the selectedMenu
+  const showDropdown =
+    selectedMenu === "/category" ||
+    selectedMenu === "/products" ||
+    selectedMenu === "/employees" ||
+    selectedMenu === "/dashboard" ;
 
   return (
     <div className="header_">
-      <Typography.Title level={2} /* style={{ margin: 0 }} */>
+      <Typography.Title level={2}>
         Welcome to Point Master
       </Typography.Title>
+     
       <Space size="large">
-        <Popover
-          content={notificationContent}
-          title="Notifications"
-          trigger="click"
-          overlayStyle={{ width: "400px" }}
+        {/* Branch selection dropdown */}
+        {showDropdown && 
+        <Select
+          value={selectedBranch}
+          onChange={handleBranchChange}
+          style={{ width: 200 }}
         >
-          <Badge count={notifications.length} overflowCount={99}>
-            <BellFilled style={{ fontSize: 30, cursor: "pointer" }} />
-          </Badge>
-        </Popover>
-        <Dropdown overlay={menu} trigger={["click"]}>
-          <Badge dot>
-            <Avatar
-              icon={<UserOutlined />}
-              style={{
-                cursor: "pointer",
-                backgroundColor: "rgba(0,0,0,0.88)",
-                marginLeft: 15,
-              }}
-            />
-          </Badge>
-        </Dropdown>
+          {branches.map((branch) => (
+            <Select.Option key={branch.id} value={branch.id}>
+              {branch.name}
+            </Select.Option>
+          ))}
+        </Select>
+        }
+
+        {/* Conditionally render the Dropdown */}
+        
+          <Dropdown overlay={menu} trigger={["click"]}>
+            <Badge dot>
+              <Avatar
+                icon={<UserOutlined />}
+                style={{
+                  cursor: "pointer",
+                  backgroundColor: "rgba(0,0,0,0.88)",
+                  marginLeft: 15,
+                }}
+              />
+            </Badge>
+          </Dropdown>
+       
       </Space>
     </div>
   );
