@@ -37,7 +37,6 @@ const Stores = () => {
     setIsModalVisible(true); // Open the modal for editing
   };
 
-
   const handleAddStore = async (values) => {
     const token = localStorage.getItem("accessToken");
 
@@ -45,7 +44,7 @@ const Stores = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
-    
+
     try {
       const response = await fetch("http://localhost:3001/branch/", {
         method: "POST",
@@ -55,7 +54,6 @@ const Stores = () => {
         },
         body: JSON.stringify(values),
       });
-      console.log(response);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -73,7 +71,6 @@ const Stores = () => {
     }
   };
 
-
   const handleUpdateStore = async (values) => {
     const token = localStorage.getItem("accessToken");
 
@@ -83,14 +80,17 @@ const Stores = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/branch/${editingStore.branch_id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
+      const response = await fetch(
+        `http://localhost:3001/branch/${editingStore.branch_id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -109,7 +109,6 @@ const Stores = () => {
       message.error("Failed to update store.");
     }
   };
-
 
   const fetchBranches = async () => {
     const token = localStorage.getItem("accessToken");
@@ -140,10 +139,11 @@ const Stores = () => {
     }
   };
 
-    useEffect(() => {
-      fetchBranches();
-  
-  
+  useEffect(() => {
+    fetchBranches();
+  }, [handleUpdateStore, handleAddStore]);
+
+
   const handleDelete = (branch_id, branch_name) => {
     confirm({
       title: "Are you sure you want to delete this store?",
@@ -156,7 +156,9 @@ const Stores = () => {
         try {
           const token = localStorage.getItem("accessToken");
           if (!token) {
-            message.error("Authorization token is missing. Please log in again.");
+            message.error(
+              "Authorization token is missing. Please log in again."
+            );
             return;
           }
 
@@ -167,7 +169,9 @@ const Stores = () => {
             },
           });
 
-          const newData = data.filter((branch) => branch.branch_id !== branch_id);
+          const newData = data.filter(
+            (branch) => branch.branch_id !== branch_id
+          );
           setData(newData);
           setFilteredData(newData);
           message.success("Store deleted successfully.");
@@ -195,7 +199,9 @@ const Stores = () => {
       const branch_name = item.branch_name.toLowerCase();
       const searchValue = value.toLowerCase();
 
-      return exactMatch ? branch_name === searchValue : branch_name.includes(searchValue);
+      return exactMatch
+        ? branch_name === searchValue
+        : branch_name.includes(searchValue);
     });
     setFilteredData(filtered);
     setSearchText(value);
@@ -230,8 +236,17 @@ const Stores = () => {
   ];
 
   return (
-    <Card style={{ margin: 30, padding: 30, borderRadius: "10px" }} bodyStyle={{ padding: "20px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <Card
+      style={{ margin: 30, padding: 30, borderRadius: "10px" }}
+      bodyStyle={{ padding: "20px" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Title level={3} style={{ marginBottom: 10 }}>
           Stores Data
         </Title>
