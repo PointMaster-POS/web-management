@@ -16,9 +16,12 @@ import Products from "./pages/Products/Products";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import Loyalty from "./pages/Loyalty/loyalty";
+import { MenuProvider } from "./context/MenuContext";
+
 
 const App = () => {
   return (
+    <MenuProvider>
     <AuthProvider>
       <BrowserRouter>
         <Routes>
@@ -59,6 +62,7 @@ const App = () => {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </MenuProvider>
   );
 };
 
