@@ -27,15 +27,40 @@ const Stores = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editingStore, setEditingStore] = useState(null); // For editing the store
+  const [editingStore, setEditingStore] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
 
-  const handleEdit = (record) => {
-    setEditingStore(record); // Set the store to be edited
-    form.setFieldsValue(record); // Pre-fill the form with the selected store's data
-    setIsModalVisible(true); // Open the modal for editing
+
+  const fetchBranches = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/branch", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setData(data);
+      setFilteredData(data);
+    } catch (error) {
+      console.error("Error fetching branches:", error);
+      message.error("Failed to fetch branches.");
+    }
   };
+
 
   const handleAddStore = async (values) => {
     const token = localStorage.getItem("accessToken");
@@ -61,7 +86,6 @@ const Stores = () => {
         message.success("Branch added successfully");
         setIsModalVisible(false);
         form.resetFields();
-
       } else {
         message.error("Failed to add branch");
       }
@@ -70,6 +94,12 @@ const Stores = () => {
       message.error("Error occurred while adding branch");
     }
   };
+
+
+  useEffect(() => {
+    fetchBranches();
+  }, [handleAddStore]);
+
 
   const handleUpdateStore = async (values) => {
     const token = localStorage.getItem("accessToken");
@@ -122,43 +152,13 @@ const Stores = () => {
     }
   };
 
-  const fetchBranches = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      message.error("Authorization token is missing. Please log in again.");
-      return;
-    }
 
-    try {
-      const response = await fetch("http://localhost:3001/branch", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setData(data);
-      setFilteredData(data);
-    } catch (error) {
-      console.error("Error fetching branches:", error);
-      message.error("Failed to fetch branches.");
-    }
+  const handleEdit = (record) => {
+    setEditingStore(record); // Set the store to be edited
+    form.setFieldsValue(record); // Pre-fill the form with the selected store's data
+    setIsModalVisible(true); // Open the modal for editing
   };
 
-  useEffect(
-    () => {
-      fetchBranches();
-    },
-    [
-      handleAddStore
-    ]
-  );
 
   const handleDelete = (branch_id, branch_name) => {
     confirm({
@@ -199,15 +199,18 @@ const Stores = () => {
     });
   };
 
+
   const showModal = () => {
     setIsModalVisible(true);
   };
+
 
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
     setEditingStore(null); // Reset editing state
   };
+
 
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
@@ -222,6 +225,7 @@ const Stores = () => {
     setSearchText(value);
   };
 
+
   const columns = [
     { title: "Branch ID", dataIndex: "branch_id", key: "branch_id" },
     { title: "Name", dataIndex: "branch_name", key: "branch_name" },
@@ -231,14 +235,14 @@ const Stores = () => {
       key: "actions",
       render: (record) => (
         <Space size="middle">
-          <Tooltip title="Edit Store">
+          <Tooltip title="Edit Branch">
             <Button
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
               style={{ borderColor: "#1890ff", color: "#1890ff" }}
             />
           </Tooltip>
-          <Tooltip title="Delete Store">
+          <Tooltip title="Delete Branch">
             <Button
               icon={<DeleteOutlined />}
               onClick={() => handleDelete(record.branch_id, record.branch_name)}
@@ -249,6 +253,7 @@ const Stores = () => {
       ),
     },
   ];
+  
 
   return (
     <Card
@@ -263,18 +268,18 @@ const Stores = () => {
         }}
       >
         <Title level={3} style={{ marginBottom: 10 }}>
-          Stores Data
+          Branchess Data
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
-            placeholder="Search stores"
+            placeholder="Search Name"
             onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
             style={{ marginRight: 16, width: 300 }}
           />
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
-            Add New Store
+            Add New Branch
           </Button>
         </div>
       </div>
