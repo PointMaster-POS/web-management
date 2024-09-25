@@ -55,19 +55,23 @@ const Stores = () => {
         body: JSON.stringify(values),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (response.ok) {
+        const newBranch = await response.json();
+        console.log("New Branch:", newBranch); // Check the structure of newBranch
+        message.success("Branch added successfully");
+        setIsModalVisible(false);
+        form.resetFields();
 
-      const newBranch = await response.json();
-      const newData = [...data, newBranch];
-      setData(newData);
-      setFilteredData(newData);
-      message.success("Store added successfully.");
-      handleCancel();
+
+        // Add new branch to local state
+        // setData((prevData) => [...prevData, values]);
+        // setFilteredData((prevData) => [...prevData, values]);
+      } else {
+        message.error("Failed to add branch");
+      }
     } catch (error) {
-      console.error("Error adding branch:", error);
-      message.error("Failed to add store.");
+      console.error(error);
+      message.error("Error occurred while adding branch");
     }
   };
 
@@ -92,21 +96,33 @@ const Stores = () => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (response.ok) {
+        message.success("Branch updated successfully");
+        setIsModalVisible(false);
+        form.resetFields();
+        setEditingStore(null);
 
-      const updatedBranch = await response.json();
-      const newData = data.map((branch) =>
-        branch.branch_id === editingStore.branch_id ? updatedBranch : branch
-      );
-      setData(newData);
-      setFilteredData(newData);
-      message.success("Store updated successfully.");
-      handleCancel(); // Close the modal after updating the store
+        // Update the specific branch in local state
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.branch_id === editingStore.branch_id
+              ? { ...item, ...values }
+              : item
+          )
+        );
+        setFilteredData((prevData) =>
+          prevData.map((item) =>
+            item.branch_id === editingStore.branch_id
+              ? { ...item, ...values }
+              : item
+          )
+        );
+      } else {
+        message.error("Failed to update branch");
+      }
     } catch (error) {
-      console.error("Error updating branch:", error);
-      message.error("Failed to update store.");
+      console.error(error);
+      message.error("Error occurred while updating branch");
     }
   };
 
@@ -139,10 +155,14 @@ const Stores = () => {
     }
   };
 
-  useEffect(() => {
-    fetchBranches();
-  }, [handleUpdateStore, handleAddStore]);
-
+  useEffect(
+    () => {
+      fetchBranches();
+    },
+    [
+      handleAddStore
+    ]
+  );
 
   const handleDelete = (branch_id, branch_name) => {
     confirm({
@@ -182,7 +202,6 @@ const Stores = () => {
       },
     });
   };
-
 
   const showModal = () => {
     setIsModalVisible(true);
