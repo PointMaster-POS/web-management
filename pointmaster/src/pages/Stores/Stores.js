@@ -36,6 +36,8 @@ const Stores = () => {
     form.setFieldsValue(record); // Pre-fill the form with the selected store's data
     setIsModalVisible(true); // Open the modal for editing
   };
+
+
   const handleAddStore = async (values) => {
     const token = localStorage.getItem("accessToken");
 
@@ -44,7 +46,6 @@ const Stores = () => {
       return;
     }
     
-
     try {
       const response = await fetch("http://localhost:3001/branch/", {
         method: "POST",
@@ -54,6 +55,7 @@ const Stores = () => {
         },
         body: JSON.stringify(values),
       });
+      console.log(response);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -71,9 +73,7 @@ const Stores = () => {
     }
   };
 
-  
 
-  // Handle Update Store
   const handleUpdateStore = async (values) => {
     const token = localStorage.getItem("accessToken");
 
@@ -117,8 +117,6 @@ const Stores = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
-    
-
 
     try {
       const response = await fetch("http://localhost:3001/branch", {
@@ -142,15 +140,10 @@ const Stores = () => {
     }
   };
 
-    // Fetch branches when component loads
     useEffect(() => {
       fetchBranches();
-    }, [handleUpdateStore,handleAddStore]);
   
-
-  // Handle Add New Store
   
-  // Handle Delete Store
   const handleDelete = (branch_id, branch_name) => {
     confirm({
       title: "Are you sure you want to delete this store?",
@@ -186,8 +179,6 @@ const Stores = () => {
     });
   };
 
-  // Handle Edit Store
-  
 
   const showModal = () => {
     setIsModalVisible(true);
