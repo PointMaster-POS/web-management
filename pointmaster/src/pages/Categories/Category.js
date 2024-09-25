@@ -11,7 +11,6 @@ import {
   Typography,
   message,
 } from "antd";
-import { useNavigate } from "react-router-dom";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -19,7 +18,6 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import AddNewCategory from "../../components/Popups/AddNewCategory";
-
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -30,107 +28,210 @@ const Category = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingCategory, setEditingCategory] = useState(null);
   const [form] = Form.useForm();
-  const navigate = useNavigate();
-  const [categoryData, setCategoryData] = useState([]);
-
 
   const fetchCategories = async () => {
-    const accessToken = localStorage.getItem("accessToken");
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:3001/category/", {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       });
 
-      const data = await response.json();
-      setCategoryData(data);
-    }
-    catch (error) {
-      console.error("Error fetching categories: ", error);
-      message.error("An error occurred. Please try again later.");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
+      const data = await response.json();
+      setData(data);
+      setFilteredData(data);
+    } catch (error) {
+      console.error("Error fetching branches:", error);
+      message.error("Failed to fetch branches.");
     }
   };
 
+
+  const handleAddCategory = async (values) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch("localhost:3001/category", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (response.ok) {
+        const newBranch = await response.json();
+        console.log("New Branch:", newBranch); // Check the structure of newBranch
+        message.success("Branch added successfully");
+        setIsModalVisible(false);
+        form.resetFields();
+      } else {
+        message.error("Failed to add branch");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Error occurred while adding branch");
+    }
+  };
+
+
   useEffect(() => {
     fetchCategories();
-  }, []);
+  }, [handleAddCategory]);
 
-  
- 
-  useEffect(() => {
-    // Assuming data is fetched from the backend and formatted appropriately
-    const formattedData = categoryData.map((item, index) => ({
-      ...item,
-      no: index + 1, // Simulating auto-increment for the 'No' field
-      key: item.category_id, // Use category_id as key
-      product_count: Math.floor(Math.random() * 100), // Simulating a product count
-    }));
-    setData(formattedData);
-    setFilteredData(formattedData);
-  }, []);
+
+  const handleUpdateCategory = async (values) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/branch/${editingCategory.category_id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      if (response.ok) {
+        message.success("Branch updated successfully");
+        setIsModalVisible(false);
+        form.resetFields();
+        setEditingCategory(null);
+
+        // Update the specific branch in local state
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.branch_id === editingCategory.branch_id
+              ? { ...item, ...values }
+              : item
+          )
+        );
+        setFilteredData((prevData) =>
+          prevData.map((item) =>
+            item.branch_id === editingCategory.branch_id
+              ? { ...item, ...values }
+              : item
+          )
+        );
+      } else {
+        message.error("Failed to update branch");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Error occurred while updating branch");
+    }
+  };
+
+
+  const handleEdit = (record) => {
+    setEditingCategory(record); // Set the store to be edited
+    form.setFieldsValue(record); // Pre-fill the form with the selected store's data
+    setIsModalVisible(true); // Open the modal for editing
+  };
+
+
+  const handleDelete = (category_id, category_name) => {
+    confirm({
+      title: "Are you sure you want to delete this store?",
+      icon: <ExclamationCircleOutlined />,
+      content: `This action will delete the store "${category_name}".`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        try {
+          const token = localStorage.getItem("accessToken");
+          if (!token) {
+            message.error(
+              "Authorization token is missing. Please log in again."
+            );
+            return;
+          }
+
+          await fetch(`http://localhost:3001/category/${category_id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          const newData = data.filter(
+            (category) => category.category_id !== category_id
+          );
+          setData(newData);
+          setFilteredData(newData);
+          message.success("Store deleted successfully.");
+        } catch (error) {
+          console.error("Error deleting branch:", error);
+          message.error("Failed to delete store.");
+        }
+      },
+    });
+  };
+
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleAddCategories = () => {
-    form.validateFields().then((values) => {
-      form.resetFields();
-      setIsModalVisible(false);
-      const newCategories = {
-        ...values,
-        no: data.length + 1,
-        key: `${data.length + 1}`,
-      };
-      const newData = [...data, newCategories];
-      setData(newData);
-      setFilteredData(newData);
-    });
-  };
 
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
+    setEditingCategory(null);
   };
 
-  const handleEdit = (record, newCategoryName) => {
-    // Implement edit functionality
-  };
-
-  const handleDelete = (categoryName) => {
-    confirm({
-      title: `Are you sure you want to delete "${categoryName}"?`,
-      icon: <ExclamationCircleOutlined />,
-      okText: "Delete",
-      okType: "danger",
-      cancelText: "Cancel",
-      centered: true,
-    });
-  };
 
   const handleSearch = (value, exactMatch = false) => {
-    const searchValue = value.toLowerCase();
     const filtered = data.filter((item) => {
+      const searchValue = value.toLowerCase();
       const category_name = item.category_name.toLowerCase();
-      const no = item.no.toString().toLowerCase();
+      const category_id = item.category_id.toString().toLowerCase();
+
       return exactMatch
-        ? category_name === searchValue || no === searchValue
-        : category_name.includes(searchValue) || no.includes(searchValue);
+        ? category_name === searchValue || category_id === searchValue
+        : category_name.includes(searchValue) ||
+            category_id.includes(searchValue);
     });
     setFilteredData(filtered);
     setSearchText(value);
   };
 
+
   const columns = [
     {
-      title: "No",
-      dataIndex: "no",
-      key: "no",
-      width: 100,
+      title: "Category ID",
+      dataIndex: "category_id",
+      key: "category_id",
     },
     {
       title: "Category Name",
@@ -160,7 +261,9 @@ const Category = () => {
           <Tooltip title="Delete Category">
             <Button
               icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.no)}
+              onClick={() =>
+                handleDelete(record.category_id, record.category_name)
+              }
               danger
             />
           </Tooltip>
@@ -170,23 +273,29 @@ const Category = () => {
     {
       title: " ",
       key: "orders",
-      render: (record) => (
-        <Button >
-          View Category
-        </Button>
-      ),
+      render: (record) => <Button>View Category</Button>,
     },
   ];
 
+
   return (
-    <Card style={{ margin: 30, padding: 30, borderRadius: "10px" }} bodyStyle={{ padding: "20px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <Card
+      style={{ margin: 30, padding: 30, borderRadius: "10px" }}
+      bodyStyle={{ padding: "20px" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Title level={3} style={{ marginBottom: 10 }}>
           Categories Data
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
-            placeholder="Search by No or Category Name"
+            placeholder="Search by Category ID or Category Name"
             onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
@@ -200,13 +309,20 @@ const Category = () => {
       <hr color="#1890ff" />
 
       <Modal
-        title="Add New Category"
+        title={editingCategory ? "Edit Category" : "Add New Category"}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
         centered
       >
-        <AddNewCategory form={form} onAddCategories={handleAddCategories} onCancel={handleCancel} />
+        <AddNewCategory
+          form={form}
+          onAddCategory={
+            editingCategory ? handleUpdateCategory : handleAddCategory
+          }
+          onCancel={handleCancel}
+          initialValues={editingCategory || {}}
+        />
       </Modal>
 
       <Table
