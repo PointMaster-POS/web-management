@@ -62,10 +62,6 @@ const Stores = () => {
         setIsModalVisible(false);
         form.resetFields();
 
-
-        // Add new branch to local state
-        // setData((prevData) => [...prevData, values]);
-        // setFilteredData((prevData) => [...prevData, values]);
       } else {
         message.error("Failed to add branch");
       }
