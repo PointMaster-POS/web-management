@@ -31,6 +31,17 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
       </Form.Item>
 
       <Form.Item
+        label="Location"
+        name="category_location"
+        rules={[{ required: true, message: "Please input the category name!" }]}
+        style={{ marginBottom: "20px" }}
+      >
+        <Input />
+      </Form.Item>
+
+
+
+      <Form.Item
         wrapperCol={{ offset: 8, span: 16 }}
         style={{ textAlign: "right" }}
       >
@@ -48,7 +59,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
           htmlType="submit"
           style={{ backgroundColor: "#1890ff", borderColor: "#1890ff" }}
         >
-          Add category
+          Add Category
         </Button>
       </Form.Item>
     </Form>
