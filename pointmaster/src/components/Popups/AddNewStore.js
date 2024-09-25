@@ -31,7 +31,7 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
       </Form.Item>
 
       <Form.Item
-        label="Branch Location"
+        label="Location"
         name="branch_location"
         rules={[{ required: true, message: "Please input the branch location!" }]}
         style={{ marginBottom: "20px" }}
