@@ -3,7 +3,7 @@ import "./landing.css";
 import { Form,Modal } from "antd";
 import Header from "../../components/LandingHeader/Header";
 import Footer from "../../components/LandingFooter/Footer";
-import RegisterNewBusiness from "../RegisterNewBusiness/RegisterNewBusiness";
+import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
 // import { useNavigate } from "react-router-dom";
 
 export default function Landing() {

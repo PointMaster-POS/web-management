@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   Button,
   Card,
@@ -10,7 +9,6 @@ import {
   Tooltip,
   Input,
   Form,
-  Switch,
   message,
 } from "antd";
 import {
@@ -38,6 +36,7 @@ const Stores = () => {
     form.setFieldsValue(record); // Pre-fill the form with the selected store's data
     setIsModalVisible(true); // Open the modal for editing
   };
+
   const handleAddStore = async (values) => {
     const token = localStorage.getItem("accessToken");
 
@@ -45,7 +44,6 @@ const Stores = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
-    
 
     try {
       const response = await fetch("http://localhost:3001/branch/", {
@@ -57,25 +55,22 @@ const Stores = () => {
         body: JSON.stringify(values),
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (response.ok) {
+        const newBranch = await response.json();
+        console.log("New Branch:", newBranch); // Check the structure of newBranch
+        message.success("Branch added successfully");
+        setIsModalVisible(false);
+        form.resetFields();
 
-      const newBranch = await response.json();
-      const newData = [...data, newBranch];
-      setData(newData);
-      setFilteredData(newData);
-      message.success("Store added successfully.");
-      handleCancel();
+      } else {
+        message.error("Failed to add branch");
+      }
     } catch (error) {
-      console.error("Error adding branch:", error);
-      message.error("Failed to add store.");
+      console.error(error);
+      message.error("Error occurred while adding branch");
     }
   };
 
-  
-
-  // Handle Update Store
   const handleUpdateStore = async (values) => {
     const token = localStorage.getItem("accessToken");
 
@@ -85,33 +80,47 @@ const Stores = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/branch/${editingStore.branch_id}`, {
-        method: "PUT",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const updatedBranch = await response.json();
-      const newData = data.map((branch) =>
-        branch.branch_id === editingStore.branch_id ? updatedBranch : branch
+      const response = await fetch(
+        `http://localhost:3001/branch/${editingStore.branch_id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
       );
-      setData(newData);
-      setFilteredData(newData);
-      message.success("Store updated successfully.");
-      handleCancel(); // Close the modal after updating the store
+
+      if (response.ok) {
+        message.success("Branch updated successfully");
+        setIsModalVisible(false);
+        form.resetFields();
+        setEditingStore(null);
+
+        // Update the specific branch in local state
+        setData((prevData) =>
+          prevData.map((item) =>
+            item.branch_id === editingStore.branch_id
+              ? { ...item, ...values }
+              : item
+          )
+        );
+        setFilteredData((prevData) =>
+          prevData.map((item) =>
+            item.branch_id === editingStore.branch_id
+              ? { ...item, ...values }
+              : item
+          )
+        );
+      } else {
+        message.error("Failed to update branch");
+      }
     } catch (error) {
-      console.error("Error updating branch:", error);
-      message.error("Failed to update store.");
+      console.error(error);
+      message.error("Error occurred while updating branch");
     }
   };
-
 
   const fetchBranches = async () => {
     const token = localStorage.getItem("accessToken");
@@ -119,8 +128,6 @@ const Stores = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
-    
-
 
     try {
       const response = await fetch("http://localhost:3001/branch", {
@@ -144,15 +151,15 @@ const Stores = () => {
     }
   };
 
-    // Fetch branches when component loads
-    useEffect(() => {
+  useEffect(
+    () => {
       fetchBranches();
-    }, [handleUpdateStore,handleAddStore]);
-  
+    },
+    [
+      handleAddStore
+    ]
+  );
 
-  // Handle Add New Store
-  
-  // Handle Delete Store
   const handleDelete = (branch_id, branch_name) => {
     confirm({
       title: "Are you sure you want to delete this store?",
@@ -165,7 +172,9 @@ const Stores = () => {
         try {
           const token = localStorage.getItem("accessToken");
           if (!token) {
-            message.error("Authorization token is missing. Please log in again.");
+            message.error(
+              "Authorization token is missing. Please log in again."
+            );
             return;
           }
 
@@ -176,7 +185,9 @@ const Stores = () => {
             },
           });
 
-          const newData = data.filter((branch) => branch.branch_id !== branch_id);
+          const newData = data.filter(
+            (branch) => branch.branch_id !== branch_id
+          );
           setData(newData);
           setFilteredData(newData);
           message.success("Store deleted successfully.");
@@ -187,9 +198,6 @@ const Stores = () => {
       },
     });
   };
-
-  // Handle Edit Store
-  
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -206,7 +214,9 @@ const Stores = () => {
       const branch_name = item.branch_name.toLowerCase();
       const searchValue = value.toLowerCase();
 
-      return exactMatch ? branch_name === searchValue : branch_name.includes(searchValue);
+      return exactMatch
+        ? branch_name === searchValue
+        : branch_name.includes(searchValue);
     });
     setFilteredData(filtered);
     setSearchText(value);
@@ -241,8 +251,17 @@ const Stores = () => {
   ];
 
   return (
-    <Card style={{ margin: 30, padding: 30, borderRadius: "10px" }} bodyStyle={{ padding: "20px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+    <Card
+      style={{ margin: 30, padding: 30, borderRadius: "10px" }}
+      bodyStyle={{ padding: "20px" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <Title level={3} style={{ marginBottom: 10 }}>
           Stores Data
         </Title>
