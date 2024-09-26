@@ -1,7 +1,44 @@
-import React, { useEffect } from "react";
-import { Form, Input, Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Form, Input, Button, Select, message } from "antd";
+
+const { Option } = Select;
 
 const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
+  const [branches, setBranches] = useState([]); // State to hold branches
+
+  useEffect(() => {
+    // Fetch branches when the component mounts
+    const fetchBranches = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        message.error("Authorization token is missing. Please log in again.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3001/branch", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setBranches(data); // Store fetched branches
+      } catch (error) {
+        console.error("Error fetching branches:", error);
+        message.error("Failed to fetch branches.");
+      }
+    };
+
+    fetchBranches();
+  }, []);
+
   const handleFinish = (values) => {
     onAddCategory(values); // Pass form values to Stores component
   };
@@ -31,6 +68,30 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
       </Form.Item>
 
       <Form.Item
+        label="Location"
+        name="category_location"
+        rules={[{ required: true, message: "Please input the category location!" }]}
+        style={{ marginBottom: "20px" }}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Select Branch"
+        name="branch_id" // This will pass the branch_id
+        rules={[{ required: true, message: "Please select a branch!" }]}
+        style={{ marginBottom: "20px" }}
+      >
+        <Select placeholder="Select a branch">
+          {branches.map((branch) => (
+            <Option key={branch.branch_id} value={branch.branch_id}>
+              {branch.branch_name} {/* Display branch name */}
+            </Option>
+          ))}
+        </Select>
+      </Form.Item>
+
+      <Form.Item
         wrapperCol={{ offset: 8, span: 16 }}
         style={{ textAlign: "right" }}
       >
@@ -48,7 +109,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
           htmlType="submit"
           style={{ backgroundColor: "#1890ff", borderColor: "#1890ff" }}
         >
-          Add category
+          Add Category
         </Button>
       </Form.Item>
     </Form>

@@ -17,8 +17,6 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewEmployee from "../../components/Popups/AddNewEmployee";
-import { employeesData } from "../../components/Data";
-//import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -28,56 +26,187 @@ const Employees = () => {
   const [data, setData] = useState(employeesData);
   const [filteredData, setFilteredData] = useState(data);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [editingStore, setEditingStore] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  //const navigate = useNavigate();
+
+  const fetchEmplyoees = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/branch", {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setData(data);
+      setFilteredData(data);
+    } catch (error) {
+      console.error("Error fetching branches:", error);
+      message.error("Failed to fetch branches.");
+    }
+  };
+
+  useEffect(() => {
+    fetchEmplyoees();
+  }, []);
+
+
+  const handleAddEmplyoee = async (values) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/branch/", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+
+      if (response.ok) {
+        const newBranch = await response.json();
+        console.log("New Branch:", newBranch); // Check the structure of newBranch
+        message.success("Branch added successfully");
+        setIsModalVisible(false);
+        form.resetFields();
+        fetchBranches();
+      } else {
+        message.error("Failed to add branch");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Error occurred while adding branch");
+    }
+  };
+
+  const handleUpdateEmplyoee = async (values) => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/branch/${editingStore.branch_id}`,
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      if (response.ok) {
+        message.success("Branch updated successfully");
+        setIsModalVisible(false);
+        form.resetFields();
+        setEditingStore(null);
+
+        // Update the specific branch in local state
+        // setData((prevData) =>
+        //   prevData.map((item) =>
+        //     item.branch_id === editingStore.branch_id
+        //       ? { ...item, ...values }
+        //       : item
+        //   )
+        // );
+        // setFilteredData((prevData) =>
+        //   prevData.map((item) =>
+        //     item.branch_id === editingStore.branch_id
+        //       ? { ...item, ...values }
+        //       : item
+        //   )
+        // );
+        fetchBranches();
+      } else {
+        message.error("Failed to update branch");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Error occurred while updating branch");
+    }
+  };
+
+  const handleEdit = (record) => {
+    setEditingStore(record); // Set the store to be edited
+    form.setFieldsValue(record); // Pre-fill the form with the selected store's data
+    setIsModalVisible(true); // Open the modal for editing
+  };
+
+
+  const handleDelete = (branch_id, branch_name) => {
+    confirm({
+      title: "Are you sure you want to delete this store?",
+      icon: <ExclamationCircleOutlined />,
+      content: `This action will delete the store "${branch_name}".`,
+      okText: "Yes",
+      okType: "danger",
+      cancelText: "No",
+      onOk: async () => {
+        try {
+          const token = localStorage.getItem("accessToken");
+          if (!token) {
+            message.error(
+              "Authorization token is missing. Please log in again."
+            );
+            return;
+          }
+
+          await fetch(`http://localhost:3001/branch/${branch_id}`, {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          // const newData = data.filter(
+          //   (branch) => branch.branch_id !== branch_id
+          // );
+          // setData(newData);
+          // setFilteredData(newData);
+          fetchBranches();
+          message.success("Store deleted successfully.");
+        } catch (error) {
+          console.error("Error deleting branch:", error);
+          message.error("Failed to delete store.");
+        }
+      },
+    });
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const handleViewEmployee = (employee_id) => {
-    // navigate(`/phistory/${supplier_id}`);
-  };
-
-  const handleAddEmployee = () => {
-    form.validateFields().then((values) => {
-      form.resetFields();
-      setIsModalVisible(false);
-      const newEmployee = {
-        ...values,
-        /* supplier_id: `SUP${data.length + 123}`, // Simulate auto-increment
-        key: `${data.length + 1}`, */
-      };
-      const newData = [...data, newEmployee];
-      setData(newData);
-      setFilteredData(newData);
-    });
-  };
-
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
+    setEditingStore(null); // Reset editing state
   };
 
-  const handleEdit = (values) => {
-    /* const newData = data.map((item) =>
-      item.supplier_id === values.supplier_id ? { ...item, ...values } : item
-    );
-    setData(newData);
-    setFilteredData(newData); */
-  };
-
-  const handleDelete = (EmployeeName) => {
-    confirm({
-      title: `Are you sure you want to delete "${EmployeeName}"?`,
-      icon: <ExclamationCircleOutlined />,
-      okText: "Delete",
-      okType: "danger",
-      cancelText: "Cancel",
-      centered: true,
-    });
-  };
 
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
@@ -98,7 +227,7 @@ const Employees = () => {
     setSearchText(value);
   };
 
-  // Table columns definition
+  
   const columns = [
     /* {
       title: "",

@@ -19,10 +19,11 @@ import { useMenu } from "../../context/MenuContext";
 // ];
 
 const Header = ({ setIsAuthenticated }) => {
-  const { selectedMenu, role } = useMenu(); // Get selectedMenu from context
+  const { selectedMenu, role,branchID,setBranchID } = useMenu(); // Get selectedMenu from context
   const navigate = useNavigate();
   const [branches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState(''); // Set default branch
+  const [selectedBranchID,setSelectedBranchID] = useState('');
 
 
   const handleProfileClick = () => {
@@ -32,6 +33,13 @@ const Header = ({ setIsAuthenticated }) => {
   const handleLogOut = () => {
     setIsAuthenticated(false);
   };
+
+  useEffect(() => {
+    setBranchID(selectedBranchID);
+  }, [selectedBranch]
+
+  )
+
 
   const fetchBranches = async () => {
     const token = localStorage.getItem("accessToken");
@@ -53,6 +61,7 @@ const Header = ({ setIsAuthenticated }) => {
       }
       const data = await response.json();
       setBranches(data);
+      setSelectedBranchID(data[0].branch_id);
       setSelectedBranch(data[0].branch_name);
     } catch (error) {
       console.error("Error fetching branches:", error);
@@ -100,9 +109,11 @@ const Header = ({ setIsAuthenticated }) => {
     </Menu>
   );
 
-  const handleBranchChange = (value) => {
+  const handleBranchChange = (key,value) => {
     setSelectedBranch(value);
-    console.log("Selected Branch:", value);
+    // console.log("Selected Branch:", value.key);
+    setSelectedBranchID(value.key);
+    
   };
 
   // Determine if the dropdown should be visible based on the selectedMenu

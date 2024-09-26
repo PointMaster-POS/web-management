@@ -23,6 +23,7 @@ console.log("decodedToken", decodedToken);
 export const MenuProvider = ({ children }) => {
   const [selectedMenu, setSelectedMenu] = useState("dashboard");
   const [role, setRole] = useState("");
+  const [branchID , setBranchID] = useState(null);
 
 useEffect(() => {
    
@@ -41,7 +42,7 @@ useEffect(() => {
     }, [selectedMenu]);
 
   return (
-    <MenuContext.Provider value={{ selectedMenu, setSelectedMenu, role, setRole }}>
+    <MenuContext.Provider value={{branchID, setBranchID, selectedMenu, setSelectedMenu, role, setRole }}>
       {children}
     </MenuContext.Provider>
   );
