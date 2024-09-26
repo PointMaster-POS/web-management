@@ -61,6 +61,9 @@ const Stores = () => {
     }
   };
 
+  useEffect(() => {
+    fetchBranches();
+  }, []);
 
   const handleAddStore = async (values) => {
     const token = localStorage.getItem("accessToken");
@@ -86,6 +89,7 @@ const Stores = () => {
         message.success("Branch added successfully");
         setIsModalVisible(false);
         form.resetFields();
+        fetchBranches();
       } else {
         message.error("Failed to add branch");
       }
@@ -94,11 +98,6 @@ const Stores = () => {
       message.error("Error occurred while adding branch");
     }
   };
-
-
-  useEffect(() => {
-    fetchBranches();
-  }, [handleAddStore]);
 
 
   const handleUpdateStore = async (values) => {
@@ -129,20 +128,21 @@ const Stores = () => {
         setEditingStore(null);
 
         // Update the specific branch in local state
-        setData((prevData) =>
-          prevData.map((item) =>
-            item.branch_id === editingStore.branch_id
-              ? { ...item, ...values }
-              : item
-          )
-        );
-        setFilteredData((prevData) =>
-          prevData.map((item) =>
-            item.branch_id === editingStore.branch_id
-              ? { ...item, ...values }
-              : item
-          )
-        );
+        // setData((prevData) =>
+        //   prevData.map((item) =>
+        //     item.branch_id === editingStore.branch_id
+        //       ? { ...item, ...values }
+        //       : item
+        //   )
+        // );
+        // setFilteredData((prevData) =>
+        //   prevData.map((item) =>
+        //     item.branch_id === editingStore.branch_id
+        //       ? { ...item, ...values }
+        //       : item
+        //   )
+        // );
+        fetchBranches();
       } else {
         message.error("Failed to update branch");
       }
@@ -185,11 +185,12 @@ const Stores = () => {
             },
           });
 
-          const newData = data.filter(
-            (branch) => branch.branch_id !== branch_id
-          );
-          setData(newData);
-          setFilteredData(newData);
+          // const newData = data.filter(
+          //   (branch) => branch.branch_id !== branch_id
+          // );
+          // setData(newData);
+          // setFilteredData(newData);
+          fetchBranches();
           message.success("Store deleted successfully.");
         } catch (error) {
           console.error("Error deleting branch:", error);
