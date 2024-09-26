@@ -18,6 +18,8 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import AddNewCategory from "../../components/Popups/AddNewCategory";
+import { useMenu } from "../../context/MenuContext";
+
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -30,6 +32,7 @@ const Category = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [form] = Form.useForm();
+  const { selectedMenu, role,branchID,setBranchID } = useMenu();
 
   const fetchCategories = async () => {
     const token = localStorage.getItem("accessToken");
@@ -39,7 +42,7 @@ const Category = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/category/", {
+      const response = await fetch(`http://localhost:3001/category/owner/${branchID}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -86,6 +89,7 @@ const Category = () => {
         message.success("Category added successfully");
         setIsModalVisible(false);
         form.resetFields();
+        fetchCategories();
       } else {
         message.error("Failed to add category");
       }
@@ -98,10 +102,11 @@ const Category = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, [handleAddCategory]);
+  }, [branchID]);
 
 
   const handleUpdateCategory = async (values) => {
+    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -111,7 +116,7 @@ const Category = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/branch/${editingCategory.category_id}`,
+        `http://localhost:3001/category/${values.branch_id}/${editingCategory.category_id}`,
         {
           method: "PUT",
           headers: {
@@ -129,20 +134,21 @@ const Category = () => {
         setEditingCategory(null);
 
         // Update the specific branch in local state
-        setData((prevData) =>
-          prevData.map((item) =>
-            item.branch_id === editingCategory.branch_id
-              ? { ...item, ...values }
-              : item
-          )
-        );
-        setFilteredData((prevData) =>
-          prevData.map((item) =>
-            item.branch_id === editingCategory.branch_id
-              ? { ...item, ...values }
-              : item
-          )
-        );
+        // setData((prevData) =>
+        //   prevData.map((item) =>
+        //     item.branch_id === editingCategory.branch_id
+        //       ? { ...item, ...values }
+        //       : item
+        //   )
+        // );
+        // setFilteredData((prevData) =>
+        //   prevData.map((item) =>
+        //     item.branch_id === editingCategory.branch_id
+        //       ? { ...item, ...values }
+        //       : item
+        //   )
+        // );
+        fetchCategories();
       } else {
         message.error("Failed to update category");
       }
@@ -178,18 +184,19 @@ const Category = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/category/${category_id}`, {
+          await fetch(`http://localhost:3001/category/${branchID}/${category_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
 
-          const newData = data.filter(
-            (category) => category.category_id !== category_id
-          );
-          setData(newData);
-          setFilteredData(newData);
+          // const newData = data.filter(
+          //   (category) => category.category_id !== category_id
+          // );
+          // setData(newData);
+          // setFilteredData(newData);
+          fetchCategories();
           message.success("Category deleted successfully.");
         } catch (error) {
           console.error("Error deleting category:", error);
