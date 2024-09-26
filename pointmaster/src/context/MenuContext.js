@@ -25,12 +25,13 @@ export const MenuProvider = ({ children }) => {
   const [role, setRole] = useState("");
 
 useEffect(() => {
-   
+   if (accessToken){
   if (decodedToken.owner) {
     setRole("owner");
   } else {
     setRole("employee");
   }
+}
 }
 , [decodedToken]);
 
