@@ -51,12 +51,13 @@ const Category = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
-      setData(data);
-      setFilteredData(data);
+      const fetched_data = await response.json();
+      setData(fetched_data);
+      setFilteredData(fetched_data);
+      console.log(fetched_data);
     } catch (error) {
-      console.error("Error fetching branches:", error);
-      message.error("Failed to fetch branches.");
+      console.error("Error fetching categories:", error);
+      message.error("Failed to fetch categories.");
     }
   };
 
@@ -70,7 +71,7 @@ const Category = () => {
     }
 
     try {
-      const response = await fetch("localhost:3001/category", {
+      const response = await fetch("http://localhost:3001/category", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,17 +81,17 @@ const Category = () => {
       });
 
       if (response.ok) {
-        const newBranch = await response.json();
-        console.log("New Branch:", newBranch); // Check the structure of newBranch
-        message.success("Branch added successfully");
+        const newCategory = await response.json();
+        console.log("New Branch:", newCategory); // Check the structure of newBranch
+        message.success("Category added successfully");
         setIsModalVisible(false);
         form.resetFields();
       } else {
-        message.error("Failed to add branch");
+        message.error("Failed to add category");
       }
     } catch (error) {
       console.error(error);
-      message.error("Error occurred while adding branch");
+      message.error("Error occurred while adding category");
     }
   };
 
@@ -122,7 +123,7 @@ const Category = () => {
       );
 
       if (response.ok) {
-        message.success("Branch updated successfully");
+        message.success("Category updated successfully");
         setIsModalVisible(false);
         form.resetFields();
         setEditingCategory(null);
@@ -143,11 +144,11 @@ const Category = () => {
           )
         );
       } else {
-        message.error("Failed to update branch");
+        message.error("Failed to update category");
       }
     } catch (error) {
       console.error(error);
-      message.error("Error occurred while updating branch");
+      message.error("Error occurred while updating category");
     }
   };
 
@@ -161,9 +162,9 @@ const Category = () => {
 
   const handleDelete = (category_id, category_name) => {
     confirm({
-      title: "Are you sure you want to delete this store?",
+      title: "Are you sure you want to delete this category?",
       icon: <ExclamationCircleOutlined />,
-      content: `This action will delete the store "${category_name}".`,
+      content: `This action will delete the category "${category_name}".`,
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -189,10 +190,10 @@ const Category = () => {
           );
           setData(newData);
           setFilteredData(newData);
-          message.success("Store deleted successfully.");
+          message.success("Category deleted successfully.");
         } catch (error) {
-          console.error("Error deleting branch:", error);
-          message.error("Failed to delete store.");
+          console.error("Error deleting category:", error);
+          message.error("Failed to delete category.");
         }
       },
     });
@@ -242,6 +243,11 @@ const Category = () => {
       title: "No of Products",
       dataIndex: "product_count",
       key: "product_count",
+    },
+    {
+      title: "Category Location",
+      dataIndex: "category_location",
+      key: "category_location",
     },
     {
       title: "Actions",
