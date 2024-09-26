@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Button,
   Card,
@@ -9,6 +9,7 @@ import {
   Tooltip,
   Input,
   Form,
+  message,
 } from "antd";
 import {
   EditOutlined,
@@ -23,8 +24,8 @@ const { confirm } = Modal;
 const { Search } = Input;
 
 const Employees = () => {
-  const [data, setData] = useState(employeesData);
-  const [filteredData, setFilteredData] = useState(data);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingStore, setEditingStore] = useState(null);
   const [searchText, setSearchText] = useState("");
@@ -64,7 +65,7 @@ const Employees = () => {
   }, []);
 
 
-  const handleAddEmplyoee = async (values) => {
+  const handleAddEmployee = async (values) => {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -88,7 +89,7 @@ const Employees = () => {
         message.success("Branch added successfully");
         setIsModalVisible(false);
         form.resetFields();
-        fetchBranches();
+        fetchEmplyoees();
       } else {
         message.error("Failed to add branch");
       }
@@ -98,7 +99,7 @@ const Employees = () => {
     }
   };
 
-  const handleUpdateEmplyoee = async (values) => {
+  const handleUpdateEmployee = async (values) => {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -140,7 +141,7 @@ const Employees = () => {
         //       : item
         //   )
         // );
-        fetchBranches();
+        fetchEmplyoees();
       } else {
         message.error("Failed to update branch");
       }
@@ -187,7 +188,7 @@ const Employees = () => {
           // );
           // setData(newData);
           // setFilteredData(newData);
-          fetchBranches();
+          fetchEmplyoees();
           message.success("Store deleted successfully.");
         } catch (error) {
           console.error("Error deleting branch:", error);
@@ -227,7 +228,7 @@ const Employees = () => {
     setSearchText(value);
   };
 
-  
+
   const columns = [
     /* {
       title: "",
@@ -246,9 +247,9 @@ const Employees = () => {
       key: "employee_name",
     },
     {
-      title: "Branch ID",
-      dataIndex: "branch_id",
-      key: "branch_id",
+      title: "Salary",
+      dataIndex: "salary",
+      key: "salary",
     },
     {
       title: "Role",
@@ -259,6 +260,16 @@ const Employees = () => {
       title: "Contact Number",
       dataIndex: "contact_number",
       key: "contact_number",
+    },
+    {
+      title: "Address",
+      dataIndex: "emplyoee_address",
+      key: "emplyoee_address",
+    },
+    {
+      title: "E mail",
+      dataIndex: "emplyoee_email",
+      key: "emplyoee_email",
     },
     {
       title: "Actions",
@@ -296,15 +307,15 @@ const Employees = () => {
       ),
     },
 
-    {
-      title: "",
-      key: "",
-      render: (record) => (
-        <Button onClick={() => handleViewEmployee(record.employee_id)}>
-          View Employee
-        </Button>
-      ),
-    },
+    // {
+    //   title: "",
+    //   key: "",
+    //   render: (record) => (
+    //     <Button onClick={() => handleViewEmployee(record.employee_id)}>
+    //       View Employee
+    //     </Button>
+    //   ),
+    // },
   ];
 
   return (
