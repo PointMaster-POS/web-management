@@ -29,13 +29,13 @@ const { Search } = Input;
 const { Option } = Select;
 
 const Products = () => {
-  const { branchID, role } = useMenu(); 
+  const { branchID } = useMenu();
   const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [categories, setCategories] = useState([]); // State to hold categories
-  const [selectedCategory, setSelectedCategory] = useState(null); // State for selected category
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
 
@@ -43,10 +43,9 @@ const Products = () => {
     setIsModalVisible(true);
   };
 
-  const token = localStorage.getItem("accessToken"); // No need for JSON.parse
-  console.log("Access Token:", token);
+  const token = localStorage.getItem("accessToken");
 
-
+  // Fetch categories on component mount
   useEffect(() => {
     const fetchCategories = async () => {
       if (!branchID) return; // Ensure branchId is available
@@ -56,10 +55,8 @@ const Products = () => {
             Authorization: `Bearer ${token}`, // Pass the token in the headers
           },
         });
-        console.log("Categories fetched:", response.data); // Log fetched categories
         setCategories(response.data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
         notification.error({
           message: "Error",
           description: "Failed to load categories.",
@@ -68,37 +65,30 @@ const Products = () => {
     };
     fetchCategories();
   }, [branchID]);
-  
 
-  // Fetch products based on selected category
+  // Fetch products when a category is selected
   const handleCategoryChange = async (categoryId) => {
-    console.log("Selected Category:", categoryId);
     setSelectedCategory(categoryId);
-    setLoading(true); // Show loading while fetching
+    setLoading(true);
     try {
-      const token = localStorage.getItem("accessToken"); // Get token as a string
       const response = await axios.get(`http://localhost:3001/items/${categoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Products fetched for category:", response.data); // Log products
-      setData(response.data);  // Update main data state
-      setFilteredData(response.data);  // Optionally, set filtered data as well
+      console.log(response.data);
+      setData(response.data); // Data from the API will be mapped directly
+      setFilteredData(response.data); // Ensure filteredData reflects the new structure
     } catch (error) {
-      console.error("Error fetching products by category:", error);
       notification.error({
         message: "Error",
         description: "Failed to load products for the selected category.",
       });
     } finally {
-      setLoading(false); // Stop loading after fetch completes
+      setLoading(false);
     }
   };
   
-  
-
-  const sortedData = [...filteredData].sort((a, b) => a.quantity - b.quantity);
 
   const handleAddProduct = () => {
     form.validateFields().then((values) => {
@@ -121,10 +111,10 @@ const Products = () => {
   };
 
   const handleEdit = (product) => {
-    form.setFieldsValue(product); // Set form fields with the product data
-    setIsModalVisible(true); // Open the modal
+    form.setFieldsValue(product);
+    setIsModalVisible(true);
   };
-  
+
   const handleDelete = (productId) => {
     confirm({
       title: `Are you sure you want to delete this product?`,
@@ -134,7 +124,7 @@ const Products = () => {
       cancelText: "No",
       centered: true,
       onOk: () => {
-        const newData = data.filter(item => item.product_id !== productId);
+        const newData = data.filter((item) => item.product_id !== productId);
         setData(newData);
         setFilteredData(newData);
         notification.success({
@@ -148,15 +138,13 @@ const Products = () => {
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
       const product_name = item.product_name.toLowerCase();
-      const product_id = item.product_id.toString().toLowerCase(); // Convert product_id to string for comparison
+      const product_id = item.product_id.toString().toLowerCase();
       const searchValue = value.toLowerCase();
 
       if (exactMatch) {
         return product_name === searchValue || product_id === searchValue;
       } else {
-        return (
-          product_name.includes(searchValue) || product_id.includes(searchValue)
-        );
+        return product_name.includes(searchValue) || product_id.includes(searchValue);
       }
     });
 
@@ -165,59 +153,54 @@ const Products = () => {
   };
 
   const columns = [
+    { title: "Item ID", dataIndex: "item_id", key: "item_id" },
+    { title: "Item Name", dataIndex: "item_name", key: "item_name" },
+    { title: "Category ID", dataIndex: "category_id", key: "category_id" },
+    { title: "Supplier Name", dataIndex: "supplier_name", key: "supplier_name" },
     {
-      title: "Product ID",
-      dataIndex: "product_id",
-      key: "product_id",
+      title: "Price",
+      dataIndex: "price",
+      key: "price",
+      render: (price) => `₹${price}`, // Format the price with currency
     },
     {
-      title: "Product Name",
-      dataIndex: "product_name",
-      key: "product_name",
-    },
-    {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
-    },
-    {
-      title: "Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
-      render: (quantity) => (
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      render: (stock) => (
         <div>
-          {quantity < 100 ? (
+          {stock < 20 ? (
             <Tooltip title="Low stock !">
-              <span style={{ color: "red" }}>{quantity}</span>
-              <ExclamationCircleOutlined
-                style={{ color: "red", marginLeft: 8 }}
-              />
+              <span style={{ color: "red" }}>{stock}</span>
+              <ExclamationCircleOutlined style={{ color: "red", marginLeft: 8 }} />
             </Tooltip>
           ) : (
-            quantity
+            stock
           )}
         </div>
       ),
     },
     {
-      title: "Buying Price",
-      dataIndex: "buying_price",
-      key: "buying_price",
+      title: "Minimum Stock",
+      dataIndex: "minimum_stock",
+      key: "minimum_stock",
     },
     {
-      title: "Selling Price",
-      dataIndex: "selling_price",
-      key: "selling_price",
+      title: "Discount",
+      dataIndex: "discount",
+      key: "discount",
+      render: (discount) => `${discount}%`, // Format the discount with a percentage sign
     },
     {
-      title: "Supplier ID",
-      dataIndex: "supplier_id",
-      key: "supplier_id",
+      title: "Expiration Date",
+      dataIndex: "exp_date",
+      key: "exp_date",
+      render: (exp_date) => new Date(exp_date).toLocaleDateString(), // Format the date
     },
     {
-      title: "Added Date",
-      dataIndex: "added_date",
-      key: "added_date",
+      title: "Barcode",
+      dataIndex: "barcode",
+      key: "barcode",
     },
     {
       title: "Actions",
@@ -225,43 +208,20 @@ const Products = () => {
       render: (record) => (
         <Space size="middle">
           <Tooltip title="Edit Product">
-            <Button
-              icon={<EditOutlined />}
-              onClick={() => handleEdit(record)}
-              style={{
-                borderColor: "#1890ff",
-                color: "#1890ff",
-              }}
-            />
+            <Button icon={<EditOutlined />} onClick={() => handleEdit(record)} />
           </Tooltip>
           <Tooltip title="Delete Product">
-            <Button
-              icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.product_name)}
-              danger
-            />
+            <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record.item_id)} danger />
           </Tooltip>
         </Space>
       ),
     },
   ];
+  
 
   return (
-    <Card
-      style={{
-        margin: 30,
-        padding: 30,
-        borderRadius: "10px",
-      }}
-      bodyStyle={{ padding: "20px" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+    <Card style={{ margin: 30, padding: 30, borderRadius: "10px" }} bodyStyle={{ padding: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Title level={3}>Products</Title>
         <Space>
           <Select
@@ -277,18 +237,8 @@ const Products = () => {
               </Option>
             ))}
           </Select>
-          <Search
-            placeholder="Search by Product Name"
-            onSearch={handleSearch}
-            enterButton
-            style={{ width: 300 }}
-          />
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={showModal}
-            size="large"
-          >
+          <Search placeholder="Search by Product Name" onSearch={handleSearch} enterButton style={{ width: 300 }} />
+          <Button type="primary" icon={<PlusOutlined />} onClick={showModal} size="large">
             Add New Product
           </Button>
         </Space>
@@ -296,13 +246,12 @@ const Products = () => {
 
       <Table
         columns={columns}
-        dataSource={sortedData}
-        pagination={{
-          pageSize: 6,
-        }}
-        rowKey="product_id"
+        dataSource={filteredData} // filteredData should already reflect the structure from the API response
+        pagination={{ pageSize: 6 }}
+        rowKey="item_id" // Make sure the row key is based on item_id from the response
         style={{ marginTop: "20px" }}
       />
+
 
       <Modal
         title="Add Product"
@@ -312,7 +261,7 @@ const Products = () => {
         okText="Save"
         cancelText="Cancel"
         centered
-        destroyOnClose={true}
+        destroyOnClose
       >
         <AddNewProduct form={form} />
       </Modal>
@@ -320,4 +269,4 @@ const Products = () => {
   );
 };
 
-export default Products; 
+export default Products;
