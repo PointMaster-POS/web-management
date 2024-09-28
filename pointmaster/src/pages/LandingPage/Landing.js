@@ -9,11 +9,6 @@ import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/Reg
 export default function Landing() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form_first] = Form.useForm();
-    // const navigate = useNavigate();
-
-    // const handleJoin = () => {
-    //     navigate('/register-new-business');
-    //   };
 
     const showModal = () => {
       setIsModalVisible(true);
