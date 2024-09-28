@@ -29,7 +29,7 @@ const { Search } = Input;
 const { Option } = Select;
 
 const Products = () => {
-  const { branchId, role } = useMenu(); 
+  const { branchID, role } = useMenu(); 
   const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -49,9 +49,9 @@ const Products = () => {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      if (!branchId) return; // Ensure branchId is available
+      if (!branchID) return; // Ensure branchId is available
       try {
-        const response = await axios.get(`http://localhost:3001/category/owner/${branchId}`, {
+        const response = await axios.get(`http://localhost:3001/category/owner/${branchID}`, {
           headers: {
             Authorization: `Bearer ${token}`, // Pass the token in the headers
           },
@@ -67,22 +67,24 @@ const Products = () => {
       }
     };
     fetchCategories();
-  }, [branchId]);
+  }, [branchID]);
   
 
   // Fetch products based on selected category
   const handleCategoryChange = async (categoryId) => {
+    console.log("Selected Category:", categoryId);
     setSelectedCategory(categoryId);
-    setLoading(true);
+    setLoading(true); // Show loading while fetching
     try {
-      const token = JSON.parse(localStorage.getItem("accessToken"));
+      const token = localStorage.getItem("accessToken"); // Get token as a string
       const response = await axios.get(`http://localhost:3001/items/${categoryId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Products fetched for category:", response.data); // Log fetched products
-      setFilteredData(response.data); // Assuming response data contains products of the selected category
+      console.log("Products fetched for category:", response.data); // Log products
+      setData(response.data);  // Update main data state
+      setFilteredData(response.data);  // Optionally, set filtered data as well
     } catch (error) {
       console.error("Error fetching products by category:", error);
       notification.error({
@@ -90,9 +92,10 @@ const Products = () => {
         description: "Failed to load products for the selected category.",
       });
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading after fetch completes
     }
   };
+  
   
 
   const sortedData = [...filteredData].sort((a, b) => a.quantity - b.quantity);
