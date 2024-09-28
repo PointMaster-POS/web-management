@@ -6,8 +6,8 @@ import Landing from "./pages/LandingPage/Landing";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Stores from "./pages/Stores/Stores";
 import Employees from "./pages/Employees/Employees";
-import Expired from "./pages/Expired/Expired";
 import Profile from "./pages/Profile/Profile";
+import Setting from "./pages/Settings/Settings"
 import Category from "./pages/Categories/Category";
 import Suppliers from "./pages/Loyalty/loyalty";
 import PurchaseHistory from "./pages/Loyalty/PurchaseHistory";
@@ -27,7 +27,7 @@ const App = () => {
         <Routes>
           {/* Public Routes */}
 
-          <Route path="/" element={<Landing />} />
+          {/* <Route path="/" element={<Landing />} /> */}
           <Route path="/login" element={<LogIn />} />
           <Route
             path="/forgot-password"
@@ -46,8 +46,8 @@ const App = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/stores" element={<Stores />} />
             <Route path="/employees" element={<Employees />} />
-            <Route path="/expired" element={<Expired />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/setting" element={<Setting />} />
             <Route path="/category" element={<Category />} />
             <Route path="/loyalty" element={<Loyalty />} />
             <Route
