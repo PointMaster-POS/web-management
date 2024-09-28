@@ -3,10 +3,9 @@ import { Form, Input, Select, Button } from "antd";
 
 const { Option } = Select;
 
-const Stores = [
-  { id: 1, name: "Alice" },
-  { id: 2, name: "Bob" },
-  { id: 3, name: "Charlie" },
+const Roles = [
+  { name: "cashier" },
+  { name: "branch manager" },
 ];
 
 const AddNewEmployee = ({ onAddEmployee, onCancel }) => {

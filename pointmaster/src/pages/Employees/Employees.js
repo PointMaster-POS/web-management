@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Button,
   Card,
@@ -9,6 +9,7 @@ import {
   Tooltip,
   Input,
   Form,
+  message,
 } from "antd";
 import {
   EditOutlined,
@@ -17,18 +18,20 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewEmployee from "../../components/Popups/AddNewEmployee";
+import { useMenu } from "../../context/MenuContext";
 
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
 
 const Employees = () => {
-  const [data, setData] = useState(employeesData);
-  const [filteredData, setFilteredData] = useState(data);
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingStore, setEditingStore] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
+  const {branchID} = useMenu();
 
   const fetchEmplyoees = async () => {
     const token = localStorage.getItem("accessToken");
@@ -38,7 +41,7 @@ const Employees = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/branch", {
+      const response = await fetch(`http://localhost:3001/employee/${branchID}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -54,8 +57,8 @@ const Employees = () => {
       setData(data);
       setFilteredData(data);
     } catch (error) {
-      console.error("Error fetching branches:", error);
-      message.error("Failed to fetch branches.");
+      console.error("Error fetching employees:", error);
+      message.error("Failed to fetch employees.");
     }
   };
 
@@ -64,7 +67,7 @@ const Employees = () => {
   }, []);
 
 
-  const handleAddEmplyoee = async (values) => {
+  const handleAddEmployee = async (values) => {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -73,7 +76,7 @@ const Employees = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/branch/", {
+      const response = await fetch("http://localhost:3001/employee", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -83,22 +86,21 @@ const Employees = () => {
       });
 
       if (response.ok) {
-        const newBranch = await response.json();
-        console.log("New Branch:", newBranch); // Check the structure of newBranch
-        message.success("Branch added successfully");
+        const newEmployee = await response.json();
+        message.success("Employee added successfully");
         setIsModalVisible(false);
         form.resetFields();
-        fetchBranches();
+        fetchEmplyoees();
       } else {
-        message.error("Failed to add branch");
+        message.error("Failed to add employee");
       }
     } catch (error) {
       console.error(error);
-      message.error("Error occurred while adding branch");
+      message.error("Error occurred while adding employee");
     }
   };
 
-  const handleUpdateEmplyoee = async (values) => {
+  const handleUpdateEmployee = async (values) => {
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -140,7 +142,7 @@ const Employees = () => {
         //       : item
         //   )
         // );
-        fetchBranches();
+        fetchEmplyoees();
       } else {
         message.error("Failed to update branch");
       }
@@ -157,11 +159,11 @@ const Employees = () => {
   };
 
 
-  const handleDelete = (branch_id, branch_name) => {
+  const handleDelete = (employee_id, employee_name) => {
     confirm({
-      title: "Are you sure you want to delete this store?",
+      title: "Are you sure you want to delete this employee?",
       icon: <ExclamationCircleOutlined />,
-      content: `This action will delete the store "${branch_name}".`,
+      content: `This action will delete the store "${employee_name}".`,
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -175,7 +177,7 @@ const Employees = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/branch/${branch_id}`, {
+          await fetch(`http://localhost:3001/branch/${branchID}/${employee_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -187,7 +189,7 @@ const Employees = () => {
           // );
           // setData(newData);
           // setFilteredData(newData);
-          fetchBranches();
+          fetchEmplyoees();
           message.success("Store deleted successfully.");
         } catch (error) {
           console.error("Error deleting branch:", error);
@@ -227,7 +229,11 @@ const Employees = () => {
     setSearchText(value);
   };
 
-  
+  const handleViewEmployee = () => {
+
+  }
+
+
   const columns = [
     /* {
       title: "",
@@ -244,11 +250,6 @@ const Employees = () => {
       title: "Employee Name",
       dataIndex: "employee_name",
       key: "employee_name",
-    },
-    {
-      title: "Branch ID",
-      dataIndex: "branch_id",
-      key: "branch_id",
     },
     {
       title: "Role",
@@ -278,20 +279,10 @@ const Employees = () => {
           <Tooltip title="Delete Employee">
             <Button
               icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.employee_name)}
+              onClick={() => handleDelete(record.employee_id,record.employee_name)}
               danger
             />
           </Tooltip>
-          {/* <Tooltip title="View Store">
-            <Button
-              icon={<ShopOutlined />}
-              onClick={() => handleViewStore(record)}
-              style={{
-                borderColor: "rgb(0,0,0,0.88)",
-                color: "rgb(0,0,0,0.88)",
-              }}
-            />
-          </Tooltip> */}
         </Space>
       ),
     },
@@ -301,7 +292,7 @@ const Employees = () => {
       key: "",
       render: (record) => (
         <Button onClick={() => handleViewEmployee(record.employee_id)}>
-          View Employee
+          View More
         </Button>
       ),
     },

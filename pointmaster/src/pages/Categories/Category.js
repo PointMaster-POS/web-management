@@ -32,7 +32,7 @@ const Category = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [form] = Form.useForm();
-  const { selectedMenu, role,branchID,setBranchID } = useMenu();
+  const { branchID} = useMenu();
 
   const fetchCategories = async () => {
     const token = localStorage.getItem("accessToken");
@@ -85,7 +85,6 @@ const Category = () => {
 
       if (response.ok) {
         const newCategory = await response.json();
-        console.log("New Branch:", newCategory); // Check the structure of newBranch
         message.success("Category added successfully");
         setIsModalVisible(false);
         form.resetFields();
