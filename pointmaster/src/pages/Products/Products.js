@@ -41,7 +41,7 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  
+
   const barcodeRef = useRef(); // Ref for capturing the barcode
 
   const showModal = () => {
@@ -50,6 +50,7 @@ const Products = () => {
 
   const token = localStorage.getItem("accessToken");
 
+  // Fetch categories and select the first one by default
   useEffect(() => {
     const fetchCategories = async () => {
       if (!branchID) return; // Ensure branchId is available
@@ -60,6 +61,12 @@ const Products = () => {
           },
         });
         setCategories(response.data);
+        // Set the first category as default
+        if (response.data.length > 0) {
+          const firstCategory = response.data[0].category_id;
+          setSelectedCategory(firstCategory);
+          handleCategoryChange(firstCategory); // Fetch products for the default category
+        }
       } catch (error) {
         notification.error({
           message: "Error",
@@ -163,7 +170,14 @@ const Products = () => {
     });
   };
 
+  // Adding index column to count rows
   const columns = [
+    {
+      title: "No.",
+      dataIndex: "index",
+      key: "index",
+      render: (text, record, index) => index + 1, // Render row number starting from 1
+    },
     { title: "Item Name", dataIndex: "item_name", key: "item_name" },
     {
       title: "Buying Price",
@@ -242,7 +256,7 @@ const Products = () => {
             style={{ width: 200 }}
             placeholder="Select Category"
             onChange={handleCategoryChange}
-            value={selectedCategory}
+            value={selectedCategory} // Set the default category
             loading={loading}
           >
             {categories.map((category) => (
@@ -258,28 +272,23 @@ const Products = () => {
         </Space>
       </div>
 
-      <Table
-        columns={columns}
-        dataSource={filteredData}
-        pagination={{ pageSize: 6 }}
-        rowKey="item_id"
-        style={{ marginTop: "20px" }}
-      />
+      <Table columns={columns} dataSource={filteredData} rowKey="item_id" pagination={{ pageSize: 5 }} />
 
+      {/* Modal for adding/editing products */}
       <Modal
         title="Add Product"
-        open={isModalVisible}
+        visible={isModalVisible}
         onOk={handleAddProduct}
         onCancel={handleCancel}
-        okText="Add Product"
-        cancelText="Cancel"
+        width={1000}
       >
-        <AddNewProduct form={form} />
+        <Form form={form} layout="vertical">
+          <Form.Item name="product_name" label="Product Name" rules={[{ required: true, message: "Please enter a product name!" }]}>
+            <Input placeholder="Enter product name" />
+          </Form.Item>
+          {/* Additional Form Fields */}
+        </Form>
       </Modal>
-      
-      <div ref={barcodeRef} style={{ visibility: "hidden" }}>
-        <div>Barcode content here</div> {/* This is where you can add the barcode rendering logic */}
-      </div>
     </Card>
   );
 };
