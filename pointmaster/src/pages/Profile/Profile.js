@@ -1,102 +1,310 @@
-import React from 'react';
-import { Layout, Card, Form, Input, Button, DatePicker, Table } from 'antd';
-import { UserOutlined, MailOutlined, PhoneOutlined, HomeOutlined, LockOutlined } from '@ant-design/icons';
-import './Profile.css';
+import React, { useState } from "react";
+import { Card, Col, Row, Typography, Button, Modal, Image, Form, message } from "antd";
+import { EditOutlined } from "@ant-design/icons";
+import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
+import RegisterOwner from "../../components/Popups/RegisterOwner/RegisterOwner";
 
-const { Content } = Layout;
+const { Title, Text } = Typography;
 
-const activityColumns = [
-  {
-    title: 'Date',
-    dataIndex: 'date',
-    key: 'date',
-  },
-  {
-    title: 'Activity',
-    dataIndex: 'activity',
-    key: 'activity',
-  },
-];
+const ProfilePage = () => {
+  const [form_first] = Form.useForm();
+  const [form_second] = Form.useForm();
+  const [isBusinessModalVisible, setIsBusinessModalVisible] = useState(false);
+  const [isOwnerModalVisible, setIsOwnerModalVisible] = useState(false);
 
-const activities = [
-  {
-    key: '1',
-    date: '2024-07-12',
-    activity: 'Logged in from IP 192.168.0.1',
-  },
-  {
-    key: '2',
-    date: '2024-07-11',
-    activity: 'Changed password',
-  },
-  // Add more activities here
-];
+  const [businessDetails, setBusinessDetails] = useState({});
 
-const Profile = () => {
-  const handleUpdateProfile = (values) => {
-    console.log('Profile updated:', values);
+  const [ownerDetails, setOwnerDetails] = useState({});
+
+  /* const fetchBusinessDetails = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/category/owner/${branchID}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const fetched_data = await response.json();
+      setBusinessDetails(fetch_data)
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      message.error("Failed to fetch categories.");
+    }
+  };
+ */
+  /* const fetchOwnerDetails = async () => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3001/category/owner/${branchID}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const fetched_data = await response.json();
+      setOwnerDetails(fetched_data)
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      message.error("Failed to fetch categories.");
+    }
+  }; */
+
+  /* useEffect(() => {
+    fetchBusinessDetails(), fetchOwnerDetails();
+  }, []); */
+
+  const handleEditBusiness = () => {
+    form_first.setFieldsValue(businessDetails); // Set the form with business details when editing
+    setIsBusinessModalVisible(true);
   };
 
-  const handleChangePassword = (values) => {
-    console.log('Password changed:', values);
+  const handleEditOwner = () => {
+    form_second.setFieldsValue(ownerDetails); // Set the form with owner details when editing
+    setIsOwnerModalVisible(true);
   };
+
+  const handleChangePassword = () => {
+    Modal.info({
+      title: "Change Password",
+      content: (
+        <div>
+          {/* Here you can add a form for changing the password */}
+          <Text>Functionality to change password goes here.</Text>
+        </div>
+      ),
+      onOk() {},
+    });
+  };
+
+  const handleCancelBusinessModal = () => {
+    setIsBusinessModalVisible(false);
+    form_first.resetFields(); // Reset the form when the modal is closed
+  };
+
+  const handleCancelOwnerModal = () => {
+    setIsOwnerModalVisible(false);
+    form_second.resetFields(); // Reset the form when the modal is closed
+  };
+
+
+  const defaultLogo_1 = "/images/logo-placeholder.webp";
+  const defaultLogo_2 = "/images/placeholder_for_owner.png";
 
   return (
-    <Content className="profile-content">
-      <Card className="profile-card" title="Profile">
-        <div className="profile-header">
-          <img src="profile-pic-url" alt="Profile" className="profile-pic" />
-          <div className="profile-info">
-            <h2>John Doe</h2>
-            <p>Role: Inventory Manager</p>
-          </div>
-        </div>
+    <div style={{ padding: "20px", backgroundColor: "#f5f5f5" }}>
+      <Title level={2} style={{ textAlign: "center" }}>
+        Profile Overview
+      </Title>
+      <Row gutter={16}>
+        {/* Business Details Section */}
+        <Col span={12}>
+          <Card
+            title="Business Details"
+            bordered={false}
+
+            extra={
+              <Button icon={<EditOutlined />} onClick={handleEditBusiness} />
+            }
+          >
+            {/* Business Logo */}
+            <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <Image
+                width={100}
+                height={100}
+                src={businessDetails.logo || defaultLogo_1} // Business logo from details
+                preview={false}
+                style={{ borderRadius: "50%" }}
+              />
+              <Title level={4} style={{ marginTop: "10px" }}>
+                {businessDetails.name} {/* Business name below logo */}
+              </Title>
+            </div>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Email:{" "}
+                </Text>
+                <Text style={{ fontSize: "16px" }}>
+                  {businessDetails.email}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 16 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Website:{" "}
+                </Text>
+                  <a
+                    href={businessDetails.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ fontSize: "16px" }}
+                  >
+                    {businessDetails.url}
+                  </a>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Hotline:{" "}
+                </Text>
+                <Text style={{ fontSize: "16px" }}>
+                  {businessDetails.hotline}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Description:{" "}
+                </Text>
+                <Text style={{ fontSize: "16px" }}>
+                  {businessDetails.description}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Address:{" "}
+                </Text>
+                <Text style={{ fontSize: "16px" }}>
+                  {businessDetails.address}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Registration Number:{" "}
+                </Text>
+                <Text style={{ fontSize: "16px" }}>
+                  {businessDetails.registrationNumber}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Type:{" "}
+                </Text>
+                <Text style={{ fontSize: "16px" }}>
+                  {businessDetails.type}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Registration Date:{" "}
+                </Text>
+                <Text style={{ fontSize: "16px" }}>
+                  {businessDetails.registrationDate}
+                </Text>
+              </Col>
+            </Row>
+          </Card>
+        </Col>
+
+        {/* Owner Details Section */}
+        <Col span={12}>
+          <Card
+            title="Owner Details"
+            bordered={false}
+            extra={<Button icon={<EditOutlined />} onClick={handleEditOwner} />}
+          >
+            <div style={{ textAlign: "center", marginBottom: "20px" }}>
+              <Image
+                width={100}
+                height={100}
+                src={businessDetails.logo || defaultLogo_2} // Business logo from details
+                preview={false}
+                style={{ borderRadius: "50%" }}
+              />
+              <Title level={4} style={{ marginTop: "10px" }}>
+                {ownerDetails.name} {/* Business name below logo */}
+              </Title>
+            </div>
+            <Text strong style={{ fontSize: "16px" }}>
+              Email:
+            </Text>{" "}
+            <Text style={{ fontSize: "16px" }}>{ownerDetails.email}</Text>
+            <br />
+            <Button
+              type="link"
+              onClick={handleChangePassword}
+              style={{ fontSize: "16px", paddingLeft: "0" }}
+            >
+              Change Password
+            </Button>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Recent Activity Section */}
+      <Card
+        title="Recent Activity"
+        style={{ marginTop: "20px" }}
+        bordered={false}
+      >
+        <Text>Display recent activity or notifications here.</Text>
       </Card>
 
-      <Card className="profile-card" title="Personal Information">
-        <Form layout="vertical" onFinish={handleUpdateProfile}>
-          <Form.Item name="date_of_birth" label="Date of Birth">
-            <DatePicker />
-          </Form.Item>
-          <Form.Item name="address" label="Address">
-            <Input placeholder="Address" prefix={<HomeOutlined />} />
-          </Form.Item>
-          <Button type="primary" htmlType="submit">Update Profile</Button>
-        </Form>
-      </Card>
+      {/* Modal for editing business */}
+      <Modal
+        title="Edit Business Details"
+        visible={isBusinessModalVisible}
+        onCancel={handleCancelBusinessModal}
+        footer={null}
+        width={750}
+        centered
+      >
+        <RegisterNewBusiness form={form_first} onCancel={handleCancelBusinessModal} />
+      </Modal>
 
-      <Card className="profile-card" title="Contact Information">
-        <Form layout="vertical" onFinish={handleUpdateProfile}>
-          <Form.Item name="email" label="Email">
-            <Input placeholder="Email" prefix={<MailOutlined />} />
-          </Form.Item>
-          <Form.Item name="phone" label="Phone">
-            <Input placeholder="Phone" prefix={<PhoneOutlined />} />
-          </Form.Item>
-          <Button type="primary" htmlType="submit">Update Contact Info</Button>
-        </Form>
-      </Card>
 
-      <Card className="profile-card" title="Change Password">
-        <Form layout="vertical" onFinish={handleChangePassword}>
-          <Form.Item name="current_password" label="Current Password">
-            <Input.Password placeholder="Current Password" prefix={<LockOutlined />} />
-          </Form.Item>
-          <Form.Item name="new_password" label="New Password">
-            <Input.Password placeholder="New Password" prefix={<LockOutlined />} />
-          </Form.Item>
-          <Form.Item name="confirm_password" label="Confirm Password">
-            <Input.Password placeholder="Confirm Password" prefix={<LockOutlined />} />
-          </Form.Item>
-          <Button type="primary" htmlType="submit">Change Password</Button>
-        </Form>
-      </Card>
-
-      <Card className="profile-card" title="Activity Logs">
-        <Table columns={activityColumns} dataSource={activities} pagination={false} />
-      </Card>
-    </Content>
+      {/* Modal for editing owner */}
+      <Modal
+        title="Edit Owner Details"
+        visible={isOwnerModalVisible}
+        onCancel={handleCancelOwnerModal}
+        footer={null}
+        centered
+      >
+        <RegisterOwner form={form_second} onCancel={handleCancelOwnerModal} />
+      </Modal>
+    </div>
   );
 };
 
-export default Profile;
+export default ProfilePage;
