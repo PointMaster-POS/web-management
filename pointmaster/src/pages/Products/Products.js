@@ -163,16 +163,6 @@ const Products = () => {
     setSearchText(value);
   };
 
-  // // Function to generate barcode PDF
-  // const handlePrintBarcode = (record) => {
-  //   html2canvas(barcodeRef.current).then((canvas) => {
-  //     const imgData = canvas.toDataURL("image/png");
-  //     const pdf = new jsPDF();
-  //     pdf.addImage(imgData, "JPEG", 10, 10);
-  //     pdf.save(`${record.barcode}.pdf`);
-  //   });
-  // };
-
   const handlePrintBarcode = (record) => {
     setSelectedBarcode(record.barcode); // Set the barcode to be generated
 
@@ -211,10 +201,6 @@ const Products = () => {
   };
   
   
-  
-  
-
-
   // Adding index column to count rows
   const columns = [
     {
@@ -319,16 +305,6 @@ const Products = () => {
 
       <Table columns={columns} dataSource={filteredData} rowKey="item_id" pagination={{ pageSize: 5 }} />
 
-      {/* {selectedBarcode && (
-        <div ref={barcodeRef} style={{ display: "none" }}>
-          <p>Barcode: {selectedBarcode}</p>
-        </div>
-      )} */}
-
-      {/* {selectedBarcode && (
-        <svg ref={barcodeRef} style={{ display: "none" }}></svg>
-      )} */}
-
       {selectedBarcode && (
         <div style={{ opacity: 0, position: "absolute", top: -1000, left: -1000 }}>
           <canvas ref={barcodeRef}></canvas>
@@ -347,9 +323,86 @@ const Products = () => {
           <Form.Item name="product_name" label="Product Name" rules={[{ required: true, message: "Please enter a product name!" }]}>
             <Input placeholder="Enter product name" />
           </Form.Item>
-          {/* Additional Form Fields */}
-        </Form>
-      </Modal>
+          
+          <Form.Item
+          name="buying_price"
+          label="Buying Price"
+          rules={[{ required: true, message: "Please enter the buying price!" }]}
+        >
+          <Input  placeholder="Enter buying price" />
+        </Form.Item>
+
+        <Form.Item
+          name="selling_price"
+          label="Selling Price"
+          rules={[{ required: true, message: "Please enter the selling price!" }]}
+        >
+          <Input  placeholder="Enter selling price" />
+        </Form.Item>
+
+        <Form.Item
+          name="stock"
+          label="Stock"
+          rules={[{ required: true, message: "Please enter the stock quantity!" }]}
+        >
+          <Input placeholder="Enter stock quantity" />
+        </Form.Item>
+
+        <Form.Item
+          name="minimum_stock"
+          label="Minimum Stock"
+          rules={[{ required: true, message: "Please enter the minimum stock!" }]}
+        >
+          <Input placeholder="Enter minimum stock" />
+        </Form.Item>
+
+        <Form.Item
+          name="discount"
+          label="Discount (%)"
+        >
+          <Input  placeholder="Enter discount percentage" />
+        </Form.Item>
+
+        <Form.Item
+          name="exp_date"
+          label="Expiration Date"
+          rules={[{ required: true, message: "Please enter the expiration date!" }]}
+        >
+          <Input type="date" />
+        </Form.Item>
+
+        <Form.Item
+          name="supplier_name"
+          label="Supplier Name"
+          rules={[{ required: true, message: "Please enter the supplier name!" }]}
+        >
+          <Input placeholder="Enter supplier name" />
+        </Form.Item>
+
+        <Form.Item
+          name="supplier_contacts"
+          label="Supplier Contacts"
+          rules={[{ required: true, message: "Please enter the supplier contacts!" }]}
+        >
+          <Input placeholder="Enter supplier contacts" />
+        </Form.Item>
+
+        <Form.Item
+          name="barcode"
+          label="Barcode"
+          rules={[{ required: true, message: "Please enter the barcode!" }]}
+        >
+          <Input placeholder="Enter barcode" />
+        </Form.Item>
+
+        <Form.Item>
+          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
+            Add Product
+          </Button>
+        </Form.Item>
+      </Form>
+    </Modal>
+
     </Card>
   );
 };
