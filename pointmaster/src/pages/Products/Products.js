@@ -25,6 +25,7 @@ import AddNewProduct from "../../components/Popups/AddNewProduct";
 import { useMenu } from "../../context/MenuContext";
 import jsPDF from "jspdf"; // For generating PDFs
 import html2canvas from "html2canvas"; // For capturing the barcode area
+import JsBarcode from "jsbarcode"; // For generating barcodes
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -173,40 +174,44 @@ const Products = () => {
   // };
 
   const handlePrintBarcode = (record) => {
-    setSelectedBarcode(record.barcode); // Store the selected barcode
-    const barcodeToCapture = barcodeRef.current; // Ensure ref is set
-  
-    if (!barcodeToCapture) {
-      notification.error({
-        message: "Error",
-        description: "Unable to capture barcode for printing.",
-      });
-      return;
-    }
-  
-    // Temporarily show the barcode element
-    barcodeRef.current.style.display = "block";
-  
-    html2canvas(barcodeToCapture).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      
-      // Debugging: Log the image data to ensure it's correctly captured
-      console.log('Generated Image Data:', imgData);
-  
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, "JPEG", 10, 10); // Adjust coordinates as necessary
-      pdf.save(`${record.barcode}.pdf`);
-  
-      // Hide the barcode again after capture
-      barcodeRef.current.style.display = "none";
-    }).catch((error) => {
-      console.error("Error generating PDF:", error);
-      notification.error({
-        message: "Error",
-        description: "Failed to generate the PDF. Please try again.",
-      });
-    });
+    setSelectedBarcode(record.barcode); // Set the barcode to be generated
+
+    // Wait for the barcode to render before capturing it
+    setTimeout(() => {
+      if (barcodeRef.current) {
+        try {
+          // Generate the barcode using JsBarcode
+          JsBarcode(barcodeRef.current, String(record.barcode), {
+            format: "CODE128",
+            displayValue: true,
+            width: 2,
+            height: 50,
+          });
+
+          // Capture the barcode area and convert it to PDF
+          html2canvas(barcodeRef.current)
+            .then((canvas) => {
+              const imgData = canvas.toDataURL("image/png");
+              const pdf = new jsPDF();
+              pdf.addImage(imgData, "JPEG", 10, 10, 150, 50); // Adjust the size as necessary
+              pdf.save(`${record.barcode}.pdf`);
+            })
+            .catch((error) => {
+              console.error("Error generating PDF:", error);
+              notification.error({
+                message: "Error",
+                description: "Failed to generate the PDF. Please try again.",
+              });
+            });
+        } catch (error) {
+          console.error("Error rendering barcode:", error);
+        }
+      }
+    }, 100); // Small delay to ensure barcode renders
   };
+  
+  
+  
   
 
 
@@ -314,9 +319,19 @@ const Products = () => {
 
       <Table columns={columns} dataSource={filteredData} rowKey="item_id" pagination={{ pageSize: 5 }} />
 
-      {selectedBarcode && (
+      {/* {selectedBarcode && (
         <div ref={barcodeRef} style={{ display: "none" }}>
           <p>Barcode: {selectedBarcode}</p>
+        </div>
+      )} */}
+
+      {/* {selectedBarcode && (
+        <svg ref={barcodeRef} style={{ display: "none" }}></svg>
+      )} */}
+
+      {selectedBarcode && (
+        <div style={{ opacity: 0, position: "absolute", top: -1000, left: -1000 }}>
+          <canvas ref={barcodeRef}></canvas>
         </div>
       )}
       
