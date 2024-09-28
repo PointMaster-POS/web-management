@@ -64,10 +64,11 @@ const Employees = () => {
 
   useEffect(() => {
     fetchEmplyoees();
-  }, []);
+  }, [branchID]);
 
 
   const handleAddEmployee = async (values) => {
+    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
