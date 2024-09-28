@@ -57,7 +57,6 @@ const Category = () => {
       const fetched_data = await response.json();
       setData(fetched_data);
       setFilteredData(fetched_data);
-      console.log(fetched_data);
     } catch (error) {
       console.error("Error fetching categories:", error);
       message.error("Failed to fetch categories.");
@@ -66,6 +65,7 @@ const Category = () => {
 
 
   const handleAddCategory = async (values) => {
+    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
