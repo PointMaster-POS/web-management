@@ -30,6 +30,10 @@ const Header = ({ setIsAuthenticated }) => {
     navigate("/profile");
   };
 
+  const handleSettingClick = () => {
+    navigate("/setting");
+  };
+
   const handleLogOut = () => {
     setIsAuthenticated(false);
   };
@@ -92,7 +96,7 @@ const Header = ({ setIsAuthenticated }) => {
       <Menu.Item
         key="2"
         icon={<SettingOutlined style={{ fontSize: "16px" }} />}
-        onClick={() => console.log("Go to Settings")}
+        onClick={handleSettingClick}
         style={{ fontWeight: "bold", fontSize: "16px" }}
       >
         Settings
