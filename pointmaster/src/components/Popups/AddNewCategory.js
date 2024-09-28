@@ -40,7 +40,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
   }, []);
 
   const handleFinish = (values) => {
-    onAddCategory(values); // Pass form values to Stores component
+    onAddCategory(values);
   };
 
   return (
