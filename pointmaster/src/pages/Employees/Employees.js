@@ -28,7 +28,7 @@ const Employees = () => {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [editingStore, setEditingStore] = useState(null);
+  const [editingEmployee, setEditingEmployee] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
   const {branchID} = useMenu();
@@ -87,6 +87,7 @@ const Employees = () => {
 
       if (response.ok) {
         const newEmployee = await response.json();
+        console.log(newEmployee)
         message.success("Employee added successfully");
         setIsModalVisible(false);
         form.resetFields();
@@ -110,7 +111,7 @@ const Employees = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/branch/${editingStore.branch_id}`,
+        `http://localhost:3001/${editingEmployee.employee_id}`,
         {
           method: "PUT",
           headers: {
@@ -122,10 +123,10 @@ const Employees = () => {
       );
 
       if (response.ok) {
-        message.success("Branch updated successfully");
+        message.success("Employee updated successfully");
         setIsModalVisible(false);
         form.resetFields();
-        setEditingStore(null);
+        setEditingEmployee(null);
 
         // Update the specific branch in local state
         // setData((prevData) =>
@@ -153,7 +154,7 @@ const Employees = () => {
   };
 
   const handleEdit = (record) => {
-    setEditingStore(record); // Set the store to be edited
+    setEditingEmployee(record); // Set the store to be edited
     form.setFieldsValue(record); // Pre-fill the form with the selected store's data
     setIsModalVisible(true); // Open the modal for editing
   };
@@ -206,7 +207,7 @@ const Employees = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
-    setEditingStore(null); // Reset editing state
+    setEditingEmployee(null); // Reset editing state
   };
 
 
@@ -258,7 +259,7 @@ const Employees = () => {
     },
     {
       title: "Contact Number",
-      dataIndex: "contact_number",
+      dataIndex: "phone",
       key: "contact_number",
     },
     {
@@ -334,7 +335,7 @@ const Employees = () => {
       <hr color="#1890ff" />
 
       <Modal
-        title="Add New Employee"
+        title={editingEmployee ? "Edit Employee" : "Add New Employee"}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
@@ -342,8 +343,11 @@ const Employees = () => {
       >
         <AddNewEmployee
           form={form}
-          onAddEmployee={handleAddEmployee}
+          onAddEmployee={
+            editingEmployee ? handleUpdateEmployee : handleAddEmployee
+          }
           onCancel={handleCancel}
+          initialValues={editingEmployee || {}}
         />
       </Modal>
 
