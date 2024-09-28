@@ -1,14 +1,20 @@
-import React, { useEffect,useState } from "react";
-import { Form, Input, Select, Button,message } from "antd";
+import React, { useEffect, useState } from "react";
+import {
+  Form,
+  Input,
+  Select,
+  Button,
+  message,
+  DatePicker,
+  Upload,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
-const Roles = [
-  { name: "cashier" },
-  { name: "branch manager" },
-];
+const Roles = [{ name: "cashier" }, { name: "branch manager" }];
 
-const AddNewEmployee = ({ form,onAddEmployee, onCancel }) => {
+const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
   const [branches, setBranches] = useState([]);
 
   useEffect(() => {
@@ -43,14 +49,14 @@ const AddNewEmployee = ({ form,onAddEmployee, onCancel }) => {
 
     fetchBranches();
   }, []);
-  
+
   const handleFinish = (values) => {
     onAddEmployee(values);
   };
 
   return (
     <Form
-    form={form}
+      form={form}
       name="add_employee"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
@@ -63,7 +69,6 @@ const AddNewEmployee = ({ form,onAddEmployee, onCancel }) => {
       }}
       labelAlign="left"
     >
-
       <Form.Item
         label="Employee Name"
         name="employee_name"
@@ -72,6 +77,58 @@ const AddNewEmployee = ({ form,onAddEmployee, onCancel }) => {
       >
         <Input />
       </Form.Item>
+
+      <Form.Item
+        name="employee_email"
+        label="Email"
+        rules={[
+          {
+            required: true,
+            type: "email",
+            message: "Please enter a valid email",
+          },
+        ]}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        label="Contact Number"
+        name="phone"
+        rules={[
+          { required: true, message: "Please input the contact number!" },
+        ]}
+        style={{ marginBottom: "20px" }}
+      >
+        <Input />
+      </Form.Item>
+
+      <Form.Item
+        name="employee_address"
+        label="Address"
+        rules={[{ required: true, message: "Please enter an address" }]}
+      >
+        <Input />
+      </Form.Item>
+
+      {/* <Form.Item
+        name="birthday"
+        label="Birthday"
+        rules={[{ required: true, message: "Please select a birth date" }]}
+      >
+        <DatePicker style={{ width: "100%" }} />
+      </Form.Item>
+ */}
+      {/* <Form.Item
+        label="Image"
+        name="photo_url"
+        valuePropName="fileList"
+        rules={[{ required: true, message: "Please upload the image!" }]}
+      >
+        <Upload listType="picture" beforeUpload={() => false}>
+          <Button icon={<UploadOutlined />}>Upload Image</Button>
+        </Upload>
+      </Form.Item> */}
 
       <Form.Item
         label="Select Role"
@@ -89,6 +146,14 @@ const AddNewEmployee = ({ form,onAddEmployee, onCancel }) => {
       </Form.Item>
 
       <Form.Item
+        name="salary"
+        label="Salary"
+        rules={[{ required: true, message: "Please enter the salary" }]}
+      >
+        <Input min={0} />
+      </Form.Item>
+
+      <Form.Item
         label="Select Branch"
         name="branch_id" // This will pass the branch_id
         rules={[{ required: true, message: "Please select a branch!" }]}
@@ -101,17 +166,6 @@ const AddNewEmployee = ({ form,onAddEmployee, onCancel }) => {
             </Option>
           ))}
         </Select>
-      </Form.Item>
-
-      <Form.Item
-        label="Contact Number"
-        name="phone"
-        rules={[
-          { required: true, message: "Please input the contact number!" },
-        ]}
-        style={{ marginBottom: "20px" }}
-      >
-        <Input />
       </Form.Item>
 
       <Form.Item
