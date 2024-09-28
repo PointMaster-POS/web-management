@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Form, Input, Select, Button } from "antd";
+import React, { useEffect,useState } from "react";
+import { Form, Input, Select, Button,message } from "antd";
 
 const { Option } = Select;
 
@@ -8,14 +8,49 @@ const Roles = [
   { name: "branch manager" },
 ];
 
-const AddNewEmployee = ({ onAddEmployee, onCancel }) => {
+const AddNewEmployee = ({ form,onAddEmployee, onCancel }) => {
+  const [branches, setBranches] = useState([]);
+
+  useEffect(() => {
+    // Fetch branches when the component mounts
+    const fetchBranches = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        message.error("Authorization token is missing. Please log in again.");
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3001/branch", {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setBranches(data); // Store fetched branches
+      } catch (error) {
+        console.error("Error fetching branches:", error);
+        message.error("Failed to fetch branches.");
+      }
+    };
+
+    fetchBranches();
+  }, []);
   
   const handleFinish = (values) => {
-    onAddEmployee(values); // Pass form values to Stores component
+    onAddEmployee(values);
   };
 
   return (
     <Form
+    form={form}
       name="add_employee"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
@@ -28,14 +63,6 @@ const AddNewEmployee = ({ onAddEmployee, onCancel }) => {
       }}
       labelAlign="left"
     >
-      <Form.Item
-        label="Employee ID"
-        name="Employee_id"
-        rules={[{ required: true, message: "Please input the employee id!" }]}
-        style={{ marginBottom: "20px" }}
-      >
-        <Input />
-      </Form.Item>
 
       <Form.Item
         label="Employee Name"
@@ -47,32 +74,38 @@ const AddNewEmployee = ({ onAddEmployee, onCancel }) => {
       </Form.Item>
 
       <Form.Item
-        label="Branch ID"
-        name="branch_id"
-        rules={[{ required: true, message: "Please select a branch id!" }]}
+        label="Select Role"
+        name="role"
+        rules={[{ required: true, message: "Please select a role" }]}
         style={{ marginBottom: "20px" }}
       >
         <Select>
-          {Stores.map((store) => (
-            <Option key={store.id} value={store.name}>
-              {store.name}
+          {Roles.map((role) => (
+            <Option key={role.name} value={role.name}>
+              {role.name}
             </Option>
           ))}
         </Select>
       </Form.Item>
 
       <Form.Item
-        label="Role"
-        name="role"
-        rules={[{ required: true, message: "Please input the employee role!" }]}
+        label="Select Branch"
+        name="branch_id" // This will pass the branch_id
+        rules={[{ required: true, message: "Please select a branch!" }]}
         style={{ marginBottom: "20px" }}
       >
-        <Input />
+        <Select placeholder="Select a branch">
+          {branches.map((branch) => (
+            <Option key={branch.branch_id} value={branch.branch_id}>
+              {branch.branch_name} {/* Display branch name */}
+            </Option>
+          ))}
+        </Select>
       </Form.Item>
 
       <Form.Item
         label="Contact Number"
-        name="contact_number"
+        name="phone"
         rules={[
           { required: true, message: "Please input the contact number!" },
         ]}
