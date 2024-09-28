@@ -18,6 +18,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewEmployee from "../../components/Popups/AddNewEmployee";
+import { useMenu } from "../../context/MenuContext";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -30,6 +31,7 @@ const Employees = () => {
   const [editingStore, setEditingStore] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
+  const {branchID} = useMenu();
 
   const fetchEmplyoees = async () => {
     const token = localStorage.getItem("accessToken");
@@ -39,7 +41,7 @@ const Employees = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/branch", {
+      const response = await fetch(`http://localhost:3001/employee/${branchID}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -55,8 +57,8 @@ const Employees = () => {
       setData(data);
       setFilteredData(data);
     } catch (error) {
-      console.error("Error fetching branches:", error);
-      message.error("Failed to fetch branches.");
+      console.error("Error fetching employees:", error);
+      message.error("Failed to fetch employees.");
     }
   };
 
@@ -74,7 +76,7 @@ const Employees = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/branch/", {
+      const response = await fetch("http://localhost:3001/employee", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -84,18 +86,17 @@ const Employees = () => {
       });
 
       if (response.ok) {
-        const newBranch = await response.json();
-        console.log("New Branch:", newBranch); // Check the structure of newBranch
-        message.success("Branch added successfully");
+        const newEmployee = await response.json();
+        message.success("Employee added successfully");
         setIsModalVisible(false);
         form.resetFields();
         fetchEmplyoees();
       } else {
-        message.error("Failed to add branch");
+        message.error("Failed to add employee");
       }
     } catch (error) {
       console.error(error);
-      message.error("Error occurred while adding branch");
+      message.error("Error occurred while adding employee");
     }
   };
 
@@ -158,11 +159,11 @@ const Employees = () => {
   };
 
 
-  const handleDelete = (branch_id, branch_name) => {
+  const handleDelete = (employee_id, employee_name) => {
     confirm({
-      title: "Are you sure you want to delete this store?",
+      title: "Are you sure you want to delete this employee?",
       icon: <ExclamationCircleOutlined />,
-      content: `This action will delete the store "${branch_name}".`,
+      content: `This action will delete the store "${employee_name}".`,
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -176,7 +177,7 @@ const Employees = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/branch/${branch_id}`, {
+          await fetch(`http://localhost:3001/branch/${branchID}/${employee_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -228,6 +229,10 @@ const Employees = () => {
     setSearchText(value);
   };
 
+  const handleViewEmployee = () => {
+
+  }
+
 
   const columns = [
     /* {
@@ -247,11 +252,6 @@ const Employees = () => {
       key: "employee_name",
     },
     {
-      title: "Salary",
-      dataIndex: "salary",
-      key: "salary",
-    },
-    {
       title: "Role",
       dataIndex: "role",
       key: "role",
@@ -260,16 +260,6 @@ const Employees = () => {
       title: "Contact Number",
       dataIndex: "contact_number",
       key: "contact_number",
-    },
-    {
-      title: "Address",
-      dataIndex: "emplyoee_address",
-      key: "emplyoee_address",
-    },
-    {
-      title: "E mail",
-      dataIndex: "emplyoee_email",
-      key: "emplyoee_email",
     },
     {
       title: "Actions",
@@ -289,33 +279,23 @@ const Employees = () => {
           <Tooltip title="Delete Employee">
             <Button
               icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.employee_name)}
+              onClick={() => handleDelete(record.employee_id,record.employee_name)}
               danger
             />
           </Tooltip>
-          {/* <Tooltip title="View Store">
-            <Button
-              icon={<ShopOutlined />}
-              onClick={() => handleViewStore(record)}
-              style={{
-                borderColor: "rgb(0,0,0,0.88)",
-                color: "rgb(0,0,0,0.88)",
-              }}
-            />
-          </Tooltip> */}
         </Space>
       ),
     },
 
-    // {
-    //   title: "",
-    //   key: "",
-    //   render: (record) => (
-    //     <Button onClick={() => handleViewEmployee(record.employee_id)}>
-    //       View Employee
-    //     </Button>
-    //   ),
-    // },
+    {
+      title: "",
+      key: "",
+      render: (record) => (
+        <Button onClick={() => handleViewEmployee(record.employee_id)}>
+          View More
+        </Button>
+      ),
+    },
   ];
 
   return (
