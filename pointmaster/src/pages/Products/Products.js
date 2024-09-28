@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Table,
   Space,
@@ -18,10 +18,13 @@ import {
   DeleteOutlined,
   ExclamationCircleOutlined,
   PlusOutlined,
+  PrinterOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import AddNewProduct from "../../components/Popups/AddNewProduct";
 import { useMenu } from "../../context/MenuContext";
+import jsPDF from "jspdf"; // For generating PDFs
+import html2canvas from "html2canvas"; // For capturing the barcode area
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -38,6 +41,8 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  
+  const barcodeRef = useRef(); // Ref for capturing the barcode
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -45,14 +50,13 @@ const Products = () => {
 
   const token = localStorage.getItem("accessToken");
 
-  // Fetch categories on component mount
   useEffect(() => {
     const fetchCategories = async () => {
       if (!branchID) return; // Ensure branchId is available
       try {
         const response = await axios.get(`http://localhost:3001/category/owner/${branchID}`, {
           headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the headers
+            Authorization: `Bearer ${token}`, 
           },
         });
         setCategories(response.data);
@@ -66,7 +70,6 @@ const Products = () => {
     fetchCategories();
   }, [branchID]);
 
-  // Fetch products when a category is selected
   const handleCategoryChange = async (categoryId) => {
     setSelectedCategory(categoryId);
     setLoading(true);
@@ -76,9 +79,8 @@ const Products = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
-      setData(response.data); // Data from the API will be mapped directly
-      setFilteredData(response.data); // Ensure filteredData reflects the new structure
+      setData(response.data);
+      setFilteredData(response.data);
     } catch (error) {
       notification.error({
         message: "Error",
@@ -88,7 +90,6 @@ const Products = () => {
       setLoading(false);
     }
   };
-  
 
   const handleAddProduct = () => {
     form.validateFields().then((values) => {
@@ -152,16 +153,29 @@ const Products = () => {
     setSearchText(value);
   };
 
+  // Function to generate barcode PDF
+  const handlePrintBarcode = (record) => {
+    html2canvas(barcodeRef.current).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF();
+      pdf.addImage(imgData, "JPEG", 10, 10);
+      pdf.save(`${record.barcode}.pdf`);
+    });
+  };
+
   const columns = [
-    { title: "Item ID", dataIndex: "item_id", key: "item_id" },
     { title: "Item Name", dataIndex: "item_name", key: "item_name" },
-    { title: "Category ID", dataIndex: "category_id", key: "category_id" },
-    { title: "Supplier Name", dataIndex: "supplier_name", key: "supplier_name" },
     {
-      title: "Price",
+      title: "Buying Price",
+      dataIndex: "buying_price",
+      key: "buying_price",
+      render: (price) => `₹${price}`, // Format the price with currency
+    },
+    {
+      title: "Selling Price",
       dataIndex: "price",
       key: "price",
-      render: (price) => `₹${price}`, // Format the price with currency
+      render: (price) => `₹${price}`, // Price from backend as selling price
     },
     {
       title: "Stock",
@@ -197,11 +211,9 @@ const Products = () => {
       key: "exp_date",
       render: (exp_date) => new Date(exp_date).toLocaleDateString(), // Format the date
     },
-    {
-      title: "Barcode",
-      dataIndex: "barcode",
-      key: "barcode",
-    },
+    { title: "Supplier Name", dataIndex: "supplier_name", key: "supplier_name" },
+    { title: "Supplier Contacts", dataIndex: "supplier_contacts", key: "supplier_contacts" },
+    { title: "Barcode", dataIndex: "barcode", key: "barcode" },
     {
       title: "Actions",
       key: "actions",
@@ -213,11 +225,13 @@ const Products = () => {
           <Tooltip title="Delete Product">
             <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record.item_id)} danger />
           </Tooltip>
+          <Tooltip title="Print Barcode">
+            <Button icon={<PrinterOutlined />} onClick={() => handlePrintBarcode(record)} />
+          </Tooltip>
         </Space>
       ),
     },
   ];
-  
 
   return (
     <Card style={{ margin: 30, padding: 30, borderRadius: "10px" }} bodyStyle={{ padding: "20px" }}>
@@ -246,25 +260,26 @@ const Products = () => {
 
       <Table
         columns={columns}
-        dataSource={filteredData} // filteredData should already reflect the structure from the API response
+        dataSource={filteredData}
         pagination={{ pageSize: 6 }}
-        rowKey="item_id" // Make sure the row key is based on item_id from the response
+        rowKey="item_id"
         style={{ marginTop: "20px" }}
       />
-
 
       <Modal
         title="Add Product"
         open={isModalVisible}
         onOk={handleAddProduct}
         onCancel={handleCancel}
-        okText="Save"
+        okText="Add Product"
         cancelText="Cancel"
-        centered
-        destroyOnClose
       >
         <AddNewProduct form={form} />
       </Modal>
+      
+      <div ref={barcodeRef} style={{ visibility: "hidden" }}>
+        <div>Barcode content here</div> {/* This is where you can add the barcode rendering logic */}
+      </div>
     </Card>
   );
 };
