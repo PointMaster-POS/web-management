@@ -83,7 +83,7 @@ export default function Landing() {
           width={750}
           centered
         >
-          <RegisterNewBusiness form={form_first} onCancel={handleCancel} />
+          <RegisterNewBusiness form={form_first} onCancel={handleCancel} isEditMode={false} />
         </Modal>
         
         <Footer/>
