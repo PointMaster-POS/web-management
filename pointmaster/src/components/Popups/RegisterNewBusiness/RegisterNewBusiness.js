@@ -1,67 +1,22 @@
 import React, { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  Upload,
-  Typography,
-  Modal,
-  message,
-} from "antd";
+import { Form, Input, Button, Select, Upload, Typography, Modal } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
+import { useNavigate } from "react-router-dom";
 import "./RegisterNewBusiness.css";
 import RegisterOwner from "../RegisterOwner/RegisterOwner";
 
 const { Option } = Select;
 const { Title } = Typography;
 
-const RegisterNewBusiness = ({ form, onCancel, isEditMode }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [token, setToken] = useState(null);
-  const [form_second] = Form.useForm();
-
-  const onFinish = async (values) => {
-    // Get the current date in YYYY-MM-DD format
-    const currentDate = new Date().toISOString().split("T")[0];
-
-    // Add current date to the values object
-    values.business_registration_date = currentDate;
-
-    try {
-      const endpoint = isEditMode
-        ? "http://localhost:3001/registration/update-business-details" // Example update endpoint
-        : "http://localhost:3001/registration/business-details"; // Original create endpoint
-
-      // Send business data to the endpoint
-      const response = await fetch(endpoint, {
-        method: isEditMode ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(values),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setToken(data.token); // Store the token
-        message.success(data.message); // Show success message
-        onCancel();
-        setIsModalVisible(!isEditMode); // Show owner registration modal
-      } else {
-        message.error("Failed to register business. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error registering business:", error);
-      message.error("An error occurred. Please try again.");
-    }
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form_second.resetFields();
+const RegisterNewBusiness = ({
+  form,
+  onCancel,
+  isEditMode,
+  onRegisterOrUpdateBusiness,
+}) => {
+  const handleFinish = (values) => {
+    onRegisterOrUpdateBusiness(values);
   };
 
   return (
@@ -70,7 +25,7 @@ const RegisterNewBusiness = ({ form, onCancel, isEditMode }) => {
         <Form
           form={form}
           layout="vertical"
-          onFinish={onFinish}
+          onFinish={handleFinish}
           initialValues={{
             status: true,
           }}
@@ -132,7 +87,7 @@ const RegisterNewBusiness = ({ form, onCancel, isEditMode }) => {
             <Input />
           </Form.Item>
 
-          <Form.Item
+          {/* <Form.Item
             label="Business Logo"
             name="logo_location"
             // valuePropName="fileList"
@@ -143,7 +98,7 @@ const RegisterNewBusiness = ({ form, onCancel, isEditMode }) => {
             <Upload listType="picture" beforeUpload={() => false}>
               <Button icon={<UploadOutlined />}>Upload Logo</Button>
             </Upload>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item
             label="Business Registration Number"
@@ -196,23 +151,6 @@ const RegisterNewBusiness = ({ form, onCancel, isEditMode }) => {
             </Button>
           </Form.Item>
         </Form>
-
-        {!isEditMode && (
-          <Modal
-            title={<div className="custom-modal-title">Register Owner</div>}
-            visible={isModalVisible}
-            onCancel={handleCancel}
-            footer={null}
-            centered
-          >
-            <RegisterOwner
-              token={token}
-              form={form_second}
-              onCancel={handleCancel}
-              isEditMode={false}
-            />
-          </Modal>
-        )}
       </div>
     </React.Fragment>
   );
