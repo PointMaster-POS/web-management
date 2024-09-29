@@ -59,7 +59,66 @@ const ProfilePage = () => {
     fetchDetails();
   }, []);
 
-  console.log(details);
+  const handleUpdateBusiness = async (values) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/business/update-business-details",
+        {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      if (response.ok) {
+        message.success("Business updated successfully");
+        setIsBusinessModalVisible(false);
+        form_first.resetFields();
+      } else {
+        message.error("Failed to update business. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      message.error("Error occurred while updating business.");
+    }
+  };
+
+  const handleUpdateOwner = async (values) => {
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/business/update-owner-details",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(values),
+        }
+      );
+
+      if (response.ok) {
+        message.success("Owner updated successfully!");
+        setIsOwnerModalVisible(false);
+        form_second.resetFields();
+      } else {
+        message.error("Failed to update owner. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating owner:", error);
+      message.error("An error occurred. Please try again.");
+    }
+  };
 
   const handleEditBusiness = () => {
     form_first.setFieldsValue(details); // Set the form with business details when editing
@@ -240,7 +299,7 @@ const ProfilePage = () => {
               <Image
                 width={100}
                 height={100}
-                src={/* details.logo_location ||  */ defaultLogo_2} // Business logo from details
+                src={/* details.business_owner_photo_url ||  */ defaultLogo_2} // Business logo from details
                 preview={false}
                 style={{ borderRadius: "50%" }}
               />
@@ -248,13 +307,50 @@ const ProfilePage = () => {
                 {details.business_owner_name} {/* Business name below logo */}
               </Title>
             </div>
-            <Text strong style={{ fontSize: "16px" }}>
-              Email:
-            </Text>{" "}
-            <Text style={{ fontSize: "16px" }}>
-              {details.business_owner_mail}
-            </Text>
-            <br />
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Email:
+                </Text>{" "}
+                <Text style={{ fontSize: "16px" }}>
+                  {details.business_owner_mail}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Contact Number:
+                </Text>{" "}
+                <Text style={{ fontSize: "16px" }}>
+                  {details.business_owner_phone}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Address:
+                </Text>{" "}
+                <Text style={{ fontSize: "16px" }}>
+                  {details.business_owner_address}
+                </Text>
+              </Col>
+            </Row>
+            <Row style={{ marginBottom: 10 }}>
+              <Col span={24}>
+                <Text strong style={{ fontSize: "16px" }}>
+                  Birthday:{" "}
+                </Text>
+                <Text style={{ fontSize: "16px" }}>
+                  {details.business_owner_birthday
+                    ? new Date(details.business_owner_birthday)
+                        .toISOString()
+                        .split("T")[0]
+                    : "Invalid Date"}
+                </Text>
+              </Col>
+            </Row>
             <Button
               type="link"
               onClick={handleChangePassword}
@@ -289,6 +385,7 @@ const ProfilePage = () => {
           form={form_first}
           onCancel={handleCancelBusinessModal}
           isEditMode={true}
+          onRegisterOrUpdateBusiness={handleUpdateBusiness}
         />
       </Modal>
 
@@ -310,7 +407,12 @@ const ProfilePage = () => {
         footer={null}
         centered
       >
-        <RegisterOwner form={form_second} onCancel={handleCancelOwnerModal} isEditMode={true}/>
+        <RegisterOwner
+          form={form_second}
+          onCancel={handleCancelOwnerModal}
+          isEditMode={true}
+          onRegisterOrUpdateOwner={handleUpdateOwner}
+        />
       </Modal>
     </div>
   );
