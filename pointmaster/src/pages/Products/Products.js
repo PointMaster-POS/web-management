@@ -101,20 +101,101 @@ const Products = () => {
     }
   };
 
+  // const handleAddProduct = () => {
+  //   form.validateFields().then((values) => {
+  //     console.log("Received values:", values);
+
+  //     // Create new product object with the form values
+  //     const newProduct = {
+  //       ...values,
+  //       product_id: `PROD${data.length + 123}`, // Simulate auto-increment for the product ID
+  //     };
+      
+  //     // Send the POST request to the server
+  //     axios
+  //       .post("http://localhost:3001/items", newProduct, {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`, // Set the authorization header with the token
+  //         },
+  //       })
+  //       .then((response) => {
+  //         // If the request is successful
+  //         form.resetFields(); // Reset form fields
+  //         setIsModalVisible(false); // Close the modal
+          
+  //         // Update UI with the new product
+  //         const newData = [...data, { ...newProduct, key: `${data.length + 1}` }];
+  //         setData(newData);
+  //         setFilteredData(newData);
+  
+  //         notification.success({
+  //           message: "Success",
+  //           description: "Product added successfully!",
+  //         });
+  //       })
+  //       .catch((error) => {
+  //         // Handle error scenario
+  //         notification.error({
+  //           message: "Error",
+  //           description: "Failed to add product. Please try again.",
+  //         });
+  //       });
+  //   });
+  // };
+
   const handleAddProduct = () => {
     form.validateFields().then((values) => {
-      form.resetFields();
-      setIsModalVisible(false);
+      const token = localStorage.getItem("accessToken"); // Fetch token from local storage
+  
+      // Create new product object with mapped field names
       const newProduct = {
-        ...values,
-        product_id: `SUP${data.length + 123}`, // Simulate auto-increment
-        key: `${data.length + 1}`,
+        category_id: values.category,  // This will send the selected category's ID
+        item_name: values.product_name,
+        minimum_stock: values.minimum_stock,
+        barcode: values.barcode,
+        stock: values.stock,
+        price: values.selling_price,
+        image_url: values.image_url || "",
+        exp_date: values.exp_date,
+        discount: values.discount || 0,
+        supplier_name: values.supplier_name,
+        supplier_contacts: values.supplier_contacts,
       };
-      const newData = [...data, newProduct];
-      setData(newData);
-      setFilteredData(newData);
+  
+      // Log the request payload to inspect the data being sent
+      console.log("New Product:", newProduct);
+  
+      // Send the POST request to the server
+      axios
+        .post("http://localhost:3001/items", newProduct, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          form.resetFields(); 
+          setIsModalVisible(false);
+  
+          const newData = [...data, { ...newProduct, key: `${data.length + 1}` }];
+          setData(newData);
+          setFilteredData(newData);
+  
+          notification.success({
+            message: "Success",
+            description: "Product added successfully!",
+          });
+        })
+        .catch((error) => {
+          console.error("Failed to add product:", error.response.data); // Log the error response
+          notification.error({
+            message: "Error",
+            description: "Failed to add product. Please try again.",
+          });
+        });
     });
   };
+  
+  
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -317,11 +398,31 @@ const Products = () => {
         visible={isModalVisible}
         onOk={handleAddProduct}
         onCancel={handleCancel}
-        width={1000}
+        width={800}
       >
         <Form form={form} layout="vertical">
           <Form.Item name="product_name" label="Product Name" rules={[{ required: true, message: "Please enter a product name!" }]}>
             <Input placeholder="Enter product name" />
+          </Form.Item>
+
+
+          {/* Dropdown for Category */}
+          <Form.Item
+            name="category"
+            label="Category"
+            rules={[{ required: true, message: "Please select a category!" }]}
+          >
+            <Select
+              placeholder="Select category"
+              onChange={handleCategoryChange}
+              value={selectedCategory}
+            >
+              {categories.map((category) => (
+                <Option key={category.category_id} value={category.category_id}>
+                  {category.category_name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           
           <Form.Item
@@ -331,6 +432,15 @@ const Products = () => {
         >
           <Input  placeholder="Enter buying price" />
         </Form.Item>
+
+        <Form.Item
+          name="image_url"
+          label="Image URL"
+          rules={[{ required: true, message: "Please enter the image URL!" }]} // You can remove 'required' if it's optional
+        >
+          <Input placeholder="Enter image URL" />
+        </Form.Item>
+
 
         <Form.Item
           name="selling_price"
