@@ -47,7 +47,7 @@ const Category = () => {
       if (role === "owner") {
         url = `http://localhost:3001/category/owner/${branchID}`;
       } else if (role === "branchmanager") {
-        url = `http://localhost:3001/category`;
+        url = `http://localhost:3001/category/manager`;
       }
       console.log("url", url);
       const response = await fetch(url, {
@@ -79,6 +79,7 @@ const Category = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+   
 
     try {
       const response = await fetch("http://localhost:3001/category", {

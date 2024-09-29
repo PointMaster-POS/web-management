@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Select, message } from "antd";
+import { useMenu } from "../../context/MenuContext";
 
 const { Option } = Select;
 
 const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
   const [branches, setBranches] = useState([]);
+  const { branchID, role } = useMenu();e
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -74,7 +76,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
       >
         <Input />
       </Form.Item>
-
+      { role === "owner" && (
       <Form.Item
         label="Select Branch"
         name="branch_id"
@@ -89,6 +91,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
           ))}
         </Select>
       </Form.Item>
+      )}
 
       <Form.Item
         wrapperCol={{ offset: 8, span: 16 }}
