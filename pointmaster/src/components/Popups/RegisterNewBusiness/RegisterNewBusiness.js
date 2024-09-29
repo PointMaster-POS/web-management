@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import { Form, Input, Button, Select, Upload, Typography, Modal } from "antd";
+import React from "react";
+import { Form, Input, Button, Select, Upload, Typography } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
-import { useNavigate } from "react-router-dom";
 import "./RegisterNewBusiness.css";
-import RegisterOwner from "../RegisterOwner/RegisterOwner";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -128,13 +126,13 @@ const RegisterNewBusiness = ({
           </Form.Item>
 
           <Form.Item
-            wrapperCol={{ offset: 8, span: 16 }} // Center align buttons by removing offset
-            style={{ textAlign: "right" }} // Center align buttons
+            wrapperCol={{ offset: 8, span: 16 }}
+            style={{ textAlign: "right" }}
           >
             <Button
               type="default"
               onClick={onCancel}
-              style={{ marginRight: "20px", fontSize: "16px" }} // Bigger buttons
+              style={{ marginRight: "20px", fontSize: "16px" }}
             >
               Cancel
             </Button>
