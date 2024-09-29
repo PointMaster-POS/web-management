@@ -41,7 +41,7 @@ const Employees = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/employee/${branchID}`, {
+      const response = await fetch(`http://localhost:3001/employee/all-employee/${branchID}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,10 +64,11 @@ const Employees = () => {
 
   useEffect(() => {
     fetchEmplyoees();
-  }, []);
+  }, [branchID]);
 
 
   const handleAddEmployee = async (values) => {
+    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -111,7 +112,7 @@ const Employees = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/${editingEmployee.employee_id}`,
+        `http://localhost:3001/employee/${editingEmployee.employee_id}`,
         {
           method: "PUT",
           headers: {
@@ -127,29 +128,13 @@ const Employees = () => {
         setIsModalVisible(false);
         form.resetFields();
         setEditingEmployee(null);
-
-        // Update the specific branch in local state
-        // setData((prevData) =>
-        //   prevData.map((item) =>
-        //     item.branch_id === editingStore.branch_id
-        //       ? { ...item, ...values }
-        //       : item
-        //   )
-        // );
-        // setFilteredData((prevData) =>
-        //   prevData.map((item) =>
-        //     item.branch_id === editingStore.branch_id
-        //       ? { ...item, ...values }
-        //       : item
-        //   )
-        // );
         fetchEmplyoees();
       } else {
-        message.error("Failed to update branch");
+        message.error("Failed to update employee");
       }
     } catch (error) {
       console.error(error);
-      message.error("Error occurred while updating branch");
+      message.error("Error occurred while updating employee");
     }
   };
 
@@ -184,12 +169,6 @@ const Employees = () => {
               Authorization: `Bearer ${token}`,
             },
           });
-
-          // const newData = data.filter(
-          //   (branch) => branch.branch_id !== branch_id
-          // );
-          // setData(newData);
-          // setFilteredData(newData);
           fetchEmplyoees();
           message.success("Store deleted successfully.");
         } catch (error) {

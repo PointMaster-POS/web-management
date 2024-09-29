@@ -57,7 +57,6 @@ const Category = () => {
       const fetched_data = await response.json();
       setData(fetched_data);
       setFilteredData(fetched_data);
-      console.log(fetched_data);
     } catch (error) {
       console.error("Error fetching categories:", error);
       message.error("Failed to fetch categories.");
@@ -66,6 +65,7 @@ const Category = () => {
 
 
   const handleAddCategory = async (values) => {
+    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -159,9 +159,9 @@ const Category = () => {
 
 
   const handleEdit = (record) => {
-    setEditingCategory(record); // Set the store to be edited
-    form.setFieldsValue(record); // Pre-fill the form with the selected store's data
-    setIsModalVisible(true); // Open the modal for editing
+    setEditingCategory(record); 
+    form.setFieldsValue(record);
+    setIsModalVisible(true);
   };
 
 
@@ -190,11 +190,6 @@ const Category = () => {
             },
           });
 
-          // const newData = data.filter(
-          //   (category) => category.category_id !== category_id
-          // );
-          // setData(newData);
-          // setFilteredData(newData);
           fetchCategories();
           message.success("Category deleted successfully.");
         } catch (error) {

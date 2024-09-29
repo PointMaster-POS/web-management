@@ -3,7 +3,7 @@ import { Form, Input, Button } from "antd";
 
 const AddNewStore = ({ form, onAddStore, onCancel }) => {
   const handleFinish = (values) => {
-    onAddStore(values); // Pass form values to the parent component
+    onAddStore(values);
   };
 
   return (

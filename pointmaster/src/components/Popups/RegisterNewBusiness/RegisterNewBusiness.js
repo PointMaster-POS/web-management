@@ -1,68 +1,20 @@
-import React, { useState } from "react";
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  Upload,
-  Typography,
-  Modal,
-  message,
-} from "antd";
+import React from "react";
+import { Form, Input, Button, Select, Upload, Typography } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
 import "./RegisterNewBusiness.css";
-import RegisterOwner from "../RegisterOwner/RegisterOwner";
 
 const { Option } = Select;
 const { Title } = Typography;
 
-const RegisterNewBusiness = ({ form, onCancel }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [token, setToken] = useState(null);
-  const [form_second] = Form.useForm();
-
-  const onFinish = async (values) => {
-    // Get the current date in YYYY-MM-DD format
-    const currentDate = new Date().toISOString().split("T")[0];
-
-    // Add current date to the values object
-    values.business_registration_date = currentDate;
-    console.log(values);
-
-    try {
-      // Send business data to the endpoint
-      const response = await fetch(
-        "http://localhost:3001/registration/business-details",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
-
-      const data = await response.json();
-      console.log(data.token);
-
-      if (response.ok) {
-        setToken(data.token); // Store the token
-        message.success(data.message); // Show success message
-        onCancel();
-        setIsModalVisible(true); // Show owner registration modal
-      } else {
-        message.error("Failed to register business. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error registering business:", error);
-      message.error("An error occurred. Please try again.");
-    }
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form_second.resetFields();
+const RegisterNewBusiness = ({
+  form,
+  onCancel,
+  isEditMode,
+  onRegisterOrUpdateBusiness,
+}) => {
+  const handleFinish = (values) => {
+    onRegisterOrUpdateBusiness(values);
   };
 
   return (
@@ -71,7 +23,7 @@ const RegisterNewBusiness = ({ form, onCancel }) => {
         <Form
           form={form}
           layout="vertical"
-          onFinish={onFinish}
+          onFinish={handleFinish}
           initialValues={{
             status: true,
           }}
@@ -136,7 +88,7 @@ const RegisterNewBusiness = ({ form, onCancel }) => {
           {/* <Form.Item
             label="Business Logo"
             name="logo_location"
-            valuePropName="fileList"
+            // valuePropName="fileList"
             rules={[
               { required: true, message: "Please upload the business logo!" },
             ]}
@@ -174,13 +126,13 @@ const RegisterNewBusiness = ({ form, onCancel }) => {
           </Form.Item>
 
           <Form.Item
-            wrapperCol={{ offset: 8, span: 16 }} // Center align buttons by removing offset
-            style={{ textAlign: "right" }} // Center align buttons
+            wrapperCol={{ offset: 8, span: 16 }}
+            style={{ textAlign: "right" }}
           >
             <Button
               type="default"
               onClick={onCancel}
-              style={{ marginRight: "20px", fontSize: "16px" }} // Bigger buttons
+              style={{ marginRight: "20px", fontSize: "16px" }}
             >
               Cancel
             </Button>
@@ -193,24 +145,10 @@ const RegisterNewBusiness = ({ form, onCancel }) => {
                 fontSize: "16px",
               }}
             >
-              Register Business
+              {isEditMode ? "Update" : "Register Business"}
             </Button>
           </Form.Item>
         </Form>
-
-        <Modal
-          title={<div className="custom-modal-title">Register Owner</div>}
-          visible={isModalVisible}
-          onCancel={handleCancel}
-          footer={null}
-          centered
-        >
-          <RegisterOwner
-            token={token}
-            form={form_second}
-            onCancel={handleCancel}
-          />
-        </Modal>
       </div>
     </React.Fragment>
   );
