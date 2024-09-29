@@ -5,7 +5,7 @@ import Header from "../../components/LandingHeader/Header";
 import Footer from "../../components/LandingFooter/Footer";
 import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
 import RegisterOwner from "../../components/Popups/RegisterOwner/RegisterOwner";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Landing() {
   const [isBusinessModalVisible, setIsBusinessModalVisible] = useState(false);
@@ -13,6 +13,7 @@ export default function Landing() {
   const [form_first] = Form.useForm();
   const [form_second] = Form.useForm();  // Owner form
   const [token, setToken] = useState(null);
+  const navigate = useNavigate();
 
   const handleRegisterBusiness = async (values) => {
     const currentDate = new Date().toISOString().split("T")[0];
