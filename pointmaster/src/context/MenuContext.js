@@ -30,7 +30,7 @@ useEffect(() => {
   if (decodedToken.owner) {
     setRole("owner");
   } else {
-    setRole("employee");
+    setRole("branchmanager");
   }
 }
 , [decodedToken]);

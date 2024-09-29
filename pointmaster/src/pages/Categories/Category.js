@@ -20,7 +20,6 @@ import {
 import AddNewCategory from "../../components/Popups/AddNewCategory";
 import { useMenu } from "../../context/MenuContext";
 
-
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
@@ -32,17 +31,25 @@ const Category = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [form] = Form.useForm();
-  const { branchID} = useMenu();
+  const { branchID, role } = useMenu();
 
   const fetchCategories = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
+      
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/category/owner/${branchID}`, {
+      let url;
+      if (role === "owner") {
+        url = `http://localhost:3001/category/owner/${branchID}`;
+      } else if (role === "branchmanager") {
+        url = `http://localhost:3001/category`;
+      }
+      console.log("url", url);
+      const response = await fetch(url, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -62,7 +69,6 @@ const Category = () => {
       message.error("Failed to fetch categories.");
     }
   };
-
 
   const handleAddCategory = async (values) => {
     console.log(values);
@@ -98,11 +104,9 @@ const Category = () => {
     }
   };
 
-
   useEffect(() => {
     fetchCategories();
   }, [branchID]);
-
 
   const handleUpdateCategory = async (values) => {
     console.log(values);
@@ -157,13 +161,11 @@ const Category = () => {
     }
   };
 
-
   const handleEdit = (record) => {
-    setEditingCategory(record); 
+    setEditingCategory(record);
     form.setFieldsValue(record);
     setIsModalVisible(true);
   };
-
 
   const handleDelete = (category_id, category_name) => {
     confirm({
@@ -183,12 +185,15 @@ const Category = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/category/${branchID}/${category_id}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          await fetch(
+            `http://localhost:3001/category/${branchID}/${category_id}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
           fetchCategories();
           message.success("Category deleted successfully.");
@@ -200,18 +205,15 @@ const Category = () => {
     });
   };
 
-
   const showModal = () => {
     setIsModalVisible(true);
   };
-
 
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
     setEditingCategory(null);
   };
-
 
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
@@ -227,7 +229,6 @@ const Category = () => {
     setFilteredData(filtered);
     setSearchText(value);
   };
-
 
   const columns = [
     {
@@ -283,7 +284,6 @@ const Category = () => {
       render: (record) => <Button>View Category</Button>,
     },
   ];
-
 
   return (
     <Card
