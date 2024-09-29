@@ -1,41 +1,13 @@
 import React from "react";
-import { Form, Input, Button, Typography, message } from "antd";
+import { Form, Input, Button, Typography } from "antd";
 import "./RegisterOwner.css";
-import { useNavigate } from "react-router-dom";
 
 const { Title } = Typography;
 
-const RegisterOwner = ({ token, form, onCancel, isEditMode }) => {
-  const navigate = useNavigate();
+const RegisterOwner = ({ form, onCancel, isEditMode, onRegisterOrUpdateOwner }) => {
 
-  const onFinish = async (values) => {
-    try {
-      const endpoint = isEditMode
-        ? "http://localhost:3001/registration/update-owner-details" // Example update endpoint
-        : "http://localhost:3001/registration/owner-details"; // Original create endpoint
-
-      // Send owner data along with the token to the endpoint
-      const response = await fetch(endpoint, {
-        method: isEditMode ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Send the token in the Authorization header
-        },
-        body: JSON.stringify(values),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        message.success("Owner registered successfully!");
-        navigate("/login");
-      } else {
-        message.error("Failed to register owner. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error registering owner:", error);
-      message.error("An error occurred. Please try again.");
-    }
+  const handleFinish = (values) => {
+      onRegisterOrUpdateOwner(values);
   };
 
   return (
@@ -43,7 +15,7 @@ const RegisterOwner = ({ token, form, onCancel, isEditMode }) => {
       <Form
         form={form}
         layout="vertical"
-        onFinish={onFinish}
+        onFinish={handleFinish}
         className="owner-form"
       >
         <Form.Item
@@ -69,6 +41,45 @@ const RegisterOwner = ({ token, form, onCancel, isEditMode }) => {
         >
           <Input />
         </Form.Item>
+
+        <Form.Item
+          label="Contact Number"
+          name="phone"
+          rules={[
+            { required: true, message: "Please input the contact number!" },
+          ]}
+          style={{ marginBottom: "20px" }}
+        >
+          <Input />
+        </Form.Item>
+
+        <Form.Item
+          name="employee_address"
+          label="Address"
+          rules={[{ required: true, message: "Please enter an address" }]}
+        >
+          <Input />
+        </Form.Item>
+
+        {/* <Form.Item
+        name="birthday"
+        label="Birthday"
+        rules={[{ required: true, message: "Please select a birth date" }]}
+      >
+        <DatePicker style={{ width: "100%" }} />
+      </Form.Item>
+ */}
+
+        {/* <Form.Item
+        label="Image"
+        name="photo_url"
+        valuePropName="fileList"
+        rules={[{ required: true, message: "Please upload the image!" }]}
+      >
+        <Upload listType="picture" beforeUpload={() => false}>
+          <Button icon={<UploadOutlined />}>Upload Image</Button>
+        </Upload>
+      </Form.Item> */}
 
         {!isEditMode && (
           <Form.Item
