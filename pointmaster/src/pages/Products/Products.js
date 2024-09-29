@@ -101,47 +101,6 @@ const Products = () => {
     }
   };
 
-  // const handleAddProduct = () => {
-  //   form.validateFields().then((values) => {
-  //     console.log("Received values:", values);
-
-  //     // Create new product object with the form values
-  //     const newProduct = {
-  //       ...values,
-  //       product_id: `PROD${data.length + 123}`, // Simulate auto-increment for the product ID
-  //     };
-      
-  //     // Send the POST request to the server
-  //     axios
-  //       .post("http://localhost:3001/items", newProduct, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`, // Set the authorization header with the token
-  //         },
-  //       })
-  //       .then((response) => {
-  //         // If the request is successful
-  //         form.resetFields(); // Reset form fields
-  //         setIsModalVisible(false); // Close the modal
-          
-  //         // Update UI with the new product
-  //         const newData = [...data, { ...newProduct, key: `${data.length + 1}` }];
-  //         setData(newData);
-  //         setFilteredData(newData);
-  
-  //         notification.success({
-  //           message: "Success",
-  //           description: "Product added successfully!",
-  //         });
-  //       })
-  //       .catch((error) => {
-  //         // Handle error scenario
-  //         notification.error({
-  //           message: "Error",
-  //           description: "Failed to add product. Please try again.",
-  //         });
-  //       });
-  //   });
-  // };
 
   const handleAddProduct = () => {
     form.validateFields().then((values) => {
@@ -282,7 +241,7 @@ const Products = () => {
   };
   
   
-  // Adding index column to count rows
+ 
   const columns = [
     {
       title: "No.",
@@ -295,13 +254,13 @@ const Products = () => {
       title: "Buying Price",
       dataIndex: "buying_price",
       key: "buying_price",
-      render: (price) => `₹${price}`, // Format the price with currency
+      render: (price) => `₹${price}`, 
     },
     {
       title: "Selling Price",
       dataIndex: "price",
       key: "price",
-      render: (price) => `₹${price}`, // Price from backend as selling price
+      render: (price) => `₹${price}`, 
     },
     {
       title: "Stock",
@@ -329,13 +288,13 @@ const Products = () => {
       title: "Discount",
       dataIndex: "discount",
       key: "discount",
-      render: (discount) => `${discount}%`, // Format the discount with a percentage sign
+      render: (discount) => `${discount}%`, 
     },
     {
       title: "Expiration Date",
       dataIndex: "exp_date",
       key: "exp_date",
-      render: (exp_date) => new Date(exp_date).toLocaleDateString(), // Format the date
+      render: (exp_date) => new Date(exp_date).toLocaleDateString(), 
     },
     { title: "Supplier Name", dataIndex: "supplier_name", key: "supplier_name" },
     { title: "Supplier Contacts", dataIndex: "supplier_contacts", key: "supplier_contacts" },
@@ -392,7 +351,7 @@ const Products = () => {
         </div>
       )}
       
-      {/* Modal for adding/editing products */}
+      {/* Modal for adding products */}
       <Modal
         title="Add Product"
         visible={isModalVisible}
@@ -434,21 +393,24 @@ const Products = () => {
         </Form.Item>
 
         <Form.Item
-          name="image_url"
-          label="Image URL"
-          rules={[{ required: true, message: "Please enter the image URL!" }]} // You can remove 'required' if it's optional
-        >
-          <Input placeholder="Enter image URL" />
-        </Form.Item>
-
-
-        <Form.Item
           name="selling_price"
           label="Selling Price"
           rules={[{ required: true, message: "Please enter the selling price!" }]}
         >
           <Input  placeholder="Enter selling price" />
         </Form.Item>
+        
+
+       {/* Image url */}
+        <Form.Item
+          name="image_url"
+          label="Image URL"
+          rules={[{ required: true, message: "Please enter the image URL!" }]} 
+        >
+          <Input placeholder="Enter image URL" />
+        </Form.Item>
+
+
 
         <Form.Item
           name="stock"
@@ -503,12 +465,6 @@ const Products = () => {
           rules={[{ required: true, message: "Please enter the barcode!" }]}
         >
           <Input placeholder="Enter barcode" />
-        </Form.Item>
-
-        <Form.Item>
-          <Button type="primary" htmlType="submit" style={{ width: "100%" }}>
-            Add Product
-          </Button>
         </Form.Item>
       </Form>
     </Modal>
