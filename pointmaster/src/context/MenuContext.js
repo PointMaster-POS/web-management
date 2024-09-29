@@ -33,7 +33,7 @@ useEffect(() => {
     setRole("branchmanager");
   }
 }
-, [decodedToken]);
+, [accessToken]);
 
 
 

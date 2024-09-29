@@ -43,6 +43,7 @@ const Category = () => {
 
     try {
       let url;
+      console.log("role", role);
       if (role === "owner") {
         url = `http://localhost:3001/category/owner/${branchID}`;
       } else if (role === "branchmanager") {
