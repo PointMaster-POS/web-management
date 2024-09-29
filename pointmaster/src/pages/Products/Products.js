@@ -106,7 +106,6 @@ const Products = () => {
     form.validateFields().then((values) => {
       const token = localStorage.getItem("accessToken"); // Fetch token from local storage
   
-      // Create new product object with mapped field names
       const newProduct = {
         category_id: values.category,  // This will send the selected category's ID
         item_name: values.product_name,
@@ -114,6 +113,7 @@ const Products = () => {
         barcode: values.barcode,
         stock: values.stock,
         price: values.selling_price,
+        // buying_price: values.buying_price,  --- chnge according to how himidu chnage database
         image_url: values.image_url || "",
         exp_date: values.exp_date,
         discount: values.discount || 0,
