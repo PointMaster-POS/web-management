@@ -9,7 +9,6 @@ import {
   Tooltip,
   Card,
   Typography,
-  Avatar,
   Select,
   notification,
 } from "antd";
@@ -21,7 +20,6 @@ import {
   PrinterOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
-import AddNewProduct from "../../components/Popups/AddNewProduct";
 import { useMenu } from "../../context/MenuContext";
 import jsPDF from "jspdf"; // For generating PDFs
 import html2canvas from "html2canvas"; // For capturing the barcode area
@@ -42,7 +40,7 @@ const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
-  const [selectedBarcode, setSelectedBarcode] = useState(null); // Store selected barcode
+  const [selectedBarcode, setSelectedBarcode] = useState(null); 
 
 
   const barcodeRef = useRef(); // Ref for capturing the barcode
@@ -53,7 +51,7 @@ const Products = () => {
 
   const token = localStorage.getItem("accessToken");
 
-  // Fetch categories and select the first one by default
+  
   useEffect(() => {
     const fetchCategories = async () => {
       if (!branchID) return; // Ensure branchId is available
@@ -100,7 +98,6 @@ const Products = () => {
       setLoading(false);
     }
   };
-
 
   const handleAddProduct = () => {
     form.validateFields().then((values) => {
@@ -154,17 +151,60 @@ const Products = () => {
     });
   };
   
-  
-
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
   };
 
-  const handleEdit = (product) => {
-    form.setFieldsValue(product);
-    setIsModalVisible(true);
+  const handleEditAndSave = async (product) => {
+    
+    try {
+      // Set form fields with the selected product's data
+      form.setFieldsValue(product);
+      setIsModalVisible(true);
+
+      // Wait for the modal to close and the form to submit
+      const values = await form.validateFields();
+
+      // Make PUT request to update the product in the database
+      const response = await axios.put(
+        `http://localhost:3001/items/${product.item_id}`,
+        {
+          ...values,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        notification.success({
+          message: "Success",
+          description: "Product updated successfully!",
+        });
+
+        // Update your local data with the edited product details
+        const updatedData = data.map((item) =>
+          item.item_id === product.item_id ? { ...product, ...values } : item
+        );
+        setData(updatedData);
+
+        // Reset form and close modal
+        form.resetFields();
+        setIsModalVisible(false);
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+      notification.error({
+        message: "Error",
+        description: error.response?.data?.message || "Failed to update the product. Please try again.",
+      });
+    }
   };
+  
 
   const handleDelete = (productId) => {
     confirm({
@@ -239,9 +279,7 @@ const Products = () => {
       }
     }, 100); // Small delay to ensure barcode renders
   };
-  
-  
- 
+   
   const columns = [
     {
       title: "No.",
@@ -305,7 +343,7 @@ const Products = () => {
       render: (record) => (
         <Space size="middle">
           <Tooltip title="Edit Product">
-            <Button icon={<EditOutlined />} onClick={() => handleEdit(record)} />
+            <Button icon={<EditOutlined />} onClick={() => handleEditAndSave(record)} />
           </Tooltip>
           <Tooltip title="Delete Product">
             <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record.item_id)} danger />
