@@ -55,10 +55,6 @@ const ProfilePage = () => {
     }
   };
 
-  useEffect(() => {
-    fetchDetails();
-  }, []);
-
   const handleUpdateBusiness = async (values) => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -93,6 +89,11 @@ const ProfilePage = () => {
   };
 
   const handleUpdateOwner = async (values) => {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
 
     try {
       const response = await fetch(
@@ -119,6 +120,10 @@ const ProfilePage = () => {
       message.error("An error occurred. Please try again.");
     }
   };
+
+  useEffect(() => {
+    fetchDetails();
+  }, [handleUpdateBusiness,handleUpdateOwner]);
 
   const handleEditBusiness = () => {
     form_first.setFieldsValue(details); // Set the form with business details when editing
