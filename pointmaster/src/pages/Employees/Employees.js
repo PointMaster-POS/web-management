@@ -146,11 +146,11 @@ const Employees = () => {
         // );
         fetchEmplyoees();
       } else {
-        message.error("Failed to update branch");
+        message.error("Failed to update employee");
       }
     } catch (error) {
       console.error(error);
-      message.error("Error occurred while updating branch");
+      message.error("Error occurred while updating employee");
     }
   };
 
