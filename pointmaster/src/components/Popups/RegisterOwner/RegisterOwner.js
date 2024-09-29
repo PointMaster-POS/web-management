@@ -44,7 +44,7 @@ const RegisterOwner = ({ form, onCancel, isEditMode, onRegisterOrUpdateOwner }) 
 
         <Form.Item
           label="Contact Number"
-          name="phone"
+          name="business_owner_phone"
           rules={[
             { required: true, message: "Please input the contact number!" },
           ]}
@@ -54,7 +54,7 @@ const RegisterOwner = ({ form, onCancel, isEditMode, onRegisterOrUpdateOwner }) 
         </Form.Item>
 
         <Form.Item
-          name="employee_address"
+          name="business_owner_address"
           label="Address"
           rules={[{ required: true, message: "Please enter an address" }]}
         >
@@ -62,7 +62,7 @@ const RegisterOwner = ({ form, onCancel, isEditMode, onRegisterOrUpdateOwner }) 
         </Form.Item>
 
         {/* <Form.Item
-        name="birthday"
+        name="business_owner_birthday"
         label="Birthday"
         rules={[{ required: true, message: "Please select a birth date" }]}
       >
