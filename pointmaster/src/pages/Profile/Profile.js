@@ -1,5 +1,15 @@
-import React, { useState } from "react";
-import { Card, Col, Row, Typography, Button, Modal, Image, Form, message } from "antd";
+import React, { useState, useEffect } from "react";
+import {
+  Card,
+  Col,
+  Row,
+  Typography,
+  Button,
+  Modal,
+  Image,
+  Form,
+  message,
+} from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
 import RegisterOwner from "../../components/Popups/RegisterOwner/RegisterOwner";
@@ -12,11 +22,9 @@ const ProfilePage = () => {
   const [isBusinessModalVisible, setIsBusinessModalVisible] = useState(false);
   const [isOwnerModalVisible, setIsOwnerModalVisible] = useState(false);
 
-  const [businessDetails, setBusinessDetails] = useState({});
+  const [details, setDetails] = useState({});
 
-  const [ownerDetails, setOwnerDetails] = useState({});
-
-  /* const fetchBusinessDetails = async () => {
+  const fetchDetails = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
@@ -25,7 +33,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/category/owner/${branchID}`,
+        `http://localhost:3001/employee/owner-profile`,
         {
           method: "GET",
           headers: {
@@ -40,55 +48,26 @@ const ProfilePage = () => {
       }
 
       const fetched_data = await response.json();
-      setBusinessDetails(fetch_data)
+      setDetails(fetched_data);
     } catch (error) {
       console.error("Error fetching categories:", error);
       message.error("Failed to fetch categories.");
     }
   };
- */
-  /* const fetchOwnerDetails = async () => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      message.error("Authorization token is missing. Please log in again.");
-      return;
-    }
 
-    try {
-      const response = await fetch(
-        `http://localhost:3001/category/owner/${branchID}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
+  useEffect(() => {
+    fetchDetails();
+  }, []);
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const fetched_data = await response.json();
-      setOwnerDetails(fetched_data)
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-      message.error("Failed to fetch categories.");
-    }
-  }; */
-
-  /* useEffect(() => {
-    fetchBusinessDetails(), fetchOwnerDetails();
-  }, []); */
+  console.log(details);
 
   const handleEditBusiness = () => {
-    form_first.setFieldsValue(businessDetails); // Set the form with business details when editing
+    form_first.setFieldsValue(details); // Set the form with business details when editing
     setIsBusinessModalVisible(true);
   };
 
   const handleEditOwner = () => {
-    form_second.setFieldsValue(ownerDetails); // Set the form with owner details when editing
+    form_second.setFieldsValue(details); // Set the form with owner details when editing
     setIsOwnerModalVisible(true);
   };
 
@@ -115,7 +94,6 @@ const ProfilePage = () => {
     form_second.resetFields(); // Reset the form when the modal is closed
   };
 
-
   const defaultLogo_1 = "/images/logo-placeholder.webp";
   const defaultLogo_2 = "/images/placeholder_for_owner.png";
 
@@ -124,13 +102,18 @@ const ProfilePage = () => {
       <Title level={2} style={{ textAlign: "center" }}>
         Profile Overview
       </Title>
-      <Row gutter={16}>
+      <Row gutter={24} style={{ marginTop: "30px" }}>
         {/* Business Details Section */}
         <Col span={12}>
           <Card
             title="Business Details"
             bordered={false}
-
+            style={{
+              backgroundColor: "#ffffff",
+              borderRadius: "10px",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+              padding: "20px",
+            }}
             extra={
               <Button icon={<EditOutlined />} onClick={handleEditBusiness} />
             }
@@ -140,12 +123,12 @@ const ProfilePage = () => {
               <Image
                 width={100}
                 height={100}
-                src={businessDetails.logo || defaultLogo_1} // Business logo from details
+                src={/* details.logo_location ||  */ defaultLogo_1} // Business logo from details
                 preview={false}
                 style={{ borderRadius: "50%" }}
               />
               <Title level={4} style={{ marginTop: "10px" }}>
-                {businessDetails.name} {/* Business name below logo */}
+                {details.business_name} {/* Business name below logo */}
               </Title>
             </div>
             <Row style={{ marginBottom: 10 }}>
@@ -154,7 +137,7 @@ const ProfilePage = () => {
                   Email:{" "}
                 </Text>
                 <Text style={{ fontSize: "16px" }}>
-                  {businessDetails.email}
+                  {details.business_mail}
                 </Text>
               </Col>
             </Row>
@@ -163,14 +146,14 @@ const ProfilePage = () => {
                 <Text strong style={{ fontSize: "16px" }}>
                   Website:{" "}
                 </Text>
-                  <a
-                    href={businessDetails.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ fontSize: "16px" }}
-                  >
-                    {businessDetails.url}
-                  </a>
+                <a
+                  href={details.businees_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontSize: "16px" }}
+                >
+                  {details.business_url}
+                </a>
               </Col>
             </Row>
             <Row style={{ marginBottom: 10 }}>
@@ -179,7 +162,7 @@ const ProfilePage = () => {
                   Hotline:{" "}
                 </Text>
                 <Text style={{ fontSize: "16px" }}>
-                  {businessDetails.hotline}
+                  {details.business_hotline}
                 </Text>
               </Col>
             </Row>
@@ -189,7 +172,7 @@ const ProfilePage = () => {
                   Description:{" "}
                 </Text>
                 <Text style={{ fontSize: "16px" }}>
-                  {businessDetails.description}
+                  {details.business_description}
                 </Text>
               </Col>
             </Row>
@@ -199,7 +182,7 @@ const ProfilePage = () => {
                   Address:{" "}
                 </Text>
                 <Text style={{ fontSize: "16px" }}>
-                  {businessDetails.address}
+                  {details.business_address}
                 </Text>
               </Col>
             </Row>
@@ -209,7 +192,7 @@ const ProfilePage = () => {
                   Registration Number:{" "}
                 </Text>
                 <Text style={{ fontSize: "16px" }}>
-                  {businessDetails.registrationNumber}
+                  {details.business_registration_number}
                 </Text>
               </Col>
             </Row>
@@ -219,7 +202,7 @@ const ProfilePage = () => {
                   Type:{" "}
                 </Text>
                 <Text style={{ fontSize: "16px" }}>
-                  {businessDetails.type}
+                  {details.business_type}
                 </Text>
               </Col>
             </Row>
@@ -229,7 +212,11 @@ const ProfilePage = () => {
                   Registration Date:{" "}
                 </Text>
                 <Text style={{ fontSize: "16px" }}>
-                  {businessDetails.registrationDate}
+                  {details.business_registration_date
+                    ? new Date(details.business_registration_date)
+                        .toISOString()
+                        .split("T")[0]
+                    : "Invalid Date"}
                 </Text>
               </Col>
             </Row>
@@ -241,24 +228,32 @@ const ProfilePage = () => {
           <Card
             title="Owner Details"
             bordered={false}
+            style={{
+              backgroundColor: "#ffffff",
+              borderRadius: "10px",
+              boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+              padding: "20px",
+            }}
             extra={<Button icon={<EditOutlined />} onClick={handleEditOwner} />}
           >
             <div style={{ textAlign: "center", marginBottom: "20px" }}>
               <Image
                 width={100}
                 height={100}
-                src={businessDetails.logo || defaultLogo_2} // Business logo from details
+                src={/* details.logo_location ||  */ defaultLogo_2} // Business logo from details
                 preview={false}
                 style={{ borderRadius: "50%" }}
               />
               <Title level={4} style={{ marginTop: "10px" }}>
-                {ownerDetails.name} {/* Business name below logo */}
+                {details.business_owner_name} {/* Business name below logo */}
               </Title>
             </div>
             <Text strong style={{ fontSize: "16px" }}>
               Email:
             </Text>{" "}
-            <Text style={{ fontSize: "16px" }}>{ownerDetails.email}</Text>
+            <Text style={{ fontSize: "16px" }}>
+              {details.business_owner_mail}
+            </Text>
             <br />
             <Button
               type="link"
@@ -271,37 +266,51 @@ const ProfilePage = () => {
         </Col>
       </Row>
 
-      {/* Recent Activity Section */}
-      <Card
-        title="Recent Activity"
-        style={{ marginTop: "20px" }}
-        bordered={false}
-      >
-        <Text>Display recent activity or notifications here.</Text>
-      </Card>
-
       {/* Modal for editing business */}
       <Modal
-        title="Edit Business Details"
+        title={
+          <div
+            style={{
+              fontSize: "20px",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Update Business Details
+          </div>
+        }
         visible={isBusinessModalVisible}
         onCancel={handleCancelBusinessModal}
         footer={null}
         width={750}
         centered
       >
-        <RegisterNewBusiness form={form_first} onCancel={handleCancelBusinessModal} />
+        <RegisterNewBusiness
+          form={form_first}
+          onCancel={handleCancelBusinessModal}
+          isEditMode={true}
+        />
       </Modal>
-
 
       {/* Modal for editing owner */}
       <Modal
-        title="Edit Owner Details"
+        title={
+          <div
+            style={{
+              fontSize: "20px",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Update Owner Details
+          </div>
+        }
         visible={isOwnerModalVisible}
         onCancel={handleCancelOwnerModal}
         footer={null}
         centered
       >
-        <RegisterOwner form={form_second} onCancel={handleCancelOwnerModal} />
+        <RegisterOwner form={form_second} onCancel={handleCancelOwnerModal} isEditMode={true}/>
       </Modal>
     </div>
   );
