@@ -159,9 +159,9 @@ const Category = () => {
 
 
   const handleEdit = (record) => {
-    setEditingCategory(record); // Set the store to be edited
-    form.setFieldsValue(record); // Pre-fill the form with the selected store's data
-    setIsModalVisible(true); // Open the modal for editing
+    setEditingCategory(record); 
+    form.setFieldsValue(record);
+    setIsModalVisible(true);
   };
 
 
@@ -190,11 +190,6 @@ const Category = () => {
             },
           });
 
-          // const newData = data.filter(
-          //   (category) => category.category_id !== category_id
-          // );
-          // setData(newData);
-          // setFilteredData(newData);
           fetchCategories();
           message.success("Category deleted successfully.");
         } catch (error) {
