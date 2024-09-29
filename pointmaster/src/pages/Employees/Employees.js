@@ -41,7 +41,7 @@ const Employees = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/employee/${branchID}`, {
+      const response = await fetch(`http://localhost:3001/employee/all-employee/${branchID}`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
