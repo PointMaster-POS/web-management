@@ -17,7 +17,7 @@ import RegisterOwner from "../RegisterOwner/RegisterOwner";
 const { Option } = Select;
 const { Title } = Typography;
 
-const RegisterNewBusiness = ({ form, onCancel }) => {
+const RegisterNewBusiness = ({ form, onCancel, isEditMode }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [token, setToken] = useState(null);
   const [form_second] = Form.useForm();
@@ -28,29 +28,28 @@ const RegisterNewBusiness = ({ form, onCancel }) => {
 
     // Add current date to the values object
     values.business_registration_date = currentDate;
-    console.log(values);
 
     try {
+      const endpoint = isEditMode
+        ? "http://localhost:3001/registration/update-business-details" // Example update endpoint
+        : "http://localhost:3001/registration/business-details"; // Original create endpoint
+
       // Send business data to the endpoint
-      const response = await fetch(
-        "http://localhost:3001/registration/business-details",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(values),
-        }
-      );
+      const response = await fetch(endpoint, {
+        method: isEditMode ? "PUT" : "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
 
       const data = await response.json();
-      console.log(data.token);
 
       if (response.ok) {
         setToken(data.token); // Store the token
         message.success(data.message); // Show success message
         onCancel();
-        setIsModalVisible(true); // Show owner registration modal
+        setIsModalVisible(!isEditMode); // Show owner registration modal
       } else {
         message.error("Failed to register business. Please try again.");
       }
@@ -133,10 +132,10 @@ const RegisterNewBusiness = ({ form, onCancel }) => {
             <Input />
           </Form.Item>
 
-          {/* <Form.Item
+          <Form.Item
             label="Business Logo"
             name="logo_location"
-            valuePropName="fileList"
+            // valuePropName="fileList"
             rules={[
               { required: true, message: "Please upload the business logo!" },
             ]}
@@ -144,7 +143,7 @@ const RegisterNewBusiness = ({ form, onCancel }) => {
             <Upload listType="picture" beforeUpload={() => false}>
               <Button icon={<UploadOutlined />}>Upload Logo</Button>
             </Upload>
-          </Form.Item> */}
+          </Form.Item>
 
           <Form.Item
             label="Business Registration Number"
@@ -193,24 +192,27 @@ const RegisterNewBusiness = ({ form, onCancel }) => {
                 fontSize: "16px",
               }}
             >
-              Register Business
+              {isEditMode ? "Update" : "Register Business"}
             </Button>
           </Form.Item>
         </Form>
 
-        <Modal
-          title={<div className="custom-modal-title">Register Owner</div>}
-          visible={isModalVisible}
-          onCancel={handleCancel}
-          footer={null}
-          centered
-        >
-          <RegisterOwner
-            token={token}
-            form={form_second}
+        {!isEditMode && (
+          <Modal
+            title={<div className="custom-modal-title">Register Owner</div>}
+            visible={isModalVisible}
             onCancel={handleCancel}
-          />
-        </Modal>
+            footer={null}
+            centered
+          >
+            <RegisterOwner
+              token={token}
+              form={form_second}
+              onCancel={handleCancel}
+              isEditMode={false}
+            />
+          </Modal>
+        )}
       </div>
     </React.Fragment>
   );
