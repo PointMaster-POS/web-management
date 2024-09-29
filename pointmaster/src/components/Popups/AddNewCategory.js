@@ -4,10 +4,9 @@ import { Form, Input, Button, Select, message } from "antd";
 const { Option } = Select;
 
 const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
-  const [branches, setBranches] = useState([]); // State to hold branches
+  const [branches, setBranches] = useState([]);
 
   useEffect(() => {
-    // Fetch branches when the component mounts
     const fetchBranches = async () => {
       const token = localStorage.getItem("accessToken");
       if (!token) {
@@ -29,7 +28,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
         }
 
         const data = await response.json();
-        setBranches(data); // Store fetched branches
+        setBranches(data);
       } catch (error) {
         console.error("Error fetching branches:", error);
         message.error("Failed to fetch branches.");
@@ -78,14 +77,14 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
 
       <Form.Item
         label="Select Branch"
-        name="branch_id" // This will pass the branch_id
+        name="branch_id"
         rules={[{ required: true, message: "Please select a branch!" }]}
         style={{ marginBottom: "20px" }}
       >
         <Select placeholder="Select a branch">
           {branches.map((branch) => (
             <Option key={branch.branch_id} value={branch.branch_id}>
-              {branch.branch_name} {/* Display branch name */}
+              {branch.branch_name}
             </Option>
           ))}
         </Select>
