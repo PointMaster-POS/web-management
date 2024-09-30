@@ -13,6 +13,7 @@ import {
 import { EditOutlined } from "@ant-design/icons";
 import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
 import RegisterOwner from "../../components/Popups/RegisterOwner/RegisterOwner";
+import defaultLogo_1 from './default-profile-images';
 
 const { Title, Text } = Typography;
 
@@ -54,7 +55,7 @@ const ProfilePage = () => {
       message.error("Failed to fetch categories.");
     }
   };
-
+  console.log(details);
   const handleUpdateBusiness = async (values) => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -123,7 +124,7 @@ const ProfilePage = () => {
 
   useEffect(() => {
     fetchDetails();
-  }, [handleUpdateBusiness,handleUpdateOwner]);
+  }, []);
 
   const handleEditBusiness = () => {
     form_first.setFieldsValue(details); // Set the form with business details when editing
@@ -158,7 +159,8 @@ const ProfilePage = () => {
     form_second.resetFields(); // Reset the form when the modal is closed
   };
 
-  const defaultLogo_1 = "/images/logo-placeholder.webp";
+
+
   const defaultLogo_2 = "/images/placeholder_for_owner.png";
 
   return (
@@ -187,7 +189,7 @@ const ProfilePage = () => {
               <Image
                 width={100}
                 height={100}
-                src={/* details.logo_location ||  */ defaultLogo_1} // Business logo from details
+                src={  details.business_image } // Business logo from details
                 preview={false}
                 style={{ borderRadius: "50%" }}
               />

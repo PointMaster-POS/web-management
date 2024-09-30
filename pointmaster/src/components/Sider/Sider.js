@@ -32,6 +32,11 @@ const items = [
     icon: <ProductOutlined />,
     label: "Products",
   },
+  {
+    key: "/employees",
+    icon: <UserOutlined />,
+    label: "Employees",
+  }
 ];
 
 const SideBar = ({ onCollapse }) => {
@@ -93,7 +98,7 @@ const SideBar = ({ onCollapse }) => {
         ))}
 
         {/* Conditionally render the Employees item if the role is 'owner' */}
-        {role === "owner" && (
+        {/* {role === "owner" && (
           <Menu.Item
             key="/employees"
             icon={<UserOutlined />}
@@ -101,7 +106,7 @@ const SideBar = ({ onCollapse }) => {
           >
             Employees
           </Menu.Item>
-        )}
+        )} */}
         {role === "owner" && (
           <Menu.Item
             key="/Loyalty"

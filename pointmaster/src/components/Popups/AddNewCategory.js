@@ -6,7 +6,7 @@ const { Option } = Select;
 
 const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
   const [branches, setBranches] = useState([]);
-  const { branchID, role } = useMenu();e
+  const { branchID, role } = useMenu();
 
   useEffect(() => {
     const fetchBranches = async () => {
