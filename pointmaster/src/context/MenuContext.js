@@ -26,6 +26,7 @@ export const MenuProvider = ({ children }) => {
   const [role, setRole] = useState("");
   const [branchID , setBranchID] = useState(null);
   const { isAuthenticated } = useAuth();
+  const [onAddingBranch, setOnAddingBranch] = useState(false);
 
 useEffect(() => {
    
@@ -44,7 +45,7 @@ useEffect(() => {
     }, [selectedMenu]);
 
   return (
-    <MenuContext.Provider value={{branchID, setBranchID, selectedMenu, setSelectedMenu, role, setRole }}>
+    <MenuContext.Provider value={{branchID, setBranchID, selectedMenu, setSelectedMenu, role, setRole , onAddingBranch, setOnAddingBranch}}>
       {children}
     </MenuContext.Provider>
   );

@@ -31,7 +31,7 @@ const Stores = () => {
   const [editingStore, setEditingStore] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  const { branchID, role } = useMenu(); 
+  const { branchID, role , onAddingBranch, setOnAddingBranch} = useMenu(); 
 
 
   const fetchBranches = async () => {
@@ -57,6 +57,8 @@ const Stores = () => {
       const data = await response.json();
       setData(data);
       setFilteredData(data);
+
+      setOnAddingBranch(!onAddingBranch);
     } catch (error) {
       console.error("Error fetching branches:", error);
       message.error("Failed to fetch branches.");
