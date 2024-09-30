@@ -20,7 +20,6 @@ import {
 import AddNewCategory from "../../components/Popups/AddNewCategory";
 import { useMenu } from "../../context/MenuContext";
 
-
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
@@ -32,17 +31,26 @@ const Category = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [form] = Form.useForm();
-  const { branchID} = useMenu();
+  const { branchID, role } = useMenu();
 
   const fetchCategories = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
+      
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/category/owner/${branchID}`, {
+      let url;
+      console.log("role", role);
+      if (role === "owner") {
+        url = `http://localhost:3001/category/owner/${branchID}`;
+      } else if (role === "branchmanager") {
+        url = `http://localhost:3001/category/manager`;
+      }
+      console.log("url", url);
+      const response = await fetch(url, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -57,21 +65,21 @@ const Category = () => {
       const fetched_data = await response.json();
       setData(fetched_data);
       setFilteredData(fetched_data);
-      console.log(fetched_data);
     } catch (error) {
       console.error("Error fetching categories:", error);
       message.error("Failed to fetch categories.");
     }
   };
 
-
   const handleAddCategory = async (values) => {
+    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+   
 
     try {
       const response = await fetch("http://localhost:3001/category", {
@@ -98,11 +106,9 @@ const Category = () => {
     }
   };
 
-
   useEffect(() => {
     fetchCategories();
   }, [branchID]);
-
 
   const handleUpdateCategory = async (values) => {
     console.log(values);
@@ -157,13 +163,11 @@ const Category = () => {
     }
   };
 
-
   const handleEdit = (record) => {
-    setEditingCategory(record); // Set the store to be edited
-    form.setFieldsValue(record); // Pre-fill the form with the selected store's data
-    setIsModalVisible(true); // Open the modal for editing
+    setEditingCategory(record);
+    form.setFieldsValue(record);
+    setIsModalVisible(true);
   };
-
 
   const handleDelete = (category_id, category_name) => {
     confirm({
@@ -183,18 +187,16 @@ const Category = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/category/${branchID}/${category_id}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          await fetch(
+            `http://localhost:3001/category/${branchID}/${category_id}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
 
-          // const newData = data.filter(
-          //   (category) => category.category_id !== category_id
-          // );
-          // setData(newData);
-          // setFilteredData(newData);
           fetchCategories();
           message.success("Category deleted successfully.");
         } catch (error) {
@@ -205,18 +207,15 @@ const Category = () => {
     });
   };
 
-
   const showModal = () => {
     setIsModalVisible(true);
   };
-
 
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
     setEditingCategory(null);
   };
-
 
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
@@ -232,7 +231,6 @@ const Category = () => {
     setFilteredData(filtered);
     setSearchText(value);
   };
-
 
   const columns = [
     {
@@ -288,7 +286,6 @@ const Category = () => {
       render: (record) => <Button>View Category</Button>,
     },
   ];
-
 
   return (
     <Card

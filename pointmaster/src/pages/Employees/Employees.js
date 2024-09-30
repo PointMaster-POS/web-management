@@ -31,7 +31,7 @@ const Employees = () => {
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  const {branchID} = useMenu();
+  const {branchID, role} = useMenu();
 
   const fetchEmplyoees = async () => {
     const token = localStorage.getItem("accessToken");
@@ -39,9 +39,16 @@ const Employees = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+    let url;
+    if (role === "owner") {
+      url = `http://localhost:3001/employee/all-employee/${branchID}`;
+    } else if (role === "branchmanager") {
+      url = `http://localhost:3001/employee/branch-employee`;
+    }
+      
 
     try {
-      const response = await fetch(`http://localhost:3001/employee/${branchID}`, {
+      const response = await fetch(url, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,10 +71,11 @@ const Employees = () => {
 
   useEffect(() => {
     fetchEmplyoees();
-  }, []);
+  }, [branchID, role]);
 
 
   const handleAddEmployee = async (values) => {
+    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -111,7 +119,7 @@ const Employees = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/${editingEmployee.employee_id}`,
+        `http://localhost:3001/employee/${editingEmployee.employee_id}`,
         {
           method: "PUT",
           headers: {
@@ -127,29 +135,13 @@ const Employees = () => {
         setIsModalVisible(false);
         form.resetFields();
         setEditingEmployee(null);
-
-        // Update the specific branch in local state
-        // setData((prevData) =>
-        //   prevData.map((item) =>
-        //     item.branch_id === editingStore.branch_id
-        //       ? { ...item, ...values }
-        //       : item
-        //   )
-        // );
-        // setFilteredData((prevData) =>
-        //   prevData.map((item) =>
-        //     item.branch_id === editingStore.branch_id
-        //       ? { ...item, ...values }
-        //       : item
-        //   )
-        // );
         fetchEmplyoees();
       } else {
-        message.error("Failed to update branch");
+        message.error("Failed to update employee");
       }
     } catch (error) {
       console.error(error);
-      message.error("Error occurred while updating branch");
+      message.error("Error occurred while updating employee");
     }
   };
 
@@ -184,12 +176,6 @@ const Employees = () => {
               Authorization: `Bearer ${token}`,
             },
           });
-
-          // const newData = data.filter(
-          //   (branch) => branch.branch_id !== branch_id
-          // );
-          // setData(newData);
-          // setFilteredData(newData);
           fetchEmplyoees();
           message.success("Store deleted successfully.");
         } catch (error) {
@@ -271,6 +257,7 @@ const Employees = () => {
             <Button
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
+              disabled={role === "branchmanager"}
               style={{
                 borderColor: "#1890ff",
                 color: "#1890ff",
@@ -280,6 +267,7 @@ const Employees = () => {
           <Tooltip title="Delete Employee">
             <Button
               icon={<DeleteOutlined />}
+              disabled={role === "branchmanager"}
               onClick={() => handleDelete(record.employee_id,record.employee_name)}
               danger
             />
@@ -327,9 +315,11 @@ const Employees = () => {
             value={searchText}
             style={{ marginRight: 16, width: 300 }}
           />
+          {role === "owner" && (
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
             Add New Employee
           </Button>
+          )}
         </div>
       </div>
       <hr color="#1890ff" />
