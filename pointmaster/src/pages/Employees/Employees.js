@@ -33,7 +33,7 @@ const Employees = () => {
   const [form] = Form.useForm();
   const {branchID} = useMenu();
 
-  const fetchEmplyoees = async () => {
+  const fetchEmployees = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
@@ -63,12 +63,11 @@ const Employees = () => {
   };
 
   useEffect(() => {
-    fetchEmplyoees();
+    fetchEmployees();
   }, [branchID]);
 
 
   const handleAddEmployee = async (values) => {
-    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -92,7 +91,7 @@ const Employees = () => {
         message.success("Employee added successfully");
         setIsModalVisible(false);
         form.resetFields();
-        fetchEmplyoees();
+        fetchEmployees();
       } else {
         message.error("Failed to add employee");
       }
@@ -128,7 +127,7 @@ const Employees = () => {
         setIsModalVisible(false);
         form.resetFields();
         setEditingEmployee(null);
-        fetchEmplyoees();
+        fetchEmployees();
       } else {
         message.error("Failed to update employee");
       }
@@ -149,7 +148,7 @@ const Employees = () => {
     confirm({
       title: "Are you sure you want to delete this employee?",
       icon: <ExclamationCircleOutlined />,
-      content: `This action will delete the store "${employee_name}".`,
+      content: `This action will delete the employee "${employee_name}".`,
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -163,17 +162,17 @@ const Employees = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/branch/${branchID}/${employee_id}`, {
+          await fetch(`http://localhost:3001/employee/${employee_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          fetchEmplyoees();
-          message.success("Store deleted successfully.");
+          fetchEmployees();
+          message.success("Employee deleted successfully.");
         } catch (error) {
-          console.error("Error deleting branch:", error);
-          message.error("Failed to delete store.");
+          console.error("Error deleting employee:", error);
+          message.error("Failed to delete employee.");
         }
       },
     });
