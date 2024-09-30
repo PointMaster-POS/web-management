@@ -105,7 +105,6 @@ const Category = () => {
 
 
   const handleUpdateCategory = async (values) => {
-    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -131,22 +130,6 @@ const Category = () => {
         setIsModalVisible(false);
         form.resetFields();
         setEditingCategory(null);
-
-        // Update the specific branch in local state
-        // setData((prevData) =>
-        //   prevData.map((item) =>
-        //     item.branch_id === editingCategory.branch_id
-        //       ? { ...item, ...values }
-        //       : item
-        //   )
-        // );
-        // setFilteredData((prevData) =>
-        //   prevData.map((item) =>
-        //     item.branch_id === editingCategory.branch_id
-        //       ? { ...item, ...values }
-        //       : item
-        //   )
-        // );
         fetchCategories();
       } else {
         message.error("Failed to update category");
