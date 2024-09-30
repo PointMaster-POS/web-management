@@ -30,7 +30,7 @@ const ViewEmployeeProfile = ({ visible, onCancel, employee }) => {
             {employee?.employee_name || "N/A"}
           </Title>
           <p style={{ color: "gray" }}>{employee?.role || "N/A"}</p>
-          <p>{employee?.email || "No email provided"}</p>
+          <p>{employee?.employee_email || "No email provided"}</p>
           <p>{employee?.phone || "No contact number"}</p>
         </Col>
       </Row>
@@ -46,16 +46,16 @@ const ViewEmployeeProfile = ({ visible, onCancel, employee }) => {
           {employee?.phone || "N/A"}
         </Descriptions.Item>
         <Descriptions.Item label="Email" span={3}>
-          {employee?.email || "N/A"}
+          {employee?.employee_email || "N/A"}
         </Descriptions.Item>
-        <Descriptions.Item label="Joined Date" span={3}>
-          {employee?.joined_date || "N/A"}
-        </Descriptions.Item>
-        <Descriptions.Item label="Department" span={3}>
-          {employee?.department || "N/A"}
+        <Descriptions.Item label="Birthday" span={3}>
+          {employee?.birthday || "N/A"}
         </Descriptions.Item>
         <Descriptions.Item label="Address" span={3}>
-          {employee?.address || "N/A"}
+          {employee?.employee_address || "N/A"}
+        </Descriptions.Item>
+        <Descriptions.Item label="Salary" span={3}>
+           Rs. {employee?.salary || "N/A"}
         </Descriptions.Item>
       </Descriptions>
     </Modal>
