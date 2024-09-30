@@ -31,7 +31,7 @@ const Employees = () => {
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  const {branchID} = useMenu();
+  const {branchID, role} = useMenu();
 
   const fetchEmployees = async () => {
     const token = localStorage.getItem("accessToken");
@@ -39,9 +39,16 @@ const Employees = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+    let url;
+    if (role === "owner") {
+      url = `http://localhost:3001/employee/all-employee/${branchID}`;
+    } else if (role === "branchmanager") {
+      url = `http://localhost:3001/employee/branch-employee`;
+    }
+      
 
     try {
-      const response = await fetch(`http://localhost:3001/employee/all-employee/${branchID}`, {
+      const response = await fetch(url, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -63,8 +70,9 @@ const Employees = () => {
   };
 
   useEffect(() => {
-    fetchEmployees();
-  }, [branchID]);
+
+    fetchEmplyoees();
+  }, [branchID, role]);
 
 
   const handleAddEmployee = async (values) => {
@@ -249,6 +257,7 @@ const Employees = () => {
             <Button
               icon={<EditOutlined />}
               onClick={() => handleEdit(record)}
+              disabled={role === "branchmanager"}
               style={{
                 borderColor: "#1890ff",
                 color: "#1890ff",
@@ -258,6 +267,7 @@ const Employees = () => {
           <Tooltip title="Delete Employee">
             <Button
               icon={<DeleteOutlined />}
+              disabled={role === "branchmanager"}
               onClick={() => handleDelete(record.employee_id,record.employee_name)}
               danger
             />
@@ -305,9 +315,11 @@ const Employees = () => {
             value={searchText}
             style={{ marginRight: 16, width: 300 }}
           />
+          {role === "owner" && (
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
             Add New Employee
           </Button>
+          )}
         </div>
       </div>
       <hr color="#1890ff" />

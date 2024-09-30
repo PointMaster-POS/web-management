@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
+import {useAuth} from "./AuthContext";
 
 
 // Create the MenuContext
@@ -24,16 +25,17 @@ export const MenuProvider = ({ children }) => {
   const [selectedMenu, setSelectedMenu] = useState("dashboard");
   const [role, setRole] = useState("");
   const [branchID , setBranchID] = useState(null);
+  const { isAuthenticated } = useAuth();
 
 useEffect(() => {
    
   if (decodedToken.owner) {
     setRole("owner");
   } else {
-    setRole("employee");
+    setRole("branchmanager");
   }
 }
-, [decodedToken]);
+, [accessToken, decodedToken, isAuthenticated]);
 
 
 

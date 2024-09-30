@@ -13,6 +13,7 @@ import {
 import { EditOutlined } from "@ant-design/icons";
 import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
 import RegisterOwner from "../../components/Popups/RegisterOwner/RegisterOwner";
+import defaultLogo_1 from './default-profile-images';
 
 const { Title, Text } = Typography;
 
@@ -21,6 +22,7 @@ const ProfilePage = () => {
   const [form_second] = Form.useForm();
   const [isBusinessModalVisible, setIsBusinessModalVisible] = useState(false);
   const [isOwnerModalVisible, setIsOwnerModalVisible] = useState(false);
+  const [businessImageBase64, setBusinessImageBase64] = useState("");
 
   const [details, setDetails] = useState({});
 
@@ -49,11 +51,20 @@ const ProfilePage = () => {
 
       const fetched_data = await response.json();
       setDetails(fetched_data);
+      if (fetched_data.business_image) {
+        const bufferData = fetched_data.business_image.data;
+        const base64 = arrayBufferToBase64(bufferData);
+        setBusinessImageBase64(`data:image/png;base64,${base64}`);
+        // console.log({hello : base64});
+        console.log({image : businessImageBase64});
+      }
     } catch (error) {
       console.error("Error fetching categories:", error);
       message.error("Failed to fetch categories.");
     }
   };
+  console.log(details);
+
 
   const handleUpdateBusiness = async (values) => {
     const token = localStorage.getItem("accessToken");
@@ -61,6 +72,37 @@ const ProfilePage = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+
+    /*
+    {
+  "business_name": "Tech Innovators Ltd.",
+  "business_mail": "contact@techinnovators.com",
+  "business_url": "https://www.techinnovators.com",
+  "business_hotline": "+1-800-TECH-INNO",
+  "business_description": " tech solutions.",
+  "business_address": "1234 Innovation Drive, Silicon Valley, CA",
+  "logo_location": "https://www.techinnovators.com/logo.png",
+  "business_registration_number": "TIN-12345678",
+  "business_type": "Technology",
+  "business_registration_date": "2022-01-15"
+    }   
+  need to filter those values from values
+  */
+
+  const dto = {
+    business_name: values.business_name,
+    business_mail: values.business_mail,
+    business_url: values.business_url,
+    business_hotline: values.business_hotline,
+    business_description: values.business_description,
+    business_address: values.business_address,
+    business_registration_number: values.business_registration_number,
+    business_type: values.business_type,
+    business_registration_date: values.business_registration_date,
+    logo_url: values.logo_url,
+  };
+
+    console.log(dto);
 
     try {
       const response = await fetch(
@@ -71,13 +113,14 @@ const ProfilePage = () => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(values),
+          body: JSON.stringify(dto),
         }
       );
 
       if (response.ok) {
         message.success("Business updated successfully");
         setIsBusinessModalVisible(false);
+        fetchDetails();
         form_first.resetFields();
       } else {
         message.error("Failed to update business. Please try again.");
@@ -94,6 +137,7 @@ const ProfilePage = () => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+    console.log(values);
 
     try {
       const response = await fetch(
@@ -104,6 +148,7 @@ const ProfilePage = () => {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
+
           body: JSON.stringify(values),
         }
       );
@@ -121,9 +166,21 @@ const ProfilePage = () => {
     }
   };
 
-  useEffect(() => {
+  const arrayBufferToBase64 = (buffer) => {
+    const binary = String.fromCharCode(...new Uint8Array(buffer));
+    return btoa(binary); // Convert binary to Base64
+  };
+  
+  // const fetchAndSetImage = async () => {
+  //   await fetchDetails();
+  // }
+
+
+  useEffect( () => {
     fetchDetails();
-  }, [handleUpdateBusiness,handleUpdateOwner]);
+     
+   
+  }, [navigator.onLine]);
 
   const handleEditBusiness = () => {
     form_first.setFieldsValue(details); // Set the form with business details when editing
@@ -147,7 +204,7 @@ const ProfilePage = () => {
       onOk() {},
     });
   };
-
+ 
   const handleCancelBusinessModal = () => {
     setIsBusinessModalVisible(false);
     form_first.resetFields(); // Reset the form when the modal is closed
@@ -158,7 +215,8 @@ const ProfilePage = () => {
     form_second.resetFields(); // Reset the form when the modal is closed
   };
 
-  const defaultLogo_1 = "/images/logo-placeholder.webp";
+
+
   const defaultLogo_2 = "/images/placeholder_for_owner.png";
 
   return (
@@ -184,10 +242,13 @@ const ProfilePage = () => {
           >
             {/* Business Logo */}
             <div style={{ textAlign: "center", marginBottom: "20px" }}>
+
+              {/* console log image here */}
+              {console.log({imagebody: details.business_image})}
               <Image
                 width={100}
                 height={100}
-                src={/* details.logo_location ||  */ defaultLogo_1} // Business logo from details
+                src={  details.logo_url || defaultLogo_1} // Business logo from details
                 preview={false}
                 style={{ borderRadius: "50%" }}
               />

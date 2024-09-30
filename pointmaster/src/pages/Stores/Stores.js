@@ -18,6 +18,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewStore from "../../components/Popups/AddNewStore";
+import { useMenu } from "../../context/MenuContext";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -30,6 +31,7 @@ const Stores = () => {
   const [editingStore, setEditingStore] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
+  const { branchID, role } = useMenu(); 
 
 
   const fetchBranches = async () => {
@@ -62,7 +64,9 @@ const Stores = () => {
   };
 
   useEffect(() => {
-    fetchBranches();
+    if (role === "owner") {
+      fetchBranches();
+    }
   }, []);
 
   const handleAddStore = async (values) => {
