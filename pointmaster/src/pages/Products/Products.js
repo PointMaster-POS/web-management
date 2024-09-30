@@ -205,7 +205,6 @@ const Products = () => {
     }
   };
   
-
   const handleDelete = (productId) => {
     confirm({
       title: `Are you sure you want to delete this product?`,
