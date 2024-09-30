@@ -9,6 +9,7 @@ import {
   Col,
   Dropdown,
   Menu,
+  message,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -18,13 +19,14 @@ import {
   ShoppingOutlined,
   MoreOutlined,
 } from "@ant-design/icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
 import OutOfStockModal from "../../components/Popups/OutOfStockModal";
-import { PopularItemsList } from "../../components/Data";
 import { OutOfStockList } from "../../components/Data";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
+import moment from "moment";
+import axios from "axios";
 import "./Dashboard.css";
 
 const { Title, Text } = Typography;
@@ -239,6 +241,37 @@ const DashboardCard = ({ icon, title }) => {
 
 const PopularItems = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [popularItemsList, setPopularItemsList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Get today's date and 30 days prior
+  const today = moment().format("YYYY-MM-DD");
+  const thirtyDaysAgo = moment().subtract(30, "days").format("YYYY-MM-DD");
+
+  // Fetch popular items for the last 30 days by default
+  const fetchPopularItems = async (startDate, endDate) => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken"); // Get the token from local storage
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${endDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+          },
+        }
+      );
+      setPopularItemsList(response.data); // Assuming the API returns the popular items data
+    } catch (error) {
+      message.error("Failed to fetch popular items");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPopularItems(thirtyDaysAgo, today); // Fetch items on component load
+  }, []);
 
   const handleViewAllClick = () => {
     setModalVisible(true);
@@ -259,11 +292,18 @@ const PopularItems = () => {
         >
           View All
         </Text>
-        <PopularItemsModal visible={modalVisible} onClose={handleCloseModal} />
+        <PopularItemsModal
+          visible={modalVisible}
+          onClose={handleCloseModal}
+          defaultStartDate={thirtyDaysAgo}
+          defaultEndDate={today}
+          fetchPopularItems={fetchPopularItems}
+        />
       </div>
       <List
+        loading={loading}
         itemLayout="horizontal"
-        dataSource={PopularItemsList.slice(0, 4)}
+        dataSource={popularItemsList.slice(0, 4)}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
