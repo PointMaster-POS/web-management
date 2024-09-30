@@ -280,11 +280,11 @@ const Category = () => {
         </Space>
       ),
     },
-    {
-      title: " ",
-      key: "orders",
-      render: (record) => <Button>View Category</Button>,
-    },
+    // {
+    //   title: " ",
+    //   key: "orders",
+    //   render: (record) => <Button>View Category</Button>,
+    // },
   ];
 
   return (

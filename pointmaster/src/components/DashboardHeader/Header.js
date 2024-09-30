@@ -93,14 +93,14 @@ const Header = ({ setIsAuthenticated }) => {
         Profile
       </Menu.Item>
 
-      <Menu.Item
+      {/* <Menu.Item
         key="2"
         icon={<SettingOutlined style={{ fontSize: "16px" }} />}
         onClick={handleSettingClick}
         style={{ fontWeight: "bold", fontSize: "16px" }}
       >
         Settings
-      </Menu.Item>
+      </Menu.Item> */}
 
       <Menu.Item
         key="3"
