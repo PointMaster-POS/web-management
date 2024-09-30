@@ -21,8 +21,9 @@ import { MenuProvider } from "./context/MenuContext";
 
 const App = () => {
   return (
-    <MenuProvider>
     <AuthProvider>
+    <MenuProvider>
+   
       <BrowserRouter>
         <Routes>
           {/* Public Routes */}
@@ -61,8 +62,9 @@ const App = () => {
           </Route>
         </Routes>
       </BrowserRouter>
-    </AuthProvider>
+    
     </MenuProvider>
+    </AuthProvider>
   );
 };
 
