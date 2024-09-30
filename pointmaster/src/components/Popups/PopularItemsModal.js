@@ -1,9 +1,19 @@
-import React from "react";
-import { Modal, Table, Avatar } from "antd";
-import { PopularItemsList } from "../Data";
+import React, { useState } from "react";
+import { Modal, Table, Avatar, DatePicker, Button, Card, Form } from "antd";
+import moment from "moment";
 
+const PopularItemsModal = ({
+  visible,
+  onClose,
+  defaultStartDate,
+  defaultEndDate,
+  fetchPopularItems,
+}) => {
+  const [startDate, setStartDate] = useState(moment(defaultStartDate));
+  const [endDate, setEndDate] = useState(moment(defaultEndDate));
+  const [tableLoading, setTableLoading] = useState(false);
+  const [popularItemsList, setPopularItemsList] = useState([]);
 
-const PopularItemsModal = ({ visible, onClose }) => {
   const columns = [
     {
       title: "Item",
@@ -23,6 +33,29 @@ const PopularItemsModal = ({ visible, onClose }) => {
     },
   ];
 
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+  };
+
+  const handleFetchData = async () => {
+    if (!startDate || !endDate) {
+      return;
+    }
+    setTableLoading(true);
+    try {
+      await fetchPopularItems(
+        startDate.format("YYYY-MM-DD"),
+        endDate.format("YYYY-MM-DD")
+      );
+    } finally {
+      setTableLoading(false);
+    }
+  };
+
   return (
     <Modal
       title="Popular Items"
@@ -31,7 +64,36 @@ const PopularItemsModal = ({ visible, onClose }) => {
       footer={null}
       width={800}
     >
-      <Table columns={columns} dataSource={PopularItemsList} pagination={{pageSize: 5}} />
+      <Card bordered={false} style={{ marginBottom: 16 }}>
+        <Form layout="inline">
+          <Form.Item label="Start Date">
+            <DatePicker
+              value={startDate}
+              onChange={handleStartDateChange}
+              format="YYYY-MM-DD"
+            />
+          </Form.Item>
+          <Form.Item label="End Date">
+            <DatePicker
+              value={endDate}
+              onChange={handleEndDateChange}
+              format="YYYY-MM-DD"
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" onClick={handleFetchData}>
+              Update
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+
+      <Table
+        columns={columns}
+        dataSource={popularItemsList}
+        pagination={{ pageSize: 5 }}
+        loading={tableLoading}
+      />
     </Modal>
   );
 };
