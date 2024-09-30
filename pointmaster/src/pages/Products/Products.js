@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Table,
   Space,
@@ -9,107 +9,232 @@ import {
   Tooltip,
   Card,
   Typography,
-  Avatar,
+  Select,
+  notification,
 } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
   ExclamationCircleOutlined,
   PlusOutlined,
+  PrinterOutlined,
 } from "@ant-design/icons";
-// import { useNavigate } from 'react-router-dom';
-import AddNewProduct from "../../components/Popups/AddNewProduct";
-import { productsData } from "../../components/Data";
+import axios from "axios";
+import { useMenu } from "../../context/MenuContext";
+import jsPDF from "jspdf"; // For generating PDFs
+import html2canvas from "html2canvas"; // For capturing the barcode area
+import JsBarcode from "jsbarcode"; // For generating barcodes
 
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
+const { Option } = Select;
 
 const Products = () => {
-  const [data, setData] = useState(productsData);
+  const { branchID } = useMenu();
+  const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [filteredData, setFilteredData] = useState(productsData);
+  const [filteredData, setFilteredData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // const navigate = useNavigate();
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const [selectedBarcode, setSelectedBarcode] = useState(null); 
+
+
+  const barcodeRef = useRef(); // Ref for capturing the barcode
 
   const showModal = () => {
     setIsModalVisible(true);
   };
 
-  const sortedData = [...filteredData].sort((a, b) => a.quantity - b.quantity);
+  const token = localStorage.getItem("accessToken");
+
+  
+  useEffect(() => {
+    const fetchCategories = async () => {
+      if (!branchID) return; // Ensure branchId is available
+      try {
+        const response = await axios.get(`http://localhost:3001/category/owner/${branchID}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, 
+          },
+        });
+        setCategories(response.data);
+        // Set the first category as default
+        if (response.data.length > 0) {
+          const firstCategory = response.data[0].category_id;
+          setSelectedCategory(firstCategory);
+          handleCategoryChange(firstCategory); // Fetch products for the default category
+        }
+      } catch (error) {
+        notification.error({
+          message: "Error",
+          description: "Failed to load categories.",
+        });
+      }
+    };
+    fetchCategories();
+  }, [branchID]);
+
+  const handleCategoryChange = async (categoryId) => {
+    setSelectedCategory(categoryId);
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://localhost:3001/items/${categoryId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setData(response.data);
+      setFilteredData(response.data);
+    } catch (error) {
+      notification.error({
+        message: "Error",
+        description: "Failed to load products for the selected category.",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleAddProduct = () => {
     form.validateFields().then((values) => {
-      form.resetFields();
-      setIsModalVisible(false);
+      const token = localStorage.getItem("accessToken"); // Fetch token from local storage
+  
       const newProduct = {
-        ...values,
-        product_id: `SUP${data.length + 123}`, // Simulate auto-increment
-        key: `${data.length + 1}`,
+        category_id: values.category,  // This will send the selected category's ID
+        item_name: values.product_name,
+        minimum_stock: values.minimum_stock,
+        barcode: values.barcode,
+        stock: values.stock,
+        price: values.selling_price,
+        // buying_price: values.buying_price,  --- chnge according to how himidu chnage database
+        image_url: values.image_url || "",
+        exp_date: values.exp_date,
+        discount: values.discount || 0,
+        supplier_name: values.supplier_name,
+        supplier_contacts: values.supplier_contacts,
       };
-      const newData = [...data, newProduct]; 
-      setData(newData);
-      setFilteredData(newData);
+  
+      // Log the request payload to inspect the data being sent
+      console.log("New Product:", newProduct);
+  
+      // Send the POST request to the server
+      axios
+        .post("http://localhost:3001/items", newProduct, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          form.resetFields(); 
+          setIsModalVisible(false);
+  
+          const newData = [...data, { ...newProduct, key: `${data.length + 1}` }];
+          setData(newData);
+          setFilteredData(newData);
+  
+          notification.success({
+            message: "Success",
+            description: "Product added successfully!",
+          });
+        })
+        .catch((error) => {
+          console.error("Failed to add product:", error.response.data); // Log the error response
+          notification.error({
+            message: "Error",
+            description: "Failed to add product. Please try again.",
+          });
+        });
     });
   };
-
+  
   const handleCancel = () => {
     setIsModalVisible(false);
     form.resetFields();
   };
 
-  /* const handleViewOrders = (supplier_id) => {
-    navigate(`/phistory/${supplier_id}`);
-  }; */
+  const handleEditAndSave = async (product) => {
+    
+    try {
+      // Set form fields with the selected product's data
+      form.setFieldsValue(product);
+      setIsModalVisible(true);
 
-  const handleEdit = (values) => {
-    /* const newData = data.map((item) =>
-      item.product_id === values.product_id ? { ...item, ...values } : item
-    );
-    setData(newData);
-    setFilteredData(newData); */
+      // Wait for the modal to close and the form to submit
+      const values = await form.validateFields();
+
+      // Make PUT request to update the product in the database
+      const response = await axios.put(
+        `http://localhost:3001/items/${product.item_id}`,
+        {
+          ...values,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        notification.success({
+          message: "Success",
+          description: "Product updated successfully!",
+        });
+
+        // Update your local data with the edited product details
+        const updatedData = data.map((item) =>
+          item.item_id === product.item_id ? { ...product, ...values } : item
+        );
+        setData(updatedData);
+
+        // Reset form and close modal
+        form.resetFields();
+        setIsModalVisible(false);
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+      notification.error({
+        message: "Error",
+        description: error.response?.data?.message || "Failed to update the product. Please try again.",
+      });
+    }
   };
-  const handleDelete = (ProductName) => {
+  
+  const handleDelete = (productId) => {
     confirm({
-      title: `Are you sure you want to delete "${ProductName}"?`,
+      title: `Are you sure you want to delete this product?`,
       icon: <ExclamationCircleOutlined />,
-      okText: "Delete",
+      okText: "Yes",
       okType: "danger",
-      cancelText: "Cancel",
+      cancelText: "No",
       centered: true,
+      onOk: () => {
+        const newData = data.filter((item) => item.product_id !== productId);
+        setData(newData);
+        setFilteredData(newData);
+        notification.success({
+          message: "Success",
+          description: "Product deleted successfully.",
+        });
+      },
     });
   };
-
-  /* const handleModalOk = () => {
-    form.validateFields().then((values) => {
-      console.log('Updated values:', values);
-      setIsModalVisible(false);
-      setEditingProduct(null);
-    }).catch((info) => {
-      console.log('Validate Failed:', info);
-    });
-  }; */
-
-  /* const handleModalCancel = () => {
-    setIsModalVisible(false);
-    setEditingProduct(null);
-  }; */
 
   const handleSearch = (value, exactMatch = false) => {
-    
     const filtered = data.filter((item) => {
       const product_name = item.product_name.toLowerCase();
-      const product_id = item.product_id.toString().toLowerCase(); // Convert product_id to string for comparison
+      const product_id = item.product_id.toString().toLowerCase();
       const searchValue = value.toLowerCase();
-
 
       if (exactMatch) {
         return product_name === searchValue || product_id === searchValue;
       } else {
-        return (
-          product_name.includes(searchValue) || product_id.includes(searchValue)
-        );
+        return product_name.includes(searchValue) || product_id.includes(searchValue);
       }
     });
 
@@ -117,100 +242,113 @@ const Products = () => {
     setSearchText(value);
   };
 
-  /* const navigateToAddProduct = () => {
-    setAddBtnColor('success'); // Change the button color to green when clicked
-    navigate('/addproduct');
-    };
-    */
+  const handlePrintBarcode = (record) => {
+    setSelectedBarcode(record.barcode); // Set the barcode to be generated
+
+    // Wait for the barcode to render before capturing it
+    setTimeout(() => {
+      if (barcodeRef.current) {
+        try {
+          // Generate the barcode using JsBarcode
+          JsBarcode(barcodeRef.current, String(record.barcode), {
+            format: "CODE128",
+            displayValue: true,
+            width: 2,
+            height: 50,
+          });
+
+          // Capture the barcode area and convert it to PDF
+          html2canvas(barcodeRef.current)
+            .then((canvas) => {
+              const imgData = canvas.toDataURL("image/png");
+              const pdf = new jsPDF();
+              pdf.addImage(imgData, "JPEG", 10, 10, 150, 50); // Adjust the size as necessary
+              pdf.save(`${record.barcode}.pdf`);
+            })
+            .catch((error) => {
+              console.error("Error generating PDF:", error);
+              notification.error({
+                message: "Error",
+                description: "Failed to generate the PDF. Please try again.",
+              });
+            });
+        } catch (error) {
+          console.error("Error rendering barcode:", error);
+        }
+      }
+    }, 100); // Small delay to ensure barcode renders
+  };
+   
   const columns = [
-    /* {
-      title: "",
-      dataIndex: "photo_url",
-      key: "photo_url",
-      render: (image) => <Avatar src={image} size={50} />,
-    }, */
     {
-      title: "Product ID",
-      dataIndex: "product_id",
-      key: "product_id",
+      title: "No.",
+      dataIndex: "index",
+      key: "index",
+      render: (text, record, index) => index + 1, // Render row number starting from 1
     },
-    /*  {
-      title: 'Order ID',
-      dataIndex: 'order_id',
-      key: 'order_id',
-    }, */
+    { title: "Item Name", dataIndex: "item_name", key: "item_name" },
     {
-      title: "Product Name",
-      dataIndex: "product_name",
-      key: "product_name",
+      title: "Buying Price",
+      dataIndex: "buying_price",
+      key: "buying_price",
+      render: (price) => `₹${price}`, 
     },
     {
-      title: "Category",
-      dataIndex: "category",
-      key: "category",
+      title: "Selling Price",
+      dataIndex: "price",
+      key: "price",
+      render: (price) => `₹${price}`, 
     },
     {
-      title: "Quantity",
-      dataIndex: "quantity",
-      key: "quantity",
-      render: (quantity) => (
+      title: "Stock",
+      dataIndex: "stock",
+      key: "stock",
+      render: (stock) => (
         <div>
-          {quantity < 100 ? (
+          {stock < 20 ? (
             <Tooltip title="Low stock !">
-              <span style={{ color: "red"/* , fontWeight: "bold"  */}}>
-                {quantity}
-              </span>
-              <ExclamationCircleOutlined
-                style={{ color: "red", marginLeft: 8 }}
-              />
+              <span style={{ color: "red" }}>{stock}</span>
+              <ExclamationCircleOutlined style={{ color: "red", marginLeft: 8 }} />
             </Tooltip>
           ) : (
-            quantity
+            stock
           )}
         </div>
       ),
     },
     {
-      title: "Buying Price",
-      dataIndex: "buying_price",
-      key: "buying_price",
+      title: "Minimum Stock",
+      dataIndex: "minimum_stock",
+      key: "minimum_stock",
     },
     {
-      title: "Selling Price",
-      dataIndex: "selling_price",
-      key: "selling_price",
+      title: "Discount",
+      dataIndex: "discount",
+      key: "discount",
+      render: (discount) => `${discount}%`, 
     },
     {
-      title: "Supplier ID", // New column for Supplier ID
-      dataIndex: "supplier_id",
-      key: "supplier_id",
+      title: "Expiration Date",
+      dataIndex: "exp_date",
+      key: "exp_date",
+      render: (exp_date) => new Date(exp_date).toLocaleDateString(), 
     },
-    {
-      title: "Added Date",
-      dataIndex: "added_date",
-      key: "added_date",
-    },
+    { title: "Supplier Name", dataIndex: "supplier_name", key: "supplier_name" },
+    { title: "Supplier Contacts", dataIndex: "supplier_contacts", key: "supplier_contacts" },
+    { title: "Barcode", dataIndex: "barcode", key: "barcode" },
     {
       title: "Actions",
       key: "actions",
       render: (record) => (
         <Space size="middle">
           <Tooltip title="Edit Product">
-            <Button
-              icon={<EditOutlined />}
-              onClick={() => handleEdit(record)}
-              style={{
-                borderColor: "#1890ff",
-                color: "#1890ff",
-              }}
-            />
+            <Button icon={<EditOutlined />} onClick={() => handleEditAndSave(record)} />
           </Tooltip>
           <Tooltip title="Delete Product">
-            <Button
-              icon={<DeleteOutlined />}
-              onClick={() => handleDelete(record.supplier_name)}
-              danger
-            />
+            <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record.item_id)} danger />
+          </Tooltip>
+          <Tooltip title="Print Barcode">
+            <Button icon={<PrinterOutlined />} onClick={() => handlePrintBarcode(record)} />
           </Tooltip>
         </Space>
       ),
@@ -218,63 +356,156 @@ const Products = () => {
   ];
 
   return (
-    <Card
-      style={{
-        margin: 30,
-        padding: 30,
-        borderRadius: "10px",
-      }}
-      bodyStyle={{ padding: "20px" }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Title level={3} style={{ marginBottom: 10 }}>
-          Products Data
-        </Title>
-
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <Search
-            placeholder="Search by Product ID or Product Name"
-            onSearch={(value) => handleSearch(value, true)}
-            onChange={(e) => handleSearch(e.target.value)}
-            value={searchText}
-            style={{ marginRight: 16, width: 300 }}
-          />
-          <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
+    <Card style={{ margin: 30, padding: 30, borderRadius: "10px" }} bodyStyle={{ padding: "20px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <Title level={3}>Products</Title>
+        <Space>
+          <Select
+            style={{ width: 200 }}
+            placeholder="Select Category"
+            onChange={handleCategoryChange}
+            value={selectedCategory} // Set the default category
+            loading={loading}
+          >
+            {categories.map((category) => (
+              <Option key={category.category_id} value={category.category_id}>
+                {category.category_name}
+              </Option>
+            ))}
+          </Select>
+          <Search placeholder="Search by Product Name" onSearch={handleSearch} enterButton style={{ width: 300 }} />
+          <Button type="primary" icon={<PlusOutlined />} onClick={showModal} size="large">
             Add New Product
           </Button>
-        </div>
+        </Space>
       </div>
-      <hr color="#1890ff" />
 
+      <Table columns={columns} dataSource={filteredData} rowKey="item_id" pagination={{ pageSize: 5 }} />
+
+      {selectedBarcode && (
+        <div style={{ opacity: 0, position: "absolute", top: -1000, left: -1000 }}>
+          <canvas ref={barcodeRef}></canvas>
+        </div>
+      )}
+      
+      {/* Modal for adding products */}
       <Modal
-        title="Add New Product"
+        title="Add Product"
         visible={isModalVisible}
+        onOk={handleAddProduct}
         onCancel={handleCancel}
-        footer={null}
-        centered
+        width={800}
       >
-        <AddNewProduct
-          form={form}
-          onAddProduct={handleAddProduct}
-          onCancel={handleCancel}
-        />
-      </Modal>
+        <Form form={form} layout="vertical">
+          <Form.Item name="product_name" label="Product Name" rules={[{ required: true, message: "Please enter a product name!" }]}>
+            <Input placeholder="Enter product name" />
+          </Form.Item>
 
-      <Table
-        dataSource={sortedData}
-        columns={columns}
-        pagination={{ pageSize: 5 }}
-        locale={{
-          emptyText: "No stores available.",
-        }}
-        style={{ marginTop: 20 }}
-      />
+
+          {/* Dropdown for Category */}
+          <Form.Item
+            name="category"
+            label="Category"
+            rules={[{ required: true, message: "Please select a category!" }]}
+          >
+            <Select
+              placeholder="Select category"
+              onChange={handleCategoryChange}
+              value={selectedCategory}
+            >
+              {categories.map((category) => (
+                <Option key={category.category_id} value={category.category_id}>
+                  {category.category_name}
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+          
+          <Form.Item
+          name="buying_price"
+          label="Buying Price"
+          rules={[{ required: true, message: "Please enter the buying price!" }]}
+        >
+          <Input  placeholder="Enter buying price" />
+        </Form.Item>
+
+        <Form.Item
+          name="selling_price"
+          label="Selling Price"
+          rules={[{ required: true, message: "Please enter the selling price!" }]}
+        >
+          <Input  placeholder="Enter selling price" />
+        </Form.Item>
+        
+
+       {/* Image url */}
+        <Form.Item
+          name="image_url"
+          label="Image URL"
+          rules={[{ required: true, message: "Please enter the image URL!" }]} 
+        >
+          <Input placeholder="Enter image URL" />
+        </Form.Item>
+
+
+
+        <Form.Item
+          name="stock"
+          label="Stock"
+          rules={[{ required: true, message: "Please enter the stock quantity!" }]}
+        >
+          <Input placeholder="Enter stock quantity" />
+        </Form.Item>
+
+        <Form.Item
+          name="minimum_stock"
+          label="Minimum Stock"
+          rules={[{ required: true, message: "Please enter the minimum stock!" }]}
+        >
+          <Input placeholder="Enter minimum stock" />
+        </Form.Item>
+
+        <Form.Item
+          name="discount"
+          label="Discount (%)"
+        >
+          <Input  placeholder="Enter discount percentage" />
+        </Form.Item>
+
+        <Form.Item
+          name="exp_date"
+          label="Expiration Date"
+          rules={[{ required: true, message: "Please enter the expiration date!" }]}
+        >
+          <Input type="date" />
+        </Form.Item>
+
+        <Form.Item
+          name="supplier_name"
+          label="Supplier Name"
+          rules={[{ required: true, message: "Please enter the supplier name!" }]}
+        >
+          <Input placeholder="Enter supplier name" />
+        </Form.Item>
+
+        <Form.Item
+          name="supplier_contacts"
+          label="Supplier Contacts"
+          rules={[{ required: true, message: "Please enter the supplier contacts!" }]}
+        >
+          <Input placeholder="Enter supplier contacts" />
+        </Form.Item>
+
+        <Form.Item
+          name="barcode"
+          label="Barcode"
+          rules={[{ required: true, message: "Please enter the barcode!" }]}
+        >
+          <Input placeholder="Enter barcode" />
+        </Form.Item>
+      </Form>
+    </Modal>
+
     </Card>
   );
 };
