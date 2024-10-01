@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Table, message } from "antd";
-import axios from "axios";
 import moment from "moment";
 
 const Expires = () => {
