@@ -52,6 +52,7 @@ const Products = () => {
   const [isViewProductModelVisible, setIsViewProductModelVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isNewProduct, setIsNewProduct] = useState(true);
+  const [selectedItemID, setSelectedItemID] = useState(null);
 
 
   const barcodeRef = useRef(); // Ref for capturing the barcode
@@ -197,6 +198,7 @@ const Products = () => {
 
   const handledEditProduct = (product) => { 
     setIsModalVisible(true);
+    console.log("Product:", product);
 
     form.setFieldsValue({
       product_name: product.item_name,
@@ -222,8 +224,8 @@ const Products = () => {
     
     try {
       // Set form fields with the selected product's data
-      console.log(product);
-      setIsModalVisible(true);
+      console.log({this_is_product: product});
+    
 
 
       if (fileList.length > 0) {
@@ -235,29 +237,35 @@ const Products = () => {
           console.log("Image URL:", imageUrl);
 
         } catch {
-          notification.error({
-            message: "Error",
-            description: "Failed to upload the image. Please try again.",
-          });
+          message.error("Failed to upload the image. Please try again.");
 
         }
       } else {
-        notification.error({
-          message: "Error",
-          description: "Please upload an image.",
-        });
+        message.error("Please upload an image.");
       }
 
       // Wait for the modal to close and the form to submit
       const values = await form.validateFields();
 
       console.log("Form values:", values);
+      console.log("Product ID:", selectedItemID);
 
       // Make PUT request to update the product in the database
       const response = await axios.put(
-        `http://localhost:3001/items/${product.item_id}`,
+        `http://localhost:3001/items/${selectedItemID}`,
         {
-          ...values,
+          category_id: values.category,
+          item_name: values.product_name,
+          minimum_stock: values.minimum_stock,
+          barcode: values.barcode,
+          stock: values.stock,
+          price: values.selling_price,
+          buying_price: values.buying_price,
+          image_url: productImageURL,
+          exp_date: values.exp_date,
+          discount: values.discount || 0,
+          supplier_name: values.supplier_name,
+          supplier_contact: values.supplier_contact,     
         },
         {
           headers: {
@@ -268,10 +276,7 @@ const Products = () => {
       );
 
       if (response.status === 200) {
-        notification.success({
-          message: "Success",
-          description: "Product updated successfully!",
-        });
+        message.success("Product updated successfully!");
 
         // Update your local data with the edited product details
        
@@ -281,10 +286,7 @@ const Products = () => {
       }
     } catch (error) {
       console.error("Error updating product:", error);
-      notification.error({
-        message: "Error",
-        description: error.response?.data?.message || "Failed to update the product. Please try again.",
-      });
+      message.error("Failed to update product. Please try again.");
     }
   };
 
@@ -473,6 +475,7 @@ const Products = () => {
           <Tooltip title="Edit Product">
             <Button icon={<EditOutlined />} onClick={() => { 
               handledEditProduct(record);
+              setSelectedItemID(record.item_id);
               setIsNewProduct(false);
                }} />
           </Tooltip>
@@ -533,7 +536,7 @@ const Products = () => {
       <Modal
         title={isNewProduct ? "Add New Product" : "Edit Product"}
         visible={isModalVisible}
-        onOk={isNewProduct ? handleAddProduct : () => handleEditAndSave(selectedProduct)}
+        onOk={isNewProduct ? handleAddProduct : () => handleEditAndSave(form.getFieldsValue())}
         onCancel={handleCancel}
         width={800}
       >
