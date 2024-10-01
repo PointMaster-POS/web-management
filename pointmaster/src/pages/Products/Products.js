@@ -11,6 +11,9 @@ import {
   Typography,
   Select,
   notification,
+  message,
+  Upload,
+
 } from "antd";
 import {
   EditOutlined,
@@ -18,13 +21,16 @@ import {
   ExclamationCircleOutlined,
   PlusOutlined,
   PrinterOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import axios from "axios";
 import { useMenu } from "../../context/MenuContext";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import jsPDF from "jspdf"; // For generating PDFs
 import html2canvas from "html2canvas"; // For capturing the barcode area
 import JsBarcode from "jsbarcode"; // For generating barcodes
-
+import { storage } from "../../firebase"; // Firebase storage instance
+import ProductDetailsModal from "../../components/Popups/ProductDetailModel/ProductDetailModel";
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
@@ -41,6 +47,12 @@ const Products = () => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const [selectedBarcode, setSelectedBarcode] = useState(null); 
+  const [fileList, setFileList] = useState([]); 
+  const [productImageURL, setProductImageURL] = useState(""); 
+  const [isViewProductModelVisible, setIsViewProductModelVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isNewProduct, setIsNewProduct] = useState(true);
+  const [selectedItemID, setSelectedItemID] = useState(null);
 
 
   const barcodeRef = useRef(); // Ref for capturing the barcode
@@ -78,8 +90,8 @@ const Products = () => {
     fetchCategories();
   }, [branchID]);
 
-  const handleCategoryChange = async (categoryId) => {
-    setSelectedCategory(categoryId);
+
+  const fetchProducts = async (categoryId) => {
     setLoading(true);
     try {
       const response = await axios.get(`http://localhost:3001/items/${categoryId}`, {
@@ -90,18 +102,49 @@ const Products = () => {
       setData(response.data);
       setFilteredData(response.data);
     } catch (error) {
-      notification.error({
-        message: "Error",
-        description: "Failed to load products for the selected category.",
-      });
+      message.error("Failed to load products.");
     } finally {
       setLoading(false);
     }
   };
 
+
+  const handleCategoryChange = async (categoryId) => {
+    setSelectedCategory(categoryId);
+    fetchProducts(categoryId);
+  };
+
   const handleAddProduct = () => {
-    form.validateFields().then((values) => {
+    form.validateFields().then(async (values) => {
+      //upload image to firebase  
+      if (fileList.length > 0) {
+        try {
+          const imageUrl = await handleUpload(fileList[0]);
+          //set image url to form values
+          setProductImageURL(imageUrl);
+
+          console.log("Image URL:", imageUrl);
+
+        } catch {
+          notification.error({
+            message: "Error",
+            description: "Failed to upload the image. Please try again.",
+          });
+
+        }
+      } else {
+        notification.error({
+          message: "Error",
+          description: "Please upload an image.",
+        });
+      }
+
+        
+
+
       const token = localStorage.getItem("accessToken"); // Fetch token from local storage
+
+
   
       const newProduct = {
         category_id: values.category,  // This will send the selected category's ID
@@ -110,8 +153,8 @@ const Products = () => {
         barcode: values.barcode,
         stock: values.stock,
         price: values.selling_price,
-        // buying_price: values.buying_price,  --- chnge according to how himidu chnage database
-        image_url: values.image_url || "",
+        buying_price: values.buying_price,  
+        image_url: productImageURL,
         exp_date: values.exp_date,
         discount: values.discount || 0,
         supplier_name: values.supplier_name,
@@ -136,10 +179,7 @@ const Products = () => {
           setData(newData);
           setFilteredData(newData);
   
-          notification.success({
-            message: "Success",
-            description: "Product added successfully!",
-          });
+          message.success("Product added successfully!");
         })
         .catch((error) => {
           console.error("Failed to add product:", error.response.data); // Log the error response
@@ -156,21 +196,76 @@ const Products = () => {
     form.resetFields();
   };
 
+  const handledEditProduct = (product) => { 
+    setIsModalVisible(true);
+    console.log("Product:", product);
+
+    form.setFieldsValue({
+      product_name: product.item_name,
+      category: product.category_id,
+      buying_price: product.buying_price,
+      selling_price: product.price,
+      stock: product.stock,
+      minimum_stock: product.minimum_stock,
+      discount: product.discount,
+      exp_date: product.exp_date,
+      supplier_name: product.supplier_name,
+      supplier_contacts: product.supplier_contacts,
+      barcode: product.barcode,
+
+    });
+
+  }
+
+  
+
+
   const handleEditAndSave = async (product) => {
     
     try {
       // Set form fields with the selected product's data
-      form.setFieldsValue(product);
-      setIsModalVisible(true);
+      console.log({this_is_product: product});
+    
+
+
+      if (fileList.length > 0) {
+        try {
+          const imageUrl = await handleUpload(fileList[0]);
+          //set image url to form values
+          setProductImageURL(imageUrl);
+
+          console.log("Image URL:", imageUrl);
+
+        } catch {
+          message.error("Failed to upload the image. Please try again.");
+
+        }
+      } else {
+        message.error("Please upload an image.");
+      }
 
       // Wait for the modal to close and the form to submit
       const values = await form.validateFields();
 
+      console.log("Form values:", values);
+      console.log("Product ID:", selectedItemID);
+
       // Make PUT request to update the product in the database
       const response = await axios.put(
-        `http://localhost:3001/items/${product.item_id}`,
+        `http://localhost:3001/items/${selectedItemID}`,
         {
-          ...values,
+          category_id: values.category,
+          item_name: values.product_name,
+          minimum_stock: values.minimum_stock,
+          barcode: values.barcode,
+          stock: values.stock,
+          price: values.selling_price,
+          buying_price: values.buying_price,
+          image_url: productImageURL,
+          exp_date: values.exp_date,
+          discount: values.discount || 0,
+          supplier_name: values.supplier_name,
+          supplier_contact: values.supplier_contact,     
         },
         {
           headers: {
@@ -181,31 +276,45 @@ const Products = () => {
       );
 
       if (response.status === 200) {
-        notification.success({
-          message: "Success",
-          description: "Product updated successfully!",
-        });
+        message.success("Product updated successfully!");
 
         // Update your local data with the edited product details
-        const updatedData = data.map((item) =>
-          item.item_id === product.item_id ? { ...product, ...values } : item
-        );
-        setData(updatedData);
-
+       
         // Reset form and close modal
         form.resetFields();
         setIsModalVisible(false);
       }
     } catch (error) {
       console.error("Error updating product:", error);
-      notification.error({
-        message: "Error",
-        description: error.response?.data?.message || "Failed to update the product. Please try again.",
+      message.error("Failed to update product. Please try again.");
+    }
+  };
+
+  const deleteProduct = async (productId) => {
+    const token = localStorage.getItem("accessToken");
+    console.log("Product ID:", productId);
+    console.log("Token:", token);
+    try {
+      const response = await axios.delete(`http://localhost:3001/items/${productId}`, {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
       });
+      if (response.status === 200) {
+        console.log("Product deleted successfully!");
+        message.success("Product deleted successfully!");
+        // fetchProducts();
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      message.error("Failed to delete product. Please try again.");
+     
     }
   };
   
   const handleDelete = (productId) => {
+    console.log("Product ID:", productId);
     confirm({
       title: `Are you sure you want to delete this product?`,
       icon: <ExclamationCircleOutlined />,
@@ -214,13 +323,8 @@ const Products = () => {
       cancelText: "No",
       centered: true,
       onOk: () => {
-        const newData = data.filter((item) => item.product_id !== productId);
-        setData(newData);
-        setFilteredData(newData);
-        notification.success({
-          message: "Success",
-          description: "Product deleted successfully.",
-        });
+        deleteProduct(productId);
+        
       },
     });
   };
@@ -241,6 +345,25 @@ const Products = () => {
     setFilteredData(filtered);
     setSearchText(value);
   };
+
+  const handleUpload = async (file) => {
+    try {
+      const storageRef = ref(storage, `product-images/${file.name}`);
+      await uploadBytes(storageRef, file);
+      console.log("File uploaded successfully!");
+      const logoURL = await getDownloadURL(storageRef);
+      return logoURL;
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      throw new Error("File upload failed");
+    }
+  };
+
+  // Handle file selection in the Upload component
+  const handleFileChange = ({ fileList }) => {
+    setFileList(fileList.map((file) => file.originFileObj));
+  };
+
 
   const handlePrintBarcode = (record) => {
     setSelectedBarcode(record.barcode); // Set the barcode to be generated
@@ -278,6 +401,26 @@ const Products = () => {
       }
     }, 100); // Small delay to ensure barcode renders
   };
+
+  // Optional file validation before upload (e.g., check file type and size)
+  const beforeUpload = (file) => {
+    const isValidType = file.type === "image/jpeg" || file.type === "image/png";
+    if (!isValidType) {
+      message.error("You can only upload JPG/PNG files!");
+      return false;
+    }
+    const isLt2M = file.size / 1024 / 1024 < 2; // 2MB max file size
+    if (!isLt2M) {
+      message.error("Image must be smaller than 2MB!");
+      return false;
+    }
+    return true;
+  };
+
+  const handleCancelModel = () => {
+    setIsViewProductModelVisible(false);
+    setSelectedProduct(null);
+  };
    
   const columns = [
     {
@@ -287,12 +430,7 @@ const Products = () => {
       render: (text, record, index) => index + 1, // Render row number starting from 1
     },
     { title: "Item Name", dataIndex: "item_name", key: "item_name" },
-    {
-      title: "Buying Price",
-      dataIndex: "buying_price",
-      key: "buying_price",
-      render: (price) => `₹${price}`, 
-    },
+  
     {
       title: "Selling Price",
       dataIndex: "price",
@@ -321,20 +459,13 @@ const Products = () => {
       dataIndex: "minimum_stock",
       key: "minimum_stock",
     },
-    {
-      title: "Discount",
-      dataIndex: "discount",
-      key: "discount",
-      render: (discount) => `${discount}%`, 
-    },
+ 
     {
       title: "Expiration Date",
       dataIndex: "exp_date",
       key: "exp_date",
       render: (exp_date) => new Date(exp_date).toLocaleDateString(), 
     },
-    { title: "Supplier Name", dataIndex: "supplier_name", key: "supplier_name" },
-    { title: "Supplier Contacts", dataIndex: "supplier_contacts", key: "supplier_contacts" },
     { title: "Barcode", dataIndex: "barcode", key: "barcode" },
     {
       title: "Actions",
@@ -342,13 +473,23 @@ const Products = () => {
       render: (record) => (
         <Space size="middle">
           <Tooltip title="Edit Product">
-            <Button icon={<EditOutlined />} onClick={() => handleEditAndSave(record)} />
+            <Button icon={<EditOutlined />} onClick={() => { 
+              handledEditProduct(record);
+              setSelectedItemID(record.item_id);
+              setIsNewProduct(false);
+               }} />
           </Tooltip>
           <Tooltip title="Delete Product">
             <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record.item_id)} danger />
           </Tooltip>
           <Tooltip title="Print Barcode">
             <Button icon={<PrinterOutlined />} onClick={() => handlePrintBarcode(record)} />
+          </Tooltip>
+          <Tooltip title="View Product">
+            <Button onClick={() => {
+              setSelectedProduct(record);
+              setIsViewProductModelVisible(true);
+            }}>View More</Button>
           </Tooltip>
         </Space>
       ),
@@ -374,7 +515,10 @@ const Products = () => {
             ))}
           </Select>
           <Search placeholder="Search by Product Name" onSearch={handleSearch} enterButton style={{ width: 300 }} />
-          <Button type="primary" icon={<PlusOutlined />} onClick={showModal} size="large">
+          <Button type="primary" icon={<PlusOutlined />} onClick={ () => {
+            showModal();
+            setIsNewProduct(true);
+          }} size="large">
             Add New Product
           </Button>
         </Space>
@@ -390,9 +534,9 @@ const Products = () => {
       
       {/* Modal for adding products */}
       <Modal
-        title="Add Product"
+        title={isNewProduct ? "Add New Product" : "Edit Product"}
         visible={isModalVisible}
-        onOk={handleAddProduct}
+        onOk={isNewProduct ? handleAddProduct : () => handleEditAndSave(form.getFieldsValue())}
         onCancel={handleCancel}
         width={800}
       >
@@ -437,15 +581,20 @@ const Products = () => {
           <Input  placeholder="Enter selling price" />
         </Form.Item>
         
-
-       {/* Image url */}
-        <Form.Item
-          name="image_url"
-          label="Image URL"
-          rules={[{ required: true, message: "Please enter the image URL!" }]} 
-        >
-          <Input placeholder="Enter image URL" />
-        </Form.Item>
+          <Form.Item
+            label="Product Image"
+            name="image_url"
+            rules={[{ required: true, message: "Please upload the business logo!" }]}
+          >
+            <Upload
+              listType="picture"
+              beforeUpload={beforeUpload} 
+              onChange={handleFileChange}
+              fileList={fileList}
+            >
+              <Button icon={<UploadOutlined />}>Upload Logo</Button>
+            </Upload>
+          </Form.Item>
 
 
 
@@ -489,7 +638,7 @@ const Products = () => {
         </Form.Item>
 
         <Form.Item
-          name="supplier_contacts"
+          name="supplier_contact"
           label="Supplier Contacts"
           rules={[{ required: true, message: "Please enter the supplier contacts!" }]}
         >
@@ -505,6 +654,12 @@ const Products = () => {
         </Form.Item>
       </Form>
     </Modal>
+
+    {/* Modal for viewing product details */} 
+   
+    <ProductDetailsModal isVisible={isViewProductModelVisible} handleCancel={handleCancelModel} product={selectedProduct} />
+   
+
 
     </Card>
   );

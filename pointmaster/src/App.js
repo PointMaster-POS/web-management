@@ -22,10 +22,19 @@ import Expires from "./pages/Expires/Expires";
 const App = () => {
   return (
     <AuthProvider>
-      <MenuProvider>
-        <BrowserRouter>
-          <Routes>
-            {/* Public Routes */}
+
+    <MenuProvider>
+   
+      <BrowserRouter>
+        <Routes>
+          {/* Public Routes */}
+
+//           <Route path="/" element={<Landing />} />
+//           <Route path="/login" element={<LogIn />} />
+//           <Route
+//             path="/forgot-password"
+//             element={<LogIn forgotPassword={true} />}
+//           />
 
             {/* <Route path="/" element={<Landing />} /> */}
             <Route path="/login" element={<LogIn />} />

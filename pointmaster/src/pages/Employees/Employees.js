@@ -10,6 +10,7 @@ import {
   Input,
   Form,
   message,
+  Avatar,
 } from "antd";
 import {
   EditOutlined,
@@ -18,6 +19,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewEmployee from "../../components/Popups/AddNewEmployee";
+import ViewEmployeeProfile from "../../components/Popups/EmployeeProfileModel/EmployeeProfileModel";
 import { useMenu } from "../../context/MenuContext";
 
 const { Title } = Typography;
@@ -30,10 +32,11 @@ const Employees = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [viewEmployee, setViewEmployee] = useState(null);
   const [form] = Form.useForm();
   const {branchID, role} = useMenu();
 
-  const fetchEmplyoees = async () => {
+  const fetchEmployees = async () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
@@ -61,6 +64,12 @@ const Employees = () => {
       }
 
       const data = await response.json();
+      console.log(data);
+      if (data.length === 0) {
+        message.info("No employees available.");
+        return;
+      }
+
       setData(data);
       setFilteredData(data);
     } catch (error) {
@@ -70,12 +79,12 @@ const Employees = () => {
   };
 
   useEffect(() => {
-    fetchEmplyoees();
+
+    fetchEmployees();
   }, [branchID, role]);
 
 
   const handleAddEmployee = async (values) => {
-    console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
@@ -87,8 +96,8 @@ const Employees = () => {
       const response = await fetch("http://localhost:3001/employee", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(values),
       });
@@ -99,7 +108,7 @@ const Employees = () => {
         message.success("Employee added successfully");
         setIsModalVisible(false);
         form.resetFields();
-        fetchEmplyoees();
+        fetchEmployees();
       } else {
         message.error("Failed to add employee");
       }
@@ -135,7 +144,7 @@ const Employees = () => {
         setIsModalVisible(false);
         form.resetFields();
         setEditingEmployee(null);
-        fetchEmplyoees();
+        fetchEmployees();
       } else {
         message.error("Failed to update employee");
       }
@@ -156,7 +165,7 @@ const Employees = () => {
     confirm({
       title: "Are you sure you want to delete this employee?",
       icon: <ExclamationCircleOutlined />,
-      content: `This action will delete the store "${employee_name}".`,
+      content: `This action will delete the employee "${employee_name}".`,
       okText: "Yes",
       okType: "danger",
       cancelText: "No",
@@ -170,17 +179,17 @@ const Employees = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/branch/${branchID}/${employee_id}`, {
+          await fetch(`http://localhost:3001/employee/${employee_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
             },
           });
-          fetchEmplyoees();
-          message.success("Store deleted successfully.");
+          fetchEmployees();
+          message.success("Employee deleted successfully.");
         } catch (error) {
-          console.error("Error deleting branch:", error);
-          message.error("Failed to delete store.");
+          console.error("Error deleting employee:", error);
+          message.error("Failed to delete employee.");
         }
       },
     });
@@ -216,18 +225,24 @@ const Employees = () => {
     setSearchText(value);
   };
 
-  const handleViewEmployee = () => {
+  const handleViewEmployee = (employee) => {
+    setViewEmployee(employee);
 
+
+  }
+
+  const handleCancelView = () => {
+    setViewEmployee(null);
   }
 
 
   const columns = [
-    /* {
-      title: "",
+    {
+      title: "Phtoto",
       dataIndex: "photo_url",
       key: "photo_url",
       render: (image) => <Avatar src={image} size={50} />,
-    }, */
+    }, 
     {
       title: "Employee ID",
       dataIndex: "employee_id",
@@ -280,9 +295,8 @@ const Employees = () => {
       title: "",
       key: "",
       render: (record) => (
-        <Button onClick={() => handleViewEmployee(record.employee_id)}>
-          View More
-        </Button>
+        <Button onClick={() => handleViewEmployee(record)}>View More</Button>
+      
       ),
     },
   ];
@@ -350,6 +364,16 @@ const Employees = () => {
         }}
         style={{ marginTop: 20 }}
       />
+
+
+      {/* View Employee Profile Modal */}
+      {viewEmployee && (
+        <ViewEmployeeProfile
+          visible={!!viewEmployee}
+          onCancel={handleCancelView}
+          employee={viewEmployee}
+        />
+      )}
     </Card>
   );
 };

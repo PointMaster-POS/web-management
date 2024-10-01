@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Form, Input, Select, Button, message, DatePicker, Upload } from "antd";
+import { Form, Input, Select, Button, message, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { storage } from "../../firebase";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const { Option } = Select;
 
@@ -8,6 +10,9 @@ const Roles = [{ name: "cashier" }, { name: "branch manager" }];
 
 const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
   const [branches, setBranches] = useState([]);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     const fetchBranches = async () => {
@@ -41,8 +46,44 @@ const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
     fetchBranches();
   }, []);
 
-  const handleFinish = (values) => {
-    onAddEmployee(values);
+  const handleImageChange = ({ file }) => {
+    setImageFile(file);
+  };
+
+  const uploadImageToFirebase = async () => {
+    if (!imageFile) return null;
+
+    const storageRef = ref(storage, `employee_images/${imageFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+    return new Promise((resolve, reject) => {
+      uploadTask.on(
+        "state_changed",
+        null,
+        (error) => {
+          message.error("Image upload failed!");
+          reject(error);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            resolve(downloadURL);
+          });
+        }
+      );
+    });
+  };
+
+  const handleFinish = async (values) => {
+    setUploading(true);
+    try {
+      const imageUrl = await uploadImageToFirebase();
+      const employeeData = { ...values, photo_url: imageUrl };
+      onAddEmployee(employeeData);
+    } catch (error) {
+      message.error("Failed to add employee with image.");
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -101,25 +142,32 @@ const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
       >
         <Input />
       </Form.Item>
-
-      {/* <Form.Item
+      {/*birth day - date picker */}
+      <Form.Item
         name="birthday"
-        label="Birthday"
-        rules={[{ required: true, message: "Please select a birth date" }]}
+        label="Birth Day"
+        rules={[{ required: true, message: "Please enter the birth day" }]}
       >
-        <DatePicker style={{ width: "100%" }} />
+        <Input type="date" />
       </Form.Item>
- */}
-      {/* <Form.Item
+
+
+
+      {/* Image Upload */}
+      <Form.Item
         label="Image"
         name="photo_url"
-        valuePropName="fileList"
-        rules={[{ required: true, message: "Please upload the image!" }]}
+        rules={[{ required: true, message: "Please upload an image!" }]}
       >
-        <Upload listType="picture" beforeUpload={() => false}>
+        <Upload
+          listType="picture"
+          beforeUpload={() => false}
+          onChange={handleImageChange}
+          accept="image/*"
+        >
           <Button icon={<UploadOutlined />}>Upload Image</Button>
         </Upload>
-      </Form.Item> */}
+      </Form.Item>
 
       <Form.Item
         label="Select Role"
@@ -176,8 +224,9 @@ const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
           type="primary"
           htmlType="submit"
           style={{ backgroundColor: "#1890ff", borderColor: "#1890ff" }}
+          loading={uploading}
         >
-          Add Employee
+          {uploading ? "Uploading..." : "Add Employee"}
         </Button>
       </Form.Item>
     </Form>

@@ -31,7 +31,7 @@ const Stores = () => {
   const [editingStore, setEditingStore] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [form] = Form.useForm();
-  const { branchID, role } = useMenu(); 
+  const { branchID, role , onAddingBranch, setOnAddingBranch} = useMenu(); 
 
 
   const fetchBranches = async () => {
@@ -57,6 +57,8 @@ const Stores = () => {
       const data = await response.json();
       setData(data);
       setFilteredData(data);
+
+      setOnAddingBranch(!onAddingBranch);
     } catch (error) {
       console.error("Error fetching branches:", error);
       message.error("Failed to fetch branches.");
@@ -94,6 +96,7 @@ const Stores = () => {
         setIsModalVisible(false);
         form.resetFields();
         fetchBranches();
+        setOnAddingBranch(!onAddingBranch);
       } else {
         message.error("Failed to add branch");
       }
@@ -147,6 +150,7 @@ const Stores = () => {
         //   )
         // );
         fetchBranches();
+        setOnAddingBranch(!onAddingBranch);
       } else {
         message.error("Failed to update branch");
       }
@@ -195,6 +199,7 @@ const Stores = () => {
           // setData(newData);
           // setFilteredData(newData);
           fetchBranches();
+          setOnAddingBranch(!onAddingBranch);
           message.success("Store deleted successfully.");
         } catch (error) {
           console.error("Error deleting branch:", error);

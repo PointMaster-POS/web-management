@@ -19,7 +19,7 @@ import { useMenu } from "../../context/MenuContext";
 // ];
 
 const Header = ({ setIsAuthenticated }) => {
-  const { selectedMenu, role,branchID,setBranchID } = useMenu(); // Get selectedMenu from context
+  const { selectedMenu, role,branchID,setBranchID, onAddingBranch } = useMenu(); // Get selectedMenu from context
   const navigate = useNavigate();
   const [branches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState(''); // Set default branch
@@ -75,7 +75,7 @@ const Header = ({ setIsAuthenticated }) => {
 
   useEffect(() => {
     fetchBranches();
-  }, []);
+  }, [onAddingBranch]);
 
   const menu = (
     <Menu
@@ -93,14 +93,14 @@ const Header = ({ setIsAuthenticated }) => {
         Profile
       </Menu.Item>
 
-      <Menu.Item
+      {/* <Menu.Item
         key="2"
         icon={<SettingOutlined style={{ fontSize: "16px" }} />}
         onClick={handleSettingClick}
         style={{ fontWeight: "bold", fontSize: "16px" }}
       >
         Settings
-      </Menu.Item>
+      </Menu.Item> */}
 
       <Menu.Item
         key="3"

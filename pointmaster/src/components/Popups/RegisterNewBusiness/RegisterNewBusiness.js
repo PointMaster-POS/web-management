@@ -3,7 +3,7 @@ import { Form, Input, Button, Select, Upload, Typography, message } from "antd";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { UploadOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
-import { storage } from "../../../firebase"; // Importing firebase storage directly
+import { storage } from "../../../firebase"; 
 import "./RegisterNewBusiness.css"; // Ensure this CSS file is present and properly styles the form
 
 const { Option } = Select;
