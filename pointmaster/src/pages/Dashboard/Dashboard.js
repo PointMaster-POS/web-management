@@ -13,11 +13,11 @@ import {
 } from "antd";
 import {
   ShoppingCartOutlined,
-  StopOutlined,
   DollarOutlined,
   PoundOutlined,
   ShoppingOutlined,
   MoreOutlined,
+  ExclamationOutlined
 } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
@@ -27,6 +27,7 @@ import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import moment from "moment";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 const { Title, Text } = Typography;
@@ -57,8 +58,8 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={8}>
-              <DashboardCard
-                icon={<StopOutlined style={iconStyle("blue")} />}
+              <ExpiresCard
+                icon={<ExclamationOutlined style={iconStyle("blue")} />}
                 title="Expires in a month"
                 value={1234}
               />
@@ -158,7 +159,6 @@ const SalesCard = ({ icon }) => {
 
 const PurchasesCard = ({ icon }) => {
   const [timeFrame, setTimeFrame] = useState("Today");
-  const [sales, setSales] = useState(1234);
 
   const handleMenuClick = (e) => {
     setTimeFrame(e.key);
@@ -224,6 +224,57 @@ const DashboardCard2 = ({ icon }) => {
         {icon}
         {/* <Statistic title={title} value={value} className="statistic" /> */}
       </Space>
+    </Card>
+  );
+};
+
+const ExpiresCard = ({ icon, title }) => {
+  const [expiresCount, setExpiresCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // Hook for navigation
+
+  useEffect(() => {
+    const fetchExpiringItems = async () => {
+      setLoading(true);
+      const token = localStorage.getItem("accessToken");
+      try {
+        const response = await axios.get(
+          "http://localhost:3001/dashboard/business/expired-items",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+            },
+          }
+        );
+        setExpiresCount(response.data.length); // Assuming the response returns the items array
+      } catch (error) {
+        message.error("Failed to fetch expiring items");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExpiringItems(); // Fetch expiring items on component load
+  }, []);
+
+  const handleViewMore = () => {
+    navigate("/expires"); // Redirect to the /expires page
+  };
+
+  return (
+    <Card className="card">
+      <Space direction="horizontal" size="large" className="card-content">
+        {icon}
+        <Statistic title={title} value={loading ? "Loading..." : expiresCount} className="statistic" />
+      </Space>
+      <Text
+        type="secondary"
+        className="view-all"
+        style={{ cursor: "pointer", marginTop: 10 }}
+        onClick={handleViewMore}
+      >
+        View more
+      </Text>
     </Card>
   );
 };
