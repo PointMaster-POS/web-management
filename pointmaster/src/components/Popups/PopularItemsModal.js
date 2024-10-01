@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Modal, Table, Avatar, DatePicker, Button, Card, Form } from "antd";
 import moment from "moment";
+import dayjs from "dayjs";
 
 const PopularItemsModal = ({
   visible,
@@ -68,14 +69,14 @@ const PopularItemsModal = ({
         <Form layout="inline">
           <Form.Item label="Start Date">
             <DatePicker
-              value={startDate}
+              defaultValue={dayjs(startDate)}
               onChange={handleStartDateChange}
               format="YYYY-MM-DD"
             />
           </Form.Item>
           <Form.Item label="End Date">
             <DatePicker
-              value={endDate}
+              value={dayjs(endDate)}
               onChange={handleEndDateChange}
               format="YYYY-MM-DD"
             />
