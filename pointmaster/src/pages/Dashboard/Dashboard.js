@@ -17,7 +17,7 @@ import {
   PoundOutlined,
   ShoppingOutlined,
   MoreOutlined,
-  ExclamationOutlined
+  ExclamationOutlined,
 } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
@@ -265,7 +265,11 @@ const ExpiresCard = ({ icon, title }) => {
     <Card className="card">
       <Space direction="horizontal" size="large" className="card-content">
         {icon}
-        <Statistic title={title} value={loading ? "Loading..." : expiresCount} className="statistic" />
+        <Statistic
+          title={title}
+          value={loading ? "Loading..." : expiresCount}
+          className="statistic"
+        />
       </Space>
       <Text
         type="secondary"
@@ -297,24 +301,59 @@ const PopularItems = () => {
 
   // Get today's date and 30 days prior
   const today = moment().format("YYYY-MM-DD");
+  console.log(today);
   const thirtyDaysAgo = moment().subtract(30, "days").format("YYYY-MM-DD");
+  console.log(thirtyDaysAgo);
 
   // Fetch popular items for the last 30 days by default
+  // const fetchPopularItems = async (startDate, endDate) => {
+  //   setLoading(true);
+  //   const token = localStorage.getItem("accessToken"); // Get the token from local storage
+  //   try {
+  //     const response = await axios.get(
+  //       `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${endDate}`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+  //         },
+  //       }
+  //     );
+  //     setPopularItemsList(response.data); // Assuming the API returns the popular items data
+  //     console.log(popularItemsList);
+  //   } catch (error) {
+  //     message.error("Failed to fetch popular items");
+
+  // };
+
   const fetchPopularItems = async (startDate, endDate) => {
-    setLoading(true);
-    const token = localStorage.getItem("accessToken"); // Get the token from local storage
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
     try {
-      const response = await axios.get(
+      const response = await fetch(
         `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${endDate}`,
         {
+          method: "GET",
           headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
           },
         }
       );
-      setPopularItemsList(response.data); // Assuming the API returns the popular items data
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Fetched data: ", data); // Check the fetched data
+      setPopularItemsList(data);
     } catch (error) {
-      message.error("Failed to fetch popular items");
+      console.error("Error fetching employees:", error);
+      message.error("Failed to fetch employees.");
     } finally {
       setLoading(false);
     }
@@ -358,11 +397,11 @@ const PopularItems = () => {
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={item.image} size={50} />}
-              title={<Text className="item-title"> {item.name} </Text>}
+              avatar={<Avatar src={item.image_url} size={50} />}
+              title={<Text className="item-title"> {item.item_name} </Text>}
               description={
                 <Text type="secondary" className="item-description">
-                  Sales: {item.sales}
+                  Sales: {item.purchase_count}
                 </Text>
               }
             />
