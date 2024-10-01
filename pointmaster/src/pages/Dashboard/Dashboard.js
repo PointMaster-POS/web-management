@@ -332,9 +332,11 @@ const PopularItems = () => {
       return;
     }
 
+    const adjustedEndDate = moment(endDate).add(1, "days").format("YYYY-MM-DD");
+
     try {
       const response = await fetch(
-        `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${endDate}`,
+        `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${adjustedEndDate}`,
         {
           method: "GET",
           headers: {
@@ -385,6 +387,7 @@ const PopularItems = () => {
         <PopularItemsModal
           visible={modalVisible}
           onClose={handleCloseModal}
+          popularItemsList={popularItemsList}
           defaultStartDate={thirtyDaysAgo}
           defaultEndDate={today}
           fetchPopularItems={fetchPopularItems}
