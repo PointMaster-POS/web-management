@@ -29,12 +29,12 @@ const App = () => {
         <Routes>
           {/* Public Routes */}
 
-//           <Route path="/" element={<Landing />} />
-//           <Route path="/login" element={<LogIn />} />
-//           <Route
-//             path="/forgot-password"
-//             element={<LogIn forgotPassword={true} />}
-//           />
+           <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<LogIn />} />
+         <Route
+            path="/forgot-password"
+            element={<LogIn forgotPassword={true} />}
+          />
 
             {/* <Route path="/" element={<Landing />} /> */}
             <Route path="/login" element={<LogIn />} />

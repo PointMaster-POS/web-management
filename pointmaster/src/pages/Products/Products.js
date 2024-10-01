@@ -417,6 +417,7 @@ const Products = () => {
     return true;
   };
 
+  // Function to handle image upload to Firebase
   const handleCancelModel = () => {
     setIsViewProductModelVisible(false);
     setSelectedProduct(null);
