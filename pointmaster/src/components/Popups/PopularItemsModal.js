@@ -19,18 +19,18 @@ const PopularItemsModal = ({
     {
       title: "Item",
       dataIndex: "image",
-      key: "image",
+      key: "image_url",
       render: (image) => <Avatar src={image} size={50} />,
     },
     {
       title: "",
       dataIndex: "name",
-      key: "name",
+      key: "item_name",
     },
     {
       title: "Sales",
       dataIndex: "sales",
-      key: "sales",
+      key: "purchase_count",
     },
   ];
 
