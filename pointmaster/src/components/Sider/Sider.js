@@ -6,6 +6,7 @@ import {
   PhoneOutlined,
   AppstoreOutlined,
   ProductOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -20,8 +21,6 @@ const items = [
     icon: <DashboardOutlined />,
     label: "Dashboard",
   },
-
- 
   {
     key: "/category",
     icon: <AppstoreOutlined />,
@@ -37,6 +36,7 @@ const items = [
     icon: <UserOutlined />,
     label: "Employees",
   }
+
 ];
 
 const SideBar = ({ onCollapse }) => {
@@ -125,6 +125,13 @@ const SideBar = ({ onCollapse }) => {
             Stores
           </Menu.Item>
         )}
+        <Menu.Item
+            key="/expires"
+            icon={<ExclamationCircleOutlined />}
+            className="custom-menu-item"
+          >
+            Expires
+          </Menu.Item>
       </Menu>
     </Sider>
   );
