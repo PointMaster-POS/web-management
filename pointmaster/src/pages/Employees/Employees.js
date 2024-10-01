@@ -80,7 +80,7 @@ const Employees = () => {
 
   useEffect(() => {
 
-    fetchEmplyoees();
+    fetchEmployees();
   }, [branchID, role]);
 
 
