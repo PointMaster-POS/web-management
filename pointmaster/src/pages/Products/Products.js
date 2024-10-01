@@ -51,6 +51,7 @@ const Products = () => {
   const [productImageURL, setProductImageURL] = useState(""); 
   const [isViewProductModelVisible, setIsViewProductModelVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [isNewProduct, setIsNewProduct] = useState(true);
 
 
   const barcodeRef = useRef(); // Ref for capturing the barcode
@@ -88,8 +89,8 @@ const Products = () => {
     fetchCategories();
   }, [branchID]);
 
-  const handleCategoryChange = async (categoryId) => {
-    setSelectedCategory(categoryId);
+
+  const fetchProducts = async (categoryId) => {
     setLoading(true);
     try {
       const response = await axios.get(`http://localhost:3001/items/${categoryId}`, {
@@ -100,13 +101,16 @@ const Products = () => {
       setData(response.data);
       setFilteredData(response.data);
     } catch (error) {
-      notification.error({
-        message: "Error",
-        description: "Failed to load products for the selected category.",
-      });
+      message.error("Failed to load products.");
     } finally {
       setLoading(false);
     }
+  };
+
+
+  const handleCategoryChange = async (categoryId) => {
+    setSelectedCategory(categoryId);
+    fetchProducts(categoryId);
   };
 
   const handleAddProduct = () => {
@@ -153,7 +157,7 @@ const Products = () => {
         exp_date: values.exp_date,
         discount: values.discount || 0,
         supplier_name: values.supplier_name,
-        // supplier_contacts: values.supplier_contacts,
+        supplier_contacts: values.supplier_contacts,
       };
   
       // Log the request payload to inspect the data being sent
@@ -174,10 +178,7 @@ const Products = () => {
           setData(newData);
           setFilteredData(newData);
   
-          notification.success({
-            message: "Success",
-            description: "Product added successfully!",
-          });
+          message.success("Product added successfully!");
         })
         .catch((error) => {
           console.error("Failed to add product:", error.response.data); // Log the error response
@@ -194,6 +195,26 @@ const Products = () => {
     form.resetFields();
   };
 
+  const handledEditProduct = (product) => { 
+    setIsModalVisible(true);
+
+    form.setFieldsValue({
+      product_name: product.item_name,
+      category: product.category_id,
+      buying_price: product.buying_price,
+      selling_price: product.price,
+      stock: product.stock,
+      minimum_stock: product.minimum_stock,
+      discount: product.discount,
+      exp_date: product.exp_date,
+      supplier_name: product.supplier_name,
+      supplier_contacts: product.supplier_contacts,
+      barcode: product.barcode,
+
+    });
+
+  }
+
   
 
 
@@ -201,13 +222,36 @@ const Products = () => {
     
     try {
       // Set form fields with the selected product's data
-      form.setFieldsValue(product);
+      console.log(product);
       setIsModalVisible(true);
 
 
+      if (fileList.length > 0) {
+        try {
+          const imageUrl = await handleUpload(fileList[0]);
+          //set image url to form values
+          setProductImageURL(imageUrl);
+
+          console.log("Image URL:", imageUrl);
+
+        } catch {
+          notification.error({
+            message: "Error",
+            description: "Failed to upload the image. Please try again.",
+          });
+
+        }
+      } else {
+        notification.error({
+          message: "Error",
+          description: "Please upload an image.",
+        });
+      }
 
       // Wait for the modal to close and the form to submit
       const values = await form.validateFields();
+
+      console.log("Form values:", values);
 
       // Make PUT request to update the product in the database
       const response = await axios.put(
@@ -230,11 +274,7 @@ const Products = () => {
         });
 
         // Update your local data with the edited product details
-        const updatedData = data.map((item) =>
-          item.item_id === product.item_id ? { ...product, ...values } : item
-        );
-        setData(updatedData);
-
+       
         // Reset form and close modal
         form.resetFields();
         setIsModalVisible(false);
@@ -247,8 +287,32 @@ const Products = () => {
       });
     }
   };
+
+  const deleteProduct = async (productId) => {
+    const token = localStorage.getItem("accessToken");
+    console.log("Product ID:", productId);
+    console.log("Token:", token);
+    try {
+      const response = await axios.delete(`http://localhost:3001/items/${productId}`, {
+        headers: {
+          'content-type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.status === 200) {
+        console.log("Product deleted successfully!");
+        message.success("Product deleted successfully!");
+        // fetchProducts();
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      message.error("Failed to delete product. Please try again.");
+     
+    }
+  };
   
   const handleDelete = (productId) => {
+    console.log("Product ID:", productId);
     confirm({
       title: `Are you sure you want to delete this product?`,
       icon: <ExclamationCircleOutlined />,
@@ -257,13 +321,8 @@ const Products = () => {
       cancelText: "No",
       centered: true,
       onOk: () => {
-        const newData = data.filter((item) => item.product_id !== productId);
-        setData(newData);
-        setFilteredData(newData);
-        notification.success({
-          message: "Success",
-          description: "Product deleted successfully.",
-        });
+        deleteProduct(productId);
+        
       },
     });
   };
@@ -304,17 +363,6 @@ const Products = () => {
   };
 
 
-  // const handleViewProduct = (product) => {
-  //   Modal.info({
-  //     title: "Product Details",
-  //     content: (
-  //       <div>
-  //         <p>
-  //           <strong>Product Name:</strong> {product.product_name}
-  //         </p>
-  //         <p>
-
-
   const handlePrintBarcode = (record) => {
     setSelectedBarcode(record.barcode); // Set the barcode to be generated
 
@@ -351,6 +399,8 @@ const Products = () => {
       }
     }, 100); // Small delay to ensure barcode renders
   };
+
+  // Optional file validation before upload (e.g., check file type and size)
   const beforeUpload = (file) => {
     const isValidType = file.type === "image/jpeg" || file.type === "image/png";
     if (!isValidType) {
@@ -421,7 +471,10 @@ const Products = () => {
       render: (record) => (
         <Space size="middle">
           <Tooltip title="Edit Product">
-            <Button icon={<EditOutlined />} onClick={() => handleEditAndSave(record)} />
+            <Button icon={<EditOutlined />} onClick={() => { 
+              handledEditProduct(record);
+              setIsNewProduct(false);
+               }} />
           </Tooltip>
           <Tooltip title="Delete Product">
             <Button icon={<DeleteOutlined />} onClick={() => handleDelete(record.item_id)} danger />
@@ -459,7 +512,10 @@ const Products = () => {
             ))}
           </Select>
           <Search placeholder="Search by Product Name" onSearch={handleSearch} enterButton style={{ width: 300 }} />
-          <Button type="primary" icon={<PlusOutlined />} onClick={showModal} size="large">
+          <Button type="primary" icon={<PlusOutlined />} onClick={ () => {
+            showModal();
+            setIsNewProduct(true);
+          }} size="large">
             Add New Product
           </Button>
         </Space>
@@ -475,9 +531,9 @@ const Products = () => {
       
       {/* Modal for adding products */}
       <Modal
-        title="Add Product"
+        title={isNewProduct ? "Add New Product" : "Edit Product"}
         visible={isModalVisible}
-        onOk={handleAddProduct}
+        onOk={isNewProduct ? handleAddProduct : () => handleEditAndSave(selectedProduct)}
         onCancel={handleCancel}
         width={800}
       >
@@ -579,7 +635,7 @@ const Products = () => {
         </Form.Item>
 
         <Form.Item
-          name="supplier_contacts"
+          name="supplier_contact"
           label="Supplier Contacts"
           rules={[{ required: true, message: "Please enter the supplier contacts!" }]}
         >

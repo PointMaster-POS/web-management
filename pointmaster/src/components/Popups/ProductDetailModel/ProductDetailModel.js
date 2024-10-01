@@ -45,7 +45,7 @@ const ProductDetailsModal = ({ isVisible, handleCancel, product }) => {
           <Text strong>{product?.item_name}</Text>
         </Descriptions.Item>
         <Descriptions.Item label="Category">
-          <Tag color="blue">{product?.category_id}</Tag>
+         {product?.category_id}
         </Descriptions.Item>
         <Descriptions.Item label="Price">
           <Tag icon={<DollarOutlined />} color="green">${product?.price}</Tag>
