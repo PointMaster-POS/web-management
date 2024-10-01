@@ -7,27 +7,42 @@ const Expires = () => {
   const [expiredItems, setExpiredItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchExpiredItems = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("accessToken");
-      try {
-        const response = await axios.get(
-          "http://localhost:3001/dashboard/business/expired-items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-            },
-          }
-        );
-        setExpiredItems(response.data); // Assuming the response returns the items array
-      } catch (error) {
-        message.error("Failed to fetch expired items");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchExpiredItems = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
 
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://localhost:3001/dashboard/business/expired-items",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const fetched_data = await response.json();
+      setExpiredItems(fetched_data); // Assuming the response returns the items array
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      message.error("Failed to fetch categories.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchExpiredItems();
   }, []);
 
