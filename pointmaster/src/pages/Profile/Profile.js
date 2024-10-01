@@ -131,6 +131,7 @@ const ProfilePage = () => {
     }
   };
 
+
   const handleUpdateOwner = async (values) => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -138,6 +139,17 @@ const ProfilePage = () => {
       return;
     }
     console.log(values);
+
+    //filter values
+    const dto = {
+      business_owner_name: values.business_owner_name,
+      business_owner_mail: values.business_owner_mail,
+      business_owner_phone: values.business_owner_phone,
+      business_owner_address: values.business_owner_address,
+      business_owner_birthday: values.business_owner_birthday,
+      business_owner_photo_url: values.business_owner_photo_url,
+
+    };
 
     try {
       const response = await fetch(
@@ -149,7 +161,7 @@ const ProfilePage = () => {
             Authorization: `Bearer ${token}`,
           },
 
-          body: JSON.stringify(values),
+          body: JSON.stringify(dto),
         }
       );
 
@@ -157,6 +169,7 @@ const ProfilePage = () => {
         message.success("Owner updated successfully!");
         setIsOwnerModalVisible(false);
         form_second.resetFields();
+        fetchDetails();
       } else {
         message.error("Failed to update owner. Please try again.");
       }
@@ -365,7 +378,7 @@ const ProfilePage = () => {
               <Image
                 width={100}
                 height={100}
-                src={/* details.business_owner_photo_url ||  */ defaultLogo_2} // Business logo from details
+                src={ details.business_owner_photo_url ||  defaultLogo_2} // Business logo from details
                 preview={false}
                 style={{ borderRadius: "50%" }}
               />

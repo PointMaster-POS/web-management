@@ -10,6 +10,7 @@ import {
   Input,
   Form,
   message,
+  Avatar,
 } from "antd";
 import {
   EditOutlined,
@@ -18,6 +19,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewEmployee from "../../components/Popups/AddNewEmployee";
+import ViewEmployeeProfile from "../../components/Popups/EmployeeProfileModel/EmployeeProfileModel";
 import { useMenu } from "../../context/MenuContext";
 
 const { Title } = Typography;
@@ -30,6 +32,7 @@ const Employees = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
   const [searchText, setSearchText] = useState("");
+  const [viewEmployee, setViewEmployee] = useState(null);
   const [form] = Form.useForm();
   const {branchID, role} = useMenu();
 
@@ -61,6 +64,12 @@ const Employees = () => {
       }
 
       const data = await response.json();
+      console.log(data);
+      if (data.length === 0) {
+        message.info("No employees available.");
+        return;
+      }
+
       setData(data);
       setFilteredData(data);
     } catch (error) {
@@ -87,8 +96,8 @@ const Employees = () => {
       const response = await fetch("http://localhost:3001/employee", {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(values),
       });
@@ -216,18 +225,24 @@ const Employees = () => {
     setSearchText(value);
   };
 
-  const handleViewEmployee = () => {
+  const handleViewEmployee = (employee) => {
+    setViewEmployee(employee);
 
+
+  }
+
+  const handleCancelView = () => {
+    setViewEmployee(null);
   }
 
 
   const columns = [
-    /* {
-      title: "",
+    {
+      title: "Phtoto",
       dataIndex: "photo_url",
       key: "photo_url",
       render: (image) => <Avatar src={image} size={50} />,
-    }, */
+    }, 
     {
       title: "Employee ID",
       dataIndex: "employee_id",
@@ -280,9 +295,8 @@ const Employees = () => {
       title: "",
       key: "",
       render: (record) => (
-        <Button onClick={() => handleViewEmployee(record.employee_id)}>
-          View More
-        </Button>
+        <Button onClick={() => handleViewEmployee(record)}>View More</Button>
+      
       ),
     },
   ];
@@ -350,6 +364,16 @@ const Employees = () => {
         }}
         style={{ marginTop: 20 }}
       />
+
+
+      {/* View Employee Profile Modal */}
+      {viewEmployee && (
+        <ViewEmployeeProfile
+          visible={!!viewEmployee}
+          onCancel={handleCancelView}
+          employee={viewEmployee}
+        />
+      )}
     </Card>
   );
 };
