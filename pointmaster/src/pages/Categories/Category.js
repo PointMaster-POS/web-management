@@ -291,7 +291,7 @@ const Category = () => {
             onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
-            style={{ marginRight: 16, width: 300 }}
+            style={{ marginRight: 10, width: 300 }}
           />
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
             Add New Category

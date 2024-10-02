@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 const PopularItemsModal = ({
   visible,
   onClose,
+  popularItemsList,
   defaultStartDate,
   defaultEndDate,
   fetchPopularItems,
@@ -13,23 +14,22 @@ const PopularItemsModal = ({
   const [startDate, setStartDate] = useState(moment(defaultStartDate));
   const [endDate, setEndDate] = useState(moment(defaultEndDate));
   const [tableLoading, setTableLoading] = useState(false);
-  const [popularItemsList, setPopularItemsList] = useState([]);
 
   const columns = [
     {
       title: "Item",
-      dataIndex: "image",
+      dataIndex: "image_url", // Reference the image URL directly from the item
       key: "image_url",
       render: (image) => <Avatar src={image} size={50} />,
     },
     {
-      title: "",
-      dataIndex: "name",
+      title: "Name",
+      dataIndex: "item_name", // Reference the item name directly
       key: "item_name",
     },
     {
       title: "Sales",
-      dataIndex: "sales",
+      dataIndex: "purchase_count", // Reference the purchase count directly
       key: "purchase_count",
     },
   ];
@@ -91,8 +91,8 @@ const PopularItemsModal = ({
 
       <Table
         columns={columns}
-        dataSource={popularItemsList}
-        pagination={{ pageSize: 5 }}
+        dataSource={popularItemsList.slice(0, 20)} // Only take the first 20 items
+        pagination={{ pageSize: 5 }} // Pagination for 5 items per page
         loading={tableLoading}
       />
     </Modal>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Table, message } from "antd";
-import axios from "axios";
+import { Table, message, Card, Typography } from "antd";
 import moment from "moment";
+
+const { Title } = Typography;
 
 const Expires = () => {
   const [expiredItems, setExpiredItems] = useState([]);
@@ -48,7 +49,12 @@ const Expires = () => {
 
   const columns = [
     {
-      title: "Items",
+      title: "Item Id",
+      dataIndex: "item_id",
+      key: "item_id",
+    },
+    {
+      title: "Item Name",
       dataIndex: "name",
       key: "name",
     },
@@ -61,15 +67,33 @@ const Expires = () => {
   ];
 
   return (
-    <div>
-      <h1>Items Expiring Soon</h1>
+    <Card
+      style={{ margin: 30, padding: 30, borderRadius: "10px" }}
+      bodyStyle={{ padding: "20px" }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Title level={3} style={{ marginBottom: 10 }}>
+          Items Expiring Soon
+        </Title>
+      </div>
+      <hr color="#1890ff" />
+
       <Table
         dataSource={expiredItems}
         columns={columns}
+        pagination={{ pageSize: 7 }}
         loading={loading}
-        rowKey="id" // Ensure each row has a unique key (e.g., id from the API)
+        rowKey="id"
+        locale={{ emptyText: "No items available." }}
+        style={{ marginTop: 20 }}
       />
-    </div>
+    </Card>
   );
 };
 

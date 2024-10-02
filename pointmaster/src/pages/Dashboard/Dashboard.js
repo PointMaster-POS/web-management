@@ -14,10 +14,10 @@ import {
 import {
   ShoppingCartOutlined,
   DollarOutlined,
-  PoundOutlined,
-  ShoppingOutlined,
+  CreditCardOutlined,
   MoreOutlined,
   ExclamationOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
@@ -40,35 +40,34 @@ const Dashboard = () => {
         <Col span={18}>
           <Row gutter={[20, 25]}>
             <Col span={8}>
-              <SalesCard icon={<PoundOutlined style={iconStyle("green")} />} />
+              <SalesCard icon={<DollarOutlined style={iconStyle("green")} />} />
             </Col>
             <Col span={8}>
               <PurchasesCard
-                icon={<ShoppingOutlined style={iconStyle("orange")} />}
+                icon={<DollarOutlined style={iconStyle("orange")} />}
               />
             </Col>
             <Col span={8}>
-              <DashboardCard1
-                icon={<ShoppingCartOutlined style={iconStyle("olive")} />}
+              <NoOfCustomerCard
+                icon={<UserOutlined style={iconStyle("olive")} />}
+                title="Number of Customers"
               />
             </Col>
             <Col span={8}>
-              <DashboardCard2
-                icon={<ShoppingCartOutlined style={iconStyle("olive")} />}
+              <PaymentMethodCard
+                icon={<CreditCardOutlined style={iconStyle("teal")} />}
               />
             </Col>
             <Col span={8}>
               <ExpiresCard
                 icon={<ExclamationOutlined style={iconStyle("blue")} />}
                 title="Expires in a month"
-                value={1234}
               />
             </Col>
             <Col span={8}>
-              <DashboardCard
+              <ProfitCard
                 icon={<DollarOutlined style={iconStyle("purple")} />}
                 title="Profit"
-                value={1234}
               />
             </Col>
             <Col span={24}>
@@ -100,6 +99,8 @@ const iconStyle = (color) => ({
       ? "128,128,0"
       : color === "blue"
       ? "0,0,255"
+      : color === "teal"
+      ? "0,128,128"
       : "128,0,128"
   },0.25)`,
   borderRadius: 20,
@@ -109,7 +110,6 @@ const iconStyle = (color) => ({
 
 const SalesCard = ({ icon }) => {
   const [timeFrame, setTimeFrame] = useState("Today");
-  const [sales, setSales] = useState(1234);
 
   const handleMenuClick = (e) => {
     setTimeFrame(e.key);
@@ -206,59 +206,123 @@ const PurchasesCard = ({ icon }) => {
   );
 };
 
-const DashboardCard1 = ({ icon }) => {
+const NoOfCustomerCard = ({ icon, title }) => {
+  const [customerCount, setCustomerCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const fetchCustomerCount = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/dashboard/business/number-of-customers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCustomerCount(response.data.numberOfCustomers);
+    } catch (error) {
+      message.error("Failed to fetch count");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomerCount();
+  }, []);
+
   return (
     <Card className="card">
       <Space direction="horizontal" size="large" className="card-content">
         {icon}
-        {/* <Statistic title={title} value={value} className="statistic" /> */}
+        <Statistic
+          title={title}
+          value={loading ? "Loading..." : customerCount}
+          className="statistic"
+        />
       </Space>
     </Card>
   );
 };
 
-const DashboardCard2 = ({ icon }) => {
+const PaymentMethodCard = ({ icon }) => {
+  const [paymentMethod, setPaymentMethod] = useState("Cash");
+
+  const handleMenuClick = (e) => {
+    setPaymentMethod(e.key);
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px", width: "100px" }}>
+        Cash
+      </Menu.Item>
+      <Menu.Item
+        key="This Month"
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        Card
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    <Card className="card">
-      <Space direction="horizontal" size="large" className="card-content">
+    <Card className="card" style={{ position: "relative" }}>
+      <Dropdown overlay={menu} trigger={["click"]}>
+        <MoreOutlined
+          style={{
+            fontSize: "20px",
+            cursor: "pointer",
+            position: "absolute",
+            top: "35px",
+            right: "30px",
+          }}
+        />
+      </Dropdown>
+
+      <Space direction="horizontal" size="large">
         {icon}
-        {/* <Statistic title={title} value={value} className="statistic" /> */}
+        <Statistic title={`${paymentMethod} Payment`} className="statistic" />
       </Space>
     </Card>
   );
 };
+
 
 const ExpiresCard = ({ icon, title }) => {
   const [expiresCount, setExpiresCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
 
-  useEffect(() => {
-    const fetchExpiringItems = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("accessToken");
-      try {
-        const response = await axios.get(
-          "http://localhost:3001/dashboard/business/expired-items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-            },
-          }
-        );
-        setExpiresCount(response.data.length); // Assuming the response returns the items array
-      } catch (error) {
-        message.error("Failed to fetch expiring items");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchExpiringItems = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/dashboard/business/expired-items",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setExpiresCount(response.data.length);
+    } catch (error) {
+      message.error("Failed to fetch expiring items");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchExpiringItems(); // Fetch expiring items on component load
+  useEffect(() => {
+    fetchExpiringItems();
   }, []);
 
   const handleViewMore = () => {
-    navigate("/expires"); // Redirect to the /expires page
+    navigate("/expires");
   };
 
   return (
@@ -271,19 +335,14 @@ const ExpiresCard = ({ icon, title }) => {
           className="statistic"
         />
       </Space>
-      <Text
-        type="secondary"
-        className="view-all"
-        style={{ cursor: "pointer", marginTop: 10 }}
-        onClick={handleViewMore}
-      >
-        View more
+      <Text type="secondary" className="view-more" onClick={handleViewMore}>
+        View More...
       </Text>
     </Card>
   );
 };
 
-const DashboardCard = ({ icon, title }) => {
+const ProfitCard = ({ icon, title }) => {
   return (
     <Card className="card">
       <Space direction="horizontal" size="large" className="card-content">
@@ -305,36 +364,19 @@ const PopularItems = () => {
   const thirtyDaysAgo = moment().subtract(30, "days").format("YYYY-MM-DD");
   console.log(thirtyDaysAgo);
 
-  // Fetch popular items for the last 30 days by default
-  // const fetchPopularItems = async (startDate, endDate) => {
-  //   setLoading(true);
-  //   const token = localStorage.getItem("accessToken"); // Get the token from local storage
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${endDate}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-  //         },
-  //       }
-  //     );
-  //     setPopularItemsList(response.data); // Assuming the API returns the popular items data
-  //     console.log(popularItemsList);
-  //   } catch (error) {
-  //     message.error("Failed to fetch popular items");
-
-  // };
-
   const fetchPopularItems = async (startDate, endDate) => {
+    setLoading(true);
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
 
+    const adjustedEndDate = moment(endDate).add(1, "days").format("YYYY-MM-DD");
+
     try {
       const response = await fetch(
-        `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${endDate}`,
+        `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${adjustedEndDate}`,
         {
           method: "GET",
           headers: {
@@ -385,6 +427,7 @@ const PopularItems = () => {
         <PopularItemsModal
           visible={modalVisible}
           onClose={handleCloseModal}
+          popularItemsList={popularItemsList}
           defaultStartDate={thirtyDaysAgo}
           defaultEndDate={today}
           fetchPopularItems={fetchPopularItems}

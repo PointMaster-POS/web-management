@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { Space, Typography, Avatar, Badge, Menu, Dropdown, Select,message } from "antd";
+import {
+  Space,
+  Typography,
+  Avatar,
+  Badge,
+  Menu,
+  Dropdown,
+  Select,
+  message,
+} from "antd";
 import {
   BellFilled,
   UserOutlined,
   SettingOutlined,
   LogoutOutlined,
   ProfileOutlined,
+  ClockCircleOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
@@ -19,12 +29,13 @@ import { useMenu } from "../../context/MenuContext";
 // ];
 
 const Header = ({ setIsAuthenticated }) => {
-  const { selectedMenu, role,branchID,setBranchID, onAddingBranch } = useMenu(); // Get selectedMenu from context
+  const { selectedMenu, role, branchID, setBranchID, onAddingBranch } =
+    useMenu(); // Get selectedMenu from context
   const navigate = useNavigate();
   const [branches, setBranches] = useState([]);
-  const [selectedBranch, setSelectedBranch] = useState(''); // Set default branch
-  const [selectedBranchID,setSelectedBranchID] = useState('');
-
+  const [selectedBranch, setSelectedBranch] = useState(""); // Set default branch
+  const [selectedBranchID, setSelectedBranchID] = useState("");
+  const [currentTime, setCurrentTime] = useState("");
 
   const handleProfileClick = () => {
     navigate("/profile");
@@ -40,10 +51,7 @@ const Header = ({ setIsAuthenticated }) => {
 
   useEffect(() => {
     setBranchID(selectedBranchID);
-  }, [selectedBranch]
-
-  )
-
+  }, [selectedBranch]);
 
   const fetchBranches = async () => {
     const token = localStorage.getItem("accessToken");
@@ -113,11 +121,10 @@ const Header = ({ setIsAuthenticated }) => {
     </Menu>
   );
 
-  const handleBranchChange = (key,value) => {
+  const handleBranchChange = (key, value) => {
     setSelectedBranch(value);
     // console.log("Selected Branch:", value.key);
     setSelectedBranchID(value.key);
-    
   };
 
   // Determine if the dropdown should be visible based on the selectedMenu
@@ -127,17 +134,44 @@ const Header = ({ setIsAuthenticated }) => {
     selectedMenu === "/employees" ||
     selectedMenu === "/dashboard";
 
+  // Function to update the current time every second
+  useEffect(() => {
+    const updateCurrentTime = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString());
+    };
+
+    updateCurrentTime(); // Initial call to set time immediately
+    const intervalId = setInterval(updateCurrentTime, 1000);
+
+    return () => clearInterval(intervalId); // Clear the interval on unmount
+  }, []);
+
   return (
     <div className="header_">
       <Typography.Title level={2}>Welcome to Point Master</Typography.Title>
 
       <Space size="large">
-        {/* Branch selection dropdown */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          background: "#f0f2f5", // Subtle background color
+          borderRadius: "8px",
+          padding: "10px 15px",
+          // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+          marginRight: "20px"
+        }}>
+          <ClockCircleOutlined style={{ marginRight: "8px", fontSize: "18px", color: "#1890ff" }} /> {/* Clock Icon */}
+          <Typography.Text style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}>
+            {currentTime}
+          </Typography.Text>
+        </div>
+
         {showDropdown && role === "owner" && (
           <Select
             value={selectedBranch}
             onChange={handleBranchChange}
-            style={{ width: 200 }}
+            style={{ width: 200, size: 'large', marginRight: "20px"}}
           >
             {branches?.map((branch) => (
               <Select.Option key={branch.branch_id} value={branch.branch_name}>
@@ -147,16 +181,14 @@ const Header = ({ setIsAuthenticated }) => {
           </Select>
         )}
 
-        {/* Conditionally render the Dropdown */}
-
         <Dropdown overlay={menu} trigger={["click"]}>
-          <Badge dot>
+          <Badge dot style={{marginRight: "20px"}}>
             <Avatar
               icon={<UserOutlined />}
               style={{
                 cursor: "pointer",
                 backgroundColor: "rgba(0,0,0,0.88)",
-                marginLeft: 15,
+                marginRight: "20px",
               }}
             />
           </Badge>
