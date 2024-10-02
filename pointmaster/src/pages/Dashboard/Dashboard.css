@@ -29,6 +29,7 @@
   cursor: pointer;
   color: #008000;
   font-weight: 600;
+  font-size: 16px;
 }
 
 .item-title {
@@ -40,6 +41,12 @@
   color: gray !important;
 }
 
-/* .ant-picker-suffix {
-  display: none !important;
-} */
+.view-more{
+  cursor: pointer;
+  color: #008000 !important;
+  font-weight: 600;
+  font-size: 16px;
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
+}
