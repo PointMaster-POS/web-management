@@ -18,6 +18,7 @@ import {
   ShoppingOutlined,
   MoreOutlined,
   ExclamationOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
@@ -48,8 +49,9 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={8}>
-              <DashboardCard1
-                icon={<ShoppingCartOutlined style={iconStyle("olive")} />}
+              <NoOfCustomerCard
+                icon={<UserOutlined style={iconStyle("olive")} />}
+                title="Number of Customers"
               />
             </Col>
             <Col span={8}>
@@ -61,14 +63,12 @@ const Dashboard = () => {
               <ExpiresCard
                 icon={<ExclamationOutlined style={iconStyle("blue")} />}
                 title="Expires in a month"
-                value={1234}
               />
             </Col>
             <Col span={8}>
               <DashboardCard
                 icon={<DollarOutlined style={iconStyle("purple")} />}
                 title="Profit"
-                value={1234}
               />
             </Col>
             <Col span={24}>
@@ -205,12 +205,43 @@ const PurchasesCard = ({ icon }) => {
   );
 };
 
-const DashboardCard1 = ({ icon }) => {
+const NoOfCustomerCard = ({ icon, title }) => {
+  const [customerCount, setCustomerCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const fetchCustomerCount = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/dashboard/business/number-of-customers",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setCustomerCount(response.data.numberOfCustomers);
+    } catch (error) {
+      message.error("Failed to fetch count");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomerCount();
+  }, []);
+
   return (
     <Card className="card">
       <Space direction="horizontal" size="large" className="card-content">
         {icon}
-        {/* <Statistic title={title} value={value} className="statistic" /> */}
+        <Statistic
+          title={title}
+          value={loading ? "Loading..." : customerCount}
+          className="statistic"
+        />
       </Space>
     </Card>
   );
@@ -261,7 +292,7 @@ const ExpiresCard = ({ icon, title }) => {
   };
 
   return (
-    <Card className="card" style={{ position: "relative" }}>
+    <Card className="card">
       <Space direction="horizontal" size="large" className="card-content">
         {icon}
         <Statistic
@@ -270,11 +301,9 @@ const ExpiresCard = ({ icon, title }) => {
           className="statistic"
         />
       </Space>
-      {/* <Row justify="center"> */}
       <Text type="secondary" className="view-more" onClick={handleViewMore}>
         View More...
       </Text>
-      {/* </Row> */}
     </Card>
   );
 };
