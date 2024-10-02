@@ -14,8 +14,7 @@ import {
 import {
   ShoppingCartOutlined,
   DollarOutlined,
-  PoundOutlined,
-  ShoppingOutlined,
+  CreditCardOutlined,
   MoreOutlined,
   ExclamationOutlined,
   UserOutlined,
@@ -41,11 +40,11 @@ const Dashboard = () => {
         <Col span={18}>
           <Row gutter={[20, 25]}>
             <Col span={8}>
-              <SalesCard icon={<PoundOutlined style={iconStyle("green")} />} />
+              <SalesCard icon={<DollarOutlined style={iconStyle("green")} />} />
             </Col>
             <Col span={8}>
               <PurchasesCard
-                icon={<ShoppingOutlined style={iconStyle("orange")} />}
+                icon={<DollarOutlined style={iconStyle("orange")} />}
               />
             </Col>
             <Col span={8}>
@@ -55,8 +54,8 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={8}>
-              <DashboardCard2
-                icon={<ShoppingCartOutlined style={iconStyle("olive")} />}
+              <PaymentMethodCard
+                icon={<CreditCardOutlined style={iconStyle("teal")} />}
               />
             </Col>
             <Col span={8}>
@@ -66,7 +65,7 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={8}>
-              <DashboardCard
+              <ProfitCard
                 icon={<DollarOutlined style={iconStyle("purple")} />}
                 title="Profit"
               />
@@ -100,6 +99,8 @@ const iconStyle = (color) => ({
       ? "128,128,0"
       : color === "blue"
       ? "0,0,255"
+      : color === "teal"
+      ? "0,128,128"
       : "128,0,128"
   },0.25)`,
   borderRadius: 20,
@@ -247,16 +248,49 @@ const NoOfCustomerCard = ({ icon, title }) => {
   );
 };
 
-const DashboardCard2 = ({ icon }) => {
+const PaymentMethodCard = ({ icon }) => {
+  const [paymentMethod, setPaymentMethod] = useState("Cash");
+
+  const handleMenuClick = (e) => {
+    setPaymentMethod(e.key);
+  };
+
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px", width: "100px" }}>
+        Cash
+      </Menu.Item>
+      <Menu.Item
+        key="This Month"
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        Card
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    <Card className="card">
-      <Space direction="horizontal" size="large" className="card-content">
+    <Card className="card" style={{ position: "relative" }}>
+      <Dropdown overlay={menu} trigger={["click"]}>
+        <MoreOutlined
+          style={{
+            fontSize: "20px",
+            cursor: "pointer",
+            position: "absolute",
+            top: "35px",
+            right: "30px",
+          }}
+        />
+      </Dropdown>
+
+      <Space direction="horizontal" size="large">
         {icon}
-        {/* <Statistic title={title} value={value} className="statistic" /> */}
+        <Statistic title={`${paymentMethod} Payment`} className="statistic" />
       </Space>
     </Card>
   );
 };
+
 
 const ExpiresCard = ({ icon, title }) => {
   const [expiresCount, setExpiresCount] = useState(0);
@@ -308,7 +342,7 @@ const ExpiresCard = ({ icon, title }) => {
   );
 };
 
-const DashboardCard = ({ icon, title }) => {
+const ProfitCard = ({ icon, title }) => {
   return (
     <Card className="card">
       <Space direction="horizontal" size="large" className="card-content">
@@ -331,6 +365,7 @@ const PopularItems = () => {
   console.log(thirtyDaysAgo);
 
   const fetchPopularItems = async (startDate, endDate) => {
+    setLoading(true);
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
