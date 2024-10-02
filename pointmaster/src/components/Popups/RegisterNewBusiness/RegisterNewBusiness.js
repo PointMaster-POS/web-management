@@ -166,6 +166,7 @@ const RegisterNewBusiness = ({
               <Option value="Technology">Technology</Option>
               <Option value="Retail">Retail</Option>
               <Option value="Health">Health</Option>
+              <Option value="Restaurant">Restaurant</Option>
             </Select>
           </Form.Item>
 
