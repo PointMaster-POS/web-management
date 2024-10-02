@@ -149,7 +149,7 @@ const Header = ({ setIsAuthenticated }) => {
 
   return (
     <div className="header_">
-      <Typography.Title level={2}>Welcome to Point Master</Typography.Title>
+      <Typography.Title level={2}>Point Master</Typography.Title>
 
       <Space size="large">
         <div style={{
