@@ -133,22 +133,6 @@ const Stores = () => {
         setIsModalVisible(false);
         form.resetFields();
         setEditingStore(null);
-
-        // Update the specific branch in local state
-        // setData((prevData) =>
-        //   prevData.map((item) =>
-        //     item.branch_id === editingStore.branch_id
-        //       ? { ...item, ...values }
-        //       : item
-        //   )
-        // );
-        // setFilteredData((prevData) =>
-        //   prevData.map((item) =>
-        //     item.branch_id === editingStore.branch_id
-        //       ? { ...item, ...values }
-        //       : item
-        //   )
-        // );
         fetchBranches();
         setOnAddingBranch(!onAddingBranch);
       } else {
@@ -192,12 +176,6 @@ const Stores = () => {
               Authorization: `Bearer ${token}`,
             },
           });
-
-          // const newData = data.filter(
-          //   (branch) => branch.branch_id !== branch_id
-          // );
-          // setData(newData);
-          // setFilteredData(newData);
           fetchBranches();
           setOnAddingBranch(!onAddingBranch);
           message.success("Store deleted successfully.");
@@ -286,7 +264,7 @@ const Stores = () => {
             onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
-            style={{ marginRight: 16, width: 300 }}
+            style={{ marginRight: 10, width: 300 }}
           />
           <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
             Add New Branch
