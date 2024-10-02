@@ -109,7 +109,6 @@ const iconStyle = (color) => ({
 
 const SalesCard = ({ icon }) => {
   const [timeFrame, setTimeFrame] = useState("Today");
-  const [sales, setSales] = useState(1234);
 
   const handleMenuClick = (e) => {
     setTimeFrame(e.key);
@@ -233,36 +232,36 @@ const ExpiresCard = ({ icon, title }) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate(); // Hook for navigation
 
-  useEffect(() => {
-    const fetchExpiringItems = async () => {
-      setLoading(true);
-      const token = localStorage.getItem("accessToken");
-      try {
-        const response = await axios.get(
-          "http://localhost:3001/dashboard/business/expired-items",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-            },
-          }
-        );
-        setExpiresCount(response.data.length); // Assuming the response returns the items array
-      } catch (error) {
-        message.error("Failed to fetch expiring items");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchExpiringItems = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await axios.get(
+        "http://localhost:3001/dashboard/business/expired-items",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setExpiresCount(response.data.length);
+    } catch (error) {
+      message.error("Failed to fetch expiring items");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchExpiringItems(); // Fetch expiring items on component load
+  useEffect(() => {
+    fetchExpiringItems();
   }, []);
 
   const handleViewMore = () => {
-    navigate("/expires"); // Redirect to the /expires page
+    navigate("/expires");
   };
 
   return (
-    <Card className="card">
+    <Card className="card" style={{ position: "relative" }}>
       <Space direction="horizontal" size="large" className="card-content">
         {icon}
         <Statistic
@@ -271,14 +270,11 @@ const ExpiresCard = ({ icon, title }) => {
           className="statistic"
         />
       </Space>
-      <Text
-        type="secondary"
-        className="view-all"
-        style={{ cursor: "pointer", marginTop: 10 }}
-        onClick={handleViewMore}
-      >
-        View more
+      {/* <Row justify="center"> */}
+      <Text type="secondary" className="view-more" onClick={handleViewMore}>
+        View More...
       </Text>
+      {/* </Row> */}
     </Card>
   );
 };
@@ -304,26 +300,6 @@ const PopularItems = () => {
   console.log(today);
   const thirtyDaysAgo = moment().subtract(30, "days").format("YYYY-MM-DD");
   console.log(thirtyDaysAgo);
-
-  // Fetch popular items for the last 30 days by default
-  // const fetchPopularItems = async (startDate, endDate) => {
-  //   setLoading(true);
-  //   const token = localStorage.getItem("accessToken"); // Get the token from local storage
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${endDate}`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
-  //         },
-  //       }
-  //     );
-  //     setPopularItemsList(response.data); // Assuming the API returns the popular items data
-  //     console.log(popularItemsList);
-  //   } catch (error) {
-  //     message.error("Failed to fetch popular items");
-
-  // };
 
   const fetchPopularItems = async (startDate, endDate) => {
     const token = localStorage.getItem("accessToken");
