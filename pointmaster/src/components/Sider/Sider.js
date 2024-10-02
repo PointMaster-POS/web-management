@@ -3,7 +3,7 @@ import {
   UserOutlined,
   DashboardOutlined,
   ShopOutlined,
-  PhoneOutlined,
+  GiftOutlined,
   AppstoreOutlined,
   ProductOutlined,
   ExclamationCircleOutlined,
@@ -109,20 +109,20 @@ const SideBar = ({ onCollapse }) => {
         )} */}
         {role === "owner" && (
           <Menu.Item
-            key="/Loyalty"
-            icon={<UserOutlined />}
-            className="custom-menu-item"
+          key="/stores"
+          icon={<ShopOutlined />}
+          className="custom-menu-item"
           >
-            Loyalty
+            Stores
           </Menu.Item>
         )}
         {role === "owner" && (
           <Menu.Item
-            key="/stores"
-            icon={<UserOutlined />}
+            key="/Loyalty"
+            icon={<GiftOutlined />}
             className="custom-menu-item"
           >
-            Stores
+            Loyalty
           </Menu.Item>
         )}
         <Menu.Item
