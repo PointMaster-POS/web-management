@@ -3,6 +3,8 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ShoppingCartOutlined, GiftOutlined, LockOutlined, AppstoreOutlined } from "@ant-design/icons";
 import "./FeaturesSection.css";
+//apple android web 
+import { AppleOutlined, AndroidOutlined , WindowsOutlined} from "@ant-design/icons";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -90,20 +92,17 @@ const FeaturesSection = () => {
           {applications.map((app, index) => (
             <div key={index} className="application-item">
               <h3 className="application-name">{app.name}</h3>
-              {/*generate Icons for each platform */}   
-                {/* <div className="platform-icons">
+             
+                <div className="platform-icons">
                    {app.platform.map((platform, index) => (
                     <span key={index} className="platform-icon">
-                        {platform === "Web" ? ( 
-                        <img src="/images/web-icon.png" alt="Web" style={{ width: "30px" }} />
-                        ) : platform === "IOS" ? (
-                        <img src="/images/ios-icon.webp" alt="IOS" />
-                        ) : (
-                        <img src="/images/android-icon.png" alt="Android" />
-                        )}
+                        {platform === "IOS" && <AppleOutlined />}
+                        {platform === "Android" && <AndroidOutlined />}
+                        {platform === "Web" && <WindowsOutlined />}
+                        
                     </span>
                     ))} 
-                </div> */}
+                </div>
               <p className="application-description">{app.description}</p>
             </div>
           ))}
