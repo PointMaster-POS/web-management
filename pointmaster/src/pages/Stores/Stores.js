@@ -245,7 +245,7 @@ const Stores = () => {
 
   return (
     <Card
-      style={{ margin: 30, padding: 30, borderRadius: "10px" }}
+      style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
       <div
