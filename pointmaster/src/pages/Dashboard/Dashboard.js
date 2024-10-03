@@ -12,7 +12,6 @@ import {
   message,
 } from "antd";
 import {
-  ShoppingCartOutlined,
   DollarOutlined,
   CreditCardOutlined,
   MoreOutlined,
@@ -23,6 +22,7 @@ import React, { useState, useEffect } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
 import OutOfStockModal from "../../components/Popups/OutOfStockModal";
 import { OutOfStockList } from "../../components/Data";
+import { PopularItemsList } from "../../components/Data";
 import { Line } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import moment from "moment";
@@ -36,9 +36,9 @@ Chart.register(...registerables);
 const Dashboard = () => {
   return (
     <div className="dashboard-container">
-      <Row gutter={[30]}>
+      <Row gutter={[20]}>
         <Col span={18}>
-          <Row gutter={[20, 25]}>
+          <Row gutter={[20, 20]}>
             <Col span={8}>
               <SalesCard icon={<DollarOutlined style={iconStyle("green")} />} />
             </Col>
@@ -76,7 +76,7 @@ const Dashboard = () => {
           </Row>
         </Col>
         <Col span={6}>
-          <Space size={8} direction="vertical" style={{ width: "100%" }}>
+          <Space size={20} direction="vertical" style={{ width: "100%" }}>
             <PopularItems />
             <OutOfStock />
           </Space>
@@ -257,11 +257,11 @@ const PaymentMethodCard = ({ icon }) => {
 
   const menu = (
     <Menu onClick={handleMenuClick}>
-      <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px", width: "100px" }}>
+      <Menu.Item key="Cash" style={{ fontWeight: "bold", fontSize: "16px", width: "100px" }}>
         Cash
       </Menu.Item>
       <Menu.Item
-        key="This Month"
+        key="Card"
         style={{ fontWeight: "bold", fontSize: "16px" }}
       >
         Card
@@ -427,7 +427,7 @@ const PopularItems = () => {
         <PopularItemsModal
           visible={modalVisible}
           onClose={handleCloseModal}
-          popularItemsList={popularItemsList}
+          popularItemsList={PopularItemsList}
           defaultStartDate={thirtyDaysAgo}
           defaultEndDate={today}
           fetchPopularItems={fetchPopularItems}
@@ -436,15 +436,15 @@ const PopularItems = () => {
       <List
         loading={loading}
         itemLayout="horizontal"
-        dataSource={popularItemsList.slice(0, 4)}
+        dataSource={PopularItemsList.slice(0, 4)}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={item.image_url} size={50} />}
-              title={<Text className="item-title"> {item.item_name} </Text>}
+              avatar={<Avatar src={/* item.image_url */ item.image} size={50} />}
+              title={<Text className="item-title"> {/* item.item_name */ item.name} </Text>}
               description={
                 <Text type="secondary" className="item-description">
-                  Sales: {item.purchase_count}
+                  Sales: {/* item.purchase_count */ item.sales}
                 </Text>
               }
             />
@@ -467,7 +467,7 @@ const OutOfStock = () => {
   };
 
   return (
-    <Card>
+    <Card >
       <div className="card-header">
         <Title level={4}>Out of Stock</Title>
         <Text
@@ -481,7 +481,7 @@ const OutOfStock = () => {
       </div>
       <List
         itemLayout="horizontal"
-        dataSource={OutOfStockList.slice(0, 3)}
+        dataSource={OutOfStockList.slice(0, 4)}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
@@ -581,7 +581,7 @@ const MultiLineChart = () => {
   const legendItems = data.datasets.map((dataset) => (
     <span
       key={dataset.label}
-      style={{ marginRight: 20, display: "inline-flex", alignItems: "center" }}
+      style={{ marginRight: 20, display: "inline-flex", alignItems: "center", fontSize: 20 }}
     >
       <span
         style={{
@@ -597,12 +597,12 @@ const MultiLineChart = () => {
   ));
 
   return (
-    <Card style={{ height: 450 }}>
+    <Card style={{ height: "515px" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Title level={4}>Sales Overview</Title>
+        <Title level={3}>Sales Overview</Title>
         <div>{legendItems}</div>
       </div>
-      <div style={{ height: 400 }}>
+      <div style={{ height: "400Px"  }}>
         <Line data={data} options={options} />
       </div>
     </Card>
