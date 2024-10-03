@@ -1,7 +1,7 @@
 .dashboard-container {
   display: flex;
   justify-content: center;
-  padding: 30px;
+  /* padding: 30px; */
 }
 .card {
   height: 100%;
@@ -20,9 +20,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 16px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #f0f0f0;
-  margin-bottom: 16px;
+  /* margin-bottom: 16px; */
 }
 
 .card-header .view-all {
@@ -33,11 +33,11 @@
 }
 
 .item-title {
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .item-description {
-  font-size: 14px;
+  font-size: 16px;
   color: gray !important;
 }
 
