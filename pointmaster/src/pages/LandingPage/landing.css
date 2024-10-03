@@ -1,12 +1,12 @@
 /* General Body Styling */
-body {
+/* body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
   background: #ffffff; 
   /* background: linear-gradient(120deg, #a2c2e0, #f0f4f8); */
-}
 
+/* 
 .hero-section {
   
   color: #333; 
@@ -40,8 +40,8 @@ body {
 
 .cta-button:hover {
   background-color: #0056b3;
-}
-
+} */
+/* 
 .features-section {
   text-align: center; 
   padding: 120px 0px 80px;
@@ -78,4 +78,4 @@ body {
 .feature p {
   font-size: 1.2rem;
   color: #4a5b6d;
-}
+} */

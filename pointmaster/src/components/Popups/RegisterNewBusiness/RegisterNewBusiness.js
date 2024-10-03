@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Select, Upload, Typography, message } from "antd";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { UploadOutlined } from "@ant-design/icons";
+import { UploadOutlined, CheckOutlined } from "@ant-design/icons"; // Import CheckOutlined
 import TextArea from "antd/es/input/TextArea";
 import { storage } from "../../../firebase"; 
 import "./RegisterNewBusiness.css"; // Ensure this CSS file is present and properly styles the form
@@ -15,10 +15,19 @@ const RegisterNewBusiness = ({
   isEditMode,
   onRegisterOrUpdateBusiness,
 }) => {
-  const [fileList, setFileList] = React.useState([]);
+  const [fileList, setFileList] = useState([]);
+  const [isCodeVisible, setIsCodeVisible] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(["", "", "", ""]);
+  const [isVerified, setIsVerified] = useState(false);
+  const [verifyButtonText, setVerifyButtonText] = useState("Verify Email");
 
   // Handle form submission
   const handleFinish = async (values) => {
+    if (!isVerified) {
+      message.error("Please verify your email before submitting the form.");
+      return;
+    }
+
     if (fileList.length > 0) {
       try {
         // Upload the file to Firebase storage
@@ -70,6 +79,40 @@ const RegisterNewBusiness = ({
     return true;
   };
 
+  // Handle email verification
+  const handleVerifyEmail = () => {
+    setIsCodeVisible(true);
+  };
+
+  const handleVerifyCode = async () => {
+    // Check if the verification code is correct
+    const codeString = verificationCode.join('');
+    if (codeString === "1234") {
+      // Simulating async verification
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setIsVerified(true);
+      setVerifyButtonText(<CheckOutlined style={{ color: 'green' }} />); // Change button to green tick icon
+      setIsCodeVisible(false); // Hide the 4-digit input space
+      message.success("Email verified successfully!");
+    } else {
+      message.error("Invalid verification code. Please try again.");
+    }
+  };
+
+  // Handle input change for verification code boxes
+  const handleCodeChange = (index, value) => {
+    const newCode = [...verificationCode];
+    newCode[index] = value;
+
+    // Move focus to the next input if the current one is filled
+    if (value && index < 3) {
+      const nextInput = document.getElementById(`verification-code-${index + 1}`);
+      if (nextInput) nextInput.focus();
+    }
+
+    setVerificationCode(newCode);
+  };
+
   return (
     <React.Fragment>
       <div className="form-container">
@@ -102,8 +145,39 @@ const RegisterNewBusiness = ({
               },
             ]}
           >
-            <Input />
+            <Input
+              suffix={
+                <Button
+                  type="link"
+                  onClick={handleVerifyEmail}
+                  style={{ color: isVerified ? "green" : undefined }} // Change color to green if verified
+                >
+                  {isVerified ? verifyButtonText : "Verify Email"}
+                </Button>
+              }
+            />
           </Form.Item>
+
+          {/* Verification code input */}
+          {isCodeVisible && !isVerified && (
+            <Form.Item label="Verification Code" required>
+              <div style={{ display: 'flex', gap: '10px' }}>
+                {verificationCode.map((code, index) => (
+                  <Input
+                    key={index}
+                    id={`verification-code-${index}`}
+                    maxLength={1}
+                    style={{ width: '40px', textAlign: 'center' }}
+                    value={code}
+                    onChange={(e) => handleCodeChange(index, e.target.value)}
+                  />
+                ))}
+              </div>
+              <Button type="primary" onClick={handleVerifyCode} style={{ marginTop: '10px' }}>
+                Verify
+              </Button>
+            </Form.Item>
+          )}
 
           <Form.Item
             label="Business URL"

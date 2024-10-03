@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import "./landing.css";
-import { Form, Modal, message } from "antd";
+import { Form, message } from "antd";
 import Header from "../../components/LandingHeader/Header";
 import Footer from "../../components/LandingFooter/Footer";
-import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
-import RegisterOwner from "../../components/Popups/RegisterOwner/RegisterOwner";
 import { useNavigate } from "react-router-dom";
+import HeroSection from "../../components/HeroSection/HeroSection";
+import FeaturesSection from "../../components/FeaturesSection/FeaturesSection";
+import BusinessModal from "../../components/BusinessModel/BusinessModal";
+import OwnerModal from "../../components/OwnerModel/OwnerModel";
 
 export default function Landing() {
   const [isBusinessModalVisible, setIsBusinessModalVisible] = useState(false);
-  const [isOwnerModalVisible, setIsOwnerModalVisible] = useState(false);  // For Owner modal
+  const [isOwnerModalVisible, setIsOwnerModalVisible] = useState(false);
   const [form_first] = Form.useForm();
-  const [form_second] = Form.useForm();  // Owner form
+  const [form_second] = Form.useForm();
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
 
@@ -35,8 +37,8 @@ export default function Landing() {
         const data = await response.json();
         setToken(data.token);
         message.success(data.message || "Business registered successfully");
-        setIsBusinessModalVisible(false); // Hide business modal
-        setIsOwnerModalVisible(true); // Show owner modal after business registration success
+        setIsBusinessModalVisible(false);
+        setIsOwnerModalVisible(true);
         form_first.resetFields();
       } else {
         message.error("Failed to register business. Please try again.");
@@ -48,7 +50,6 @@ export default function Landing() {
   };
 
   const handleRegisterOwner = async (values) => {
-
     try {
       const response = await fetch(
         "http://localhost:3001/registration/owner-details",
@@ -93,89 +94,22 @@ export default function Landing() {
   return (
     <div className="landing-page">
       <Header />
-      <section className="hero-section">
-        <div className="hero-content">
-          <h1>
-            Revolutionize Your Sales Experience with
-            <br />
-            PointMaster
-          </h1>
-          <p>
-            Streamline Transactions, Enhance Efficiency, and Grow Your Business
-            <br />
-            With Ease
-          </p>
-          <button className="cta-button" onClick={showBusinessModal}>
-            JOIN POINTMASTER NOW
-          </button>
-        </div>
-      </section>
+      <HeroSection onShowBusinessModal={showBusinessModal} />
+      <FeaturesSection />
 
-      <section className="features-section">
-        <h1 className="section-heading">Features</h1>
-        <div className="features-grid">
-          <div className="feature">
-            <h2>E-commerce Integration</h2>
-            <p>
-              Seamless connection between your online store and various
-              e-commerce platforms.
-            </p>
-          </div>
-          <div className="feature">
-            <h2>Loyalty Programs</h2>
-            <p>
-              Customizable loyalty programs to incentivize customer loyalty and
-              enhance experiences.
-            </p>
-          </div>
-          <div className="feature">
-            <h2>Security</h2>
-            <p>
-              Advanced security measures to protect transactions and customer
-              data.
-            </p>
-          </div>
-          <div className="feature">
-            <h2>Inventory Management</h2>
-            <p>
-              Robust systems to track and optimize inventory throughout your
-              supply chain.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <Modal
-        title={<div className="custom-modal-title">Register New Business</div>}
+      <BusinessModal
         visible={isBusinessModalVisible}
+        form={form_first}
         onCancel={handleBusinessCancel}
-        footer={null}
-        width={750}
-        centered
-      >
-        <RegisterNewBusiness
-          form={form_first}
-          onCancel={handleBusinessCancel}
-          isEditMode={false}
-          onRegisterOrUpdateBusiness={handleRegisterBusiness}
-        />
-      </Modal>
+        onRegister={handleRegisterBusiness}
+      />
 
-      {/* Owner registration modal */}
-      <Modal
-        title={<div className="custom-modal-title">Register Owner</div>}
+      <OwnerModal
         visible={isOwnerModalVisible}
+        form={form_second}
         onCancel={handleOwnerCancel}
-        footer={null}
-        centered
-      >
-        <RegisterOwner
-          form={form_second}
-          onCancel={handleOwnerCancel}
-          isEditMode={false}
-          onRegisterOrUpdateOwner={handleRegisterOwner}
-        />
-      </Modal>
+        onRegister={handleRegisterOwner}
+      />
 
       <Footer />
     </div>
