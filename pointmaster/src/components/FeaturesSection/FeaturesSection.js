@@ -17,8 +17,8 @@ const FeaturesSection = () => {
       stagger: 0.3,
       scrollTrigger: {
         trigger: ".features-section",
-        start: "top 50%",  // Start animation when the section reaches 50% of the viewport height
-        toggleActions: "play none none none",  // Play animation on scroll
+        start: "top 50%",
+        toggleActions: "play none none none",
       },
     });
   }, []);
@@ -46,10 +46,29 @@ const FeaturesSection = () => {
     },
   ];
 
+  const applications = [
+    {
+      name: "For Business Owners and Managers",
+      description: "Manage your business operations, track sales, and analyze customer data.",
+      platform : ["Web"],
+    },
+    {
+        name: "For Cashiers and Sales Associates",  
+        description: "Process transactions, view customer profiles, and manage inventory. Scan barcodes and accept payments.",
+        platform : ["Web", "IOS", "Android"],
+    },
+    {
+        name: "For Customers",
+        description: "View promotions, earn rewards, and make purchases. Access your loyalty points and redeem rewards.",
+        platform : ["IOS", "Android"],
+    },
+    
+  ];
+
   return (
     <section className="features-section">
       <div className="heading-container">
-        <h1 className="section-heading">Features</h1>
+        <h1 className="section-heading">Features & Applications</h1>
       </div>
       <div className="features-grid">
         {features.map((feature, index) => (
@@ -63,6 +82,32 @@ const FeaturesSection = () => {
             <p>{feature.description}</p>
           </div>
         ))}
+      </div>
+
+      <div className="application-card">
+        <img src="/images/application-image.png" alt="Applications" className="application-image" /> {/* Replace with your actual image path */}
+        <div className="application-details">
+          {applications.map((app, index) => (
+            <div key={index} className="application-item">
+              <h3 className="application-name">{app.name}</h3>
+              {/*generate Icons for each platform */}   
+                {/* <div className="platform-icons">
+                   {app.platform.map((platform, index) => (
+                    <span key={index} className="platform-icon">
+                        {platform === "Web" ? ( 
+                        <img src="/images/web-icon.png" alt="Web" style={{ width: "30px" }} />
+                        ) : platform === "IOS" ? (
+                        <img src="/images/ios-icon.webp" alt="IOS" />
+                        ) : (
+                        <img src="/images/android-icon.png" alt="Android" />
+                        )}
+                    </span>
+                    ))} 
+                </div> */}
+              <p className="application-description">{app.description}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

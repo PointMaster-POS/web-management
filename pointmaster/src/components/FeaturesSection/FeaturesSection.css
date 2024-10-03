@@ -1,59 +1,96 @@
 .features-section {
-    padding: 50px 20px;
-    background-color: #f9f9f9;
-    position: relative;
-    /* margin-top: 10%; */
-    height: 60vh;
-    margin-top: 7%;
-  }
-  
-  .heading-container {
-    text-align: center; /* Center text */
+    padding: 60px 20px; /* Increased padding for more breathing space */
+    background: linear-gradient(135deg, #e2e3e5, #f8f9fa); /* Soft gradient for a modern touch */
+    
+}
 
-    display: flex; /* Use flexbox */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-  }
-  
-  .section-heading {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  .feature {
-    background: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.heading-container {
     text-align: center;
-    transition: transform 0.3s ease;
-  }
-  
-  .feature:hover {
-    transform: translateY(-10px);
-  }
-  
-  .feature-icon {
-    font-size: 2em;
-    margin-bottom: 15px;
-    color: #1890ff;  /* Ant Design primary color */
-  }
-  
-  .feature h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #333;
-  }
-  
-  .feature p {
-    color: #555;
-    font-size: 1em;
-  }
-  
+    
+    margin-top: 6%;
+}
+
+.section-heading {
+    font-size: 2.8rem; /* Slightly larger font size */
+    color: #333; /* Darker color for the heading */
+    font-weight: 700; /* Bold font weight for emphasis */
+    letter-spacing: 1px; /* Spacing between letters for a more refined look */
+}
+
+.features-grid {
+    display: flex;
+    justify-content: space-evenly; /* Evenly distribute feature cards */
+    flex-wrap: wrap;
+    margin-bottom: 40px; /* Increased space below the feature grid */
+}
+
+.feature {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px; /* Slightly larger border radius for softer corners */
+    padding: 30px; /* More padding for feature cards */
+    width: 250px; /* Slightly wider for better visibility */
+    height: 300px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition for box-shadow */
+}
+
+.feature:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* More prominent shadow on hover */
+}
+
+.feature-icon {
+    font-size: 48px; /* Slightly larger icons */
+    color: #007bff; /* Primary color for icons */
+    margin-bottom: 15px; /* Space between icon and title */
+}
+
+/* New styles for the application card */
+.application-card {
+    display: flex; /* Align image and details side by side */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 12px; /* Larger border radius for application card */
+    padding: 30px; /* More padding */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin: 20px auto; /* Center the card */
+    margin-top: 15%;
+    max-width: 1200px; /* Increase max-width for more space */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition for hover effects */
+}
+
+.application-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* More prominent shadow on hover */
+}
+
+.application-image {
+    width: 50%; /* Wider image for better visibility */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 12px; /* Softer corners */
+    margin-right: 30px; /* More space between image and text */
+}
+
+.application-details {
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Center align items */
+}
+
+.application-item {
+    margin-bottom: 20px; /* Space between application items */
+}
+
+.application-name {
+    font-size: 1.6rem; /* Larger font size for application names */
+    font-weight: 600; /* Semi-bold font weight for better emphasis */
+    color: #333; /* Darker color for better readability */
+}
+
+.application-description {
+    color: #666; /* Dark gray for description text */
+    margin-top: 5px; /* Space above the description */
+    line-height: 1.5; /* Improve readability with line height */
+}
