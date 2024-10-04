@@ -34,7 +34,7 @@ const HeroSection = ({ onShowBusinessModal }) => {
       content: (
         <>
           <img
-            src="https://via.placeholder.com/400x200"
+            src="/images/2.png"
             alt="Step 1"
             className="step-image"
           />
@@ -52,7 +52,7 @@ const HeroSection = ({ onShowBusinessModal }) => {
       content: (
         <>
           <img
-            src="https://via.placeholder.com/400x200"
+            src="/images/3.png"
             alt="Step 2"
             className="step-image"
           />
@@ -69,7 +69,7 @@ const HeroSection = ({ onShowBusinessModal }) => {
       content: (
         <>
           <img
-            src="https://via.placeholder.com/400x200"
+            src="/images/4.png"
             alt="Step 3"
             className="step-image"
           />

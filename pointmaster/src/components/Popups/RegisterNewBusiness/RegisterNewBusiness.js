@@ -5,6 +5,7 @@ import { UploadOutlined, CheckOutlined } from "@ant-design/icons"; // Import Che
 import TextArea from "antd/es/input/TextArea";
 import { storage } from "../../../firebase"; 
 import "./RegisterNewBusiness.css"; // Ensure this CSS file is present and properly styles the form
+import axios from "axios";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -81,13 +82,56 @@ const RegisterNewBusiness = ({
 
   // Handle email verification
   const handleVerifyEmail = () => {
+    //send email verification code
+  try{
+    axios.post("http://localhost:3001/registration/verify-email-send", {
+      email: form.getFieldValue("business_mail"),
+    });
+
+    message.success(`Verification code sent to ${form.getFieldValue("business_mail")}`);
+  } catch (error) {
+    console.error("Error sending verification code:", error);
+    message.error("Failed to send verification code. Please try again.");
+  }
+
     setIsCodeVisible(true);
   };
 
   const handleVerifyCode = async () => {
     // Check if the verification code is correct
     const codeString = verificationCode.join('');
-    if (codeString === "1234") {
+    let isCodeValid = false;
+
+    console.log("Verification code:", codeString);
+    const body = {
+      email: form.getFieldValue("business_mail"),
+      code: codeString,
+    };
+    // verify the code
+    try {
+      const response = await axios.post("http://localhost:3001/registration/verify-mail", 
+      body,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        }
+      }
+
+      );
+        
+     
+     if (response.status === 200) {
+      isCodeValid = true;
+    }
+      
+
+    } catch (error) {
+      console.error("Error verifying code:", error);
+      message.error("Failed to verify code. Please try again.");
+      return;
+    }
+
+    if (isCodeValid) {
       // Simulating async verification
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsVerified(true);
