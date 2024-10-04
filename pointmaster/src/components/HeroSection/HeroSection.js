@@ -93,7 +93,11 @@ const HeroSection = ({ onShowBusinessModal }) => {
           <span>PointMaster</span>
         </h1>
         <p className="hero-subtitle">
-          Streamline Transactions, Enhance Efficiency, and Grow Your Business
+          Streamline Transactions, Enhance Efficiency,
+          <br />
+          Grow Your Business Improve Customer Experience,
+          <br/ >
+          Manage Inventory, and More 
           <br />
           With Ease
         </p>
