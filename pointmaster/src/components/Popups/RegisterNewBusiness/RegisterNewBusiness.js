@@ -84,7 +84,7 @@ const RegisterNewBusiness = ({
   const handleVerifyEmail = () => {
     //send email verification code
   try{
-    axios.post("http://localhost:3001/registration/verify-email-send", {
+    axios.post("http://209.97.173.123:3001/registration/verify-email-send", {
       email: form.getFieldValue("business_mail"),
     });
 
@@ -109,7 +109,7 @@ const RegisterNewBusiness = ({
     };
     // verify the code
     try {
-      const response = await axios.post("http://localhost:3001/registration/verify-mail", 
+      const response = await axios.post("http://209.97.173.123:3001/registration/verify-mail", 
       body,
       {
         headers: {
