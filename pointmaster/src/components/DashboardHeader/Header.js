@@ -60,7 +60,7 @@ const Header = ({ setIsAuthenticated }) => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3001/branch", {
+      const response = await fetch("http://209.97.173.123:3001/branch", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
