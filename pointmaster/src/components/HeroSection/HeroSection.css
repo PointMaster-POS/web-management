@@ -4,7 +4,7 @@
     justify-content: flex-start; /* Align content to the left */
     align-items: center;
     height: 100vh;
-    background-image: url('./bg.png'); 
+    background-image: url('https://posbytz.com/wp-content/uploads/2022/08/Best-POS-Software-for-Restaurants-in-India.png'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -41,7 +41,7 @@
   }
   
   .hero-title span {
-    color: #0360ff; /* Highlighting 'PointMaster' */
+    color: #ffff15; /* Highlighting 'PointMaster' */
   }
   
   .hero-subtitle {
@@ -51,7 +51,7 @@
   }
 
   .cta-button:hover {
-    background-color: #3474dc;
+    background-color: #FF6500;
   }
   
   @media (max-width: 768px) {
@@ -72,7 +72,7 @@
 
 
   .hero-title span {
-    color: #0360ff;
+    color: #fd7316;
   }
   
   .hero-subtitle {
@@ -81,7 +81,7 @@
   }
   
   .cta-button {
-    background-color: #0360ff;
+    background-color: #fd7316;
     color: white;
     border: none;
     padding: 10px 20px;
