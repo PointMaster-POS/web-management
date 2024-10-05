@@ -45,9 +45,9 @@ const Category = () => {
       let url;
       console.log("role", role);
       if (role === "owner") {
-        url = `http://localhost:3001/category/owner/${branchID}`;
+        url = `http://209.97.173.123:3001/category/owner/${branchID}`;
       } else if (role === "branchmanager") {
-        url = `http://localhost:3001/category/manager`;
+        url = `http://209.97.173.123:3001/category/manager`;
       }
       console.log("url", url);
       const response = await fetch(url, {
@@ -82,7 +82,7 @@ const Category = () => {
    
 
     try {
-      const response = await fetch("http://localhost:3001/category", {
+      const response = await fetch("http://209.97.173.123:3001/category", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -120,7 +120,7 @@ const Category = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/category/${values.branch_id}/${editingCategory.category_id}`,
+        `http://209.97.173.123:3001/category/${values.branch_id}/${editingCategory.category_id}`,
         {
           method: "PUT",
           headers: {
@@ -171,7 +171,7 @@ const Category = () => {
           }
 
           await fetch(
-            `http://localhost:3001/category/${branchID}/${category_id}`,
+            `http://209.97.173.123:3001/category/${branchID}/${category_id}`,
             {
               method: "DELETE",
               headers: {

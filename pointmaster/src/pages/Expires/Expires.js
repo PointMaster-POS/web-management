@@ -19,7 +19,7 @@ const Expires = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/dashboard/business/expired-items",
+        "http://209.97.173.123:3001/dashboard/business/expired-items",
         {
           method: "GET",
           headers: {

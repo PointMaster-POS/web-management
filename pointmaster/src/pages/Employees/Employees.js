@@ -44,9 +44,9 @@ const Employees = () => {
     }
     let url;
     if (role === "owner") {
-      url = `http://localhost:3001/employee/all-employee/${branchID}`;
+      url = `http://209.97.173.123:3001/employee/all-employee/${branchID}`;
     } else if (role === "branchmanager") {
-      url = `http://localhost:3001/employee/branch-employee`;
+      url = `http://209.97.173.123:3001/employee/branch-employee`;
     }
       
 
@@ -93,7 +93,7 @@ const Employees = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/employee", {
+      const response = await fetch("http://209.97.173.123:3001/employee", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,7 +128,7 @@ const Employees = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/employee/${editingEmployee.employee_id}`,
+        `http://209.97.173.123:3001/employee/${editingEmployee.employee_id}`,
         {
           method: "PUT",
           headers: {
@@ -179,7 +179,7 @@ const Employees = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/employee/${employee_id}`, {
+          await fetch(`http://209.97.173.123:3001/employee/${employee_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,

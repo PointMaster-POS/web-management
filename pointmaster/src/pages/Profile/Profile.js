@@ -35,7 +35,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/employee/owner-profile`,
+        `http://209.97.173.123:3001/employee/owner-profile`,
         {
           method: "GET",
           headers: {
@@ -106,7 +106,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/business/update-business-details",
+        "http://209.97.173.123:3001/business/update-business-details",
         {
           method: "PUT",
           headers: {
@@ -153,7 +153,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/business/update-owner-details",
+        "http://209.97.173.123:3001/business/update-owner-details",
         {
           method: "PUT",
           headers: {

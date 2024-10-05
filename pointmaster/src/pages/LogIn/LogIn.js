@@ -23,7 +23,7 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
     setLoading(true);
 
     // Call API to check if the password is correct
-    const url = "http://localhost:3002/employee/login";
+    const url = "http://209.97.173.123:3002/employee/login";
     axios
       .post(url, {
         email: values.username,

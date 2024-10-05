@@ -23,7 +23,7 @@ export default function Landing() {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/registration/business-details",
+        "http://209.97.173.123:3001/registration/business-details",
         {
           method: "POST",
           headers: {
@@ -52,7 +52,7 @@ export default function Landing() {
   const handleRegisterOwner = async (values) => {
     try {
       const response = await fetch(
-        "http://localhost:3001/registration/owner-details",
+        "http://209.97.173.123:3001/registration/owner-details",
         {
           method: "POST",
           headers: {
