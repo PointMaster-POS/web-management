@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Modal, Table, Avatar, DatePicker, Button, Card, Form } from "antd";
-import moment from "moment";
 import dayjs from "dayjs";
 
 const PopularItemsModal = ({
