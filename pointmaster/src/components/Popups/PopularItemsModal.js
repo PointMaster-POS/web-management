@@ -17,18 +17,18 @@ const PopularItemsModal = ({
   const columns = [
     {
       title: "Item",
-      dataIndex: "image_url", // Reference the image URL directly from the item
+      dataIndex: "image_url",
       key: "image_url",
       render: (image) => <Avatar src={image} size={50} />,
     },
     {
       title: "Name",
-      dataIndex: "item_name", // Reference the item name directly
+      dataIndex: "item_name",
       key: "item_name",
     },
     {
       title: "Sales",
-      dataIndex: "purchase_count", // Reference the purchase count directly
+      dataIndex: "purchase_count",
       key: "purchase_count",
     },
   ];
@@ -90,8 +90,8 @@ const PopularItemsModal = ({
 
       <Table
         columns={columns}
-        dataSource={popularItemsList.slice(0, 20)} // Only take the first 20 items
-        pagination={{ pageSize: 5 }} // Pagination for 5 items per page
+        dataSource={popularItemsList.slice(0, 20)}
+        pagination={{ pageSize: 5 }}
         loading={tableLoading}
       />
     </Modal>
