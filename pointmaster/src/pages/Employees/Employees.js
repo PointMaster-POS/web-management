@@ -48,6 +48,12 @@ const Employees = () => {
     } else if (role === "branchmanager") {
       url = `http://209.97.173.123:3001/employee/branch-employee`;
     }
+
+
+    if (!branchID) {
+      message.warning("Select a branch to view employees.");
+      return;
+    }
       
 
     try {

@@ -40,7 +40,10 @@ const Category = () => {
       
       return;
     }
-
+    if (!branchID) {
+      message.warning("Select a store or create a store to have categories.");
+      return;
+    }
     try {
       let url;
       console.log("role", role);
