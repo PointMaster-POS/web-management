@@ -160,14 +160,14 @@ const Loyalty = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <div /* style={{ padding: "20px" }} */>
       <h1>Loyalty Program</h1>
 
-      {loading && <Spin size="large" style={{ margin: "20px 0" }} />}
+      {loading && <Spin size="large"  /* style={{ margin: "20px 0" }} */  />}
 
       {data ? (
         <>
-          <Card title={data.loyalty_program_name} style={{ marginTop: 20 }}>
+          <Card title={data.loyalty_program_name} /* style={{ marginTop: 20 }} */>
             <Descriptions bordered column={1}>
               <Descriptions.Item label="Loyalty Program ID">
                 {data.loyalty_program_id}
@@ -210,7 +210,7 @@ const Loyalty = () => {
                 type="info"
                 showIcon
               />
-              <Card style={{ marginTop: 20 }}>
+              <Card /* style={{ marginTop: 20 }} */>
                 <h3>Benefits of a Loyalty Program:</h3>
                 <ul>
                   <li>Encourages repeat purchases from loyal customers.</li>

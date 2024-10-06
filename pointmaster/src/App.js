@@ -10,7 +10,7 @@ import Profile from "./pages/Profile/Profile";
 import Setting from "./pages/Settings/Settings";
 import Category from "./pages/Categories/Category";
 import Suppliers from "./pages/Loyalty/loyalty";
-import PurchaseHistory from "./pages/Loyalty/PurchaseHistory";
+// import PurchaseHistory from "./pages/Loyalty/PurchaseHistory";
 import Orders from "./pages/Orders/Orders";
 import Products from "./pages/Products/Products";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
@@ -27,6 +27,7 @@ const App = () => {
           <Routes>
 
             {/* <Route path="/" element={<Landing />} /> */}
+            <Route path="/" element={<Landing />} />
             <Route path="/login" element={<LogIn />} />
             <Route
               path="/forgot-password"
@@ -48,10 +49,10 @@ const App = () => {
               <Route path="/setting" element={<Setting />} />
               <Route path="/category" element={<Category />} />
               <Route path="/loyalty" element={<Loyalty />} />
-              <Route
+              {/* <Route
                 path="/phistory/:supplier_id"
                 element={<PurchaseHistory />}
-              />
+              /> */}
               <Route path="/products" element={<Products />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/expires" element={<Expires />} />
