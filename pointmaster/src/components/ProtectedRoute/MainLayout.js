@@ -43,7 +43,7 @@ const MainLayout = () => {
             transition: "margin-left 0.2s",
           }}
         >
-          <AntContent style={{ margin: "16px 16px 0" }}>
+          <AntContent style={{ margin: "20px 20px" }}>
             {contextHolder}
             <Outlet />
           </AntContent>
