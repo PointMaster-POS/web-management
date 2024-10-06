@@ -165,6 +165,7 @@ const Header = ({ setIsAuthenticated }) => {
             style={{ height: "75px" }} // Adjust height as per your requirement
           />
         </div>
+
       <Space size="large">
 
         <div
