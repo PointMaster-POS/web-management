@@ -11,8 +11,8 @@ const PopularItemsModal = ({
   defaultEndDate,
   fetchPopularItems,
 }) => {
-  const [startDate, setStartDate] = useState(moment(defaultStartDate));
-  const [endDate, setEndDate] = useState(moment(defaultEndDate));
+  const [startDate, setStartDate] = useState(dayjs(defaultStartDate));
+  const [endDate, setEndDate] = useState(dayjs(defaultEndDate));
   const [tableLoading, setTableLoading] = useState(false);
 
   const columns = [
