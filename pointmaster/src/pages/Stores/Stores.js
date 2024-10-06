@@ -42,7 +42,7 @@ const Stores = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/branch", {
+      const response = await fetch("http://209.97.173.123:3001/branch", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ const Stores = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:3001/branch/", {
+      const response = await fetch("http://209.97.173.123:3001/branch/", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -117,7 +117,7 @@ const Stores = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/branch/${editingStore.branch_id}`,
+        `http://209.97.173.123:3001/branch/${editingStore.branch_id}`,
         {
           method: "PUT",
           headers: {
@@ -170,7 +170,7 @@ const Stores = () => {
             return;
           }
 
-          await fetch(`http://localhost:3001/branch/${branch_id}`, {
+          await fetch(`http://209.97.173.123:3001/branch/${branch_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
@@ -245,7 +245,7 @@ const Stores = () => {
 
   return (
     <Card
-      style={{ margin: 30, padding: 30, borderRadius: "10px" }}
+      style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
       <div
@@ -256,7 +256,7 @@ const Stores = () => {
         }}
       >
         <Title level={3} style={{ marginBottom: 10 }}>
-          Branchess Data
+          Branches Data
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search

@@ -1,37 +1,41 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Upload, message, Typography } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import {  storage } from "../../../firebase"; // Your Firebase setup
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { storage } from "../../../firebase"; // Your Firebase setup
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import "./RegisterOwner.css";
 
 const { Title } = Typography;
 
-const RegisterOwner = ({ form, onCancel, isEditMode, onRegisterOrUpdateOwner }) => {
+const RegisterOwner = ({
+  form,
+  onCancel,
+  isEditMode,
+  onRegisterOrUpdateOwner,
+  ownerData = {} // Pre-fill data when editing
+}) => {
   const [fileList, setFileList] = useState([]);
+
+  useEffect(() => {
+    if (isEditMode && ownerData.photo_url) {
+      setFileList([{ url: ownerData.photo_url, name: "Existing image" }]);
+    }
+  }, [isEditMode, ownerData.photo_url]);
 
   // Handle form submission
   const handleFinish = async (values) => {
     try {
-      // Check if an image is uploaded
-      if (fileList.length > 0) {
-        const imageUrl = await handleUpload(fileList[0]);
+      // Check if a new image is uploaded or retain the existing one
+      if (fileList.length > 0 && fileList[0].originFileObj) {
+        const imageUrl = await handleUpload(fileList[0].originFileObj);
         values.business_owner_photo_url = imageUrl;
+      } else if (isEditMode) {
+        // Use the existing image URL for updates if no new image is uploaded
+        values.business_owner_photo_url = ownerData.photo_url;
       }
 
-      // If it's a registration (not edit mode), create a new user in Firebase Authentication
-      // if (!isEditMode) {
-      //   const userCredential = await createUserWithEmailAndPassword(
-      //     auth,
-      //     values.business_owner_mail,
-      //     values.business_password
-      //   );
-      //   console.log("User registered:", userCredential);
-      // }
-
       // Pass form values to the parent function
-      onRegisterOrUpdateOwner(values);
+      onRegisterOrUpdateOwner(values, isEditMode ? ownerData.id : null);
     } catch (error) {
       message.error("Error submitting the form. Please try again.");
       console.error("Form submission error:", error);
@@ -53,7 +57,7 @@ const RegisterOwner = ({ form, onCancel, isEditMode, onRegisterOrUpdateOwner }) 
 
   // Handle file selection in the Upload component
   const handleFileChange = ({ fileList }) => {
-    setFileList(fileList.map((file) => file.originFileObj));
+    setFileList(fileList.map((file) => file.originFileObj || file));
   };
 
   return (
@@ -64,6 +68,7 @@ const RegisterOwner = ({ form, onCancel, isEditMode, onRegisterOrUpdateOwner }) 
         layout="vertical"
         onFinish={handleFinish}
         className="owner-form"
+        initialValues={isEditMode ? ownerData : {}}
       >
         <Form.Item
           label="Owner Name"
@@ -110,13 +115,18 @@ const RegisterOwner = ({ form, onCancel, isEditMode, onRegisterOrUpdateOwner }) 
         <Form.Item
           label="Image"
           name="photo_url"
-          rules={[{ required: true, message: "Please upload the image!" }]}
+          rules={[{ required: !isEditMode, message: "Please upload the image!" }]}
         >
           <Upload
             listType="picture"
-            beforeUpload={() => false} 
+            beforeUpload={() => false} // Prevent auto-upload
             onChange={handleFileChange}
             fileList={fileList}
+            defaultFileList={
+              isEditMode && ownerData.photo_url
+                ? [{ url: ownerData.photo_url, name: "Current Image" }]
+                : []
+            }
           >
             <Button icon={<UploadOutlined />}>Upload Image</Button>
           </Upload>

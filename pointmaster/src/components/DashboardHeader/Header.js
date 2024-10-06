@@ -60,7 +60,7 @@ const Header = ({ setIsAuthenticated }) => {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3001/branch", {
+      const response = await fetch("http://209.97.173.123:3001/branch", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -77,7 +77,7 @@ const Header = ({ setIsAuthenticated }) => {
       setSelectedBranch(data[0].branch_name);
     } catch (error) {
       console.error("Error fetching branches:", error);
-      message.error("Failed to fetch branches.");
+      message.warning("No stores available.");
     }
   };
 
@@ -149,20 +149,43 @@ const Header = ({ setIsAuthenticated }) => {
 
   return (
     <div className="header_">
-      <Typography.Title level={2}>Point Master</Typography.Title>
+      {/* <Typography.Title level={2}>Welcome to Point Master</Typography.Title> */}
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            background: "#f0f2f5", // Subtle background color
+            marginLeft: "-6px"
+          }}
+        >
+          <img
+            src="images/logo.png" // Add the correct path to your logo image here
+            alt="Logo"
+            style={{ height: "75px" }} // Adjust height as per your requirement
+          />
+        </div>
 
       <Space size="large">
-        <div style={{
-          display: "flex",
-          alignItems: "center",
-          background: "#f0f2f5", // Subtle background color
-          borderRadius: "8px",
-          padding: "10px 15px",
-          // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-          marginRight: "20px"
-        }}>
-          <ClockCircleOutlined style={{ marginRight: "8px", fontSize: "18px", color: "#1890ff" }} /> {/* Clock Icon */}
-          <Typography.Text style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            background: "#f0f2f5", // Subtle background color
+            borderRadius: "8px",
+            padding: "10px 15px",
+            // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            marginRight: "20px",
+          }}
+        >
+          <ClockCircleOutlined
+            style={{ marginRight: "8px", fontSize: "18px", color: "#1890ff" }}
+          />{" "}
+          {/* Clock Icon */}
+          <Typography.Text
+            style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}
+          >
             {currentTime}
           </Typography.Text>
         </div>
@@ -171,7 +194,7 @@ const Header = ({ setIsAuthenticated }) => {
           <Select
             value={selectedBranch}
             onChange={handleBranchChange}
-            style={{ width: 200, size: 'large', marginRight: "20px"}}
+            style={{ width: 200, size: "large", marginRight: "20px" }}
           >
             {branches?.map((branch) => (
               <Select.Option key={branch.branch_id} value={branch.branch_name}>
@@ -182,7 +205,7 @@ const Header = ({ setIsAuthenticated }) => {
         )}
 
         <Dropdown overlay={menu} trigger={["click"]}>
-          <Badge dot style={{marginRight: "20px"}}>
+          <Badge dot style={{ marginRight: "20px" }}>
             <Avatar
               icon={<UserOutlined />}
               style={{

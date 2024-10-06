@@ -19,7 +19,7 @@ const Expires = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:3001/dashboard/business/expired-items",
+        "http://209.97.173.123:3001/dashboard/business/expired-items",
         {
           method: "GET",
           headers: {
@@ -68,7 +68,7 @@ const Expires = () => {
 
   return (
     <Card
-      style={{ margin: 30, padding: 30, borderRadius: "10px" }}
+      style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
       <div

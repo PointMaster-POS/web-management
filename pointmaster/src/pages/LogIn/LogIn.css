@@ -1,115 +1,78 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-
-.login-container {
-  display: flex;
+/* Wrapper that contains both the background and form */
+.login-wrapper {
+  position: relative;
+  width: 100vw;
   height: 100vh;
-  width: 100%;
-}
-
-.image-section {
-  flex: 3;
   display: flex;
-  align-items: center;
   justify-content: center;
-  background-color: #ffffff;
+  align-items: center;
 }
 
-.image-section img {
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  background: rgba(0, 0, 0, 0.6); /* Dark overlay for better text visibility */
 }
 
-.form-section {
-  flex: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 20px;
-  background-color: #f7f7f7;
-  position: relative;
-  font-family: "Roboto", sans-serif;
-  font-weight: 500;
-}
-
-h1 {
-  text-align: center;
-  position: relative;
-  top: -80px;
-  width: 60%;
-}
-
-.login-form {
-  width: 60%;
-  height: 50%;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-}
-
-.login-form .ant-input-affix-wrapper {
-  height: 50px;
-  border-radius: 20px;
-  font-size: 16px;
-}
-
-.login-form-button {
+/* Background with blur effect */
+.login-background {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 50px;
+  height: 100%;
+  background-image: url('https://posbytz.com/wp-content/uploads/2022/08/Best-POS-Software-for-Restaurants-in-India.png');
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+/* Container for login form */
+.login-form-container {
+  z-index: 1; /* Ensure the form is in front of the background */
+  width: 400px;
+}
+
+/* Login form styling */
+.login-form {
+  background-color: rgba(255, 255, 255, 0.85); /* Transparent white background */
+  padding: 40px;
+  border-radius: 20px; /* Increase border-radius for rounded corners */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.login-form .login-button {
+  background-color: #1890ff;
+  color: white;
   font-size: 16px;
-  border-radius: 20px;
-  margin-top: 50px;
+  height: 45px;
+  border-radius: 10px; /* Increase border-radius for the button */
 }
 
-.remember-forgot {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+.login-form input {
+  font-size: 16px;
+  border-radius: 20px; /* Increase border-radius for the input fields */
 }
 
-.remember-forgot label {
-  font-size: 15px; /* Increase font size for Remember me */
+/* Form input fields styling */
+.ant-input-affix-wrapper {
+  padding: 10px;
+  border-radius: 20px; /* Increase border-radius for input affix */
 }
 
-.login-form-forgot {
-  color: inherit;
-  text-decoration: none;
-  font-size: 15px;
-}
-
-.login-form-forgot:hover {
-  color: #1677ff; /* Same color as the Log In button */
-  text-decoration: underline;
+.ant-input-password {
+  padding: 10px;
+  border-radius: 20px; /* Increase border-radius for password fields */
 }
 
 .ant-form-item {
-  margin-bottom: 10px; /* Reduce gap between Form.Items */
+  margin-bottom: 16px;
 }
 
-.register-link {
-  font-size: 15px;
-  font-weight: 600;
-  margin-top: 80px;
-}
-
-.register-link a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.register-link a:hover {
-  color: #1677ff;
-  text-decoration: underline;
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:focus {
-    transition: background-color 600000s 0s, color 600000s 0s;
-}
-input[data-autocompleted] {
-    background-color: transparent !important;
+.ant-input-lg {
+  height: 45px;
+  border-radius: 10px; /* Increase border-radius for large input */
 }
