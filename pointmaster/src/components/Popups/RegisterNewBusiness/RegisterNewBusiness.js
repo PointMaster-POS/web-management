@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Select, Upload, Typography, message } from "antd";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { UploadOutlined, CheckOutlined } from "@ant-design/icons"; // Import CheckOutlined
+import { UploadOutlined, CheckOutlined } from "@ant-design/icons"; 
 import TextArea from "antd/es/input/TextArea";
 import { storage } from "../../../firebase"; 
-import "./RegisterNewBusiness.css"; // Ensure this CSS file is present and properly styles the form
+import "./RegisterNewBusiness.css"; 
 import axios from "axios";
 
 const { Option } = Select;
 const { Title } = Typography;
-//sample commit
+
 const RegisterNewBusiness = ({
   form,
   onCancel,
@@ -31,12 +31,9 @@ const RegisterNewBusiness = ({
 
     if (fileList.length > 0) {
       try {
-        // Upload the file to Firebase storage
         const logoURL = await handleUpload(fileList[0]);
-        // Add the uploaded logo URL to form values
         values.logo_url = logoURL;
         console.log("Form values:", logoURL);
-        // Submit the form with updated values
         onRegisterOrUpdateBusiness(values);
       } catch (error) {
         message.error("Failed to upload the logo. Please try again.");
@@ -46,33 +43,28 @@ const RegisterNewBusiness = ({
     }
   };
 
-  // Function to handle image upload to Firebase
   const handleUpload = async (file) => {
     try {
       const storageRef = ref(storage, `business-logos/${file.name}`);
       await uploadBytes(storageRef, file);
-      console.log("File uploaded successfully!");
       const logoURL = await getDownloadURL(storageRef);
       return logoURL;
     } catch (error) {
-      console.error("Error uploading file:", error);
       throw new Error("File upload failed");
     }
   };
 
-  // Handle file selection in the Upload component
   const handleFileChange = ({ fileList }) => {
     setFileList(fileList.map((file) => file.originFileObj));
   };
 
-  // Optional file validation before upload (e.g., check file type and size)
   const beforeUpload = (file) => {
     const isValidType = file.type === "image/jpeg" || file.type === "image/png";
     if (!isValidType) {
       message.error("You can only upload JPG/PNG files!");
       return false;
     }
-    const isLt2M = file.size / 1024 / 1024 < 2; // 2MB max file size
+    const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
       message.error("Image must be smaller than 2MB!");
       return false;
@@ -80,81 +72,65 @@ const RegisterNewBusiness = ({
     return true;
   };
 
-  // Handle email verification
   const handleVerifyEmail = () => {
-    //send email verification code
-  try{
-    axios.post("http://209.97.173.123:3001/registration/verify-email-send", {
-      email: form.getFieldValue("business_mail"),
-    });
-
-    message.success(`Verification code sent to ${form.getFieldValue("business_mail")}`);
-  } catch (error) {
-    console.error("Error sending verification code:", error);
-    message.error("Failed to send verification code. Please try again.");
-  }
-
+    try {
+      axios.post("http://209.97.173.123:3001/registration/verify-email-send", {
+        email: form.getFieldValue("business_mail"),
+      });
+      message.success(`Verification code sent to ${form.getFieldValue("business_mail")}`);
+    } catch (error) {
+      message.error("Failed to send verification code. Please try again.");
+    }
     setIsCodeVisible(true);
   };
 
   const handleVerifyCode = async () => {
-    // Check if the verification code is correct
     const codeString = verificationCode.join('');
     let isCodeValid = false;
 
-    console.log("Verification code:", codeString);
     const body = {
       email: form.getFieldValue("business_mail"),
       code: codeString,
     };
-    // verify the code
+
+    
+
     try {
-      const response = await axios.post("http://209.97.173.123:3001/registration/verify-mail", 
-      body,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        }
+      const response = await axios.post("http://209.97.173.123:3001/registration/verify-mail", body);
+      if (response.status === 200) {
+        isCodeValid = true;
       }
-
-      );
-        
-     
-     if (response.status === 200) {
-      isCodeValid = true;
-    }
-      
-
     } catch (error) {
-      console.error("Error verifying code:", error);
       message.error("Failed to verify code. Please try again.");
       return;
     }
 
     if (isCodeValid) {
-      // Simulating async verification
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsVerified(true);
-      setVerifyButtonText(<CheckOutlined style={{ color: 'green' }} />); // Change button to green tick icon
-      setIsCodeVisible(false); // Hide the 4-digit input space
+      setVerifyButtonText(<CheckOutlined style={{ color: 'green' }} />);
+      setIsCodeVisible(false);
       message.success("Email verified successfully!");
     } else {
       message.error("Invalid verification code. Please try again.");
     }
   };
 
-  // Handle input change for verification code boxes
   const handleCodeChange = (index, value) => {
     const newCode = [...verificationCode];
     newCode[index] = value;
-
-    // Move focus to the next input if the current one is filled
     if (value && index < 3) {
       const nextInput = document.getElementById(`verification-code-${index + 1}`);
       if (nextInput) nextInput.focus();
     }
-
     setVerificationCode(newCode);
+  };
+
+  const handleEmailChange = () => {
+    setIsVerified(false);
+    setVerifyButtonText("Verify Email");
+    setVerificationCode(["", "", "", ""]);
+    setIsCodeVisible(false);
   };
 
   return (
@@ -165,9 +141,7 @@ const RegisterNewBusiness = ({
           form={form}
           layout="vertical"
           onFinish={handleFinish}
-          initialValues={{
-            status: true,
-          }}
+          initialValues={{ status: true }}
           className="business-form"
         >
           <Form.Item
@@ -181,20 +155,15 @@ const RegisterNewBusiness = ({
           <Form.Item
             label="Business Email"
             name="business_mail"
-            rules={[
-              {
-                type: "email",
-                required: true,
-                message: "Please input a valid email!",
-              },
-            ]}
+            rules={[{ type: "email", required: true, message: "Please input a valid email!" }]}
           >
             <Input
+              onChange={handleEmailChange} // Add email change handler
               suffix={
                 <Button
                   type="link"
                   onClick={handleVerifyEmail}
-                  style={{ color: isVerified ? "green" : undefined }} // Change color to green if verified
+                  style={{ color: isVerified ? "green" : undefined }}
                 >
                   {isVerified ? verifyButtonText : "Verify Email"}
                 </Button>
@@ -202,7 +171,6 @@ const RegisterNewBusiness = ({
             />
           </Form.Item>
 
-          {/* Verification code input */}
           {isCodeVisible && !isVerified && (
             <Form.Item label="Verification Code" required>
               <div style={{ display: 'flex', gap: '10px' }}>
@@ -223,6 +191,7 @@ const RegisterNewBusiness = ({
             </Form.Item>
           )}
 
+          {/* Other form fields */}
           <Form.Item
             label="Business URL"
             name="business_url"
@@ -251,7 +220,6 @@ const RegisterNewBusiness = ({
             <Input />
           </Form.Item>
 
-          {/* Business Logo Upload */}
           <Form.Item
             label="Business Logo"
             name="business_logo"
@@ -259,7 +227,7 @@ const RegisterNewBusiness = ({
           >
             <Upload
               listType="picture"
-              beforeUpload={beforeUpload} // File validation (optional)
+              beforeUpload={beforeUpload}
               onChange={handleFileChange}
               fileList={fileList}
             >
@@ -299,13 +267,9 @@ const RegisterNewBusiness = ({
             <Button
               type="primary"
               htmlType="submit"
-              style={{
-                backgroundColor: "#007bff",
-                borderColor: "#007bff",
-                fontSize: "16px",
-              }}
+              style={{ fontSize: "16px" }}
             >
-              {isEditMode ? "Update" : "Register Business"}
+              {isEditMode ? "Update" : "Register"}
             </Button>
           </Form.Item>
         </Form>
@@ -313,5 +277,6 @@ const RegisterNewBusiness = ({
     </React.Fragment>
   );
 };
+
 
 export default RegisterNewBusiness;
