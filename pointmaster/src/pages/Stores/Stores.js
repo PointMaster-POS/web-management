@@ -256,7 +256,7 @@ const Stores = () => {
         }}
       >
         <Title level={3} style={{ marginBottom: 10 }}>
-          Branchess Data
+          Branches Data
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
