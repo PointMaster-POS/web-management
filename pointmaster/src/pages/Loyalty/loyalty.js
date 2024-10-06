@@ -32,7 +32,7 @@ const Loyalty = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3001/loyalty/", {
+      const response = await fetch("http://209.97.173.123:3001/loyalty/", {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,

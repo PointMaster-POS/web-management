@@ -23,7 +23,7 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
     setLoading(true);
 
     // Call API to check if the password is correct
-    const url = "http://localhost:3002/employee/login";
+    const url = "http://209.97.173.123:3002/employee/login";
     axios
       .post(url, {
         email: values.username,
@@ -69,7 +69,7 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
     <div className="login-container">
       {contextHolder}
       <div className="image-section">
-        <img src={`${process.env.PUBLIC_URL}images/LogIn.png`} alt="Welcome" />
+        <img src={`/images/LogIn.png`} alt="Welcome" />
       </div>
       <div className="form-section">
         {forgotPassword ? (

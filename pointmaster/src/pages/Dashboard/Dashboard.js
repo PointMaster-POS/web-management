@@ -215,7 +215,7 @@ const NoOfCustomerCard = ({ icon, title }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        "http://localhost:3001/dashboard/business/number-of-customers",
+        "http://209.97.173.123:3001/dashboard/business/number-of-customers",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -302,7 +302,7 @@ const ExpiresCard = ({ icon, title }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        "http://localhost:3001/dashboard/business/expired-items",
+        "http://209.97.173.123:3001/dashboard/business/expired-items",
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -376,7 +376,7 @@ const PopularItems = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3001/dashboard/business/sale-report/item/${startDate}/${adjustedEndDate}`,
+        `http://209.97.173.123:3001/dashboard/business/sale-report/item/${startDate}/${adjustedEndDate}`,
         {
           method: "GET",
           headers: {

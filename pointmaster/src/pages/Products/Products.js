@@ -66,7 +66,7 @@ const Products = () => {
     if (!branchID) return; // Ensure branchId is available
     try {
       const response = await axios.get(
-        `http://localhost:3001/category/owner/${branchID}`,
+        `http://209.97.173.123:3001/category/owner/${branchID}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -96,7 +96,7 @@ const Products = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:3001/items/${categoryId}`,
+        `http://209.97.173.123:3001/items/${categoryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -162,7 +162,7 @@ const Products = () => {
 
       // Send the POST request to the server
       axios
-        .post("http://localhost:3001/items", newProduct, {
+        .post("http://209.97.173.123:3001/items", newProduct, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -241,7 +241,7 @@ const Products = () => {
 
       // Make PUT request to update the product in the database
       const response = await axios.put(
-        `http://localhost:3001/items/${selectedItemID}`,
+        `http://209.97.173.123:3001/items/${selectedItemID}`,
         {
           category_id: values.category,
           item_name: values.product_name,
@@ -285,7 +285,7 @@ const Products = () => {
     console.log("Token:", token);
     try {
       const response = await axios.delete(
-        `http://localhost:3001/items/${productId}`,
+        `http://209.97.173.123:3001/items/${productId}`,
         {
           headers: {
             "content-type": "application/json",
