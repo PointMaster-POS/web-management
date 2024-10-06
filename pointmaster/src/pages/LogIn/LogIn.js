@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./LogIn.css";
-import ForgotPassword from "./ForgotPassword"; // Import ForgotPassword here
-import { Form, Input, Button, Checkbox, message } from "antd";
+import { Form, Input, Button, message } from "antd";
 import {
   UserOutlined,
   LockOutlined,
@@ -12,17 +11,15 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-export default function LogIn({ forgotPassword = false }) { // Added forgotPassword prop
+export default function LogIn({ forgotPassword = false }) {
   const [messageApi, contextHolder] = message.useMessage();
   const { isAuthenticated, setIsAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values) => {
-    console.log("Success:", values);
     setLoading(true);
 
-    // Call API to check if the password is correct
     const url = "http://209.97.173.123:3002/employee/login";
     axios
       .post(url, {
@@ -31,7 +28,7 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
       })
       .then((response) => {
         if (response.status === 200) {
-          localStorage.setItem("accessToken",response.data.accessToken);
+          localStorage.setItem("accessToken", response.data.accessToken);
           if (!isAuthenticated) {
             setIsAuthenticated(true);
             navigate("/dashboard");
@@ -58,7 +55,6 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
             duration: 5,
           });
         }
-        console.log(error);
       })
       .finally(() => {
         setLoading(false);
@@ -66,87 +62,50 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
   };
 
   return (
-    <div className="login-container">
-      {contextHolder}
-      <div className="image-section">
-        <img src={`/images/LogIn.png`} alt="Welcome" />
-      </div>
-      <div className="form-section">
-        {forgotPassword ? (
-          <ForgotPassword />
-        ) : (
-          <>
-            <h1>
-              Welcome Back! <br />
-              Login to your account
-            </h1>
-            <Form
-              name="normal_login"
-              className="login-form"
-              initialValues={{
-                remember: true,
-              }}
-              onFinish={onFinish}
+    <div className="login-wrapper">
+       <div className="overlay"></div>
+      <div className="login-background"></div>
+      <div className="login-form-container">
+        {contextHolder}
+        <div className="login-form">
+          <h1 className="login-title">Log In</h1>
+          <Form name="login" onFinish={onFinish} layout="vertical">
+            <Form.Item
+              name="username"
+              rules={[{ required: true, message: "Please input your email!" }]}
             >
-              <Form.Item
-                name="username"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Username!",
-                  },
-                ]}
+              <Input
+                prefix={<UserOutlined />}
+                placeholder="Email"
+                size="large"
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: "Please input your password!" }]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                placeholder="Password"
+                size="large"
+                iconRender={(visible) =>
+                  visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                }
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                className="login-button"
+                loading={loading}
+                block
               >
-                <Input
-                  prefix={<UserOutlined className="site-form-item-icon" />}
-                  placeholder="Username"
-                />
-              </Form.Item>
-
-              <Form.Item
-                name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your Password!",
-                  },
-                ]}
-              >
-                <Input.Password
-                  prefix={<LockOutlined className="site-form-item-icon" />}
-                  placeholder="Password"
-                  iconRender={(visible) =>
-                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-                  }
-                />
-              </Form.Item>
-
-              <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  className="login-form-button"
-                  loading={loading}
-                >
-                  Log In
-                </Button>
-              </Form.Item>
-
-              <div className="remember-forgot">
-                <Checkbox className="remember-me-checkbox">Remember me</Checkbox>
-                <a className="login-form-forgot" href="/forgot-password">
-                  Forgot password
-                </a>
-              </div>
-
-              <div className="register-link">
-                <p>
-                  Don't have an account? <a href="#">Register</a>
-                </p>
-              </div>
-            </Form>
-          </>
-        )}
+                Log In
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
       </div>
     </div>
   );
