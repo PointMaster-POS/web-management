@@ -1,8 +1,8 @@
 import React from "react";
 import { Modal, Table } from "antd";
-import { OutOfStockList } from "../Data";
+// import { OutOfStockList } from "../Data";
 
-const OutOsStockModal = ({ visible, onClose }) => {
+const OutOsStockModal = ({ visible, onClose, OutOfStockList }) => {
   const columns = [
     {
       title: "Item",
