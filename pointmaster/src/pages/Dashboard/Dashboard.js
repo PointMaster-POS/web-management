@@ -71,7 +71,7 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={24}>
-              <MultiLineChart />
+              {/* <MultiLineChart /> */}
             </Col>
           </Row>
         </Col>

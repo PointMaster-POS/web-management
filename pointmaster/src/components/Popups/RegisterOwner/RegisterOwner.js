@@ -143,7 +143,32 @@ const RegisterOwner = ({
           >
             <Input.Password />
           </Form.Item>
+
+        
         )}
+
+        {
+          !isEditMode && (
+            <Form.Item
+              label="Confirm Password"
+              name="confirm_password"
+              dependencies={["business_password"]}
+              rules={[
+                { required: true, message: "Please confirm the password!" },
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    if (!value || getFieldValue("business_password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject("Passwords do not match!");
+                  },
+                }),
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+          )
+        }
 
         <Form.Item style={{ textAlign: "right" }}>
           <Button
