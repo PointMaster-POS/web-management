@@ -23,7 +23,7 @@ import PopularItemsModal from "../../components/Popups/PopularItemsModal";
 import OutOfStockModal from "../../components/Popups/OutOfStockModal";
 import { OutOfStockList } from "../../components/Data";
 import { PopularItemsList } from "../../components/Data";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import moment from "moment";
 import axios from "axios";
@@ -495,118 +495,6 @@ const OutOfStock = () => {
   );
 };
 
-const MultiLineChart = () => {
-  const data = {
-    labels: [
-      "2021-1",
-      "2021-2",
-      "2021-3",
-      "2021-4",
-      "2021-5",
-      "2021-6",
-      "2021-7",
-      "2021-8",
-      "2021-9",
-      "2021-10",
-      "2021-11",
-      "2021-12",
-    ],
-    datasets: [
-      {
-        label: "Total Sale",
-        data: [100, 120, 150, 170, 190, 200, 220, 180, 160, 200, 220, 240],
-        borderColor: "rgba(54, 162, 235, 1)",
-        backgroundColor: "rgba(54, 162, 235, 0.2)",
-        fill: true,
-        tension: 0.4,
-      },
-      {
-        label: "Total Purchase",
-        data: [80, 110, 130, 150, 170, 180, 200, 160, 140, 180, 200, 220],
-        borderColor: "rgba(75, 192, 192, 1)",
-        backgroundColor: "rgba(75, 192, 192, 0.2)",
-        fill: true,
-        tension: 0.4,
-      },
-    ],
-  };
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false, // Important for custom height
-    layout: {
-      padding: {
-        // top: 10,
-        bottom: 20,
-      },
-    },
-    plugins: {
-      legend: {
-        display: false, // Hide the default legend
-      },
-      tooltip: {
-        mode: "index",
-        intersect: false,
-      },
-      hover: {
-        mode: "nearest",
-        intersect: true,
-      },
-    },
-    scales: {
-      x: {
-        display: true,
-        grid: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: "Months",
-        },
-      },
-      y: {
-        display: true,
-        grid: {
-          display: false,
-        },
-        title: {
-          display: true,
-          text: "Values",
-        },
-        beginAtZero: true,
-      },
-    },
-  };
-
-  const legendItems = data.datasets.map((dataset) => (
-    <span
-      key={dataset.label}
-      style={{ marginRight: 20, display: "inline-flex", alignItems: "center", fontSize: 20 }}
-    >
-      <span
-        style={{
-          display: "inline-block",
-          width: 12,
-          height: 12,
-          backgroundColor: dataset.borderColor,
-          marginRight: 5,
-        }}
-      />
-      {dataset.label}
-    </span>
-  ));
-
-  return (
-    <Card style={{ height: "515px" }}>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Title level={3}>Sales Overview</Title>
-        <div>{legendItems}</div>
-      </div>
-      <div style={{ height: "400Px"  }}>
-        <Line data={data} options={options} />
-      </div>
-    </Card>
-  );
-};
-
+const BillsBarChart = () => {}
 export default Dashboard;
