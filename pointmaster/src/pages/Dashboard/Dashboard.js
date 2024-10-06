@@ -508,14 +508,12 @@ const BillsBarChart = () => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Get today's date and 30 days prior
   const end_month = dayjs().format("YYYY-MM");
-  console.log(end_month);
   const start_month = dayjs().subtract(12, "month").format("YYYY-MM");
-  console.log(start_month);
 
-  /* const fetchBillsData = async (startMonth, endMonth) => {
+  const fetchBillsData = async (startMonth, endMonth) => {
     setLoading(true);
+
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
@@ -541,11 +539,10 @@ const BillsBarChart = () => {
       }
 
       const result = await response.json();
-      console.log("Fetched data: ", result); // Check the fetched data
 
       if (result.data && result.data.length > 0) {
-        const labels = result.data.map((item) => item.bill_month); // Extract bill_month
-        const values = result.data.map((item) => item.number_of_bills); // Extract number_of_bills
+        const labels = result.data.map((item) => item.bill_month);
+        const values = result.data.map((item) => item.number_of_bills);
 
         setChartData({
           labels,
@@ -560,7 +557,7 @@ const BillsBarChart = () => {
           ],
         });
       } else {
-        setChartData([]); // Ensure chartData is empty if no data is returned
+        setChartData([]);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -568,11 +565,11 @@ const BillsBarChart = () => {
     } finally {
       setLoading(false);
     }
-  }; */
+  };
 
-  // useEffect(() => {
-  //   fetchBillsData(start_month, end_month); // Fetch items on component load
-  // }, []);
+  useEffect(() => {
+    fetchBillsData(start_month, end_month);
+  }, []);
 
   const dummyData = {
     labels: [
@@ -618,12 +615,12 @@ const BillsBarChart = () => {
           display: true,
           text: "Months",
           font: {
-            size: 18
-          }
+            size: 18,
+          },
         },
         ticks: {
           font: {
-            size: 14, // Font size for the x-axis labels
+            size: 14,
           },
         },
       },
@@ -636,12 +633,12 @@ const BillsBarChart = () => {
           display: true,
           text: "Number of Bills",
           font: {
-            size: 18
-          }
+            size: 18,
+          },
         },
         ticks: {
           font: {
-            size: 14, // Font size for the y-axis labels
+            size: 14,
           },
         },
         beginAtZero: true,
@@ -649,7 +646,7 @@ const BillsBarChart = () => {
     },
     plugins: {
       legend: {
-        display: false, // Hides the legend completely
+        display: false,
       },
     },
   };
@@ -671,7 +668,7 @@ const BillsBarChart = () => {
           chartData={dummyData}
           defaultStartMonth={start_month}
           defaultEndMonth={end_month}
-          // fetchBillsData={fetchBillsData}
+          fetchBillsData={fetchBillsData}
           options={options}
         />
       </div>
@@ -688,17 +685,16 @@ const BillsBarChart = () => {
   );
 };
 
-
 const BillsPieChart = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Get today's date and 30 days prior
-  //const end_month = moment();
-  //const start_month = moment().subtract(12, "month");
+  const end_month = dayjs().format("YYYY-MM");
+  const start_month = dayjs().subtract(12, "month").format("YYYY-MM");
 
-  /* const fetchBillsData = async (startMonth, endMonth) => {
+  const fetchBillsData = async (startMonth, endMonth) => {
+
     setLoading(true);
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -725,11 +721,10 @@ const BillsPieChart = () => {
       }
 
       const result = await response.json();
-      console.log("Fetched data: ", result); // Check the fetched data
 
       if (result.data && result.data.length > 0) {
-        const labels = result.data.map((item) => item.bill_month); // Extract bill_month
-        const values = result.data.map((item) => item.number_of_bills); // Extract number_of_bills
+        const labels = result.data.map((item) => item.bill_month);
+        const values = result.data.map((item) => item.number_of_bills);
 
         setChartData({
           labels,
@@ -744,7 +739,7 @@ const BillsPieChart = () => {
           ],
         });
       } else {
-        setChartData([]); // Ensure chartData is empty if no data is returned
+        setChartData([]);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -752,11 +747,11 @@ const BillsPieChart = () => {
     } finally {
       setLoading(false);
     }
-  }; */
+  };
 
-  // useEffect(() => {
-  //   fetchBillsData(start_month, end_month); // Fetch items on component load
-  // }, []);
+  useEffect(() => {
+    fetchBillsData(start_month, end_month);
+  }, []);
 
   const dummyData = {
     labels: [
@@ -831,10 +826,11 @@ const BillsPieChart = () => {
         <SalesModal
           visible={modalVisible}
           onClose={handleCloseModal}
-          chartData={chartData}
-          // defaultStartMonth={start_month}
-          // defaultEndMonth={end_month}
-          // fetchBillsData={fetchBillsData}
+          chartData={dummyData}
+          defaultStartMonth={start_month}
+          defaultEndMonth={end_month}
+          fetchBillsData={fetchBillsData}
+          options={options}
         />
       </div>
       <div style={{ height: "400px" }}>
@@ -849,7 +845,5 @@ const BillsPieChart = () => {
     </Card>
   );
 };
-
-
 
 export default Dashboard;
