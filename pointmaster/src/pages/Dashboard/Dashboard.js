@@ -20,9 +20,7 @@ import {
 } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
-import OutOfStockModal from "../../components/Popups/OutOfStockModal";
-import { OutOfStockList } from "../../components/Data";
-import { PopularItemsList } from "../../components/Data";
+import LowStockItemsModal from "../../components/Popups/LowStockItemModal";
 import SalesModal from "../../components/Popups/SalesModel/SalesModal";
 import { Bar, Pie } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
@@ -82,7 +80,7 @@ const Dashboard = () => {
         <Col span={6}>
           <Space size={20} direction="vertical" style={{ width: "100%" }}>
             <PopularItems />
-            <OutOfStock />
+            <LowStockItems />
           </Space>
         </Col>
       </Row>
@@ -298,7 +296,7 @@ const PaymentMethodCard = ({ icon }) => {
 const ExpiresCard = ({ icon, title }) => {
   const [expiresCount, setExpiresCount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const fetchExpiringItems = async () => {
     setLoading(true);
@@ -361,7 +359,6 @@ const PopularItems = () => {
   const [popularItemsList, setPopularItemsList] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Get today's date and 30 days prior
   const today = dayjs().format("YYYY-MM-DD");
   const thirtyDaysAgo = dayjs().subtract(30, "days").format("YYYY-MM-DD");
 
@@ -392,8 +389,8 @@ const PopularItems = () => {
       }
 
       const data = await response.json();
-      console.log("Fetched data: ", data); // Check the fetched data
       setPopularItemsList(data);
+      
     } catch (error) {
       console.error("Error fetching employees:", error);
       message.error("Failed to fetch employees.");
@@ -403,7 +400,7 @@ const PopularItems = () => {
   };
 
   useEffect(() => {
-    fetchPopularItems(thirtyDaysAgo, today); // Fetch items on component load
+    fetchPopularItems(thirtyDaysAgo, today);
   }, []);
 
   const handleViewAllClick = () => {
@@ -428,7 +425,7 @@ const PopularItems = () => {
         <PopularItemsModal
           visible={modalVisible}
           onClose={handleCloseModal}
-          popularItemsList={PopularItemsList}
+          popularItemsList={popularItemsList}
           defaultStartDate={thirtyDaysAgo}
           defaultEndDate={today}
           fetchPopularItems={fetchPopularItems}
@@ -437,22 +434,21 @@ const PopularItems = () => {
       <List
         loading={loading}
         itemLayout="horizontal"
-        dataSource={PopularItemsList.slice(0, 4)}
+        dataSource={popularItemsList.slice(0, 4)}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
               avatar={
-                <Avatar src={/* item.image_url */ item.image} size={50} />
+                <Avatar src={ item.image_url } size={45} />
               }
               title={
                 <Text className="item-title">
-                  {" "}
-                  {/* item.item_name */ item.name}{" "}
+                  { item.item_name }
                 </Text>
               }
               description={
                 <Text type="secondary" className="item-description">
-                  Sales: {/* item.purchase_count */ item.sales}
+                  Sales: { item.purchase_count  }
                 </Text>
               }
             />
@@ -463,8 +459,51 @@ const PopularItems = () => {
   );
 };
 
-const OutOfStock = () => {
+const LowStockItems = () => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [lowStockItemsList, setLowStockItemsList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const defaultQuantity = 100;
+
+  const fetchLowStockItems = async (quantity) => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
+      message.error("Authorization token is missing. Please log in again.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://209.97.173.123:3001/dashboard/business/low-stock-items/${quantity}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setLowStockItemsList(data);
+
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+      message.error("Failed to fetch employees.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLowStockItems(defaultQuantity);
+  }, []);
 
   const handleViewAllClick = () => {
     setModalVisible(true);
@@ -477,7 +516,7 @@ const OutOfStock = () => {
   return (
     <Card>
       <div className="card-header">
-        <Title level={4}>Out of Stock</Title>
+        <Title level={4}>Low stock Items</Title>
         <Text
           type="secondary"
           className="view-all"
@@ -485,16 +524,35 @@ const OutOfStock = () => {
         >
           View All
         </Text>
-        <OutOfStockModal visible={modalVisible} onClose={handleCloseModal} />
+        <LowStockItemsModal
+          visible={modalVisible}
+          onClose={handleCloseModal}
+          lowStockItemsList={lowStockItemsList}
+          defaultQuantity={defaultQuantity}
+          fetchLowStockItems={fetchLowStockItems}
+        />
       </div>
       <List
+        loading={loading}
         itemLayout="horizontal"
-        dataSource={OutOfStockList.slice(0, 4)}
+        dataSource={lowStockItemsList.slice(0, 4)}
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={item.image} size={45} />}
-              title={<Text className="item-title">{item.item}</Text>}
+              avatar={
+                <Avatar src={ item.image} size={45} />
+              }
+              title={
+                <Text className="item-title">
+                  {" "}
+                  { item.item_name}{" "}
+                </Text>
+              }
+              // description={
+              //   <Text type="secondary" className="item-description">
+              //     Sales: {/* item.purchase_count */ item.stock}
+              //   </Text>
+              // }
             />
           </List.Item>
         )}
