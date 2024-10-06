@@ -818,10 +818,10 @@ const BillsPieChart = () => {
         <Title level={3}>Number of Bills</Title>
         <Text
           type="secondary"
-          className="view-all"
+          className="view-more"
           onClick={handleViewAllClick}
         >
-          View more
+          View more...
         </Text>
         <SalesModal
           visible={modalVisible}
