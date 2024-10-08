@@ -18,7 +18,7 @@ import {
   ExclamationOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
 import LowStockItemsModal from "../../components/Popups/LowStockItemModal";
 import SalesModal from "../../components/Popups/SalesModel/SalesModal";
@@ -390,7 +390,6 @@ const PopularItems = () => {
 
       const data = await response.json();
       setPopularItemsList(data);
-      
     } catch (error) {
       console.error("Error fetching employees:", error);
       message.error("Failed to fetch employees.");
@@ -438,17 +437,11 @@ const PopularItems = () => {
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              avatar={
-                <Avatar src={ item.image_url } size={45} />
-              }
-              title={
-                <Text className="item-title">
-                  { item.item_name }
-                </Text>
-              }
+              avatar={<Avatar src={item.image_url} size={45} />}
+              title={<Text className="item-title">{item.item_name}</Text>}
               description={
                 <Text type="secondary" className="item-description">
-                  Sales: { item.purchase_count  }
+                  Sales: {item.purchase_count}
                 </Text>
               }
             />
@@ -492,7 +485,6 @@ const LowStockItems = () => {
 
       const data = await response.json();
       setLowStockItemsList(data);
-
     } catch (error) {
       console.error("Error fetching employees:", error);
       message.error("Failed to fetch employees.");
@@ -539,15 +531,8 @@ const LowStockItems = () => {
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              avatar={
-                <Avatar src={ item.image} size={45} />
-              }
-              title={
-                <Text className="item-title">
-                  {" "}
-                  { item.item_name}{" "}
-                </Text>
-              }
+              avatar={<Avatar src={item.image} size={45} />}
+              title={<Text className="item-title"> {item.item_name} </Text>}
               // description={
               //   <Text type="secondary" className="item-description">
               //     Sales: {/* item.purchase_count */ item.stock}
@@ -566,8 +551,13 @@ const BillsBarChart = () => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const end_month = dayjs().format("YYYY-MM");
-  const start_month = dayjs().subtract(12, "month").format("YYYY-MM");
+  const start_month = useMemo(
+    () => dayjs().subtract(12, "month").format("YYYY-MM"),
+    []
+  );
+  console.log(start_month);
+  const end_month = useMemo(() => dayjs().format("YYYY-MM"), []);
+  console.log(end_month);
 
   const fetchBillsData = async (startMonth, endMonth) => {
     setLoading(true);
@@ -752,7 +742,6 @@ const BillsPieChart = () => {
   const start_month = dayjs().subtract(12, "month").format("YYYY-MM");
 
   const fetchBillsData = async (startMonth, endMonth) => {
-
     setLoading(true);
     const token = localStorage.getItem("accessToken");
     if (!token) {
