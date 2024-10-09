@@ -9,7 +9,7 @@ const BranchPerformanceModal = ({
   chartData,
   defaultStartDate,
   defaultEndDate,
-  fetchBillsData,
+  fetchSalesData,
   options,
 }) => {
   const [startDate, setStartDate] = useState(dayjs(defaultStartDate));
@@ -30,7 +30,7 @@ const BranchPerformanceModal = ({
     }
     setLoading(true);
     try {
-      await fetchBillsData(startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD"));
+      await fetchSalesData(startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD"));
     } finally {
       setLoading(false);
     }
@@ -38,7 +38,7 @@ const BranchPerformanceModal = ({
 
   return (
     <Modal
-      title="Branch Performance"
+      title="Branch Performance by Sales"
       visible={visible}
       onCancel={onClose}
       footer={null}
