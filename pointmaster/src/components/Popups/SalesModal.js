@@ -50,7 +50,7 @@ const SalesModal = ({
             <DatePicker
             picker="month"
               defaultValue={dayjs(startMonth)}
-              onChange={(date) => handleStartMonthChange(date)}
+              onChange={(month) => handleStartMonthChange(month)}
               format="YYYY-MM"
             />
           </Form.Item>
@@ -58,7 +58,7 @@ const SalesModal = ({
             <DatePicker
             picker="month"
               value={dayjs(endMonth)}
-              onChange={(date) => handleEndMonthChange(date)}
+              onChange={(month) => handleEndMonthChange(month)}
               format="YYYY-MM"
             />
           </Form.Item>
