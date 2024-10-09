@@ -21,13 +21,14 @@ import {
 import React, { useState, useEffect, useMemo } from "react";
 import PopularItemsModal from "../../components/Popups/PopularItemsModal";
 import LowStockItemsModal from "../../components/Popups/LowStockItemModal";
-import SalesModal from "../../components/Popups/SalesModel/SalesModal";
+import SalesModal from "../../components/Popups/SalesModal";
 import { Bar, Pie } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
+import BranchPerformanceModal from "../../components/Popups/BranchPerformance";
 
 const { Title, Text } = Typography;
 Chart.register(...registerables);
@@ -287,7 +288,7 @@ const PaymentMethodCard = ({ icon }) => {
 
       <Space direction="horizontal" size="large">
         {icon}
-        <Statistic title={`${paymentMethod} Payment`} className="statistic" />
+        <Statistic title={`${paymentMethod} Payments`} className="statistic" />
       </Space>
     </Card>
   );
@@ -588,6 +589,8 @@ const BillsBarChart = () => {
 
       const result = await response.json();
 
+      // console.log(result.message);
+
       if (result.data && result.data.length > 0) {
         const labels = result.data.map((item) => item.bill_month);
         const values = result.data.map((item) => item.number_of_bills);
@@ -738,10 +741,10 @@ const BillsPieChart = () => {
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const end_month = dayjs().format("YYYY-MM");
-  const start_month = dayjs().subtract(12, "month").format("YYYY-MM");
+  const end_date = dayjs().format("YYYY-MM-DD");
+  const start_date = dayjs().subtract(30, "days").format("YYYY-MM-DD");
 
-  const fetchBillsData = async (startMonth, endMonth) => {
+  const fetchBillsData = async (startDate, endDate) => {
     setLoading(true);
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -753,7 +756,7 @@ const BillsPieChart = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/dashboard/business/sale-report/number-of-bills/${startMonth}/${endMonth}`,
+        `http://209.97.173.123:3001/dashboard/business/branch-performance/${startDate}/${endDate}`,
         {
           method: "GET",
           headers: {
@@ -769,25 +772,25 @@ const BillsPieChart = () => {
 
       const result = await response.json();
 
-      if (result.data && result.data.length > 0) {
-        const labels = result.data.map((item) => item.bill_month);
-        const values = result.data.map((item) => item.number_of_bills);
+      // if (result.data && result.data.length > 0) {
+      //   const labels = result.data.map((item) => item.bill_month);
+      //   const values = result.data.map((item) => item.number_of_bills);
 
-        setChartData({
-          labels,
-          datasets: [
-            {
-              label: "Number of Bills",
-              data: values,
-              backgroundColor: "rgba(75, 192, 192, 0.6)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-          ],
-        });
-      } else {
-        setChartData([]);
-      }
+      //   setChartData({
+      //     labels,
+      //     datasets: [
+      //       {
+      //         label: "Number of Bills",
+      //         data: values,
+      //         backgroundColor: "rgba(75, 192, 192, 0.6)",
+      //         borderColor: "rgba(75, 192, 192, 1)",
+      //         borderWidth: 1,
+      //       },
+      //     ],
+      //   });
+      // } else {
+      //   setChartData([]);
+      // }
     } catch (error) {
       console.error("Error fetching data:", error);
       message.error("Failed to fetch data.");
@@ -797,7 +800,7 @@ const BillsPieChart = () => {
   };
 
   useEffect(() => {
-    fetchBillsData(start_month, end_month);
+    fetchBillsData(start_date, end_date);
   }, []);
 
   const dummyData = {
@@ -808,15 +811,14 @@ const BillsPieChart = () => {
       "2024-04",
       "2024-05",
       "2024-06",
-      "2024-07",
-      "2024-08",
-      "2024-09",
-      "2024-10",
+      // "2024-07",
+      // "2024-08",
+      // "2024-09",
+      // "2024-10",
     ],
     datasets: [
       {
-        label: "Number of Bills",
-        data: [10, 15, 8, 20, 25, 18, 22, 16, 19, 3],
+        data: [10, 15, 8, 20, 25, 18/* , 22, 16, 19, 3 */],
         backgroundColor: [
           "#FF6384",
           "#36A2EB",
@@ -824,10 +826,10 @@ const BillsPieChart = () => {
           "#4BC0C0",
           "#9966FF",
           "#FF9F40",
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
+          // "#FF6384",
+          // "#36A2EB",
+          // "#FFCE56",
+          // "#4BC0C0",
         ],
         borderColor: [
           "#FF6384",
@@ -836,10 +838,10 @@ const BillsPieChart = () => {
           "#4BC0C0",
           "#9966FF",
           "#FF9F40",
-          "#FF6384",
-          "#36A2EB",
-          "#FFCE56",
-          "#4BC0C0",
+          // "#FF6384",
+          // "#36A2EB",
+          // "#FFCE56",
+          // "#4BC0C0",
         ],
         borderWidth: 1,
       },
@@ -862,7 +864,7 @@ const BillsPieChart = () => {
   return (
     <Card style={{ height: "516px" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Title level={3}>Number of Bills</Title>
+        <Title level={3}>Branch Performance</Title>
         <Text
           type="secondary"
           className="view-more"
@@ -870,12 +872,12 @@ const BillsPieChart = () => {
         >
           View more...
         </Text>
-        <SalesModal
+        <BranchPerformanceModal
           visible={modalVisible}
           onClose={handleCloseModal}
           chartData={dummyData}
-          defaultStartMonth={start_month}
-          defaultEndMonth={end_month}
+          defaultStartDate={start_date}
+          defaultEndDate={end_date}
           fetchBillsData={fetchBillsData}
           options={options}
         />
