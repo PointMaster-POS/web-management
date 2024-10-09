@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import AddNewCategory from "../../components/Popups/AddNewCategory";
 import { useMenu } from "../../context/MenuContext";
+import "./Categories.css"
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -41,7 +42,7 @@ const Category = () => {
       return;
     }
     if (!branchID) {
-      message.warning("Select a store or create a store to have categories.");
+      message.warning("Select a branch or create a branch to have categories.");
       return;
     }
     try {
@@ -274,7 +275,7 @@ const Category = () => {
   ];
 
   return (
-    <Card
+    <Card className="large-font"
       style={{ /* margin: 30, */ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
@@ -285,7 +286,7 @@ const Category = () => {
           alignItems: "center",
         }}
       >
-        <Title level={3} style={{ marginBottom: 10 }}>
+        <Title level={2} style={{ marginBottom: 10 }}>
           Categories Data
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -296,7 +297,7 @@ const Category = () => {
             value={searchText}
             style={{ marginRight: 10, width: 300 }}
           />
-          <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
+          <Button type="primary" onClick={showModal} icon={<PlusOutlined />} >
             Add New Category
           </Button>
         </div>
