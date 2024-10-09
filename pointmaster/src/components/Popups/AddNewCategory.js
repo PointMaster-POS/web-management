@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Input, Button, Select, message } from "antd";
 import { useMenu } from "../../context/MenuContext";
+import "./Styles.css"
 
 const { Option } = Select;
 
@@ -46,6 +47,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
 
   return (
     <Form
+      className="large-font-form"
       form={form}
       name="add_category"
       labelCol={{ span: 8 }}
@@ -71,26 +73,28 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
       <Form.Item
         label="Location"
         name="category_location"
-        rules={[{ required: true, message: "Please input the category location!" }]}
+        rules={[
+          { required: true, message: "Please input the category location!" },
+        ]}
         style={{ marginBottom: "20px" }}
       >
         <Input />
       </Form.Item>
-      { role === "owner" && (
-      <Form.Item
-        label="Select Branch"
-        name="branch_id"
-        rules={[{ required: true, message: "Please select a branch!" }]}
-        style={{ marginBottom: "20px" }}
-      >
-        <Select placeholder="Select a branch">
-          {branches.map((branch) => (
-            <Option key={branch.branch_id} value={branch.branch_id}>
-              {branch.branch_name}
-            </Option>
-          ))}
-        </Select>
-      </Form.Item>
+      {role === "owner" && (
+        <Form.Item
+          label="Select Branch"
+          name="branch_id"
+          rules={[{ required: true, message: "Please select a branch!" }]}
+          style={{ marginBottom: "20px" }}
+        >
+          <Select placeholder="Select a branch">
+            {branches.map((branch) => (
+              <Option key={branch.branch_id} value={branch.branch_id}>
+                {branch.branch_name}
+              </Option>
+            ))}
+          </Select>
+        </Form.Item>
       )}
 
       <Form.Item
