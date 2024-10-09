@@ -54,7 +54,7 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={8}>
-              <PaymentMethodCard
+              <PaymentMethodDataCard
                 icon={<CreditCardOutlined style={iconStyle("teal")} />}
               />
             </Col>
@@ -74,7 +74,7 @@ const Dashboard = () => {
               <BillsBarChart />
             </Col>
             <Col span={12}>
-              <BillsPieChart />
+              <SalePieChart />
             </Col>
           </Row>
         </Col>
@@ -113,10 +113,63 @@ const iconStyle = (color) => ({
 
 const SalesCard = ({ icon }) => {
   const [timeFrame, setTimeFrame] = useState("Today");
+  const [salesData, setSalesData] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const handleMenuClick = (e) => {
     setTimeFrame(e.key);
   };
+
+  const getStartAndEndDate = (timeFrame) => {
+    const today = dayjs().startOf("day");
+    if (timeFrame === "Today") {
+      return {
+        startDate: today.format("YYYY-MM-DD"),
+        endDate: today.add(1, "days").format("YYYY-MM-DD"),
+      };
+    } else if (timeFrame === "This Month") {
+      return {
+        startDate: today.startOf("month").format("YYYY-MM-DD"),
+        endDate: today.endOf("month").add(1, "days").format("YYYY-MM-DD"),
+      };
+    } else if (timeFrame === "This Year") {
+      return {
+        startDate: today.startOf("year").format("YYYY-MM-DD"),
+        endDate: today.endOf("year").add(1, "days").format("YYYY-MM-DD"),
+      };
+    }
+  };
+
+  const fetchSalesData = async () => {
+    setLoading(true);
+    const { startDate, endDate } = getStartAndEndDate(timeFrame);
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await axios.get(
+        `http://209.97.173.123:3001/dashboard/business/bills-between-dates/${startDate}/${endDate}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = response.data;
+      const Sales = data.reduce(
+        (total, item) => total + item.number_of_bills,
+        0
+      );
+      setSalesData(Sales || 0); // Assuming the response has totalSales
+    } catch (error) {
+      message.error("Failed to fetch sales data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSalesData();
+  }, [timeFrame]);
 
   const menu = (
     <Menu onClick={handleMenuClick}>
@@ -154,7 +207,11 @@ const SalesCard = ({ icon }) => {
 
       <Space direction="horizontal" size="large">
         {icon}
-        <Statistic title={`${timeFrame} Sales`} className="statistic" />
+        <Statistic
+          title={`${timeFrame} Sales`}
+          value={loading ? "Loading..." : salesData}
+          className="statistic"
+        />
       </Space>
     </Card>
   );
@@ -251,8 +308,44 @@ const NoOfCustomerCard = ({ icon, title }) => {
   );
 };
 
-const PaymentMethodCard = ({ icon }) => {
+const PaymentMethodDataCard = ({ icon }) => {
   const [paymentMethod, setPaymentMethod] = useState("Cash");
+  const [salesData, setSalesData] = useState({ cash: 0, card: 0 });
+  const [loading, setLoading] = useState(false);
+
+  const fetchPaymentMethodData = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await axios.get(
+        "http://209.97.173.123:3001/dashboard/business/sales-by-payment-method",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = response.data;
+      const cashSales = data
+        .filter((item) => item.payment_method.toLowerCase() === "cash")
+        .reduce((total, item) => total + item.total_sales, 0);
+
+      const cardSales = data
+        .filter((item) => item.payment_method.toLowerCase() === "card")
+        .reduce((total, item) => total + item.total_sales, 0);
+
+      setSalesData({ cash: cashSales, card: cardSales });
+    } catch (error) {
+      message.error("Failed to fetch sales");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPaymentMethodData();
+  }, []);
 
   const handleMenuClick = (e) => {
     setPaymentMethod(e.key);
@@ -288,7 +381,17 @@ const PaymentMethodCard = ({ icon }) => {
 
       <Space direction="horizontal" size="large">
         {icon}
-        <Statistic title={`${paymentMethod} Payments`} className="statistic" />
+        <Statistic
+          title={`Sales by ${paymentMethod}`}
+          value={
+            loading
+              ? "Loading..."
+              : paymentMethod === "Cash"
+              ? salesData.cash
+              : salesData.card
+          }
+          className="statistic"
+        />
       </Space>
     </Card>
   );
@@ -716,7 +819,7 @@ const BillsBarChart = () => {
         <SalesModal
           visible={modalVisible}
           onClose={handleCloseModal}
-          chartData={dummyData}
+          chartData={chartData}
           defaultStartMonth={start_month}
           defaultEndMonth={end_month}
           fetchBillsData={fetchBillsData}
@@ -726,8 +829,8 @@ const BillsBarChart = () => {
       <div style={{ height: "400px" }}>
         {loading ? (
           <p>Loading...</p>
-        ) : dummyData.labels ? (
-          <Bar data={dummyData} options={options} />
+        ) : chartData.labels ? (
+          <Bar data={chartData} options={options} />
         ) : (
           <p>No data available</p>
         )}
@@ -736,7 +839,7 @@ const BillsBarChart = () => {
   );
 };
 
-const BillsPieChart = () => {
+const SalePieChart = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -744,7 +847,7 @@ const BillsPieChart = () => {
   const end_date = dayjs().format("YYYY-MM-DD");
   const start_date = dayjs().subtract(30, "days").format("YYYY-MM-DD");
 
-  const fetchBillsData = async (startDate, endDate) => {
+  const fetchSalesData = async (startDate, endDate) => {
     setLoading(true);
     const token = localStorage.getItem("accessToken");
     if (!token) {
@@ -752,11 +855,11 @@ const BillsPieChart = () => {
       return;
     }
 
-    // const adjustedEndDate = moment(endDate).add(1, "days").format("YYYY-MM-DD");
+    const adjustedEndDate = dayjs(endDate).add(1, "days").format("YYYY-MM-DD");
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/dashboard/business/branch-performance/${startDate}/${endDate}`,
+        `http://209.97.173.123:3001/dashboard/business/branch-performance/${startDate}/${adjustedEndDate}`,
         {
           method: "GET",
           headers: {
@@ -772,25 +875,46 @@ const BillsPieChart = () => {
 
       const result = await response.json();
 
-      // if (result.data && result.data.length > 0) {
-      //   const labels = result.data.map((item) => item.bill_month);
-      //   const values = result.data.map((item) => item.number_of_bills);
+      if (result && result.length > 0) {
+        const labels = result.map((item) => item.branch_name);
+        const values = result.map((item) => item.total_sales);
 
-      //   setChartData({
-      //     labels,
-      //     datasets: [
-      //       {
-      //         label: "Number of Bills",
-      //         data: values,
-      //         backgroundColor: "rgba(75, 192, 192, 0.6)",
-      //         borderColor: "rgba(75, 192, 192, 1)",
-      //         borderWidth: 1,
-      //       },
-      //     ],
-      //   });
-      // } else {
-      //   setChartData([]);
-      // }
+        setChartData({
+          labels,
+          datasets: [
+            {
+              data: values,
+              backgroundColor: [
+                "#FF6384",
+                "#36A2EB",
+                // "#FFCE56",
+                // "#4BC0C0",
+                // "#9966FF",
+                // "#FF9F40",
+                // "#FF6384",
+                // "#36A2EB",
+                // "#FFCE56",
+                // "#4BC0C0",
+              ],
+              borderColor: [
+                "#FF6384",
+                "#36A2EB",
+                // "#FFCE56",
+                // "#4BC0C0",
+                // "#9966FF",
+                // "#FF9F40",
+                // "#FF6384",
+                // "#36A2EB",
+                // "#FFCE56",
+                // "#4BC0C0",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        });
+      } else {
+        setChartData([]);
+      }
     } catch (error) {
       console.error("Error fetching data:", error);
       message.error("Failed to fetch data.");
@@ -800,7 +924,7 @@ const BillsPieChart = () => {
   };
 
   useEffect(() => {
-    fetchBillsData(start_date, end_date);
+    fetchSalesData(start_date, end_date);
   }, []);
 
   const dummyData = {
@@ -818,7 +942,7 @@ const BillsPieChart = () => {
     ],
     datasets: [
       {
-        data: [10, 15, 8, 20, 25, 18/* , 22, 16, 19, 3 */],
+        data: [10, 15, 8, 20, 25, 18 /* , 22, 16, 19, 3 */],
         backgroundColor: [
           "#FF6384",
           "#36A2EB",
@@ -864,7 +988,7 @@ const BillsPieChart = () => {
   return (
     <Card style={{ height: "516px" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Title level={3}>Branch Performance</Title>
+        <Title level={3}>Branch Performance by Sales</Title>
         <Text
           type="secondary"
           className="view-more"
@@ -875,18 +999,18 @@ const BillsPieChart = () => {
         <BranchPerformanceModal
           visible={modalVisible}
           onClose={handleCloseModal}
-          chartData={dummyData}
+          chartData={chartData}
           defaultStartDate={start_date}
           defaultEndDate={end_date}
-          fetchBillsData={fetchBillsData}
+          fetchSalesData={fetchSalesData}
           options={options}
         />
       </div>
       <div style={{ height: "400px" }}>
         {loading ? (
           <p>Loading...</p>
-        ) : dummyData.labels ? (
-          <Pie data={dummyData} options={options} />
+        ) : chartData.labels ? (
+          <Pie data={chartData} options={options} />
         ) : (
           <p>No data available</p>
         )}
