@@ -31,7 +31,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import BranchPerformanceModal from "../../components/Popups/BranchPerformance";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 Chart.register(...registerables);
