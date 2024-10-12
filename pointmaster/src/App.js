@@ -22,16 +22,16 @@ const App = () => {
     <AuthProvider>
       <BrowserRouter>
         <MenuProvider>
-
           <Routes>
 
+            {/* Publicly accessible routes */}
             <Route path="/" element={<Landing />} />
-          
             <Route path="/login" element={<LogIn />} />
             <Route path="/forgot-password" element={<LogIn forgotPassword={true} />} />
 
+            {/* Protected routes */}
             <Route
-              path="/protected"
+              path="/"
               element={
                 <ProtectedRoute>
                   <MainLayout />
@@ -48,8 +48,10 @@ const App = () => {
               <Route path="/products" element={<Products />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/expires" element={<Expires />} />
-              <Route path="*" element={<h1>404 Not Found</h1>} /> {/* Catch-all route */}
             </Route>
+
+            {/* Catch-all route for 404 */}
+            <Route path="*" element={<h1>404 Not Found</h1>} /> 
           </Routes>
         </MenuProvider>
       </BrowserRouter>
