@@ -75,7 +75,10 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={24}>
+
               <BillsBarChart />
+
+
             </Col>
           </Row>
         </Col>

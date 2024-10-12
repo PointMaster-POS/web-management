@@ -29,6 +29,7 @@ const App = () => {
 
             <Route path="/" element={<Landing />} />
 
+
             <Route path="/login" element={<LogIn />} />
             <Route
               path="/forgot-password"
