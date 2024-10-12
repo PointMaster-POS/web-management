@@ -19,7 +19,7 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
   const [loading, setLoading] = useState(false);
 
   const onFinish = (values) => {
-    console.log("Success:", values);
+    // console.log("Success:", values);
     setLoading(true);
 
     // Call API to check if the password is correct
@@ -58,7 +58,7 @@ export default function LogIn({ forgotPassword = false }) { // Added forgotPassw
             duration: 5,
           });
         }
-        console.log(error);
+        // console.log(error);
       })
       .finally(() => {
         setLoading(false);
