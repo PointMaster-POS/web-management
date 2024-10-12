@@ -31,7 +31,7 @@ const App = () => {
             <Route path="/forgot-password" element={<LogIn forgotPassword={true} />} />
 
             <Route
-              path="/"
+              path="/protected"
               element={
                 <ProtectedRoute>
                   <MainLayout />
