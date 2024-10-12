@@ -85,7 +85,7 @@ const Header = ({ setIsAuthenticated }) => {
 
   useEffect(() => {
     if (role === "owner") {
-    fetchBranches();
+      fetchBranches();
     }
   }, [onAddingBranch]);
 
@@ -153,14 +153,26 @@ const Header = ({ setIsAuthenticated }) => {
 
   return (
     <div className="header_">
-      {/* <Typography.Title level={2}>Welcome to Point Master</Typography.Title> */}
+      <Typography.Title level={2} style={{ marginLeft: "-6px" }}>
+        PointMaster
+      </Typography.Title>
 
-      
-         <h1>PointMaster</h1>
-       
+      {/* <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            background: "#f0f2f5", // Subtle background color
+            marginLeft: "-6px"
+          }}
+        >
+          <img
+            src="images/logo.png" // Add the correct path to your logo image here
+            alt="Logo"
+            style={{ height: "75px" }} // Adjust height as per your requirement
+          />
+        </div> */}
 
       <Space size="large">
-
         <div
           style={{
             display: "flex",

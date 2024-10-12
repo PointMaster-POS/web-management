@@ -29,7 +29,7 @@ import jsPDF from "jspdf"; // For generating PDFs
 import html2canvas from "html2canvas"; // For capturing the barcode area
 import JsBarcode from "jsbarcode"; // For generating barcodes
 import { storage } from "../../firebase"; // Firebase storage instance
-import ProductDetailsModal from "../../components/Popups/ProductDetailModel/ProductDetailModel";
+import ProductDetailsModal from "../../components/Popups/ProductDetailModel";
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;

@@ -136,7 +136,7 @@ const RegisterNewBusiness = ({
   return (
     <React.Fragment>
       <div className="form-container">
-        <Title level={3}>{isEditMode ? "Update Business" : "Register New Business"}</Title>
+        {/* <Title level={3}>{isEditMode ? "Update Business" : "Register New Business"}</Title> */}
         <Form
           form={form}
           layout="vertical"

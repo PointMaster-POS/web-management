@@ -116,6 +116,13 @@ const SideBar = ({ onCollapse }) => {
             Stores
           </Menu.Item>
         )}
+        <Menu.Item
+            key="/expires"
+            icon={<ExclamationCircleOutlined />}
+            className="custom-menu-item"
+          >
+            Expires
+          </Menu.Item>
         {role === "owner" && (
           <Menu.Item
             key="/Loyalty"
@@ -125,13 +132,6 @@ const SideBar = ({ onCollapse }) => {
             Loyalty
           </Menu.Item>
         )}
-        <Menu.Item
-            key="/expires"
-            icon={<ExclamationCircleOutlined />}
-            className="custom-menu-item"
-          >
-            Expires
-          </Menu.Item>
       </Menu>
     </Sider>
   );
