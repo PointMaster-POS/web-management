@@ -17,7 +17,7 @@ const accessToken = localStorage.getItem("accessToken");
 //decode the access token using json decode
 const decodedToken = accessToken ? JSON.parse(atob(accessToken.split(".")[1])) : null;
 
-console.log("decodedToken", decodedToken);
+// console.log("decodedToken", decodedToken);
 
 
 // Provide MenuContext to children components
