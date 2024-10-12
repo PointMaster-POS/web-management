@@ -87,7 +87,7 @@ const FeaturesSection = () => {
       </div>
 
       <div className="application-card">
-        <img src="/images/application-image.png" alt="Applications" className="application-image" /> {/* Replace with your actual image path */}
+        <img src="https://firebasestorage.googleapis.com/v0/b/pointmaster-79d9a.appspot.com/o/utils%2Fapplication-image.png?alt=media&token=0af27c57-28b5-4dd4-a0ca-d3196833d7ee" alt="Applications" className="application-image" /> {/* Replace with your actual image path */}
         <div className="application-details">
           {applications.map((app, index) => (
             <div key={index} className="application-item">
