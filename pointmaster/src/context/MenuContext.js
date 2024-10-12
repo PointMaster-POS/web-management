@@ -37,7 +37,7 @@ export const MenuProvider = ({ children }) => {
       // Redirect to the cashiers domain
       console.log("Redirect to the cashiers domain");
       const accessToken = localStorage.getItem("accessToken");
-      const cashierUrl = `http://localhost:3002/?token=${accessToken}`;
+      const cashierUrl = `http://159.89.193.100:3000/?token=${accessToken}`;
       window.open(cashierUrl, '_blank');
       navigate("/cashier-login-success");
     }
