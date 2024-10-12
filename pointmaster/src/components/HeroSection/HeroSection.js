@@ -34,7 +34,7 @@ const HeroSection = ({ onShowBusinessModal }) => {
       content: (
         <>
           <img
-            src="/images/2.png"
+            src="https://firebasestorage.googleapis.com/v0/b/pointmaster-79d9a.appspot.com/o/utils%2F2.png?alt=media&token=551300da-4309-4d84-87a4-1e247e8ee39c"
             alt="Step 1"
             className="step-image"
           />
@@ -52,7 +52,7 @@ const HeroSection = ({ onShowBusinessModal }) => {
       content: (
         <>
           <img
-            src="/images/3.png"
+            src="https://firebasestorage.googleapis.com/v0/b/pointmaster-79d9a.appspot.com/o/utils%2F3.png?alt=media&token=b6cae6bc-b937-4967-a599-6ae035c48735"
             alt="Step 2"
             className="step-image"
           />
@@ -69,7 +69,7 @@ const HeroSection = ({ onShowBusinessModal }) => {
       content: (
         <>
           <img
-            src="/images/4.png"
+            src="https://firebasestorage.googleapis.com/v0/b/pointmaster-79d9a.appspot.com/o/utils%2F4.png?alt=media&token=edded173-cf34-4fe1-85e8-79a9447ee58a"
             alt="Step 3"
             className="step-image"
           />
