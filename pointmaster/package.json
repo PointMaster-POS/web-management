@@ -39,6 +39,14 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "coverageReporters": [
+      "html",
+      "text-summary"
+    ]
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-react": "^7.24.7",
