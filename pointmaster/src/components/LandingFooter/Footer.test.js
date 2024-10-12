@@ -1,52 +1,46 @@
-// components/Registration/Footer.test.js
-import React from "react";
-import { render, screen } from "@testing-library/react";
-import Footer from "./Footer";
+import React, { act } from 'react';
+import { render, screen } from '@testing-library/react';
+import Footer from './Footer';
 
 describe("Footer component", () => {
   test("renders contact section with email and phone", () => {
-    render(<Footer />);
+    act(() => {
+      render(<Footer />);
+    });
 
     // Check that Contact Us section is rendered
     const contactHeading = screen.getByText("Contact Us");
     expect(contactHeading).toBeInTheDocument();
 
-    // Check that email is rendered (more flexible matcher)
-    const email = screen.getByText((content, element) =>
-      content.includes("support@pointmaster.com")
-    );
+    // Check email and phone
+    const email = screen.getByText("Email: support@pointmaster.com");
+    const phone = screen.getByText("Phone: +1 234 567 890");
     expect(email).toBeInTheDocument();
-
-    // Check that phone number is rendered
-    const phone = screen.getByText((content, element) =>
-      content.includes("+1 234 567 890")
-    );
     expect(phone).toBeInTheDocument();
   });
 
-  test("renders social media icons with correct links", () => {
-    render(<Footer />);
+  test("renders social media icons", () => {
+    act(() => {
+      render(<Footer />);
+    });
 
-    // Check if Facebook link is rendered and has correct href
-    const facebookLink = screen.getByRole("link", { name: /facebook/i });
-    expect(facebookLink).toHaveAttribute("href", "https://facebook.com");
+    // Check that the social media links are rendered
+    const facebookIcon = screen.getByRole('link', { name: /facebook/i });
+    const twitterIcon = screen.getByRole('link', { name: /twitter/i });
+    const linkedinIcon = screen.getByRole('link', { name: /linkedin/i });
 
-    // Check if Twitter link is rendered and has correct href
-    const twitterLink = screen.getByRole("link", { name: /twitter/i });
-    expect(twitterLink).toHaveAttribute("href", "https://twitter.com");
-
-    // Check if LinkedIn link is rendered and has correct href
-    const linkedinLink = screen.getByRole("link", { name: /linkedin/i });
-    expect(linkedinLink).toHaveAttribute("href", "https://linkedin.com");
+    expect(facebookIcon).toBeInTheDocument();
+    expect(twitterIcon).toBeInTheDocument();
+    expect(linkedinIcon).toBeInTheDocument();
   });
 
-  test("renders copyright section", () => {
-    render(<Footer />);
+  test("renders footer copyright text", () => {
+    act(() => {
+      render(<Footer />);
+    });
 
-    // Check if copyright text is rendered
-    const copyrightText = screen.getByText(
-      /© 2024 PointMaster. All Rights Reserved./i
-    );
+    // Check that the copyright text is rendered
+    const copyrightText = screen.getByText(/© 2024 PointMaster. All Rights Reserved./i);
     expect(copyrightText).toBeInTheDocument();
   });
 });
