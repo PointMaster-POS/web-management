@@ -12,3 +12,15 @@ global.matchMedia = jest.fn().mockImplementation((query) => ({
     removeEventListener: jest.fn(),
     dispatchEvent: jest.fn(),
 }));
+
+// Mock console.error and console.warn to avoid printing warnings in tests
+beforeAll(() => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+  
+  // Optionally, after all tests are done, you can restore the original console methods:
+  afterAll(() => {
+    console.error.mockRestore();
+    console.warn.mockRestore();
+  });
