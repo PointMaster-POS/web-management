@@ -47,6 +47,8 @@ const Header = ({ setIsAuthenticated }) => {
 
   const handleLogOut = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem("accessToken");
+    navigate("/");
   };
 
   useEffect(() => {
