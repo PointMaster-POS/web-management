@@ -39,7 +39,7 @@ export const MenuProvider = ({ children }) => {
       const accessToken = localStorage.getItem("accessToken");
       const cashierUrl = `http://159.89.193.100:3000/?token=${accessToken}`;
       window.open(cashierUrl, '_blank');
-      navigate("/cashier-login-success");
+      navigate("/");
     }
   }, [decodedToken]);
 

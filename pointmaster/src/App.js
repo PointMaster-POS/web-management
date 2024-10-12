@@ -24,7 +24,8 @@ const App = () => {
         <MenuProvider>
 
           <Routes>
-            
+
+            <Route path="/" element={<Landing />} />
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<LogIn />} />
             <Route path="/forgot-password" element={<LogIn forgotPassword={true} />} />
