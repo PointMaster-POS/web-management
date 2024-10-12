@@ -229,29 +229,29 @@ const PurchasesCard = ({ icon }) => {
     setTimeFrame(e.key);
   };
 
-  // const menu = (
-  //   <Menu onClick={handleMenuClick}>
-  //     <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px" }}>
-  //       Today
-  //     </Menu.Item>
-  //     <Menu.Item
-  //       key="This Month"
-  //       style={{ fontWeight: "bold", fontSize: "16px" }}
-  //     >
-  //       This Month
-  //     </Menu.Item>
-  //     <Menu.Item
-  //       key="This Year"
-  //       style={{ fontWeight: "bold", fontSize: "16px" }}
-  //     >
-  //       This Year
-  //     </Menu.Item>
-  //   </Menu>
-  // );
+  const menu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="Today" style={{ fontWeight: "bold", fontSize: "16px" }}>
+        Today
+      </Menu.Item>
+      <Menu.Item
+        key="This Month"
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        This Month
+      </Menu.Item>
+      <Menu.Item
+        key="This Year"
+        style={{ fontWeight: "bold", fontSize: "16px" }}
+      >
+        This Year
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <Card className="card" style={{ position: "relative" }}>
-      {/* <Dropdown overlay={menu} trigger={["click"]}>
+      <Dropdown overlay={menu} trigger={["click"]}>
         <MoreOutlined
           style={{
             fontSize: "20px",
@@ -261,7 +261,7 @@ const PurchasesCard = ({ icon }) => {
             right: "30px",
           }}
         />
-      </Dropdown> */}
+      </Dropdown>
 
       <Space direction="horizontal" size="large">
         {icon}
@@ -372,7 +372,7 @@ const PaymentMethodDataCard = ({ icon }) => {
 
   return (
     <Card className="card" style={{ position: "relative" }}>
-      {/* <Dropdown overlay={menu} trigger={["click"]}>
+      <Dropdown overlay={menu} trigger={["click"]}>
         <MoreOutlined
           style={{
             fontSize: "20px",
@@ -382,7 +382,7 @@ const PaymentMethodDataCard = ({ icon }) => {
             right: "30px",
           }}
         />
-      </Dropdown> */}
+      </Dropdown>
 
       <Space direction="horizontal" size="large">
         {icon}
