@@ -1,0 +1,10 @@
+/* styles.css */
+.large-font-form .ant-btn {
+  font-size: 16px !important; /* Increase the font size */
+}
+
+.large-font-form .ant-form-item-label label,
+.large-font-form .ant-input,
+.large-font-form .ant-select-selector {
+  font-size: 17px !important; /* Increase the font size */
+}

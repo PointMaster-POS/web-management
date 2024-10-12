@@ -19,7 +19,7 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import AddNewEmployee from "../../components/Popups/AddNewEmployee";
-import ViewEmployeeProfile from "../../components/Popups/EmployeeProfileModel/EmployeeProfileModel";
+import ViewEmployeeProfile from "../../components/Popups/EmployeeProfileModel";
 import { useMenu } from "../../context/MenuContext";
 
 const { Title } = Typography;

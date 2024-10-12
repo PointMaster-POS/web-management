@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Form, Input, Button } from "antd";
+import "./Styles.css"
 
 const AddNewProduct = ({ form, onAddProduct, onCancel }) => {
   const handleFinish = (values) => {
@@ -7,7 +8,7 @@ const AddNewProduct = ({ form, onAddProduct, onCancel }) => {
   };
 
   return (
-    <Form
+    <Form className="large-font-form"
       form={form}
       name="add_product"
       labelCol={{ span: 8 }}

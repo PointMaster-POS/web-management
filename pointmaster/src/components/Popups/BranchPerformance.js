@@ -1,43 +1,26 @@
 import React, { useState } from "react";
-import { Modal, Table, Avatar, DatePicker, Button, Card, Form } from "antd";
+import { Modal, DatePicker, Button, Card, Form } from "antd";
 import dayjs from "dayjs";
+import { Pie } from "react-chartjs-2";
 
-const PopularItemsModal = ({
+const BranchPerformanceModal = ({
   visible,
   onClose,
-  popularItemsList,
+  chartData,
   defaultStartDate,
   defaultEndDate,
-  fetchPopularItems,
+  fetchSalesData,
+  options,
 }) => {
   const [startDate, setStartDate] = useState(dayjs(defaultStartDate));
   const [endDate, setEndDate] = useState(dayjs(defaultEndDate));
-  const [tableLoading, setTableLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const columns = [
-    {
-      title: "Item",
-      dataIndex: "image_url",
-      key: "image_url",
-      render: (image) => <Avatar src={image} size={50} />,
-    },
-    {
-      title: "Name",
-      dataIndex: "item_name",
-      key: "item_name",
-    },
-    {
-      title: "Sales",
-      dataIndex: "purchase_count",
-      key: "purchase_count",
-    },
-  ];
-
-  const handleStartDateChange = (date) => {
+  const handleStartMonthChange = (date) => {
     setStartDate(date);
   };
 
-  const handleEndDateChange = (date) => {
+  const handleEndMonthChange = (date) => {
     setEndDate(date);
   };
 
@@ -45,20 +28,17 @@ const PopularItemsModal = ({
     if (!startDate || !endDate) {
       return;
     }
-    setTableLoading(true);
+    setLoading(true);
     try {
-      await fetchPopularItems(
-        startDate.format("YYYY-MM-DD"),
-        endDate.format("YYYY-MM-DD")
-      );
+      await fetchSalesData(startDate.format("YYYY-MM-DD"), endDate.format("YYYY-MM-DD"));
     } finally {
-      setTableLoading(false);
+      setLoading(false);
     }
   };
 
   return (
     <Modal
-      title="Popular Items"
+      title="Branch Performance by Sales"
       visible={visible}
       onCancel={onClose}
       footer={null}
@@ -69,14 +49,14 @@ const PopularItemsModal = ({
           <Form.Item label="Start Date">
             <DatePicker
               defaultValue={dayjs(startDate)}
-              onChange={handleStartDateChange}
+              onChange={(date) => handleStartMonthChange(date)}
               format="YYYY-MM-DD"
             />
           </Form.Item>
-          <Form.Item label="End Date">
+          <Form.Item label="End Month">
             <DatePicker
               value={dayjs(endDate)}
-              onChange={handleEndDateChange}
+              onChange={(date) => handleEndMonthChange(date)}
               format="YYYY-MM-DD"
             />
           </Form.Item>
@@ -88,14 +68,17 @@ const PopularItemsModal = ({
         </Form>
       </Card>
 
-      <Table
-        columns={columns}
-        dataSource={popularItemsList.slice(0, 20)}
-        pagination={{ pageSize: 5 }}
-        loading={tableLoading}
-      />
+      <div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : chartData.labels ? (
+          <Pie data={chartData} options={options} style={{height: 500}}/>
+        ) : (
+          <p>No data available</p>
+        )}
+      </div>
     </Modal>
   );
 };
 
-export default PopularItemsModal;
+export default BranchPerformanceModal;

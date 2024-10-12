@@ -1,0 +1,13 @@
+/* styles.css */
+.large-font {
+    font-size: 16px;
+  }
+  
+  .large-font .ant-btn{
+    font-size: 16px !important; /* Force font size across components */
+  }
+
+  .large-font .ant-table {
+    font-size: 18px !important; /* Force font size across components */
+  }
+  
