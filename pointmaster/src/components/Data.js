@@ -1,107 +1,107 @@
-export const PopularItemsList = [
-  {
-    name: "Scrambled Eggs With Toast",
-    sales: 60,
-    image: "images/sandwich-with-poached-egg.jpg", // Replace with actual image URL
-  },
-  {
-    name: "Tacos With Chicken Grilled",
-    sales: 58,
-    image: "images/top-view-delicious-tacos-red-plate.jpg", // Replace with actual image URL
-  },
-  {
-    name: "Spaghetti Bolognese",
-    sales: 55,
-    image: "images/delicious-pasta-plate.jpg", // Replace with actual image URL
-  },
-  {
-    name: "French Bread & Potato",
-    sales: 55,
-    image:
-      "images/top-view-sweet-delicious-bangles-with-filling-grey-wooden-table-sweet-sugar-bake-pastry-cookie-biscuit.jpg", // Replace with actual image URL
-  },
-  {
-    name: "Grilled Cheese Sandwich",
-    sales: 51,
-    image:
-      "images/side-view-club-sandwich-with-salted-cucumbers-lemon-olives-round-white-plate.jpg",
-  },
-  {
-    name: "Caesar Salad",
-    sales: 49,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Margherita Pizza",
-    sales: 46,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Beef Burger",
-    sales: 43,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Sushi Platter",
-    sales: 40,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Pancakes With Syrup",
-    sales: 38,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Chicken Alfredo",
-    sales: 35,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Vegetable Stir Fry",
-    sales: 32,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Steak and Potatoes",
-    sales: 30,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Fish and Chips",
-    sales: 30,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Chicken Caesar Wrap",
-    sales: 29,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "BBQ Ribs",
-    sales: 27,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Chocolate Cake",
-    sales: 24,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Pepperoni Pizza",
-    sales: 24,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Club Sandwich",
-    sales: 24,
-    image: "", // Replace with actual image URL
-  },
-  {
-    name: "Greek Salad",
-    sales: 20,
-    image: "", // Replace with actual image URL
-  },
-];
+// export const PopularItemsList = [
+//   {
+//     name: "Scrambled Eggs With Toast",
+//     sales: 60,
+//     image: "images/sandwich-with-poached-egg.jpg", // Replace with actual image URL
+//   },
+//   {
+//     name: "Tacos With Chicken Grilled",
+//     sales: 58,
+//     image: "images/top-view-delicious-tacos-red-plate.jpg", // Replace with actual image URL
+//   },
+//   {
+//     name: "Spaghetti Bolognese",
+//     sales: 55,
+//     image: "images/delicious-pasta-plate.jpg", // Replace with actual image URL
+//   },
+//   {
+//     name: "French Bread & Potato",
+//     sales: 55,
+//     image:
+//       "images/top-view-sweet-delicious-bangles-with-filling-grey-wooden-table-sweet-sugar-bake-pastry-cookie-biscuit.jpg", // Replace with actual image URL
+//   },
+//   {
+//     name: "Grilled Cheese Sandwich",
+//     sales: 51,
+//     image:
+//       "images/side-view-club-sandwich-with-salted-cucumbers-lemon-olives-round-white-plate.jpg",
+//   },
+//   {
+//     name: "Caesar Salad",
+//     sales: 49,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Margherita Pizza",
+//     sales: 46,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Beef Burger",
+//     sales: 43,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Sushi Platter",
+//     sales: 40,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Pancakes With Syrup",
+//     sales: 38,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Chicken Alfredo",
+//     sales: 35,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Vegetable Stir Fry",
+//     sales: 32,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Steak and Potatoes",
+//     sales: 30,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Fish and Chips",
+//     sales: 30,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Chicken Caesar Wrap",
+//     sales: 29,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "BBQ Ribs",
+//     sales: 27,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Chocolate Cake",
+//     sales: 24,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Pepperoni Pizza",
+//     sales: 24,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Club Sandwich",
+//     sales: 24,
+//     image: "", // Replace with actual image URL
+//   },
+//   {
+//     name: "Greek Salad",
+//     sales: 20,
+//     image: "", // Replace with actual image URL
+//   },
+// ];
 
 export const OutOfStockList = [
   {

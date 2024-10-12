@@ -79,7 +79,7 @@ const Loyalty = () => {
 
     console.log("Updating loyalty program with values: ", values);
     try {
-      const response = await fetch(`http://localhost:3001/loyalty`, {
+      const response = await fetch(`http://209.97.173.123:3001/loyalty`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -116,7 +116,7 @@ const Loyalty = () => {
 
     console.log("Creating new loyalty program with values: ", values);
     try {
-      const response = await fetch(`http://localhost:3001/loyalty/new`, {
+      const response = await fetch(`http://209.97.173.123:3001/loyalty/new`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

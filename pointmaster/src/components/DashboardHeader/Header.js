@@ -47,6 +47,8 @@ const Header = ({ setIsAuthenticated }) => {
 
   const handleLogOut = () => {
     setIsAuthenticated(false);
+    localStorage.removeItem("accessToken");
+    navigate("/");
   };
 
   useEffect(() => {
@@ -82,7 +84,9 @@ const Header = ({ setIsAuthenticated }) => {
   };
 
   useEffect(() => {
-    fetchBranches();
+    if (role === "owner") {
+      fetchBranches();
+    }
   }, [onAddingBranch]);
 
   const menu = (
@@ -149,9 +153,11 @@ const Header = ({ setIsAuthenticated }) => {
 
   return (
     <div className="header_">
-      <Typography.Title level={2} style={{marginLeft: "-6px"}}>PointMaster</Typography.Title>
+      <Typography.Title level={2} style={{ marginLeft: "-6px" }}>
+        PointMaster
+      </Typography.Title>
 
-        {/* <div
+      {/* <div
           style={{
             display: "flex",
             alignItems: "center",
@@ -167,7 +173,6 @@ const Header = ({ setIsAuthenticated }) => {
         </div> */}
 
       <Space size="large">
-
         <div
           style={{
             display: "flex",

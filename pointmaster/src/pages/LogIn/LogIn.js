@@ -31,7 +31,7 @@ export default function LogIn({ forgotPassword = false }) {
           localStorage.setItem("accessToken", response.data.accessToken);
           if (!isAuthenticated) {
             setIsAuthenticated(true);
-            navigate("/dashboard");
+            
           }
         } else {
           messageApi.open({
