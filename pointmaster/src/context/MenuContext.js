@@ -29,7 +29,9 @@ export const MenuProvider = ({ children }) => {
   const [onAddingBranch, setOnAddingBranch] = useState(false);
 
 useEffect(() => {
-   
+  if (!accessToken) {
+    return;
+  }
   if (decodedToken.owner) {
     setRole("owner");
   } else {

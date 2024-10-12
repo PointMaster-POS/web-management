@@ -82,7 +82,9 @@ const Header = ({ setIsAuthenticated }) => {
   };
 
   useEffect(() => {
+    if (role === "owner") {
     fetchBranches();
+    }
   }, [onAddingBranch]);
 
   const menu = (
