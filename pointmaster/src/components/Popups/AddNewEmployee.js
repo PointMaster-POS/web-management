@@ -1,50 +1,53 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Input, Select, Button, message, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { storage } from "../../firebase";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useMenu } from "../../context/MenuContext";
+import "./Styles.css"
 
 const { Option } = Select;
 
 const Roles = [{ name: "cashier" }, { name: "branch manager" }];
 
 const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
-  const [branches, setBranches] = useState([]);
-  const [imageUrl, setImageUrl] = useState(null);
+  // const [branches, setBranches] = useState([]);
+  // const [imageUrl, setImageUrl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const { branchID } = useMenu();
 
-  useEffect(() => {
-    const fetchBranches = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        message.error("Authorization token is missing. Please log in again.");
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchBranches = async () => {
+  //     const token = localStorage.getItem("accessToken");
+  //     if (!token) {
+  //       message.error("Authorization token is missing. Please log in again.");
+  //       return;
+  //     }
 
-      try {
-        const response = await fetch("http://209.97.173.123:3001/branch", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+  //     try {
+  //       const response = await fetch("http://209.97.173.123:3001/branch", {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
 
-        const data = await response.json();
-        setBranches(data); // Store fetched branches
-      } catch (error) {
-        console.error("Error fetching branches:", error);
-        message.error("Failed to fetch branches.");
-      }
-    };
+  //       const data = await response.json();
+  //       setBranches(data); // Store fetched branches
+  //     } catch (error) {
+  //       console.error("Error fetching branches:", error);
+  //       message.error("Failed to fetch branches.");
+  //     }
+  //   };
 
-    fetchBranches();
-  }, []);
+  //   fetchBranches();
+  // }, []);
 
   const handleImageChange = ({ file }) => {
     setImageFile(file);
@@ -77,7 +80,7 @@ const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
     setUploading(true);
     try {
       const imageUrl = await uploadImageToFirebase();
-      const employeeData = { ...values, photo_url: imageUrl };
+      const employeeData = { ...values, photo_url: imageUrl, branch_id: branchID };
       onAddEmployee(employeeData);
     } catch (error) {
       message.error("Failed to add employee with image.");
@@ -88,6 +91,7 @@ const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
 
   return (
     <Form
+      className="large-font-form"
       form={form}
       name="add_employee"
       labelCol={{ span: 8 }}
@@ -192,7 +196,7 @@ const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
         <Input min={0} />
       </Form.Item>
 
-      <Form.Item
+      {/* <Form.Item
         label="Select Branch"
         name="branch_id"
         rules={[{ required: true, message: "Please select a branch!" }]}
@@ -205,7 +209,7 @@ const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
             </Option>
           ))}
         </Select>
-      </Form.Item>
+      </Form.Item> */}
 
       <Form.Item
         wrapperCol={{ offset: 8, span: 16 }}
