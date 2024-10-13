@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 import AddNewCategory from "../../components/Popups/AddNewCategory";
 import { useMenu } from "../../context/MenuContext";
-import "./Categories.css"
+import "./PagesStyles.css";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -38,7 +38,7 @@ const Category = () => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
-      
+
       return;
     }
     if (!branchID) {
@@ -47,13 +47,13 @@ const Category = () => {
     }
     try {
       let url;
-      console.log("role", role);
+      // console.log("role", role);
       if (role === "owner") {
         url = `http://209.97.173.123:3001/category/owner/${branchID}`;
       } else if (role === "branchmanager") {
         url = `http://209.97.173.123:3001/category/manager`;
       }
-      console.log("url", url);
+      // console.log("url", url);
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -76,14 +76,13 @@ const Category = () => {
   };
 
   const handleAddCategory = async (values) => {
-    console.log(values);
+    // console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
-   
 
     try {
       const response = await fetch("http://209.97.173.123:3001/category", {
@@ -96,7 +95,7 @@ const Category = () => {
       });
 
       if (response.ok) {
-        const newCategory = await response.json();
+        // const newCategory = await response.json();
         message.success("Category added successfully");
         setIsModalVisible(false);
         form.resetFields();
@@ -275,7 +274,8 @@ const Category = () => {
   ];
 
   return (
-    <Card className="large-font"
+    <Card
+      className="large-font"
       style={{ /* margin: 30, */ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
@@ -297,7 +297,7 @@ const Category = () => {
             value={searchText}
             style={{ marginRight: 10, width: 300 }}
           />
-          <Button type="primary" onClick={showModal} icon={<PlusOutlined />} >
+          <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
             Add New Category
           </Button>
         </div>
