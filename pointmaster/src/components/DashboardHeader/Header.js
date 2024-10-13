@@ -181,7 +181,7 @@ const Header = ({ setIsAuthenticated }) => {
             borderRadius: "8px",
             padding: "10px 15px",
             // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            marginRight: "20px",
+            marginRight: "15px",
           }}
         >
           <ClockCircleOutlined
@@ -199,7 +199,7 @@ const Header = ({ setIsAuthenticated }) => {
           <Select
             value={selectedBranch}
             onChange={handleBranchChange}
-            style={{ width: 200, size: "large", marginRight: "20px" }}
+            style={{ width: 200, size: "large", marginRight: "15px" }}
           >
             {branches?.map((branch) => (
               <Select.Option key={branch.branch_id} value={branch.branch_name}>
@@ -210,7 +210,7 @@ const Header = ({ setIsAuthenticated }) => {
         )}
 
         <Dropdown overlay={menu} trigger={["click"]}>
-          <Badge dot style={{ marginRight: "20px" }}>
+          <Badge dot style={{ marginRight: "15px" }}>
             <Avatar
               icon={<UserOutlined />}
               style={{
