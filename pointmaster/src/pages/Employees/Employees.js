@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Card,
@@ -21,6 +21,7 @@ import {
 import AddNewEmployee from "../../components/Popups/AddNewEmployee";
 import ViewEmployeeProfile from "../../components/Popups/EmployeeProfileModel";
 import { useMenu } from "../../context/MenuContext";
+import "./PagesStyles.css"
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -34,7 +35,7 @@ const Employees = () => {
   const [searchText, setSearchText] = useState("");
   const [viewEmployee, setViewEmployee] = useState(null);
   const [form] = Form.useForm();
-  const {branchID, role} = useMenu();
+  const { branchID, role } = useMenu();
 
   const fetchEmployees = async () => {
     const token = localStorage.getItem("accessToken");
@@ -49,12 +50,10 @@ const Employees = () => {
       url = `http://209.97.173.123:3001/employee/branch-employee`;
     }
 
-
     if (!branchID) {
       message.warning("Select a branch to view employees.");
       return;
     }
-      
 
     try {
       const response = await fetch(url, {
@@ -70,12 +69,12 @@ const Employees = () => {
       }
 
       const data = await response.json();
-      console.log(data);
-      if (data.length === 0) {
-        message.info("No employees available.");
-        return;
-      }
-      
+      // console.log(data);
+      // if (data.length === 0) {
+      //   message.info("No employees available.");
+      //   return;
+      // }
+
       setData(data);
       setFilteredData(data);
     } catch (error) {
@@ -85,10 +84,8 @@ const Employees = () => {
   };
 
   useEffect(() => {
-
     fetchEmployees();
   }, [branchID, role]);
-
 
   const handleAddEmployee = async (values) => {
     const token = localStorage.getItem("accessToken");
@@ -109,8 +106,8 @@ const Employees = () => {
       });
 
       if (response.ok) {
-        const newEmployee = await response.json();
-        console.log(newEmployee)
+        // const newEmployee = await response.json();
+        // console.log(newEmployee);
         message.success("Employee added successfully");
         setIsModalVisible(false);
         form.resetFields();
@@ -166,7 +163,6 @@ const Employees = () => {
     setIsModalVisible(true); // Open the modal for editing
   };
 
-
   const handleDelete = (employee_id, employee_name) => {
     confirm({
       title: "Are you sure you want to delete this employee?",
@@ -211,7 +207,6 @@ const Employees = () => {
     setEditingEmployee(null); // Reset editing state
   };
 
-
   const handleSearch = (value, exactMatch = false) => {
     const filtered = data.filter((item) => {
       const employee_name = item.employee_name.toLowerCase();
@@ -233,14 +228,11 @@ const Employees = () => {
 
   const handleViewEmployee = (employee) => {
     setViewEmployee(employee);
-
-
-  }
+  };
 
   const handleCancelView = () => {
     setViewEmployee(null);
-  }
-
+  };
 
   const columns = [
     {
@@ -248,7 +240,7 @@ const Employees = () => {
       dataIndex: "photo_url",
       key: "photo_url",
       render: (image) => <Avatar src={image} size={50} />,
-    }, 
+    },
     {
       title: "Employee ID",
       dataIndex: "employee_id",
@@ -289,7 +281,9 @@ const Employees = () => {
             <Button
               icon={<DeleteOutlined />}
               disabled={role === "branchmanager"}
-              onClick={() => handleDelete(record.employee_id,record.employee_name)}
+              onClick={() =>
+                handleDelete(record.employee_id, record.employee_name)
+              }
               danger
             />
           </Tooltip>
@@ -302,13 +296,12 @@ const Employees = () => {
       key: "",
       render: (record) => (
         <Button onClick={() => handleViewEmployee(record)}>View More</Button>
-      
       ),
     },
   ];
 
   return (
-    <Card
+    <Card className="large-font"
       style={{
         padding: 30,
         borderRadius: "10px",
@@ -322,7 +315,7 @@ const Employees = () => {
           alignItems: "center",
         }}
       >
-        <Title level={3} style={{ marginBottom: 10 }}>
+        <Title level={2} style={{ marginBottom: 10 }}>
           Employees Data
         </Title>
 
@@ -335,9 +328,9 @@ const Employees = () => {
             style={{ marginRight: 10, width: 300 }}
           />
           {role === "owner" && (
-          <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
-            Add New Employee
-          </Button>
+            <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
+              Add New Employee
+            </Button>
           )}
         </div>
       </div>
@@ -369,7 +362,6 @@ const Employees = () => {
         }}
         style={{ marginTop: 20 }}
       />
-
 
       {/* View Employee Profile Modal */}
       {viewEmployee && (
