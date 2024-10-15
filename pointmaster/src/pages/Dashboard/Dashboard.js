@@ -23,22 +23,18 @@ import PopularItemsModal from "../../components/Popups/PopularItemsModal";
 import LowStockItemsModal from "../../components/Popups/LowStockItemModal";
 import SalesModal from "../../components/Popups/SalesModal";
 import { Bar, Pie } from "react-chartjs-2";
-// import { OutOfStockList } from "../../components/Data";
-// import { PopularItemsList } from "../../components/Data";
 import { Chart, registerables } from "chart.js";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import BranchPerformanceModal from "../../components/Popups/BranchPerformance";
-import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 Chart.register(...registerables);
 
 const Dashboard = () => {
 
-  const [PopularItemsList, setPopularItemsList] = useState([]);
   return (
     <div className="dashboard-container">
       <Row gutter={[20]}>
@@ -53,7 +49,7 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={8}>
-              <NoOfCustomerCard
+              <NoOfCustomersCard
                 icon={<UserOutlined style={iconStyle("olive")} />}
                 title="Number of Customers"
               />
@@ -79,7 +75,7 @@ const Dashboard = () => {
               <BillsBarChart />
             </Col>
             <Col span={12}>
-              <SalePieChart />
+              <SalesPieChart />
             </Col>
           </Row>
         </Col>
@@ -271,7 +267,7 @@ const PurchasesCard = ({ icon }) => {
   );
 };
 
-const NoOfCustomerCard = ({ icon, title }) => {
+const NoOfCustomersCard = ({ icon, title }) => {
   const [customerCount, setCustomerCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -1008,7 +1004,7 @@ const BillsBarChart = () => {
   );
 };
 
-const SalePieChart = () => {
+const SalesPieChart = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);

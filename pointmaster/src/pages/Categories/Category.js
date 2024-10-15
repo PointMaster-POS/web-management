@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 import AddNewCategory from "../../components/Popups/AddNewCategory";
 import { useMenu } from "../../context/MenuContext";
-import "./PagesStyles.css";
+import "../PagesStyles.css";
 
 const { Title } = Typography;
 const { confirm } = Modal;

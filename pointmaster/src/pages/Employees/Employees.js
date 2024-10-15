@@ -21,7 +21,7 @@ import {
 import AddNewEmployee from "../../components/Popups/AddNewEmployee";
 import ViewEmployeeProfile from "../../components/Popups/EmployeeProfileModel";
 import { useMenu } from "../../context/MenuContext";
-import "./PagesStyles.css"
+import "../PagesStyles.css"
 
 const { Title } = Typography;
 const { confirm } = Modal;
