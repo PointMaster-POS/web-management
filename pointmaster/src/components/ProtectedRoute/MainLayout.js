@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { Layout, message } from "antd";
 import Sider from "../Sider/Sider";
 import Header from "../DashboardHeader/Header";
@@ -45,7 +45,9 @@ const MainLayout = () => {
         >
           <AntContent style={{ margin: "20px 20px" }}>
             {contextHolder}
-            <Outlet />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Outlet />
+            </Suspense>
           </AntContent>
         </Layout>
       </Layout>
