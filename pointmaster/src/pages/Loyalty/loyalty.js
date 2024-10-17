@@ -12,8 +12,11 @@ import {
   DatePicker,
   Switch,
   Alert,
+  Typography,
 } from "antd";
 import moment from "moment";
+
+const { Title } = Typography;
 
 const Loyalty = () => {
   const [data, setData] = useState(null);
@@ -160,10 +163,12 @@ const Loyalty = () => {
   };
 
   return (
-    <div /* style={{ padding: "20px" }} */>
-      <h1>Loyalty Program</h1>
+    <div >
+      <Title level={2} style={{ marginBottom: 10 }}>
+          Loyalty Programs
+        </Title>
 
-      {loading && <Spin size="large"  /* style={{ margin: "20px 0" }} */  />}
+      {loading && <Spin size="large"  /* style={{ margin: "20px 0" }} */   />}
 
       {data ? (
         <>

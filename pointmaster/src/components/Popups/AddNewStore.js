@@ -20,6 +20,7 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
       }}
       labelAlign="left"
+      className="large-font-form"
     >
       <Form.Item
         label="Branch Name"
@@ -27,7 +28,7 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
         rules={[{ required: true, message: "Please input the branch name!" }]}
         style={{ marginBottom: "20px" }}
       >
-        <Input placeholder="Enter branch name" />
+        <Input />
       </Form.Item>
 
       <Form.Item
@@ -36,7 +37,7 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
         rules={[{ required: true, message: "Please input the branch location!" }]}
         style={{ marginBottom: "20px" }}
       >
-        <Input placeholder="Enter branch location" />
+        <Input />
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{ textAlign: "right" }}>

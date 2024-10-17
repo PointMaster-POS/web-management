@@ -266,17 +266,12 @@ const Category = () => {
         </Space>
       ),
     },
-    // {
-    //   title: " ",
-    //   key: "orders",
-    //   render: (record) => <Button>View Category</Button>,
-    // },
   ];
 
   return (
     <Card
       className="large-font"
-      style={{ /* margin: 30, */ padding: 30, borderRadius: "10px" }}
+      style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
       <div
@@ -287,7 +282,7 @@ const Category = () => {
         }}
       >
         <Title level={2} style={{ marginBottom: 10 }}>
-          Categories Data
+          Categories
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search

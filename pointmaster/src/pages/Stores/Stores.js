@@ -245,6 +245,7 @@ const Stores = () => {
 
   return (
     <Card
+      className="large-font"
       style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
@@ -255,8 +256,8 @@ const Stores = () => {
           alignItems: "center",
         }}
       >
-        <Title level={3} style={{ marginBottom: 10 }}>
-          Branches Data
+        <Title level={2} style={{ marginBottom: 10 }}>
+          Stores
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search

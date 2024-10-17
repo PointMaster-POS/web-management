@@ -30,6 +30,7 @@ import html2canvas from "html2canvas"; // For capturing the barcode area
 import JsBarcode from "jsbarcode"; // For generating barcodes
 import { storage } from "../../firebase"; // Firebase storage instance
 import ProductDetailsModal from "../../components/Popups/ProductDetailModel";
+import '../PagesStyles.css';
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
@@ -509,7 +510,7 @@ const Products = () => {
   ];
 
   return (
-    <Card
+    <Card className="large-font"
       style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
@@ -520,7 +521,7 @@ const Products = () => {
           alignItems: "center",
         }}
       >
-        <Title level={3} style={{ marginBottom: 10 }}>
+        <Title level={2} style={{ marginBottom: 10 }}>
           Products
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -562,7 +563,7 @@ const Products = () => {
         columns={columns}
         dataSource={filteredData}
         rowKey="item_id"
-        pagination={{ pageSize: 5 }}
+        pagination={{ pageSize: 7 }}
         locale={{
           emptyText: "No items available.",
         }}
@@ -589,7 +590,7 @@ const Products = () => {
         onCancel={handleCancel}
         width={800}
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" className="large-font-form">
           <Form.Item
             name="product_name"
             label="Product Name"
