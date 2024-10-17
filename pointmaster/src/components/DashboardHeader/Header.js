@@ -10,9 +10,7 @@ import {
   message,
 } from "antd";
 import {
-  BellFilled,
   UserOutlined,
-  SettingOutlined,
   LogoutOutlined,
   ProfileOutlined,
   ClockCircleOutlined,
@@ -127,7 +125,6 @@ const Header = ({ setIsAuthenticated }) => {
 
   const handleBranchChange = (key, value) => {
     setSelectedBranch(value);
-    // console.log("Selected Branch:", value.key);
     setSelectedBranchID(value.key);
   };
 
@@ -177,17 +174,11 @@ const Header = ({ setIsAuthenticated }) => {
           style={{
             display: "flex",
             alignItems: "center",
-            background: "#f0f2f5", // Subtle background color
-            borderRadius: "8px",
-            padding: "10px 15px",
-            // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            marginRight: "15px",
           }}
         >
           <ClockCircleOutlined
             style={{ marginRight: "8px", fontSize: "18px", color: "#1890ff" }}
           />{" "}
-          {/* Clock Icon */}
           <Typography.Text
             style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}
           >
@@ -199,7 +190,7 @@ const Header = ({ setIsAuthenticated }) => {
           <Select
             value={selectedBranch}
             onChange={handleBranchChange}
-            style={{ width: 200, size: "large", marginRight: "15px" }}
+            style={{ width: 200, size: "large" }}
           >
             {branches?.map((branch) => (
               <Select.Option key={branch.branch_id} value={branch.branch_name}>
@@ -210,7 +201,7 @@ const Header = ({ setIsAuthenticated }) => {
         )}
 
         <Dropdown overlay={menu} trigger={["click"]}>
-          <Badge dot style={{ marginRight: "15px" }}>
+          <Badge dot style={{ marginRight: "25px" }}>
             <Avatar
               icon={<UserOutlined />}
               style={{
@@ -218,6 +209,7 @@ const Header = ({ setIsAuthenticated }) => {
                 backgroundColor: "rgba(0,0,0,0.88)",
                 marginRight: "20px",
               }}
+              size={"large"}
             />
           </Badge>
         </Dropdown>
