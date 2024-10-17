@@ -316,7 +316,7 @@ const Employees = () => {
         }}
       >
         <Title level={2} style={{ marginBottom: 10 }}>
-          Employees Data
+          Employees
         </Title>
 
         <div style={{ display: "flex", alignItems: "center" }}>
