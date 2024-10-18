@@ -20,6 +20,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useMenu } from "../../context/MenuContext";
+import { useAuth } from "../../context/AuthContext";
 
 // Mock branch data
 // const branches = [
@@ -36,6 +37,7 @@ const Header = ({ setIsAuthenticated }) => {
   const [selectedBranch, setSelectedBranch] = useState(""); // Set default branch
   const [selectedBranchID, setSelectedBranchID] = useState("");
   const [currentTime, setCurrentTime] = useState("");
+  const { isAuthenticated } = useAuth();
 
   const handleProfileClick = () => {
     navigate("/profile");
@@ -90,10 +92,14 @@ const Header = ({ setIsAuthenticated }) => {
       fetchBranches();
       return;
     }
+   
     decodeToken();
-    setBranchID(decodeToken.employee.employee_branch_id); 
+    if(decodeToken.employee){
+    console.log("decodeToken.employee.employee_branch_id",decodeToken.employee.employee_branch_id);
+    setSelectedBranch(decodeToken.employee.employee_branch_id); 
+    }
 
-  }, [onAddingBranch]);
+  }, [onAddingBranch, isAuthenticated]);
 
   const menu = (
     <Menu

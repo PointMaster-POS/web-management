@@ -36,6 +36,8 @@ const Category = () => {
 
   const fetchCategories = async () => {
     const token = localStorage.getItem("accessToken");
+    console.log(role);
+    console.log("branchID", token);
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
 
@@ -50,9 +52,12 @@ const Category = () => {
       // console.log("role", role);
       if (role === "owner") {
         url = `http://209.97.173.123:3001/category/owner/${branchID}`;
-      } else if (role === "branchmanager") {
+      } else if (role === "branch manager") {
+        console.log("------------------------------------");
         url = `http://209.97.173.123:3001/category/manager`;
       }
+
+      console.log("url", url);
       // console.log("url", url);
       const response = await fetch(url, {
         method: "GET",
