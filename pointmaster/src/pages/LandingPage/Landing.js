@@ -67,7 +67,7 @@ export default function Landing() {
         message.success("Owner registered successfully!");
         setIsOwnerModalVisible(false);
         form_second.resetFields();
-        navigate("/login");
+        navigate("/");
       } else {
         message.error("Failed to register owner. Please try again.");
       }
