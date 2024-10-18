@@ -65,10 +65,15 @@ const Products = () => {
   const token = localStorage.getItem("accessToken");
 
   const fetchCategories = async () => {
-    if (!branchID) return; // Ensure branchId is available
+    console.log("fetching categories");
+   
     let url;
     if (role === "owner") {
       console.log("************************************");
+      if (!branchID) {
+        message.warning("Select a branch or create a branch to have categories.");
+        return;
+      }
       url = `http://209.97.173.123:3001/category/owner/${branchID}`;
     } else if (role === "branch manager") {
       console.log("------------------------------------");
@@ -307,7 +312,7 @@ const Products = () => {
       if (response.status === 200) {
         console.log("Product deleted successfully!");
         message.success("Product deleted successfully!");
-        // fetchProducts();
+        fetchProducts();
       }
     } catch (error) {
       console.error("Error deleting product:", error);
