@@ -32,7 +32,7 @@ export const MenuProvider = ({ children }) => {
       navigate("/dashboard");
     } else if (decodedToken.employee?.employee_role === "branch manager") {
       setRole("branch manager");
-      navigate("/dashboard");
+      navigate("/category");
     } else if (decodedToken.employee?.employee_role === "Cashier") {
       // Redirect to the cashiers domain
       console.log("Redirect to the cashiers domain");

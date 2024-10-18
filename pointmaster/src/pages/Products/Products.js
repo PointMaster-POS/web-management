@@ -22,8 +22,9 @@ import {
   PrinterOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useMenu } from "../../context/MenuContext";
+import { useAuth } from "../../context/AuthContext";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import jsPDF from "jspdf"; // For generating PDFs
 import html2canvas from "html2canvas"; // For capturing the barcode area
@@ -37,7 +38,8 @@ const { Search } = Input;
 const { Option } = Select;
 
 const Products = () => {
-  const { branchID } = useMenu();
+  const { isAuthenticated } = useAuth();
+  const { branchID, role } = useMenu();
   const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -64,9 +66,18 @@ const Products = () => {
 
   const fetchCategories = async () => {
     if (!branchID) return; // Ensure branchId is available
+    let url;
+    if (role === "owner") {
+      console.log("************************************");
+      url = `http://209.97.173.123:3001/category/owner/${branchID}`;
+    } else if (role === "branch manager") {
+      console.log("------------------------------------");
+      url = `http://209.97.173.123:3001/category/manager`;
+    }
+    console.log("url is setted", url);
     try {
       const response = await axios.get(
-        `http://209.97.173.123:3001/category/owner/${branchID}`,
+        url,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -90,7 +101,7 @@ const Products = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, [branchID]);
+  }, [branchID, isAuthenticated]);
 
   const fetchProducts = async (categoryId) => {
     setLoading(true);
