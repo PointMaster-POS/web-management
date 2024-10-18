@@ -88,10 +88,11 @@ const Header = ({ setIsAuthenticated }) => {
    
     if (role === "owner") {
       fetchBranches();
+      return;
     }
-    if(role === "branch manager") {
-      setSelectedBranchID(decodedToken.employee.employee_branch_id);
-    }
+    decodeToken();
+    setBranchID(decodeToken.employee.employee_branch_id); 
+
   }, [onAddingBranch]);
 
   const menu = (

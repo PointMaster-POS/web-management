@@ -15,7 +15,7 @@ export const MenuProvider = ({ children }) => {
   const [selectedMenu, setSelectedMenu] = useState("dashboard");
   const [role, setRole] = useState("");
   const [branchID, setBranchID] = useState(null);
-  const { isAuthenticated } = useAuth();
+  const {isAuthenticated } = useAuth();
   const [onAddingBranch, setOnAddingBranch] = useState(false);
   const navigate = useNavigate(); // Updated useNavigate hook here
 

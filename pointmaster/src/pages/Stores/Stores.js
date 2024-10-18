@@ -58,7 +58,7 @@ const Stores = () => {
       setData(data);
       setFilteredData(data);
 
-      setOnAddingBranch(!onAddingBranch);
+      
     } catch (error) {
       console.error("Error fetching branches:", error);
       message.error("Failed to fetch branches.");
