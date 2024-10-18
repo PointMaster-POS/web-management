@@ -30,7 +30,7 @@ export const MenuProvider = ({ children }) => {
     if (decodedToken.owner) {
       setRole("owner");
       navigate("/dashboard");
-    } else if (decodedToken.employee?.employee_role === "branchmanager") {
+    } else if (decodedToken.employee?.employee_role === "branch manager") {
       setRole("branchmanager");
       navigate("/dashboard");
     } else if (decodedToken.employee?.employee_role === "Cashier") {
@@ -72,9 +72,12 @@ export const MenuProvider = ({ children }) => {
         setRole,
         onAddingBranch,
         setOnAddingBranch,
+        decodeToken,
+        decodedToken,
       }}
     >
       {children}
     </MenuContext.Provider>
   );
 };
+

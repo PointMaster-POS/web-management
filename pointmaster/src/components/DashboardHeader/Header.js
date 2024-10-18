@@ -10,7 +10,9 @@ import {
   message,
 } from "antd";
 import {
+  BellFilled,
   UserOutlined,
+  SettingOutlined,
   LogoutOutlined,
   ProfileOutlined,
   ClockCircleOutlined,
@@ -27,7 +29,7 @@ import { useMenu } from "../../context/MenuContext";
 // ];
 
 const Header = ({ setIsAuthenticated }) => {
-  const { selectedMenu, role, branchID, setBranchID, onAddingBranch } =
+  const { selectedMenu, role, branchID, setBranchID, onAddingBranch, decodeToken , decodedToken} =
     useMenu(); // Get selectedMenu from context
   const navigate = useNavigate();
   const [branches, setBranches] = useState([]);
@@ -58,6 +60,11 @@ const Header = ({ setIsAuthenticated }) => {
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
       return;
+    }
+    decodeToken();
+    if(decodedToken.employee) {
+      setSelectedBranch(decodedToken.employee.employee_branch_id);
+      return
     }
     try {
       const response = await fetch("http://209.97.173.123:3001/branch", {
@@ -125,6 +132,7 @@ const Header = ({ setIsAuthenticated }) => {
 
   const handleBranchChange = (key, value) => {
     setSelectedBranch(value);
+    // console.log("Selected Branch:", value.key);
     setSelectedBranchID(value.key);
   };
 
@@ -132,8 +140,9 @@ const Header = ({ setIsAuthenticated }) => {
   const showDropdown =
     selectedMenu === "/category" ||
     selectedMenu === "/products" ||
-    selectedMenu === "/employees" ||
-    selectedMenu === "/dashboard";
+    selectedMenu === "/employees" ;
+    //||
+    //selectedMenu === "/dashboard";
 
   // Function to update the current time every second
   useEffect(() => {
@@ -174,11 +183,17 @@ const Header = ({ setIsAuthenticated }) => {
           style={{
             display: "flex",
             alignItems: "center",
+            background: "#f0f2f5", // Subtle background color
+            borderRadius: "8px",
+            padding: "10px 15px",
+            // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+            marginRight: "15px",
           }}
         >
           <ClockCircleOutlined
             style={{ marginRight: "8px", fontSize: "18px", color: "#1890ff" }}
           />{" "}
+          {/* Clock Icon */}
           <Typography.Text
             style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}
           >
@@ -190,7 +205,7 @@ const Header = ({ setIsAuthenticated }) => {
           <Select
             value={selectedBranch}
             onChange={handleBranchChange}
-            style={{ width: 200, size: "large" }}
+            style={{ width: 200, size: "large", marginRight: "15px" }}
           >
             {branches?.map((branch) => (
               <Select.Option key={branch.branch_id} value={branch.branch_name}>
@@ -201,7 +216,7 @@ const Header = ({ setIsAuthenticated }) => {
         )}
 
         <Dropdown overlay={menu} trigger={["click"]}>
-          <Badge dot style={{ marginRight: "25px" }}>
+          <Badge dot style={{ marginRight: "15px" }}>
             <Avatar
               icon={<UserOutlined />}
               style={{
@@ -209,7 +224,6 @@ const Header = ({ setIsAuthenticated }) => {
                 backgroundColor: "rgba(0,0,0,0.88)",
                 marginRight: "20px",
               }}
-              size={"large"}
             />
           </Badge>
         </Dropdown>
@@ -219,3 +233,4 @@ const Header = ({ setIsAuthenticated }) => {
 };
 
 export default Header;
+
