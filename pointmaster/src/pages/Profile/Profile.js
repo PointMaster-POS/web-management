@@ -73,22 +73,6 @@ const ProfilePage = () => {
       return;
     }
 
-    /*
-    {
-  "business_name": "Tech Innovators Ltd.",
-  "business_mail": "contact@techinnovators.com",
-  "business_url": "https://www.techinnovators.com",
-  "business_hotline": "+1-800-TECH-INNO",
-  "business_description": " tech solutions.",
-  "business_address": "1234 Innovation Drive, Silicon Valley, CA",
-  "logo_location": "https://www.techinnovators.com/logo.png",
-  "business_registration_number": "TIN-12345678",
-  "business_type": "Technology",
-  "business_registration_date": "2022-01-15"
-    }   
-  need to filter those values from values
-  */
-
   const dto = {
     business_name: values.business_name,
     business_mail: values.business_mail,
@@ -233,7 +217,7 @@ const ProfilePage = () => {
   const defaultLogo_2 = "/images/placeholder_for_owner.png";
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "#f5f5f5" }}>
+    <div style={{ padding: "20px", backgroundColor: "#f5f5f5", /* border: "2px red solid", */ height: "100%" }}>
       <Title level={2} style={{ textAlign: "center" }}>
         Profile Overview
       </Title>
@@ -371,6 +355,7 @@ const ProfilePage = () => {
               borderRadius: "10px",
               boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
               padding: "20px",
+              height: "100%"
             }}
             extra={<Button icon={<EditOutlined />} onClick={handleEditOwner} />}
           >
