@@ -321,16 +321,16 @@ const Products = () => {
   };
 
   const handleSearch = (value, exactMatch = false) => {
+    const searchValue = value.toLowerCase();
     const filtered = data.filter((item) => {
-      const product_name = item.product_name.toLowerCase();
-      const product_id = item.product_id.toString().toLowerCase();
-      const searchValue = value.toLowerCase();
+      const item_name = item.item_name.toLowerCase();
+      const item_id = item.item_id.toString().toLowerCase();
 
       if (exactMatch) {
-        return product_name === searchValue || product_id === searchValue;
+        return item_name === searchValue || item_id === searchValue;
       } else {
         return (
-          product_name.includes(searchValue) || product_id.includes(searchValue)
+          item_name.includes(searchValue) || item_id.includes(searchValue)
         );
       }
     });
@@ -418,9 +418,8 @@ const Products = () => {
   const columns = [
     {
       title: "Item ID",
-      dataIndex: "index",
-      key: "index",
-      render: (text, record, index) => index + 1, // Render row number starting from 1
+      dataIndex: "item_id",
+      key: "item_id",
     },
     { title: "Item Name", dataIndex: "item_name", key: "item_name" },
 
@@ -436,7 +435,7 @@ const Products = () => {
       key: "stock",
       render: (stock) => (
         <div>
-          {stock < 20 ? (
+          {stock < categories.minimum_stock ? (
             <Tooltip title="Low stock !">
               <span style={{ color: "red" }}>{stock}</span>
               <ExclamationCircleOutlined

@@ -23,7 +23,7 @@ const AddNewStore = ({ form, onAddStore, onCancel }) => {
       className="large-font-form"
     >
       <Form.Item
-        label="Branch Name"
+        label="Store Name"
         name="branch_name"
         rules={[{ required: true, message: "Please input the branch name!" }]}
         style={{ marginBottom: "20px" }}
