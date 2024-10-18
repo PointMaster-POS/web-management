@@ -43,14 +43,17 @@ const Category = () => {
 
       return;
     }
-    if (!branchID) {
+    if (!branchID && role == "owner") {
+    
       message.warning("Select a branch or create a branch to have categories.");
       return;
     }
+  
     try {
       let url;
       // console.log("role", role);
       if (role === "owner") {
+        console.log("************************************");
         url = `http://209.97.173.123:3001/category/owner/${branchID}`;
       } else if (role === "branch manager") {
         console.log("------------------------------------");

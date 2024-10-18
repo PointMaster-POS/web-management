@@ -49,8 +49,7 @@ const Products = () => {
   const [selectedBarcode, setSelectedBarcode] = useState(null);
   const [fileList, setFileList] = useState([]);
   const [productImageURL, setProductImageURL] = useState("");
-  const [isViewProductModelVisible, setIsViewProductModelVisible] =
-    useState(false);
+  const [isViewProductModelVisible, setIsViewProductModelVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isNewProduct, setIsNewProduct] = useState(true);
   const [selectedItemID, setSelectedItemID] = useState(null);
@@ -676,7 +675,6 @@ const Products = () => {
           >
             <Input placeholder="Enter minimum stock" />
           </Form.Item>
-
           <Form.Item name="discount" label="Discount (%)">
             <Input placeholder="Enter discount percentage" />
           </Form.Item>
