@@ -61,11 +61,7 @@ const Header = ({ setIsAuthenticated }) => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
-    decodeToken();
-    if(decodedToken.employee) {
-      setSelectedBranch(decodedToken.employee.employee_branch_id);
-      return
-    }
+    
     try {
       const response = await fetch("http://209.97.173.123:3001/branch", {
         method: "GET",
@@ -88,9 +84,13 @@ const Header = ({ setIsAuthenticated }) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {decodeToken();
+   
     if (role === "owner") {
       fetchBranches();
+    }
+    if(role === "branch manager") {
+      setSelectedBranchID(decodedToken.employee.employee_branch_id);
     }
   }, [onAddingBranch]);
 
@@ -140,9 +140,9 @@ const Header = ({ setIsAuthenticated }) => {
   const showDropdown =
     selectedMenu === "/category" ||
     selectedMenu === "/products" ||
-    selectedMenu === "/employees" ;
-    //||
-    //selectedMenu === "/dashboard";
+    selectedMenu === "/employees"
+    // ||
+    // selectedMenu === "/dashboard";
 
   // Function to update the current time every second
   useEffect(() => {
@@ -200,7 +200,6 @@ const Header = ({ setIsAuthenticated }) => {
             {currentTime}
           </Typography.Text>
         </div>
-
         {showDropdown && role === "owner" && (
           <Select
             value={selectedBranch}

@@ -31,7 +31,7 @@ export const MenuProvider = ({ children }) => {
       setRole("owner");
       navigate("/dashboard");
     } else if (decodedToken.employee?.employee_role === "branch manager") {
-      setRole("branchmanager");
+      setRole("branch manager");
       navigate("/dashboard");
     } else if (decodedToken.employee?.employee_role === "Cashier") {
       // Redirect to the cashiers domain
