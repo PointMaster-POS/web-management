@@ -22,6 +22,7 @@ import AddNewEmployee from "../../components/Popups/AddNewEmployee";
 import ViewEmployeeProfile from "../../components/Popups/EmployeeProfileModel";
 import { useMenu } from "../../context/MenuContext";
 import "../PagesStyles.css"
+import baseUrl from "../../apiConfig";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -45,9 +46,9 @@ const Employees = () => {
     }
     let url;
     if (role === "owner") {
-      url = `http://209.97.173.123:3001/employee/all-employee/${branchID}`;
+      url = `${baseUrl}:3001/employee/all-employee/${branchID}`;
     } else if (role === "branch manager") {
-      url = `http://209.97.173.123:3001/employee/branch-employee`;
+      url = `${baseUrl}:3001/employee/branch-employee`;
     }
 
     if (!branchID && role === "owner") {
@@ -96,7 +97,7 @@ const Employees = () => {
     }
 
     try {
-      const response = await fetch("http://209.97.173.123:3001/employee", {
+      const response = await fetch(`${baseUrl}:3001/employee`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -131,7 +132,7 @@ const Employees = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/employee/${editingEmployee.employee_id}`,
+        `${baseUrl}:3001/employee/${editingEmployee.employee_id}`,
         {
           method: "PUT",
           headers: {
@@ -181,7 +182,7 @@ const Employees = () => {
             return;
           }
 
-          await fetch(`http://209.97.173.123:3001/employee/${employee_id}`, {
+          await fetch(`${baseUrl}:3001/employee/${employee_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,
