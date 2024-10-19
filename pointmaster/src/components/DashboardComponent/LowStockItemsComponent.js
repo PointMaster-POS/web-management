@@ -5,8 +5,9 @@ import {
     message,
     Typography
   } from "antd";
-  import React, { useState, useEffect, useMemo } from "react";
+  import React, { useState, useEffect } from "react";
   import LowStockItemsModal from "../../components/Popups/LowStockItemModal";
+  import baseUrl from "../../apiConfig";
 
   const { Title, Text } = Typography;
 
@@ -27,7 +28,7 @@ import {
   
       try {
         const response = await fetch(
-          `http://209.97.173.123:3001/dashboard/business/low-stock-items/${quantity}`,
+          `${baseUrl}:3001/dashboard/business/low-stock-items/${quantity}`,
           {
             method: "GET",
             headers: {

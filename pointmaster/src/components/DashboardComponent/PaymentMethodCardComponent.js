@@ -2,6 +2,7 @@ import { Card, Space, Statistic, Dropdown, Menu, message } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import baseUrl from "../../apiConfig";
 
 const PaymentMethodDataCard = ({ icon }) => {
   const [paymentMethod, setPaymentMethod] = useState("Cash");
@@ -13,7 +14,7 @@ const PaymentMethodDataCard = ({ icon }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        "http://209.97.173.123:3001/dashboard/business/sales-by-payment-method",
+        `${baseUrl}:3001/dashboard/business/sales-by-payment-method`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

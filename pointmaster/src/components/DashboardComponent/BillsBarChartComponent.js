@@ -7,6 +7,7 @@ import {
   import SalesModal from "../../components/Popups/SalesModal";
   import { Bar } from "react-chartjs-2";
   import dayjs from "dayjs";
+  import baseUrl from "../../apiConfig";
 
   const { Title, Text } = Typography;
 
@@ -40,7 +41,7 @@ import {
   
       try {
         const response = await fetch(
-          `http://209.97.173.123:3001/dashboard/business/sale-report/number-of-bills/${startMonth}/${endMonth}`,
+          `${baseUrl}:3001/dashboard/business/sale-report/number-of-bills/${startMonth}/${endMonth}`,
           {
             method: "GET",
             headers: {

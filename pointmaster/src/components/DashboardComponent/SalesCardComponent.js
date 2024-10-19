@@ -12,6 +12,7 @@ import {
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import axios from "axios";
+import baseUrl from "../../apiConfig";
 
 const SalesCard = ({ icon }) => {
   const [timeFrame, setTimeFrame] = useState("Today");
@@ -48,7 +49,7 @@ const SalesCard = ({ icon }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        `http://209.97.173.123:3001/dashboard/business/bills-between-dates/${startDate}/${endDate}`,
+        `${baseUrl}:3001/dashboard/business/bills-between-dates/${startDate}/${endDate}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

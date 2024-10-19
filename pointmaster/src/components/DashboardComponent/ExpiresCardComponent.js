@@ -8,6 +8,7 @@ import {
   import React, { useState, useEffect } from "react";
   import axios from "axios";
   import { useNavigate } from "react-router-dom";
+  import baseUrl from "../../apiConfig";
 
   const { Text } = Typography;
 
@@ -21,7 +22,7 @@ import {
       const token = localStorage.getItem("accessToken");
       try {
         const response = await axios.get(
-          "http://209.97.173.123:3001/dashboard/business/expired-items",
+          `${baseUrl}:3001/dashboard/business/expired-items`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

@@ -7,6 +7,7 @@ import {
   import { Pie } from "react-chartjs-2";
   import dayjs from "dayjs";
   import BranchPerformanceModal from "../../components/Popups/BranchPerformance";
+  import baseUrl from "../../apiConfig";
 
   const { Title, Text } = Typography;
 
@@ -30,7 +31,7 @@ import {
   
       try {
         const response = await fetch(
-          `http://209.97.173.123:3001/dashboard/business/branch-performance/${startDate}/${adjustedEndDate}`,
+          `${baseUrl}:3001/dashboard/business/branch-performance/${startDate}/${adjustedEndDate}`,
           {
             method: "GET",
             headers: {

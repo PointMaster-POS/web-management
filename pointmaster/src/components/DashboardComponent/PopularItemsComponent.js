@@ -8,6 +8,7 @@ import {
   import React, { useState, useEffect } from "react";
   import PopularItemsModal from "../../components/Popups/PopularItemsModal";
   import dayjs from "dayjs";
+  import baseUrl from "../../apiConfig";
 
   const { Title, Text } = Typography;
 
@@ -31,7 +32,7 @@ import {
   
       try {
         const response = await fetch(
-          `http://209.97.173.123:3001/dashboard/business/sale-report/item/${startDate}/${adjustedEndDate}`,
+          `${baseUrl}:3001/dashboard/business/sale-report/item/${startDate}/${adjustedEndDate}`,
           {
             method: "GET",
             headers: {

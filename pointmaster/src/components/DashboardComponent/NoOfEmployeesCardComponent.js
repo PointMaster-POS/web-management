@@ -6,6 +6,7 @@ import {
   } from "antd";
   import React, { useState, useEffect } from "react";
   import axios from "axios";
+  import baseUrl from "../../apiConfig";
 
   const NoOfEmployeesCard = ({ icon, title }) => {
     const [employeeCount, setEmployeeCount] = useState(0);
@@ -16,7 +17,7 @@ import {
       const token = localStorage.getItem("accessToken");
       try {
         const response = await axios.get(
-          "http://209.97.173.123:3001/dashboard/business/employees/get-number-of-employees",
+          `${baseUrl}:3001/dashboard/business/employees/get-number-of-employees`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
