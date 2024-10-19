@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import baseUrl from "../../apiConfig";
 
 export default function LogIn() {
   const [messageApi, contextHolder] = message.useMessage();
@@ -23,7 +24,7 @@ export default function LogIn() {
   const onFinishLogin = (values) => {
     setLoading(true);
 
-    const url = "http://209.97.173.123:3002/employee/login";
+    const url = `${baseUrl}:3002/employee/login`;
     axios
       .post(url, {
         email: values.username,

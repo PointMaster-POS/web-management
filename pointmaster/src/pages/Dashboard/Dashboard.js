@@ -22,6 +22,7 @@ import PopularItems from "../../components/DashboardComponent/PopularItemsCompon
 import LowStockItems from "../../components/DashboardComponent/LowStockItemsComponent";
 import BillsBarChart from "../../components/DashboardComponent/BillsBarChartComponent";
 import SalesPieChart from "../../components/DashboardComponent/SalesPieChartComponent";
+import baseUrl from "../../apiConfig";
 
 Chart.register(...registerables);
 
@@ -108,6 +109,5 @@ const iconStyle = (color) => ({
   fontSize: 24,
   padding: 8,
 });
-
 
 export default Dashboard;

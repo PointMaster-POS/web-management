@@ -6,6 +6,7 @@ import TextArea from "antd/es/input/TextArea";
 import { storage } from "../../../firebase";
 import "./RegisterNewBusiness.css";
 import axios from "axios";
+import baseUrl from "../../../apiConfig";
 
 const { Option } = Select;
 const { Title } = Typography;
@@ -83,7 +84,7 @@ const RegisterNewBusiness = ({
 
   const handleVerifyEmail = () => {
     try {
-      axios.post("http://209.97.173.123:3001/registration/verify-email-send", {
+      axios.post(`${baseUrl}:3001/registration/verify-email-send`, {
         email: form.getFieldValue("business_mail"),
       });
       message.success(
@@ -105,10 +106,7 @@ const RegisterNewBusiness = ({
     };
 
     try {
-      const response = await axios.post(
-        "http://209.97.173.123:3001/registration/verify-mail",
-        body
-      );
+      const response = await axios.post(`${baseUrl}:3001/registration/verify-mail`, body);
       if (response.status === 200) {
         isCodeValid = true;
       }

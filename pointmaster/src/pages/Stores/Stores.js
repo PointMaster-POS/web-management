@@ -20,6 +20,7 @@ import {
 import AddNewStore from "../../components/Popups/AddNewStore";
 import { useMenu } from "../../context/MenuContext";
 import "../PagesStyles.css";
+import baseUrl from "../../apiConfig";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -43,7 +44,7 @@ const Stores = () => {
     }
 
     try {
-      const response = await fetch("http://209.97.173.123:3001/branch", {
+      const response = await fetch(`${baseUrl}:3001/branc`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -81,7 +82,7 @@ const Stores = () => {
     }
 
     try {
-      const response = await fetch("http://209.97.173.123:3001/branch/", {
+      const response = await fetch(`${baseUrl}:3001/branch/`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -118,7 +119,7 @@ const Stores = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/branch/${editingStore.branch_id}`,
+        `${baseUrl}:3001/branch/${editingStore.branch_id}`,
         {
           method: "PUT",
           headers: {
@@ -171,7 +172,7 @@ const Stores = () => {
             return;
           }
 
-          await fetch(`http://209.97.173.123:3001/branch/${branch_id}`, {
+          await fetch(`${baseUrl}:3001/branch/${branch_id}`, {
             method: "DELETE",
             headers: {
               Authorization: `Bearer ${token}`,

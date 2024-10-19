@@ -8,6 +8,7 @@ import HeroSection from "../../components/HeroSection/HeroSection";
 import FeaturesSection from "../../components/FeaturesSection/FeaturesSection";
 import BusinessModal from "../../components/BusinessModel/BusinessModal";
 import OwnerModal from "../../components/OwnerModel/OwnerModel";
+import baseUrl from "../../apiConfig";
 
 export default function Landing() {
   const [isBusinessModalVisible, setIsBusinessModalVisible] = useState(false);
@@ -23,7 +24,7 @@ export default function Landing() {
 
     try {
       const response = await fetch(
-        "http://209.97.173.123:3001/registration/business-details",
+        `${baseUrl}:3001/registration/business-details`,
         {
           method: "POST",
           headers: {
@@ -52,7 +53,7 @@ export default function Landing() {
   const handleRegisterOwner = async (values) => {
     try {
       const response = await fetch(
-        "http://209.97.173.123:3001/registration/owner-details",
+        `${baseUrl}:3001/registration/owner-details`,
         {
           method: "POST",
           headers: {

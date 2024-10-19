@@ -13,6 +13,7 @@ import {
 import { EditOutlined } from "@ant-design/icons";
 import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
 import RegisterOwner from "../../components/Popups/RegisterOwner/RegisterOwner";
+import baseUrl from "../../apiConfig";
 
 const { Title, Text } = Typography;
 
@@ -33,7 +34,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/employee/owner-profile`,
+        `${baseUrl}:3001/employee/owner-profile`,
         {
           method: "GET",
           headers: {
@@ -80,7 +81,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        "http://209.97.173.123:3001/business/update-business-details",
+        `${baseUrl}:3001/business/update-business-details`,
         {
           method: "PUT",
           headers: {
@@ -125,7 +126,7 @@ const ProfilePage = () => {
 
     try {
       const response = await fetch(
-        "http://209.97.173.123:3001/business/update-owner-details",
+        `${baseUrl}:3001/business/update-owner-details`,
         {
           method: "PUT",
           headers: {

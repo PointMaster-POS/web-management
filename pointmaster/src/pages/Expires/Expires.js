@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Table, message, Card, Typography } from "antd";
 import moment from "moment";
+import baseUrl from "../../apiConfig";
 
 const { Title } = Typography;
 
@@ -19,7 +20,7 @@ const Expires = () => {
 
     try {
       const response = await fetch(
-        "http://209.97.173.123:3001/dashboard/business/expired-items",
+        `${baseUrl}:3001/dashboard/business/expired-items`,
         {
           method: "GET",
           headers: {
