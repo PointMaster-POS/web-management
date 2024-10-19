@@ -19,7 +19,7 @@ import {
 } from "@ant-design/icons";
 import AddNewCategory from "../../components/Popups/AddNewCategory";
 import { useMenu } from "../../context/MenuContext";
-import "./Categories.css"
+import "../PagesStyles.css";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -36,24 +36,32 @@ const Category = () => {
 
   const fetchCategories = async () => {
     const token = localStorage.getItem("accessToken");
+    console.log(role);
+    console.log("branchID", token);
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
-      
+
       return;
     }
-    if (!branchID) {
+    if (!branchID && role == "owner") {
+    
       message.warning("Select a branch or create a branch to have categories.");
       return;
     }
+  
     try {
       let url;
-      console.log("role", role);
+      // console.log("role", role);
       if (role === "owner") {
+        console.log("************************************");
         url = `http://209.97.173.123:3001/category/owner/${branchID}`;
-      } else if (role === "branchmanager") {
+      } else if (role === "branch manager") {
+        console.log("------------------------------------");
         url = `http://209.97.173.123:3001/category/manager`;
       }
+
       console.log("url", url);
+      // console.log("url", url);
       const response = await fetch(url, {
         method: "GET",
         headers: {
@@ -76,14 +84,13 @@ const Category = () => {
   };
 
   const handleAddCategory = async (values) => {
-    console.log(values);
+    // console.log(values);
     const token = localStorage.getItem("accessToken");
 
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
-   
 
     try {
       const response = await fetch("http://209.97.173.123:3001/category", {
@@ -96,7 +103,7 @@ const Category = () => {
       });
 
       if (response.ok) {
-        const newCategory = await response.json();
+        // const newCategory = await response.json();
         message.success("Category added successfully");
         setIsModalVisible(false);
         form.resetFields();
@@ -205,19 +212,20 @@ const Category = () => {
   };
 
   const handleSearch = (value, exactMatch = false) => {
+    const searchValue = value.toLowerCase(); // normalize input to lower case and trim spaces
     const filtered = data.filter((item) => {
-      const searchValue = value.toLowerCase();
       const category_name = item.category_name.toLowerCase();
       const category_id = item.category_id.toString().toLowerCase();
-
+  
       return exactMatch
         ? category_name === searchValue || category_id === searchValue
-        : category_name.includes(searchValue) ||
-            category_id.includes(searchValue);
+        : category_name.includes(searchValue) || category_id.includes(searchValue);
     });
+  
     setFilteredData(filtered);
     setSearchText(value);
   };
+  
 
   const columns = [
     {
@@ -267,16 +275,12 @@ const Category = () => {
         </Space>
       ),
     },
-    // {
-    //   title: " ",
-    //   key: "orders",
-    //   render: (record) => <Button>View Category</Button>,
-    // },
   ];
 
   return (
-    <Card className="large-font"
-      style={{ /* margin: 30, */ padding: 30, borderRadius: "10px" }}
+    <Card
+      className="large-font"
+      style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
       <div
@@ -287,7 +291,7 @@ const Category = () => {
         }}
       >
         <Title level={2} style={{ marginBottom: 10 }}>
-          Categories Data
+          Categories
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
@@ -297,7 +301,7 @@ const Category = () => {
             value={searchText}
             style={{ marginRight: 10, width: 300 }}
           />
-          <Button type="primary" onClick={showModal} icon={<PlusOutlined />} >
+          <Button type="primary" onClick={showModal} icon={<PlusOutlined />}>
             Add New Category
           </Button>
         </div>

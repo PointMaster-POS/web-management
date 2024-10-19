@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Modal, DatePicker, Button, Card, Form } from "antd";
+import { Modal, DatePicker, Button, Card, Form, Typography } from "antd";
 import dayjs from "dayjs";
 import { Pie } from "react-chartjs-2";
+
+const {Title} = Typography;
 
 const BranchPerformanceModal = ({
   visible,
@@ -38,12 +40,13 @@ const BranchPerformanceModal = ({
 
   return (
     <Modal
-      title="Branch Performance by Sales"
+      // title="Branch Performance by Sales"
       visible={visible}
       onCancel={onClose}
       footer={null}
       width={800}
     >
+      <Title level={4}>Branch Performance by Sales</Title>
       <Card bordered={false} style={{ marginBottom: 16 }}>
         <Form layout="inline">
           <Form.Item label="Start Date">

@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Modal, DatePicker, Button, Card, Form } from "antd";
+import { Modal, DatePicker, Button, Card, Form, Typography } from "antd";
 import dayjs from "dayjs";
 import { Bar } from "react-chartjs-2";
+
+const { Title } = Typography;
 
 const SalesModal = ({
   visible,
@@ -30,25 +32,23 @@ const SalesModal = ({
     }
     setLoading(true);
     try {
-      await fetchBillsData(startMonth.format("YYYY-MM"), endMonth.format("YYYY-MM"));
+      await fetchBillsData(
+        startMonth.format("YYYY-MM"),
+        endMonth.format("YYYY-MM")
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Modal
-      title="Number of Bills"
-      visible={visible}
-      onCancel={onClose}
-      footer={null}
-      width={800}
-    >
+    <Modal visible={visible} onCancel={onClose} footer={null} width={800}>
+      <Title level={4}>Sales</Title>
       <Card bordered={false} style={{ marginBottom: 16 }}>
         <Form layout="inline">
           <Form.Item label="Start Month">
             <DatePicker
-            picker="month"
+              picker="month"
               defaultValue={dayjs(startMonth)}
               onChange={(month) => handleStartMonthChange(month)}
               format="YYYY-MM"
@@ -56,7 +56,7 @@ const SalesModal = ({
           </Form.Item>
           <Form.Item label="End Month">
             <DatePicker
-            picker="month"
+              picker="month"
               value={dayjs(endMonth)}
               onChange={(month) => handleEndMonthChange(month)}
               format="YYYY-MM"
@@ -74,7 +74,7 @@ const SalesModal = ({
         {loading ? (
           <p>Loading...</p>
         ) : chartData.labels ? (
-          <Bar data={chartData} options={options} style={{height: 500}}/>
+          <Bar data={chartData} options={options} style={{ height: 500 }} />
         ) : (
           <p>No data available</p>
         )}

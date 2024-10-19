@@ -23,39 +23,30 @@ import PopularItemsModal from "../../components/Popups/PopularItemsModal";
 import LowStockItemsModal from "../../components/Popups/LowStockItemModal";
 import SalesModal from "../../components/Popups/SalesModal";
 import { Bar, Pie } from "react-chartjs-2";
-// import { OutOfStockList } from "../../components/Data";
-// import { PopularItemsList } from "../../components/Data";
 import { Chart, registerables } from "chart.js";
 import dayjs from "dayjs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import BranchPerformanceModal from "../../components/Popups/BranchPerformance";
-// import dayjs from "dayjs";
 
 const { Title, Text } = Typography;
 Chart.register(...registerables);
 
 const Dashboard = () => {
-
-  const [PopularItemsList, setPopularItemsList] = useState([]);
   return (
     <div className="dashboard-container">
-      <Row gutter={[20]}>
+      <Row gutter={[20, 20]}>
+        {/* Left Column: Data Cards */}
         <Col span={18}>
           <Row gutter={[20, 20]}>
+            {/* Financial Data Cards */}
             <Col span={8}>
               <SalesCard icon={<DollarOutlined style={iconStyle("green")} />} />
             </Col>
             <Col span={8}>
               <PurchasesCard
                 icon={<DollarOutlined style={iconStyle("orange")} />}
-              />
-            </Col>
-            <Col span={8}>
-              <NoOfCustomerCard
-                icon={<UserOutlined style={iconStyle("olive")} />}
-                title="Number of Customers"
               />
             </Col>
             <Col span={8}>
@@ -69,20 +60,30 @@ const Dashboard = () => {
                 title="Expires in a month"
               />
             </Col>
+
             <Col span={8}>
-              <ProfitCard
-                icon={<DollarOutlined style={iconStyle("purple")} />}
-                title="Profit"
+              <NoOfCustomersCard
+                icon={<UserOutlined style={iconStyle("olive")} />}
+                title="Number of Customers"
               />
             </Col>
+            <Col span={8}>
+              <NoOfEmployeesCard
+                icon={<UserOutlined style={iconStyle("purple")} />}
+                title="Number of Employees"
+              />
+            </Col>
+
             <Col span={12}>
               <BillsBarChart />
             </Col>
             <Col span={12}>
-              <SalePieChart />
+              <SalesPieChart />
             </Col>
           </Row>
         </Col>
+
+        {/* Right Column: Popular & Low Stock Items */}
         <Col span={6}>
           <Space size={20} direction="vertical" style={{ width: "100%" }}>
             <PopularItems />
@@ -271,7 +272,7 @@ const PurchasesCard = ({ icon }) => {
   );
 };
 
-const NoOfCustomerCard = ({ icon, title }) => {
+const NoOfCustomersCard = ({ icon, title }) => {
   const [customerCount, setCustomerCount] = useState(0);
   const [loading, setLoading] = useState(false);
 
@@ -452,12 +453,43 @@ const ExpiresCard = ({ icon, title }) => {
   );
 };
 
-const ProfitCard = ({ icon, title }) => {
+const NoOfEmployeesCard = ({ icon, title }) => {
+  const [employeeCount, setEmployeeCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const fetchCustomerCount = async () => {
+    setLoading(true);
+    const token = localStorage.getItem("accessToken");
+    try {
+      const response = await axios.get(
+        "http://209.97.173.123:3001/dashboard/business/employees/get-number-of-employees",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setEmployeeCount(response.data.employeeCount);
+    } catch (error) {
+      message.error("Failed to fetch count");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCustomerCount();
+  }, []);
+
   return (
     <Card className="card">
       <Space direction="horizontal" size="large" className="card-content">
         {icon}
-        <Statistic title={title} className="statistic" />
+        <Statistic
+          title={title}
+          value={loading ? "Loading..." : employeeCount}
+          className="statistic"
+        />
       </Space>
     </Card>
   );
@@ -640,13 +672,8 @@ const LowStockItems = () => {
         renderItem={(item) => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar src={item.image} size={45} />}
+              avatar={<Avatar src={item.image_url} size={45} />}
               title={<Text className="item-title"> {item.item_name} </Text>}
-              // description={
-              //   <Text type="secondary" className="item-description">
-              //     Sales: {/* item.purchase_count */ item.stock}
-              //   </Text>
-              // }
             />
           </List.Item>
         )}
@@ -654,170 +681,6 @@ const LowStockItems = () => {
     </Card>
   );
 };
-// const BillsBarChart = () => {
-//   const [modalVisible, setModalVisible] = useState(false);
-//   const [chartData, setChartData] = useState(null); // Use null for empty state
-//   const [loading, setLoading] = useState(false);
-
-//   // Get today's date and 12 months prior
-//   const end_month = dayjs().format("YYYY-MM");
-//   const start_month = dayjs().subtract(12, "month").format("YYYY-MM");
-
-//   // Generate an array of the last 12 months (formatted as YYYY-MM)
-//   const getLast12Months = () => {
-//     const months = [];
-//     for (let i = 0; i < 12; i++) {
-//       months.unshift(dayjs().subtract(i, 'month').format('YYYY-MM'));
-//     }
-//     return months;
-//   };
-
-//   const fetchBillsData = async (startMonth, endMonth) => {
-//     setLoading(true);
-//     const token = localStorage.getItem("accessToken");
-//     if (!token) {
-//       message.error("Authorization token is missing. Please log in again.");
-//       return;
-//     }
-
-//     try {
-//       const response = await fetch(
-//         `http://209.97.173.123:3001/dashboard/business/sale-report/number-of-bills/${startMonth}/${endMonth}`,
-//         {
-//           method: "GET",
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
-
-//       if (!response.ok) {
-//         throw new Error(`HTTP error! status: ${response.status}`);
-//       }
-
-//       const result = await response.json();
-
-//       const last12Months = getLast12Months();
-
-//       // Create an array of 0s for months with no data
-//       const billsData = last12Months.map((month) => {
-//         const monthData = result.data.find((item) => item.bill_month === month);
-//         return monthData ? monthData.number_of_bills : 0;
-//       });
-
-//       setChartData({
-//         labels: last12Months,
-//         datasets: [
-//           {
-//             label: "Number of Bills",
-//             data: billsData,
-//             backgroundColor: "#5e48a6",
-//             borderColor: "rgba(75, 192, 192, 1)",
-//             borderWidth: 1,
-//           },
-//         ],
-//       });
-
-//     } catch (error) {
-//       console.error("Error fetching data:", error);
-//       message.error("Failed to fetch data.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchBillsData(start_month, end_month); // Fetch items on component load
-//   }, []);
-
-//   const handleViewAllClick = () => {
-//     setModalVisible(true);
-//   };
-
-//   const handleCloseModal = () => {
-//     setModalVisible(false);
-//   };
-
-//   const options = {
-//     responsive: true,
-//     maintainAspectRatio: false,
-//     scales: {
-//       x: {
-//         grid: {
-//           display: false,
-//         },
-//         title: {
-//           display: true,
-//           text: "Months",
-//           font: {
-//             size: 18,
-//           },
-//         },
-//         ticks: {
-//           font: {
-//             size: 14, // Font size for the x-axis labels
-//           },
-//         },
-//       },
-//       y: {
-//         grid: {
-//           display: false,
-//         },
-//         title: {
-//           display: true,
-//           text: "Number of Bills",
-//           font: {
-//             size: 18,
-//           },
-//         },
-//         ticks: {
-//           font: {
-//             size: 14, // Font size for the y-axis labels
-//           },
-//         },
-//         beginAtZero: true,
-//       },
-//     },
-//     plugins: {
-//       legend: {
-//         display: false, // Hides the legend completely
-//       },
-//     },
-//   };
-
-//   return (
-//     <Card style={{ height: "516px" }}>
-//       <div style={{ display: "flex", justifyContent: "space-between" }}>
-//         <Title level={3}>Number of Bills</Title>
-//         <Text
-//           type="secondary"
-//           className="view-more"
-//           onClick={handleViewAllClick}
-//         >
-//           View more...
-//         </Text>
-//         {/* <SalesModal
-//           visible={modalVisible}
-//           onClose={handleCloseModal}
-//           chartData={chartData}
-//           defaultStartMonth={start_month}
-//           defaultEndMonth={end_month}
-//           options={options}
-//         /> */}
-//       </div>
-//       <div style={{ height: "400px" }}>
-//         {loading ? (
-//           <p>Loading...</p>
-//         ) : chartData ? (
-//           <Bar data={chartData} options={options} />
-//         ) : (
-//           <p>No data available</p>
-//         )}
-//       </div>
-//     </Card>
-//   );
-// };
 
 const BillsBarChart = () => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -828,9 +691,15 @@ const BillsBarChart = () => {
     () => dayjs().subtract(12, "month").format("YYYY-MM"),
     []
   );
-  console.log(start_month);
   const end_month = useMemo(() => dayjs().format("YYYY-MM"), []);
-  console.log(end_month);
+
+  const getLast12Months = () => {
+    const months = [];
+    for (let i = 0; i < 12; i++) {
+      months.unshift(dayjs().subtract(i, "month").format("YYYY-MM"));
+    }
+    return months;
+  };
 
   const fetchBillsData = async (startMonth, endMonth) => {
     setLoading(true);
@@ -861,27 +730,25 @@ const BillsBarChart = () => {
 
       const result = await response.json();
 
-      // console.log(result.message);
+      const last12Months = getLast12Months();
 
-      if (result.data && result.data.length > 0) {
-        const labels = result.data.map((item) => item.bill_month);
-        const values = result.data.map((item) => item.number_of_bills);
+      const billsData = last12Months.map((month) => {
+        const monthData = result.data.find((item) => item.bill_month === month);
+        return monthData ? monthData.number_of_bills : 0;
+      });
 
-        setChartData({
-          labels,
-          datasets: [
-            {
-              label: "Number of Bills",
-              data: values,
-              backgroundColor: "rgba(75, 192, 192, 0.6)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-          ],
-        });
-      } else {
-        setChartData([]);
-      }
+      setChartData({
+        labels: last12Months,
+        datasets: [
+          {
+            label: "Number of Bills",
+            data: billsData,
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      });
     } catch (error) {
       console.error("Error fetching data:", error);
       message.error("Failed to fetch data.");
@@ -954,7 +821,7 @@ const BillsBarChart = () => {
 
         title: {
           display: true,
-          text: "Number of Bills",
+          text: "Sales",
           font: {
             size: 18,
           },
@@ -977,7 +844,7 @@ const BillsBarChart = () => {
   return (
     <Card style={{ height: "516px" }}>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Title level={3}>Number of Bills</Title>
+        <Title level={3}>Sales</Title>
         <Text
           type="secondary"
           className="view-more"
@@ -1008,7 +875,7 @@ const BillsBarChart = () => {
   );
 };
 
-const SalePieChart = () => {
+const SalesPieChart = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [chartData, setChartData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -1111,7 +978,7 @@ const SalePieChart = () => {
     ],
     datasets: [
       {
-        data: [10, 15, 8, 20, 25, 18 /* , 22, 16, 19, 3 */],
+        // data: [10, 15, 8, 20, 25, 18 /* , 22, 16, 19, 3 */],
         backgroundColor: [
           "#FF6384",
           "#36A2EB",

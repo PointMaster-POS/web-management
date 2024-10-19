@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import AddNewStore from "../../components/Popups/AddNewStore";
 import { useMenu } from "../../context/MenuContext";
+import "../PagesStyles.css";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -58,7 +59,7 @@ const Stores = () => {
       setData(data);
       setFilteredData(data);
 
-      setOnAddingBranch(!onAddingBranch);
+      
     } catch (error) {
       console.error("Error fetching branches:", error);
       message.error("Failed to fetch branches.");
@@ -201,13 +202,14 @@ const Stores = () => {
 
 
   const handleSearch = (value, exactMatch = false) => {
+    const searchValue = value.toLowerCase();
     const filtered = data.filter((item) => {
       const branch_name = item.branch_name.toLowerCase();
-      const searchValue = value.toLowerCase();
+      const branch_id = item.branch_id.toString().toLowerCase();
 
       return exactMatch
-        ? branch_name === searchValue
-        : branch_name.includes(searchValue);
+        ? branch_name === searchValue || branch_id === searchValue
+        : branch_name.includes(searchValue) || branch_id.includes(searchValue);
     });
     setFilteredData(filtered);
     setSearchText(value);
@@ -215,7 +217,7 @@ const Stores = () => {
 
 
   const columns = [
-    { title: "Branch ID", dataIndex: "branch_id", key: "branch_id" },
+    { title: "Store ID", dataIndex: "branch_id", key: "branch_id" },
     { title: "Name", dataIndex: "branch_name", key: "branch_name" },
     { title: "Location", dataIndex: "branch_location", key: "branch_location" },
     {
@@ -245,6 +247,7 @@ const Stores = () => {
 
   return (
     <Card
+      className="large-font"
       style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
@@ -255,12 +258,12 @@ const Stores = () => {
           alignItems: "center",
         }}
       >
-        <Title level={3} style={{ marginBottom: 10 }}>
-          Branches Data
+        <Title level={2} style={{ marginBottom: 10 }}>
+          Stores
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
-            placeholder="Search Name"
+            placeholder="Search by Store ID or Name"
             onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}

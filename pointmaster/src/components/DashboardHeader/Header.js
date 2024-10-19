@@ -20,6 +20,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useMenu } from "../../context/MenuContext";
+import { useAuth } from "../../context/AuthContext";
 
 // Mock branch data
 // const branches = [
@@ -29,13 +30,14 @@ import { useMenu } from "../../context/MenuContext";
 // ];
 
 const Header = ({ setIsAuthenticated }) => {
-  const { selectedMenu, role, branchID, setBranchID, onAddingBranch } =
+  const { selectedMenu, role, branchID, setBranchID, onAddingBranch, decodeToken , decodedToken} =
     useMenu(); // Get selectedMenu from context
   const navigate = useNavigate();
   const [branches, setBranches] = useState([]);
   const [selectedBranch, setSelectedBranch] = useState(""); // Set default branch
   const [selectedBranchID, setSelectedBranchID] = useState("");
   const [currentTime, setCurrentTime] = useState("");
+  const { isAuthenticated } = useAuth();
 
   const handleProfileClick = () => {
     navigate("/profile");
@@ -61,6 +63,7 @@ const Header = ({ setIsAuthenticated }) => {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
+    
     try {
       const response = await fetch("http://209.97.173.123:3001/branch", {
         method: "GET",
@@ -83,11 +86,20 @@ const Header = ({ setIsAuthenticated }) => {
     }
   };
 
-  useEffect(() => {
+  useEffect(() => {decodeToken();
+   
     if (role === "owner") {
       fetchBranches();
+      return;
     }
-  }, [onAddingBranch]);
+   
+    decodeToken();
+    if(decodeToken.employee){
+    console.log("decodeToken.employee.employee_branch_id",decodeToken.employee.employee_branch_id);
+    setSelectedBranch(decodeToken.employee.employee_branch_id); 
+    }
+
+  }, [onAddingBranch, isAuthenticated]);
 
   const menu = (
     <Menu
@@ -135,8 +147,9 @@ const Header = ({ setIsAuthenticated }) => {
   const showDropdown =
     selectedMenu === "/category" ||
     selectedMenu === "/products" ||
-    selectedMenu === "/employees" ||
-    selectedMenu === "/dashboard";
+    selectedMenu === "/employees"
+    // ||
+    // selectedMenu === "/dashboard";
 
   // Function to update the current time every second
   useEffect(() => {
@@ -177,29 +190,23 @@ const Header = ({ setIsAuthenticated }) => {
           style={{
             display: "flex",
             alignItems: "center",
-            background: "#f0f2f5", // Subtle background color
-            borderRadius: "8px",
-            padding: "10px 15px",
-            // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-            marginRight: "20px",
+            marginRight: "15px",
           }}
         >
           <ClockCircleOutlined
             style={{ marginRight: "8px", fontSize: "18px", color: "#1890ff" }}
           />{" "}
-          {/* Clock Icon */}
           <Typography.Text
             style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}
           >
             {currentTime}
           </Typography.Text>
         </div>
-
         {showDropdown && role === "owner" && (
           <Select
             value={selectedBranch}
             onChange={handleBranchChange}
-            style={{ width: 200, size: "large", marginRight: "20px" }}
+            style={{ width: 200, size: "large", marginRight: "15px" }}
           >
             {branches?.map((branch) => (
               <Select.Option key={branch.branch_id} value={branch.branch_name}>
@@ -210,13 +217,13 @@ const Header = ({ setIsAuthenticated }) => {
         )}
 
         <Dropdown overlay={menu} trigger={["click"]}>
-          <Badge dot style={{ marginRight: "20px" }}>
-            <Avatar
+          <Badge dot style={{ marginRight: "30px" }}>
+            <Avatar size={"large"}
               icon={<UserOutlined />}
               style={{
                 cursor: "pointer",
                 backgroundColor: "rgba(0,0,0,0.88)",
-                marginRight: "20px",
+                marginRight: "25px",
               }}
             />
           </Badge>
@@ -227,3 +234,4 @@ const Header = ({ setIsAuthenticated }) => {
 };
 
 export default Header;
+

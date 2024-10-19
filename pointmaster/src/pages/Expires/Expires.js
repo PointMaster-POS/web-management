@@ -67,7 +67,7 @@ const Expires = () => {
   ];
 
   return (
-    <Card
+    <Card className="large-font"
       style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
@@ -78,7 +78,7 @@ const Expires = () => {
           alignItems: "center",
         }}
       >
-        <Title level={3} style={{ marginBottom: 10 }}>
+        <Title level={2} style={{ marginBottom: 10 }}>
           Items Expiring Soon
         </Title>
       </div>

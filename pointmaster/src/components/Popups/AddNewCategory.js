@@ -1,50 +1,51 @@
-import React, { useState, useEffect } from "react";
-import { Form, Input, Button, Select, message } from "antd";
+import React from "react";
+import { Form, Input, Button, Select } from "antd";
 import { useMenu } from "../../context/MenuContext";
 import "./Styles.css"
 
 const { Option } = Select;
 
 const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
-  const [branches, setBranches] = useState([]);
-  const { branchID, role } = useMenu();
+  // const [branches, setBranches] = useState([]);
+  const { branchID } = useMenu();
 
-  useEffect(() => {
-    const fetchBranches = async () => {
-      const token = localStorage.getItem("accessToken");
-      if (!token) {
-        message.error("Authorization token is missing. Please log in again.");
-        return;
-      }
+  // useEffect(() => {
+  //   const fetchBranches = async () => {
+  //     const token = localStorage.getItem("accessToken");
+  //     if (!token) {
+  //       message.error("Authorization token is missing. Please log in again.");
+  //       return;
+  //     }
 
-      try {
-        const response = await fetch("http://209.97.173.123:3001/branch", {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        });
+  //     try {
+  //       const response = await fetch("http://209.97.173.123:3001/branch", {
+  //         method: "GET",
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  //       if (!response.ok) {
+  //         throw new Error(`HTTP error! status: ${response.status}`);
+  //       }
 
-        const data = await response.json();
-        setBranches(data);
-      } catch (error) {
-        console.error("Error fetching branches:", error);
-        message.error("Failed to fetch branches.");
-      }
-    };
+  //       const data = await response.json();
+  //       setBranches(data);
+  //     } catch (error) {
+  //       console.error("Error fetching branches:", error);
+  //       message.error("Failed to fetch branches.");
+  //     }
+  //   };
 
-    fetchBranches();
-  }, []);
+  //   fetchBranches();
+  // }, []);
 
   const handleFinish = (values) => {
-    onAddCategory(values);
+    const updatedValues = { ...values, branch_id: branchID };
+    onAddCategory(updatedValues);
   };
-
+  
   return (
     <Form
       className="large-font-form"
@@ -80,7 +81,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
       >
         <Input />
       </Form.Item>
-      {role === "owner" && (
+      {/* {role === "owner" && (
         <Form.Item
           label="Select Branch"
           name="branch_id"
@@ -95,7 +96,7 @@ const AddNewCategory = ({ form, onAddCategory, onCancel }) => {
             ))}
           </Select>
         </Form.Item>
-      )}
+      )} */}
 
       <Form.Item
         wrapperCol={{ offset: 8, span: 16 }}

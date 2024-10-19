@@ -22,21 +22,24 @@ import {
   PrinterOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { useMenu } from "../../context/MenuContext";
+import { useAuth } from "../../context/AuthContext";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import jsPDF from "jspdf"; // For generating PDFs
 import html2canvas from "html2canvas"; // For capturing the barcode area
 import JsBarcode from "jsbarcode"; // For generating barcodes
 import { storage } from "../../firebase"; // Firebase storage instance
 import ProductDetailsModal from "../../components/Popups/ProductDetailModel";
+import '../PagesStyles.css';
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
 const { Option } = Select;
 
 const Products = () => {
-  const { branchID } = useMenu();
+  const { isAuthenticated } = useAuth();
+  const { branchID, role } = useMenu();
   const [data, setData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -48,8 +51,7 @@ const Products = () => {
   const [selectedBarcode, setSelectedBarcode] = useState(null);
   const [fileList, setFileList] = useState([]);
   const [productImageURL, setProductImageURL] = useState("");
-  const [isViewProductModelVisible, setIsViewProductModelVisible] =
-    useState(false);
+  const [isViewProductModelVisible, setIsViewProductModelVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isNewProduct, setIsNewProduct] = useState(true);
   const [selectedItemID, setSelectedItemID] = useState(null);
@@ -63,10 +65,24 @@ const Products = () => {
   const token = localStorage.getItem("accessToken");
 
   const fetchCategories = async () => {
-    if (!branchID) return; // Ensure branchId is available
+    console.log("fetching categories");
+   
+    let url;
+    if (role === "owner") {
+      console.log("************************************");
+      if (!branchID) {
+        message.warning("Select a branch or create a branch to have categories.");
+        return;
+      }
+      url = `http://209.97.173.123:3001/category/owner/${branchID}`;
+    } else if (role === "branch manager") {
+      console.log("------------------------------------");
+      url = `http://209.97.173.123:3001/category/manager`;
+    }
+    console.log("url is setted", url);
     try {
       const response = await axios.get(
-        `http://209.97.173.123:3001/category/owner/${branchID}`,
+        url,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -90,7 +106,7 @@ const Products = () => {
 
   useEffect(() => {
     fetchCategories();
-  }, [branchID]);
+  }, [branchID, isAuthenticated]);
 
   const fetchProducts = async (categoryId) => {
     setLoading(true);
@@ -296,7 +312,7 @@ const Products = () => {
       if (response.status === 200) {
         console.log("Product deleted successfully!");
         message.success("Product deleted successfully!");
-        // fetchProducts();
+        fetchProducts();
       }
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -320,16 +336,16 @@ const Products = () => {
   };
 
   const handleSearch = (value, exactMatch = false) => {
+    const searchValue = value.toLowerCase();
     const filtered = data.filter((item) => {
-      const product_name = item.product_name.toLowerCase();
-      const product_id = item.product_id.toString().toLowerCase();
-      const searchValue = value.toLowerCase();
+      const item_name = item.item_name.toLowerCase();
+      const item_id = item.item_id.toString().toLowerCase();
 
       if (exactMatch) {
-        return product_name === searchValue || product_id === searchValue;
+        return item_name === searchValue || item_id === searchValue;
       } else {
         return (
-          product_name.includes(searchValue) || product_id.includes(searchValue)
+          item_name.includes(searchValue) || item_id.includes(searchValue)
         );
       }
     });
@@ -417,9 +433,8 @@ const Products = () => {
   const columns = [
     {
       title: "Item ID",
-      dataIndex: "index",
-      key: "index",
-      render: (text, record, index) => index + 1, // Render row number starting from 1
+      dataIndex: "item_id",
+      key: "item_id",
     },
     { title: "Item Name", dataIndex: "item_name", key: "item_name" },
 
@@ -435,7 +450,7 @@ const Products = () => {
       key: "stock",
       render: (stock) => (
         <div>
-          {stock < 20 ? (
+          {stock < categories.minimum_stock ? (
             <Tooltip title="Low stock !">
               <span style={{ color: "red" }}>{stock}</span>
               <ExclamationCircleOutlined
@@ -509,7 +524,7 @@ const Products = () => {
   ];
 
   return (
-    <Card
+    <Card className="large-font"
       style={{ padding: 30, borderRadius: "10px" }}
       bodyStyle={{ padding: "20px" }}
     >
@@ -520,7 +535,7 @@ const Products = () => {
           alignItems: "center",
         }}
       >
-        <Title level={3} style={{ marginBottom: 10 }}>
+        <Title level={2} style={{ marginBottom: 10 }}>
           Products
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -562,7 +577,7 @@ const Products = () => {
         columns={columns}
         dataSource={filteredData}
         rowKey="item_id"
-        pagination={{ pageSize: 5 }}
+        pagination={{ pageSize: 7 }}
         locale={{
           emptyText: "No items available.",
         }}
@@ -589,7 +604,7 @@ const Products = () => {
         onCancel={handleCancel}
         width={800}
       >
-        <Form form={form} layout="vertical">
+        <Form form={form} layout="vertical" className="large-font-form">
           <Form.Item
             name="product_name"
             label="Product Name"
@@ -675,7 +690,6 @@ const Products = () => {
           >
             <Input placeholder="Enter minimum stock" />
           </Form.Item>
-
           <Form.Item name="discount" label="Discount (%)">
             <Input placeholder="Enter discount percentage" />
           </Form.Item>
