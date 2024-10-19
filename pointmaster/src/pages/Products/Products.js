@@ -32,6 +32,7 @@ import JsBarcode from "jsbarcode"; // For generating barcodes
 import { storage } from "../../firebase"; // Firebase storage instance
 import ProductDetailsModal from "../../components/Popups/ProductDetailModel";
 import '../PagesStyles.css';
+import baseUrl from "../../apiConfig";
 const { Title } = Typography;
 const { confirm } = Modal;
 const { Search } = Input;
@@ -74,10 +75,10 @@ const Products = () => {
         message.warning("Select a branch or create a branch to have categories.");
         return;
       }
-      url = `http://209.97.173.123:3001/category/owner/${branchID}`;
+      url = `${baseUrl}:3001/category/owner/${branchID}`;
     } else if (role === "branch manager") {
       console.log("------------------------------------");
-      url = `http://209.97.173.123:3001/category/manager`;
+      url = `${baseUrl}:3001/category/manager`;
     }
     console.log("url is setted", url);
     try {
@@ -112,7 +113,7 @@ const Products = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `http://209.97.173.123:3001/items/${categoryId}`,
+        `${baseUrl}:3001/items/${categoryId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -178,7 +179,7 @@ const Products = () => {
 
       // Send the POST request to the server
       axios
-        .post("http://209.97.173.123:3001/items", newProduct, {
+        .post(`${baseUrl}:3001/items`, newProduct, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -257,7 +258,7 @@ const Products = () => {
 
       // Make PUT request to update the product in the database
       const response = await axios.put(
-        `http://209.97.173.123:3001/items/${selectedItemID}`,
+        `${baseUrl}:3001/items/${selectedItemID}`,
         {
           category_id: values.category,
           item_name: values.product_name,
@@ -301,7 +302,7 @@ const Products = () => {
     console.log("Token:", token);
     try {
       const response = await axios.delete(
-        `http://209.97.173.123:3001/items/${productId}`,
+        `${baseUrl}:3001/items/${productId}`,
         {
           headers: {
             "content-type": "application/json",
