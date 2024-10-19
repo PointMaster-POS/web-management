@@ -190,17 +190,12 @@ const Header = ({ setIsAuthenticated }) => {
           style={{
             display: "flex",
             alignItems: "center",
-            background: "#f0f2f5", // Subtle background color
-            borderRadius: "8px",
-            padding: "10px 15px",
-            // boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
             marginRight: "15px",
           }}
         >
           <ClockCircleOutlined
             style={{ marginRight: "8px", fontSize: "18px", color: "#1890ff" }}
           />{" "}
-          {/* Clock Icon */}
           <Typography.Text
             style={{ fontSize: "16px", fontWeight: "bold", color: "#333" }}
           >
@@ -222,13 +217,13 @@ const Header = ({ setIsAuthenticated }) => {
         )}
 
         <Dropdown overlay={menu} trigger={["click"]}>
-          <Badge dot style={{ marginRight: "15px" }}>
-            <Avatar
+          <Badge dot style={{ marginRight: "30px" }}>
+            <Avatar size={"large"}
               icon={<UserOutlined />}
               style={{
                 cursor: "pointer",
                 backgroundColor: "rgba(0,0,0,0.88)",
-                marginRight: "20px",
+                marginRight: "25px",
               }}
             />
           </Badge>
