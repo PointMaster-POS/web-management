@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import "./Header.css";
 import { useMenu } from "../../context/MenuContext";
 import { useAuth } from "../../context/AuthContext";
+import baseUrl from "../../apiConfig";
 
 // Mock branch data
 // const branches = [
@@ -65,7 +66,7 @@ const Header = ({ setIsAuthenticated }) => {
     }
     
     try {
-      const response = await fetch("http://209.97.173.123:3001/branch", {
+      const response = await fetch(`${baseUrl}:3001/branch`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
