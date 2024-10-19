@@ -29,6 +29,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import BranchPerformanceModal from "../../components/Popups/BranchPerformance";
+import baseUrl from "../../apiConfig";
 
 const { Title, Text } = Typography;
 Chart.register(...registerables);
@@ -152,7 +153,7 @@ const SalesCard = ({ icon }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        `http://209.97.173.123:3001/dashboard/business/bills-between-dates/${startDate}/${endDate}`,
+        `${baseUrl}:3001/dashboard/business/bills-between-dates/${startDate}/${endDate}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -281,7 +282,7 @@ const NoOfCustomersCard = ({ icon, title }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        "http://209.97.173.123:3001/dashboard/business/number-of-customers",
+        `${baseUrl}:3001/dashboard/business/number-of-customers`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -324,7 +325,7 @@ const PaymentMethodDataCard = ({ icon }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        "http://209.97.173.123:3001/dashboard/business/sales-by-payment-method",
+        `${baseUrl}:3001/dashboard/business/sales-by-payment-method`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -413,7 +414,7 @@ const ExpiresCard = ({ icon, title }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        "http://209.97.173.123:3001/dashboard/business/expired-items",
+        `${baseUrl}:3001/dashboard/business/expired-items`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -462,7 +463,7 @@ const NoOfEmployeesCard = ({ icon, title }) => {
     const token = localStorage.getItem("accessToken");
     try {
       const response = await axios.get(
-        "http://209.97.173.123:3001/dashboard/business/employees/get-number-of-employees",
+        `${baseUrl}:3001/dashboard/business/employees/get-number-of-employees`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -515,7 +516,7 @@ const PopularItems = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/dashboard/business/sale-report/item/${startDate}/${adjustedEndDate}`,
+        `${baseUrl}:3001/dashboard/business/sale-report/item/${startDate}/${adjustedEndDate}`,
         {
           method: "GET",
           headers: {
@@ -610,7 +611,7 @@ const LowStockItems = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/dashboard/business/low-stock-items/${quantity}`,
+        `${baseUrl}:3001/dashboard/business/low-stock-items/${quantity}`,
         {
           method: "GET",
           headers: {
@@ -714,7 +715,7 @@ const BillsBarChart = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/dashboard/business/sale-report/number-of-bills/${startMonth}/${endMonth}`,
+        `${baseUrl}:3001/dashboard/business/sale-report/number-of-bills/${startMonth}/${endMonth}`,
         {
           method: "GET",
           headers: {
@@ -895,7 +896,7 @@ const SalesPieChart = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/dashboard/business/branch-performance/${startDate}/${adjustedEndDate}`,
+        `${baseUrl}:3001/dashboard/business/branch-performance/${startDate}/${adjustedEndDate}`,
         {
           method: "GET",
           headers: {
