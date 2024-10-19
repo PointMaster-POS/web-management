@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Select, Upload, Typography, message } from "antd";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { UploadOutlined, CheckOutlined } from "@ant-design/icons"; 
+import { UploadOutlined, CheckOutlined } from "@ant-design/icons";
 import TextArea from "antd/es/input/TextArea";
-import { storage } from "../../../firebase"; 
-import "./RegisterNewBusiness.css"; 
+import { storage } from "../../../firebase";
+import "./RegisterNewBusiness.css";
 import axios from "axios";
 
 const { Option } = Select;
@@ -15,6 +15,7 @@ const RegisterNewBusiness = ({
   onCancel,
   isEditMode,
   onRegisterOrUpdateBusiness,
+  defaultLogo_1,
 }) => {
   const [fileList, setFileList] = useState([]);
   const [isCodeVisible, setIsCodeVisible] = useState(false);
@@ -33,14 +34,21 @@ const RegisterNewBusiness = ({
       try {
         const logoURL = await handleUpload(fileList[0]);
         values.logo_url = logoURL;
-        console.log("Form values:", logoURL);
-        onRegisterOrUpdateBusiness(values);
       } catch (error) {
         message.error("Failed to upload the logo. Please try again.");
+        return;
       }
     } else {
-      message.error("Please upload a business logo.");
+      // If no file is selected and it's edit mode, keep the existing image or set to defaultLogo_2
+      if (!isEditMode) {
+        message.error("Please upload a business logo.");
+        return;
+      } else if (!values.business_owner_photo_url) {
+        // If no image exists, set the default logo
+        values.business_owner_photo_url = defaultLogo_1;
+      }
     }
+    onRegisterOrUpdateBusiness(values);
   };
 
   const handleUpload = async (file) => {
@@ -50,6 +58,7 @@ const RegisterNewBusiness = ({
       const logoURL = await getDownloadURL(storageRef);
       return logoURL;
     } catch (error) {
+      message.error("Error uploading image. Please try again.");
       throw new Error("File upload failed");
     }
   };
@@ -77,7 +86,9 @@ const RegisterNewBusiness = ({
       axios.post("http://209.97.173.123:3001/registration/verify-email-send", {
         email: form.getFieldValue("business_mail"),
       });
-      message.success(`Verification code sent to ${form.getFieldValue("business_mail")}`);
+      message.success(
+        `Verification code sent to ${form.getFieldValue("business_mail")}`
+      );
     } catch (error) {
       message.error("Failed to send verification code. Please try again.");
     }
@@ -85,7 +96,7 @@ const RegisterNewBusiness = ({
   };
 
   const handleVerifyCode = async () => {
-    const codeString = verificationCode.join('');
+    const codeString = verificationCode.join("");
     let isCodeValid = false;
 
     const body = {
@@ -93,10 +104,11 @@ const RegisterNewBusiness = ({
       code: codeString,
     };
 
-    
-
     try {
-      const response = await axios.post("http://209.97.173.123:3001/registration/verify-mail", body);
+      const response = await axios.post(
+        "http://209.97.173.123:3001/registration/verify-mail",
+        body
+      );
       if (response.status === 200) {
         isCodeValid = true;
       }
@@ -108,7 +120,7 @@ const RegisterNewBusiness = ({
     if (isCodeValid) {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsVerified(true);
-      setVerifyButtonText(<CheckOutlined style={{ color: 'green' }} />);
+      setVerifyButtonText(<CheckOutlined style={{ color: "green" }} />);
       setIsCodeVisible(false);
       message.success("Email verified successfully!");
     } else {
@@ -120,7 +132,9 @@ const RegisterNewBusiness = ({
     const newCode = [...verificationCode];
     newCode[index] = value;
     if (value && index < 3) {
-      const nextInput = document.getElementById(`verification-code-${index + 1}`);
+      const nextInput = document.getElementById(
+        `verification-code-${index + 1}`
+      );
       if (nextInput) nextInput.focus();
     }
     setVerificationCode(newCode);
@@ -136,7 +150,6 @@ const RegisterNewBusiness = ({
   return (
     <React.Fragment>
       <div className="form-container">
-        {/* <Title level={3}>{isEditMode ? "Update Business" : "Register New Business"}</Title> */}
         <Form
           form={form}
           layout="vertical"
@@ -147,7 +160,9 @@ const RegisterNewBusiness = ({
           <Form.Item
             label="Business Name"
             name="business_name"
-            rules={[{ required: true, message: "Please input the business name!" }]}
+            rules={[
+              { required: true, message: "Please input the business name!" },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -155,7 +170,13 @@ const RegisterNewBusiness = ({
           <Form.Item
             label="Business Email"
             name="business_mail"
-            rules={[{ type: "email", required: true, message: "Please input a valid email!" }]}
+            rules={[
+              {
+                type: "email",
+                required: true,
+                message: "Please input a valid email!",
+              },
+            ]}
           >
             <Input
               onChange={handleEmailChange} // Add email change handler
@@ -173,19 +194,23 @@ const RegisterNewBusiness = ({
 
           {isCodeVisible && !isVerified && (
             <Form.Item label="Verification Code" required>
-              <div style={{ display: 'flex', gap: '10px' }}>
+              <div style={{ display: "flex", gap: "10px" }}>
                 {verificationCode.map((code, index) => (
                   <Input
                     key={index}
                     id={`verification-code-${index}`}
                     maxLength={1}
-                    style={{ width: '40px', textAlign: 'center' }}
+                    style={{ width: "40px", textAlign: "center" }}
                     value={code}
                     onChange={(e) => handleCodeChange(index, e.target.value)}
                   />
                 ))}
               </div>
-              <Button type="primary" onClick={handleVerifyCode} style={{ marginTop: '10px' }}>
+              <Button
+                type="primary"
+                onClick={handleVerifyCode}
+                style={{ marginTop: "10px" }}
+              >
                 Verify
               </Button>
             </Form.Item>
@@ -203,7 +228,9 @@ const RegisterNewBusiness = ({
           <Form.Item
             label="Business Hotline"
             name="business_hotline"
-            rules={[{ required: true, message: "Please input the hotline number!" }]}
+            rules={[
+              { required: true, message: "Please input the hotline number!" },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -215,7 +242,9 @@ const RegisterNewBusiness = ({
           <Form.Item
             label="Business Address"
             name="business_address"
-            rules={[{ required: true, message: "Please input the business address!" }]}
+            rules={[
+              { required: true, message: "Please input the business address!" },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -223,7 +252,12 @@ const RegisterNewBusiness = ({
           <Form.Item
             label="Business Logo"
             name="business_logo"
-            rules={[{ required: true, message: "Please upload the business logo!" }]}
+            rules={[
+              {
+                required: !isEditMode,
+                message: "Please upload the business logo!",
+              },
+            ]}
           >
             <Upload
               listType="picture"
@@ -238,7 +272,12 @@ const RegisterNewBusiness = ({
           <Form.Item
             label="Business Registration Number"
             name="business_registration_number"
-            rules={[{ required: true, message: "Please input the registration number!" }]}
+            rules={[
+              {
+                required: true,
+                message: "Please input the registration number!",
+              },
+            ]}
           >
             <Input />
           </Form.Item>
@@ -246,7 +285,9 @@ const RegisterNewBusiness = ({
           <Form.Item
             label="Business Type"
             name="business_type"
-            rules={[{ required: true, message: "Please select the business type!" }]}
+            rules={[
+              { required: true, message: "Please select the business type!" },
+            ]}
           >
             <Select placeholder="Select a type">
               <Option value="Technology">Technology</Option>
@@ -256,7 +297,10 @@ const RegisterNewBusiness = ({
             </Select>
           </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }} style={{ textAlign: "right" }}>
+          <Form.Item
+            wrapperCol={{ offset: 8, span: 16 }}
+            style={{ textAlign: "right" }}
+          >
             <Button
               type="default"
               onClick={onCancel}
@@ -277,6 +321,5 @@ const RegisterNewBusiness = ({
     </React.Fragment>
   );
 };
-
 
 export default RegisterNewBusiness;
