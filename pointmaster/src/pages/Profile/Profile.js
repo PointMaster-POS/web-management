@@ -151,17 +151,7 @@ const ProfilePage = () => {
     }
   };
 
-<<<<<<< Updated upstream
   useEffect(() => {
-=======
-  const arrayBufferToBase64 = (buffer) => {
-    const binary = String.fromCharCode(...new Uint8Array(buffer));
-    return btoa(binary); // Convert binary to Base64
-  };
-
-
-  useEffect( () => {
->>>>>>> Stashed changes
     fetchDetails();
   }, [navigator.onLine]);
 
@@ -433,6 +423,7 @@ const ProfilePage = () => {
           onCancel={handleCancelBusinessModal}
           isEditMode={true}
           onRegisterOrUpdateBusiness={handleUpdateBusiness}
+          defaultLogo_1={defaultLogo_1}
         />
       </Modal>
 
@@ -459,6 +450,7 @@ const ProfilePage = () => {
           onCancel={handleCancelOwnerModal}
           isEditMode={true}
           onRegisterOrUpdateOwner={handleUpdateOwner}
+          defaultLogo_2={defaultLogo_2}
         />
       </Modal>
     </div>
