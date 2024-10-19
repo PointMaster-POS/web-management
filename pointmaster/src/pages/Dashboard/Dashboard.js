@@ -50,22 +50,6 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={8}>
-
-              <ProfitCard
-                icon={<DollarOutlined style={iconStyle("purple")} />}
-                title="Profit"
-              />
-            </Col>
-
-            {/* Customers and Payment Cards */}
-            <Col span={8}>
-              <NoOfCustomersCard
-                icon={<UserOutlined style={iconStyle("olive")} />}
-                title="Number of Customers"
-              />
-            </Col>
-            <Col span={8}>
-
               <PaymentMethodDataCard
                 icon={<CreditCardOutlined style={iconStyle("teal")} />}
               />
@@ -712,11 +696,10 @@ const BillsBarChart = () => {
   const getLast12Months = () => {
     const months = [];
     for (let i = 0; i < 12; i++) {
-      months.unshift(dayjs().subtract(i, 'month').format('YYYY-MM'));
+      months.unshift(dayjs().subtract(i, "month").format("YYYY-MM"));
     }
     return months;
   };
-
 
   const fetchBillsData = async (startMonth, endMonth) => {
     setLoading(true);
@@ -754,19 +737,18 @@ const BillsBarChart = () => {
         return monthData ? monthData.number_of_bills : 0;
       });
 
-        setChartData({
-          labels: last12Months,
-          datasets: [
-            {
-              label: "Number of Bills",
-              data: billsData,
-              backgroundColor: "rgba(75, 192, 192, 0.6)",
-              borderColor: "rgba(75, 192, 192, 1)",
-              borderWidth: 1,
-            },
-          ],
-        });
-
+      setChartData({
+        labels: last12Months,
+        datasets: [
+          {
+            label: "Number of Bills",
+            data: billsData,
+            backgroundColor: "rgba(75, 192, 192, 0.6)",
+            borderColor: "rgba(75, 192, 192, 1)",
+            borderWidth: 1,
+          },
+        ],
+      });
     } catch (error) {
       console.error("Error fetching data:", error);
       message.error("Failed to fetch data.");
