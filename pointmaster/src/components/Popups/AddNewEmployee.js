@@ -26,7 +26,7 @@ const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
   //     }
 
   //     try {
-  //       const response = await fetch("http://209.97.173.123:3001/branch", {
+  //       const response = await fetch(`${baseUrl}:3001/branch`, {
   //         method: "GET",
   //         headers: {
   //           Authorization: `Bearer ${token}`,
