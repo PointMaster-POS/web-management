@@ -76,3 +76,16 @@
   height: 45px;
   border-radius: 10px; /* Increase border-radius for large input */
 }
+
+.toggle-text {
+  color: #1890ff;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 10px;
+  display: block;
+}
+
+.toggle-text:hover {
+  text-decoration: underline;
+}
+

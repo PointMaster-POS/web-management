@@ -11,43 +11,9 @@ const { Option } = Select;
 const Roles = [{ name: "cashier" }, { name: "branch manager" }];
 
 const AddNewEmployee = ({ form, onAddEmployee, onCancel }) => {
-  // const [branches, setBranches] = useState([]);
-  // const [imageUrl, setImageUrl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const { branchID } = useMenu();
-
-  // useEffect(() => {
-  //   const fetchBranches = async () => {
-  //     const token = localStorage.getItem("accessToken");
-  //     if (!token) {
-  //       message.error("Authorization token is missing. Please log in again.");
-  //       return;
-  //     }
-
-  //     try {
-  //       const response = await fetch(`${baseUrl}:3001/branch`, {
-  //         method: "GET",
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-
-  //       if (!response.ok) {
-  //         throw new Error(`HTTP error! status: ${response.status}`);
-  //       }
-
-  //       const data = await response.json();
-  //       setBranches(data); // Store fetched branches
-  //     } catch (error) {
-  //       console.error("Error fetching branches:", error);
-  //       message.error("Failed to fetch branches.");
-  //     }
-  //   };
-
-  //   fetchBranches();
-  // }, []);
 
   const handleImageChange = ({ file }) => {
     setImageFile(file);

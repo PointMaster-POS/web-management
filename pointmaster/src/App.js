@@ -4,15 +4,6 @@ import Landing from "./pages/LandingPage/Landing";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { MenuProvider } from "./context/MenuContext";
-// import LogIn from "./pages/LogIn/LogIn";
-// import Dashboard from "./pages/Dashboard/Dashboard";
-// import Stores from "./pages/Stores/Stores";
-// import Employees from "./pages/Employees/Employees";
-// import Profile from "./pages/Profile/Profile";
-// import Category from "./pages/Categories/Category";
-// import Loyalty from "./pages/Loyalty/loyalty";
-// import Products from "./pages/Products/Products";
-// import Expires from "./pages/Expires/Expires";
 
 const LogIn = lazy(() => import("./pages/LogIn/LogIn"));
 const MainLayout = lazy(() => import("./components/ProtectedRoute/MainLayout"));
@@ -43,14 +34,6 @@ const App = () => {
               element={
                 <Suspense fallback={<LoadingFallback />}>
                   <LogIn />
-                </Suspense>
-              }
-            />
-            <Route
-              path="/forgot-password"
-              element={
-                <Suspense fallback={<LoadingFallback />}>
-                  <LogIn forgotPassword={true} />
                 </Suspense>
               }
             />
