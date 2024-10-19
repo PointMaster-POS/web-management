@@ -20,6 +20,7 @@ import {
 import AddNewCategory from "../../components/Popups/AddNewCategory";
 import { useMenu } from "../../context/MenuContext";
 import "../PagesStyles.css";
+import baseUrl from "../../apiConfig";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -54,10 +55,10 @@ const Category = () => {
       // console.log("role", role);
       if (role === "owner") {
         console.log("************************************");
-        url = `http://209.97.173.123:3001/category/owner/${branchID}`;
+        url = `${baseUrl}:3001/category/owner/${branchID}`;
       } else if (role === "branch manager") {
         console.log("------------------------------------");
-        url = `http://209.97.173.123:3001/category/manager`;
+        url = `${baseUrl}:3001/category/manager`;
       }
 
       console.log("url", url);
@@ -93,7 +94,7 @@ const Category = () => {
     }
 
     try {
-      const response = await fetch("http://209.97.173.123:3001/category", {
+      const response = await fetch(`${baseUrl}:3001/category`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -131,7 +132,7 @@ const Category = () => {
 
     try {
       const response = await fetch(
-        `http://209.97.173.123:3001/category/${values.branch_id}/${editingCategory.category_id}`,
+        `${baseUrl}:3001/category/${values.branch_id}/${editingCategory.category_id}`,
         {
           method: "PUT",
           headers: {
@@ -182,7 +183,7 @@ const Category = () => {
           }
 
           await fetch(
-            `http://209.97.173.123:3001/category/${branchID}/${category_id}`,
+            `${baseUrl}:3001/category/${branchID}/${category_id}`,
             {
               method: "DELETE",
               headers: {
