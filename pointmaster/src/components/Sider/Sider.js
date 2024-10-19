@@ -71,7 +71,7 @@ const SideBar = ({ onCollapse }) => {
         height: "100vh",
         position: "fixed",
         left: 0,
-        top: 75,
+        top: "8vh",
         bottom: 0,
       }}
     >

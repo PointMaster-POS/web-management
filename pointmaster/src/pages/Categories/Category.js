@@ -212,19 +212,20 @@ const Category = () => {
   };
 
   const handleSearch = (value, exactMatch = false) => {
+    const searchValue = value.toLowerCase(); // normalize input to lower case and trim spaces
     const filtered = data.filter((item) => {
-      const searchValue = value.toLowerCase();
       const category_name = item.category_name.toLowerCase();
       const category_id = item.category_id.toString().toLowerCase();
-
+  
       return exactMatch
         ? category_name === searchValue || category_id === searchValue
-        : category_name.includes(searchValue) ||
-            category_id.includes(searchValue);
+        : category_name.includes(searchValue) || category_id.includes(searchValue);
     });
+  
     setFilteredData(filtered);
     setSearchText(value);
   };
+  
 
   const columns = [
     {

@@ -30,10 +30,13 @@ export const MenuProvider = ({ children }) => {
     if (decodedToken.owner) {
       setRole("owner");
       navigate("/dashboard");
+
     } else if (decodedToken.employee?.employee_role === "branch manager") {
       setRole("branch manager");
       navigate("/category");
-    } else if (decodedToken.employee?.employee_role === "Cashier") {
+       
+    } else if (decodedToken.employee?.employee_role === "Cashier" || decodedToken.employee?.employee_role === "cashier") {
+
       // Redirect to the cashiers domain
       console.log("Redirect to the cashiers domain");
       const accessToken = localStorage.getItem("accessToken");

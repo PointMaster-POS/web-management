@@ -19,6 +19,7 @@ import {
 } from "@ant-design/icons";
 import AddNewStore from "../../components/Popups/AddNewStore";
 import { useMenu } from "../../context/MenuContext";
+import "../PagesStyles.css";
 
 const { Title } = Typography;
 const { confirm } = Modal;
@@ -201,13 +202,14 @@ const Stores = () => {
 
 
   const handleSearch = (value, exactMatch = false) => {
+    const searchValue = value.toLowerCase();
     const filtered = data.filter((item) => {
       const branch_name = item.branch_name.toLowerCase();
-      const searchValue = value.toLowerCase();
+      const branch_id = item.branch_id.toString().toLowerCase();
 
       return exactMatch
-        ? branch_name === searchValue
-        : branch_name.includes(searchValue);
+        ? branch_name === searchValue || branch_id === searchValue
+        : branch_name.includes(searchValue) || branch_id.includes(searchValue);
     });
     setFilteredData(filtered);
     setSearchText(value);
@@ -215,7 +217,7 @@ const Stores = () => {
 
 
   const columns = [
-    { title: "Branch ID", dataIndex: "branch_id", key: "branch_id" },
+    { title: "Store ID", dataIndex: "branch_id", key: "branch_id" },
     { title: "Name", dataIndex: "branch_name", key: "branch_name" },
     { title: "Location", dataIndex: "branch_location", key: "branch_location" },
     {
@@ -261,7 +263,7 @@ const Stores = () => {
         </Title>
         <div style={{ display: "flex", alignItems: "center" }}>
           <Search
-            placeholder="Search Name"
+            placeholder="Search by Store ID or Name"
             onSearch={(value) => handleSearch(value, true)}
             onChange={(e) => handleSearch(e.target.value)}
             value={searchText}
