@@ -13,7 +13,6 @@ import {
 import { EditOutlined } from "@ant-design/icons";
 import RegisterNewBusiness from "../../components/Popups/RegisterNewBusiness/RegisterNewBusiness";
 import RegisterOwner from "../../components/Popups/RegisterOwner/RegisterOwner";
-import defaultLogo_1 from './default-profile-images';
 
 const { Title, Text } = Typography;
 
@@ -22,7 +21,6 @@ const ProfilePage = () => {
   const [form_second] = Form.useForm();
   const [isBusinessModalVisible, setIsBusinessModalVisible] = useState(false);
   const [isOwnerModalVisible, setIsOwnerModalVisible] = useState(false);
-  const [businessImageBase64, setBusinessImageBase64] = useState("");
 
   const [details, setDetails] = useState({});
 
@@ -51,20 +49,12 @@ const ProfilePage = () => {
 
       const fetched_data = await response.json();
       setDetails(fetched_data);
-      if (fetched_data.business_image) {
-        const bufferData = fetched_data.business_image.data;
-        const base64 = arrayBufferToBase64(bufferData);
-        setBusinessImageBase64(`data:image/png;base64,${base64}`);
-        // console.log({hello : base64});
-        console.log({image : businessImageBase64});
-      }
     } catch (error) {
       console.error("Error fetching categories:", error);
       message.error("Failed to fetch categories.");
     }
   };
   console.log(details);
-
 
   const handleUpdateBusiness = async (values) => {
     const token = localStorage.getItem("accessToken");
@@ -73,20 +63,20 @@ const ProfilePage = () => {
       return;
     }
 
-  const dto = {
-    business_name: values.business_name,
-    business_mail: values.business_mail,
-    business_url: values.business_url,
-    business_hotline: values.business_hotline,
-    business_description: values.business_description,
-    business_address: values.business_address,
-    business_registration_number: values.business_registration_number,
-    business_type: values.business_type,
-    business_registration_date: values.business_registration_date,
-    logo_url: values.logo_url,
-  };
+    const dto = {
+      business_name: values.business_name,
+      business_mail: values.business_mail,
+      business_url: values.business_url,
+      business_hotline: values.business_hotline,
+      business_description: values.business_description,
+      business_address: values.business_address,
+      business_registration_number: values.business_registration_number,
+      business_type: values.business_type,
+      business_registration_date: values.business_registration_date,
+      logo_url: values.logo_url,
+    };
 
-    console.log(dto);
+    // console.log(dto);
 
     try {
       const response = await fetch(
@@ -115,14 +105,13 @@ const ProfilePage = () => {
     }
   };
 
-
   const handleUpdateOwner = async (values) => {
     const token = localStorage.getItem("accessToken");
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
       return;
     }
-    console.log(values);
+    // console.log(values);
 
     //filter values
     const dto = {
@@ -132,7 +121,6 @@ const ProfilePage = () => {
       business_owner_address: values.business_owner_address,
       business_owner_birthday: values.business_owner_birthday,
       business_owner_photo_url: values.business_owner_photo_url,
-
     };
 
     try {
@@ -163,20 +151,8 @@ const ProfilePage = () => {
     }
   };
 
-  const arrayBufferToBase64 = (buffer) => {
-    const binary = String.fromCharCode(...new Uint8Array(buffer));
-    return btoa(binary); // Convert binary to Base64
-  };
-  
-  // const fetchAndSetImage = async () => {
-  //   await fetchDetails();
-  // }
-
-
-  useEffect( () => {
+  useEffect(() => {
     fetchDetails();
-     
-   
   }, [navigator.onLine]);
 
   const handleEditBusiness = () => {
@@ -201,7 +177,7 @@ const ProfilePage = () => {
       onOk() {},
     });
   };
- 
+
   const handleCancelBusinessModal = () => {
     setIsBusinessModalVisible(false);
     form_first.resetFields(); // Reset the form when the modal is closed
@@ -212,12 +188,13 @@ const ProfilePage = () => {
     form_second.resetFields(); // Reset the form when the modal is closed
   };
 
-
-
-  const defaultLogo_2 = "/images/placeholder_for_owner.png";
+  const defaultLogo_1 = "/images/Placeholder image for business.webp";
+  const defaultLogo_2 = "/images/Placeholder image for owner.png";
 
   return (
-    <div style={{ padding: "20px", backgroundColor: "#f5f5f5", /* border: "2px red solid", */ height: "100%" }}>
+    <div
+      style={{ padding: "20px", backgroundColor: "#f5f5f5", height: "100%" }}
+    >
       <Title level={2} style={{ textAlign: "center" }}>
         Profile Overview
       </Title>
@@ -237,15 +214,11 @@ const ProfilePage = () => {
               <Button icon={<EditOutlined />} onClick={handleEditBusiness} />
             }
           >
-            {/* Business Logo */}
             <div style={{ textAlign: "center", marginBottom: "20px" }}>
-
-              {/* console log image here */}
-              {console.log({imagebody: details.business_image})}
               <Image
                 width={100}
                 height={100}
-                src={  details.logo_url || defaultLogo_1} // Business logo from details
+                src={details.logo_url || defaultLogo_1} // Business logo from details
                 preview={false}
                 style={{ borderRadius: "50%" }}
               />
@@ -355,7 +328,7 @@ const ProfilePage = () => {
               borderRadius: "10px",
               boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
               padding: "20px",
-              height: "100%"
+              height: "100%",
             }}
             extra={<Button icon={<EditOutlined />} onClick={handleEditOwner} />}
           >
@@ -363,12 +336,12 @@ const ProfilePage = () => {
               <Image
                 width={100}
                 height={100}
-                src={ details.business_owner_photo_url ||  defaultLogo_2} // Business logo from details
+                src={details.business_owner_photo_url || defaultLogo_2}
                 preview={false}
                 style={{ borderRadius: "50%" }}
               />
               <Title level={4} style={{ marginTop: "10px" }}>
-                {details.business_owner_name} {/* Business name below logo */}
+                {details.business_owner_name}
               </Title>
             </div>
             <Row style={{ marginBottom: 10 }}>
