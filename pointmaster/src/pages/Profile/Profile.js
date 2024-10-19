@@ -151,7 +151,17 @@ const ProfilePage = () => {
     }
   };
 
+<<<<<<< Updated upstream
   useEffect(() => {
+=======
+  const arrayBufferToBase64 = (buffer) => {
+    const binary = String.fromCharCode(...new Uint8Array(buffer));
+    return btoa(binary); // Convert binary to Base64
+  };
+
+
+  useEffect( () => {
+>>>>>>> Stashed changes
     fetchDetails();
   }, [navigator.onLine]);
 
