@@ -46,11 +46,11 @@ const Employees = () => {
     let url;
     if (role === "owner") {
       url = `http://209.97.173.123:3001/employee/all-employee/${branchID}`;
-    } else if (role === "branchmanager") {
+    } else if (role === "branch manager") {
       url = `http://209.97.173.123:3001/employee/branch-employee`;
     }
 
-    if (!branchID) {
+    if (!branchID && role === "owner") {
       message.warning("Select a branch to view employees.");
       return;
     }

@@ -16,11 +16,7 @@ import { useMenu } from "../../context/MenuContext"; // Import MenuContext
 const { Sider } = Layout;
 
 const items = [
-  {
-    key: "/dashboard",
-    icon: <DashboardOutlined />,
-    label: "Dashboard",
-  },
+  
   {
     key: "/category",
     icon: <AppstoreOutlined />,
@@ -85,7 +81,23 @@ const SideBar = ({ onCollapse }) => {
         theme="light"
         onClick={onMenuClick}
         className="custom-menu"
+
+
       >
+        { role === "owner" && (
+          <Menu.Item
+            key="/dashboard"
+            icon={<DashboardOutlined />}
+            className="custom-menu-item"
+          >
+            Dashboard
+          </Menu.Item>
+        )
+
+
+        }
+
+
         {/* Render the common items */}
         {items.map((item) => (
           <Menu.Item

@@ -34,12 +34,13 @@ const { Title, Text } = Typography;
 Chart.register(...registerables);
 
 const Dashboard = () => {
-
   return (
     <div className="dashboard-container">
-      <Row gutter={[20]}>
+      <Row gutter={[20, 20]}>
+        {/* Left Column: Data Cards */}
         <Col span={18}>
           <Row gutter={[20, 20]}>
+            {/* Financial Data Cards */}
             <Col span={8}>
               <SalesCard icon={<DollarOutlined style={iconStyle("green")} />} />
             </Col>
@@ -49,6 +50,22 @@ const Dashboard = () => {
               />
             </Col>
             <Col span={8}>
+
+              <ProfitCard
+                icon={<DollarOutlined style={iconStyle("purple")} />}
+                title="Profit"
+              />
+            </Col>
+
+            {/* Customers and Payment Cards */}
+            <Col span={8}>
+              <NoOfCustomersCard
+                icon={<UserOutlined style={iconStyle("olive")} />}
+                title="Number of Customers"
+              />
+            </Col>
+            <Col span={8}>
+
               <PaymentMethodDataCard
                 icon={<CreditCardOutlined style={iconStyle("teal")} />}
               />
@@ -59,6 +76,7 @@ const Dashboard = () => {
                 title="Expires in a month"
               />
             </Col>
+
             <Col span={8}>
               <NoOfCustomersCard
                 icon={<UserOutlined style={iconStyle("olive")} />}
@@ -71,6 +89,7 @@ const Dashboard = () => {
                 title="Number of Employees"
               />
             </Col>
+
             <Col span={12}>
               <BillsBarChart />
             </Col>
@@ -79,6 +98,8 @@ const Dashboard = () => {
             </Col>
           </Row>
         </Col>
+
+        {/* Right Column: Popular & Low Stock Items */}
         <Col span={6}>
           <Space size={20} direction="vertical" style={{ width: "100%" }}>
             <PopularItems />
@@ -975,7 +996,7 @@ const SalesPieChart = () => {
     ],
     datasets: [
       {
-        data: [10, 15, 8, 20, 25, 18 /* , 22, 16, 19, 3 */],
+        // data: [10, 15, 8, 20, 25, 18 /* , 22, 16, 19, 3 */],
         backgroundColor: [
           "#FF6384",
           "#36A2EB",

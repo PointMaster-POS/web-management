@@ -15,7 +15,7 @@ export const MenuProvider = ({ children }) => {
   const [selectedMenu, setSelectedMenu] = useState("dashboard");
   const [role, setRole] = useState("");
   const [branchID, setBranchID] = useState(null);
-  const { isAuthenticated } = useAuth();
+  const {isAuthenticated } = useAuth();
   const [onAddingBranch, setOnAddingBranch] = useState(false);
   const navigate = useNavigate(); // Updated useNavigate hook here
 
@@ -30,10 +30,13 @@ export const MenuProvider = ({ children }) => {
     if (decodedToken.owner) {
       setRole("owner");
       navigate("/dashboard");
-    } else if (decodedToken.employee?.employee_role === "branchmanager") {
-      setRole("branchmanager");
-      navigate("/dashboard");
+
+    } else if (decodedToken.employee?.employee_role === "branch manager") {
+      setRole("branch manager");
+      navigate("/category");
+       
     } else if (decodedToken.employee?.employee_role === "Cashier" || decodedToken.employee?.employee_role === "cashier") {
+
       // Redirect to the cashiers domain
       console.log("Redirect to the cashiers domain");
       const accessToken = localStorage.getItem("accessToken");
@@ -72,9 +75,12 @@ export const MenuProvider = ({ children }) => {
         setRole,
         onAddingBranch,
         setOnAddingBranch,
+        decodeToken,
+        decodedToken,
       }}
     >
       {children}
     </MenuContext.Provider>
   );
 };
+

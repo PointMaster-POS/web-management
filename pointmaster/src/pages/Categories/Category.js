@@ -36,23 +36,31 @@ const Category = () => {
 
   const fetchCategories = async () => {
     const token = localStorage.getItem("accessToken");
+    console.log(role);
+    console.log("branchID", token);
     if (!token) {
       message.error("Authorization token is missing. Please log in again.");
 
       return;
     }
-    if (!branchID) {
+    if (!branchID && role == "owner") {
+    
       message.warning("Select a branch or create a branch to have categories.");
       return;
     }
+  
     try {
       let url;
       // console.log("role", role);
       if (role === "owner") {
+        console.log("************************************");
         url = `http://209.97.173.123:3001/category/owner/${branchID}`;
-      } else if (role === "branchmanager") {
+      } else if (role === "branch manager") {
+        console.log("------------------------------------");
         url = `http://209.97.173.123:3001/category/manager`;
       }
+
+      console.log("url", url);
       // console.log("url", url);
       const response = await fetch(url, {
         method: "GET",
