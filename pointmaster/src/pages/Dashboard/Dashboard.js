@@ -12,7 +12,7 @@ import {
 import React from "react";
 import { Chart, registerables } from "chart.js";
 import "./Dashboard.css";
-import SalesCard from "../../components/DashboardComponent/SalesCardComponent"
+import SalesCard from "../../components/DashboardComponent/SalesCardComponent";
 import PurchasesCard from "../../components/DashboardComponent/PurchasesCardComponent";
 import NoOfCustomersCard from "../../components/DashboardComponent/NoOfCustomerCardComponent";
 import PaymentMethodDataCard from "../../components/DashboardComponent/PaymentMethodCardComponent";
@@ -53,7 +53,6 @@ const Dashboard = () => {
                 title="Expires in a month"
               />
             </Col>
-
             <Col span={8}>
               <NoOfCustomersCard
                 icon={<UserOutlined style={iconStyle("olive")} />}
@@ -67,10 +66,11 @@ const Dashboard = () => {
               />
             </Col>
 
-            <Col span={12}>
+            {/* Increased space for the Bar Chart */}
+            <Col span={16}>
               <BillsBarChart />
             </Col>
-            <Col span={12}>
+            <Col span={8}>
               <SalesPieChart />
             </Col>
           </Row>

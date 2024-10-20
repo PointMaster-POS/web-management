@@ -69,8 +69,8 @@ import {
           datasets: [
             {
               data: billsData,
-              backgroundColor: "rgba(255, 101, 0, 0.6)"/* "rgba(75, 192, 192, 0.6)" */,
-              borderColor: "rgba(255, 101, 0, 1)",
+              backgroundColor: "#3495eb",
+              borderColor: "#0f34d6",
               borderWidth: 1,
             },
   
