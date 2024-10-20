@@ -44,9 +44,9 @@ const RegisterNewBusiness = ({
       if (!isEditMode) {
         message.error("Please upload a business logo.");
         return;
-      } else if (!values.business_owner_photo_url) {
+      } else if (!values.logo_url) {
         // If no image exists, set the default logo
-        values.business_owner_photo_url = defaultLogo_1;
+        values.logo_url = defaultLogo_1;
       }
     }
     onRegisterOrUpdateBusiness(values);
