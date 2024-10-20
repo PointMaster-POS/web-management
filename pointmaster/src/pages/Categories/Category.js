@@ -239,11 +239,11 @@ const Category = () => {
       dataIndex: "category_name",
       key: "category_name",
     },
-    {
-      title: "No of Products",
-      dataIndex: "product_count",
-      key: "product_count",
-    },
+    // {
+    //   title: "No of Products",
+    //   dataIndex: "product_count",
+    //   key: "product_count",
+    // },
     {
       title: "Category Location",
       dataIndex: "category_location",
