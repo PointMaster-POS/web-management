@@ -4,9 +4,15 @@ import React, { useState } from "react";
 
 const PurchasesCard = ({ icon }) => {
   const [timeFrame, setTimeFrame] = useState("Today");
+  const [purchasesCount, setPurchasesCount] = useState(8); // Add state for purchases count
 
   const handleMenuClick = (e) => {
     setTimeFrame(e.key);
+    // Optional: You can also change the purchases count based on the selected timeframe
+    // For example:
+    // if (e.key === "This Month") setPurchasesCount(30); 
+    // else if (e.key === "This Year") setPurchasesCount(200);
+    // else setPurchasesCount(8); // Today
   };
 
   const menu = (
@@ -45,7 +51,7 @@ const PurchasesCard = ({ icon }) => {
 
       <Space direction="horizontal" size="large">
         {icon}
-        <Statistic title={`${timeFrame} Purchases`} className="statistic" />
+        <Statistic title={`${timeFrame} Purchases`} value={purchasesCount} className="statistic" />
       </Space>
     </Card>
   );
