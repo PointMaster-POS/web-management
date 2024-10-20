@@ -44,7 +44,7 @@ const Stores = () => {
     }
 
     try {
-      const response = await fetch(`${baseUrl}:3001/branc`, {
+      const response = await fetch(`${baseUrl}:3001/branch`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
