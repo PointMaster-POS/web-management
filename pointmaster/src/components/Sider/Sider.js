@@ -16,7 +16,6 @@ import { useMenu } from "../../context/MenuContext"; // Import MenuContext
 const { Sider } = Layout;
 
 const items = [
-  
   {
     key: "/category",
     icon: <AppstoreOutlined />,
@@ -31,8 +30,7 @@ const items = [
     key: "/employees",
     icon: <UserOutlined />,
     label: "Employees",
-  }
-
+  },
 ];
 
 const SideBar = ({ onCollapse }) => {
@@ -81,10 +79,8 @@ const SideBar = ({ onCollapse }) => {
         theme="light"
         onClick={onMenuClick}
         className="custom-menu"
-
-
       >
-        { role === "owner" && (
+        {role === "owner" && (
           <Menu.Item
             key="/dashboard"
             icon={<DashboardOutlined />}
@@ -92,11 +88,7 @@ const SideBar = ({ onCollapse }) => {
           >
             Dashboard
           </Menu.Item>
-        )
-
-
-        }
-
+        )}
 
         {/* Render the common items */}
         {items.map((item) => (
@@ -121,20 +113,20 @@ const SideBar = ({ onCollapse }) => {
         )} */}
         {role === "owner" && (
           <Menu.Item
-          key="/stores"
-          icon={<ShopOutlined />}
-          className="custom-menu-item"
+            key="/stores"
+            icon={<ShopOutlined />}
+            className="custom-menu-item"
           >
             Stores
           </Menu.Item>
         )}
         <Menu.Item
-            key="/expires"
-            icon={<ExclamationCircleOutlined />}
-            className="custom-menu-item"
-          >
-            Expires
-          </Menu.Item>
+          key="/expires"
+          icon={<ExclamationCircleOutlined />}
+          className="custom-menu-item"
+        >
+          Expires
+        </Menu.Item>
         {role === "owner" && (
           <Menu.Item
             key="/Loyalty"
