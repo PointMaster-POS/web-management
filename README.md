@@ -63,7 +63,18 @@ This will start the application on http://localhost:3000.
 
 ## Usage
 
-Once the application is running, you can log in using your admin credentials. Here’s a quick overview of the main sections:
+Once the application runs, you can log in using admin  or branch manager credentials as follows.
+
+Owner:
+* Email: sankalpana00@gmail.com
+* Password: himindu123
+  
+Branch Manager:
+* Email: himindu.21@cse.mrt.ac.lk
+* Password: vy6uMibENt
+
+Here’s a quick overview of the main sections:
+
 1. **Dashboard:** View overall business performance across all branches using key business metrics.
 2. **Category:** Allow access to create, update, and delete categories. View category details.
 3. **Products:** Allow access to create, update, and delete categories for selected categories. View product details.
